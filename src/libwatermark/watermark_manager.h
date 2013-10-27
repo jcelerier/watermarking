@@ -1,9 +1,8 @@
 #pragma once
 
-#include <fftw3.h>
 #include <memory>
 
-#include "subtraction/algorithms.h"
+#include "watermark/algorithms.h"
 #include "fft/fftmanager.h"
 
 typedef std::shared_ptr<WatermarkBase> Watermark_p;
@@ -271,7 +270,7 @@ class WatermarkManager
 		FFT_p _fft = nullptr;
 
 		// Algorithms
-		Watermark_p _spectral_watermark = nullptr;
+		Watermark_p _watermark = nullptr;
 
 		// Storage
 		unsigned int _tabLength = 0; /**< TODO */

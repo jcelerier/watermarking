@@ -13,7 +13,7 @@ namespace MathUtil
 	 * @return x^2 + y^2
 	 */
 	//TODO std::bind ?
-	double CplxToPower(const std::complex<double> val)
+	inline double CplxToPower(const std::complex<double> val)
 	{
 		return std::norm(val);
 	}
@@ -24,7 +24,7 @@ namespace MathUtil
 	 * @param val Complex value
 	 * @return arc tan(y, x)
 	 */
-	double CplxToPhase(const std::complex<double> val)
+	inline double CplxToPhase(const std::complex<double> val)
 	{
 		return std::arg(val);
 	}

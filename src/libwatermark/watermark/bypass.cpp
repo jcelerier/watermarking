@@ -9,11 +9,6 @@ BypassWatermark::BypassWatermark(const WatermarkManager& configuration):
 {
 }
 
-BypassWatermark::~BypassWatermark()
-{
-
-}
-
 SpectralWatermarkBase *BypassWatermark::clone()
 {
 	return new BypassWatermark(*this);
@@ -21,7 +16,6 @@ SpectralWatermarkBase *BypassWatermark::clone()
 
 void BypassWatermark::operator()(std::complex<double> * const input_spectrum)
 {
-	#pragma omp parallel for
 	for (auto i = 0U; i < conf.spectrumSize(); ++i)
 	{
 		// Do stuff

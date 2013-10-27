@@ -4,6 +4,7 @@
 #include <map>
 
 #include "watermark_manager.h"
+#include "watermark/algorithms.h"
 #include "mathutils/math_util.h"
 #include "fft/fftwmanager.h"
 
@@ -20,7 +21,7 @@ WatermarkManager::WatermarkManager(const WatermarkManager &sm):
 	_dataSource(sm._dataSource),
 	_samplingRate(sm.getSamplingRate()),
 	_fft(nullptr),
-	_spectral_watermark(nullptr),
+	_watermark(nullptr),
 	_tabLength(sm._tabLength),
 	_data(new double[_tabLength]),
 	_origData(new double[_tabLength]),
@@ -28,7 +29,7 @@ WatermarkManager::WatermarkManager(const WatermarkManager &sm):
 
 {
 	_fft.reset(sm._fft->clone());
-	_spectral_watermark.reset(sm._spectral_watermark->clone());
+	_watermark.reset(sm._watermark->clone());
 
 	_fft->updateSize(sm._fft->size());
 	onFFTSizeUpdate();
@@ -49,7 +50,7 @@ const WatermarkManager &WatermarkManager::operator=(const WatermarkManager &sm)
 	_useOLA = sm._useOLA;
 
 	_fft.reset(sm._fft->clone());
-	_spectral_watermark.reset(sm._spectral_watermark->clone());
+	_watermark.reset(sm._watermark->clone());
 
 	_fft->updateSize(sm._fft->size());
 	onFFTSizeUpdate();
@@ -70,6 +71,8 @@ void WatermarkManager::execute()
 		initDataArray();
 	}
 
+	SpectralWatermarkBase* specWatermark = dynamic_cast<SpectralWatermarkBase*>(_watermark.get());
+
 	// Execution of the spectral algorithm
 	for (auto sample_n = 0U; sample_n < getLength(); sample_n += getFrameIncrement())
 	{
@@ -80,7 +83,7 @@ void WatermarkManager::execute()
 			onDataUpdate();
 
 		// Spectral subtraction
-		(*getWatermarkImplementation())(_fft->spectrum());
+		(*specWatermark)(_fft->spectrum());
 
 		_fft->backward();
 		copyOutput(sample_n);
@@ -91,12 +94,11 @@ void WatermarkManager::execute()
 
 void WatermarkManager::onFFTSizeUpdate()
 {
-	if(_bypass) return;
-
 	_ola_frame_increment = _fft->size() / 2;
 	_std_frame_increment = _fft->size();
 
-	if(_spectral_watermark) _spectral_watermark->onFFTSizeUpdate();
+	SpectralWatermarkBase* specWatermark = dynamic_cast<SpectralWatermarkBase*>(_watermark.get());
+	if(specWatermark) specWatermark->onFFTSizeUpdate();
 }
 
 
@@ -119,7 +121,7 @@ void WatermarkManager::copyOutput(const unsigned int pos)
 
 WatermarkManager::~WatermarkManager()
 {
-	_spectral_watermark.reset();
+	_watermark.reset();
 
 	delete[] _data;
 	delete[] _origData;
@@ -137,8 +139,7 @@ double *WatermarkManager::getData() const
 
 void WatermarkManager::onDataUpdate()
 {
-	if(_bypass) return;
-	_spectral_watermark->onDataUpdate();
+	_watermark->onDataUpdate();
 }
 
 double *WatermarkManager::getNoisyData()
@@ -178,8 +179,6 @@ unsigned int WatermarkManager::readFile(const char *str)
 
 unsigned int WatermarkManager::readBuffer(const short *buffer, const unsigned int length)
 {
-	if(_bypass) return length;
-
 	_tabLength = length;
 
 	delete[] _origData;
@@ -201,7 +200,6 @@ unsigned int WatermarkManager::readBuffer(const short *buffer, const unsigned in
 
 void WatermarkManager::writeBuffer(short * const buffer) const
 {
-	if(_bypass) return;
 	std::transform(_data, _data + _tabLength, buffer, MathUtil::DoubleToShort);
 
 	// Julius accepts only big-endian raw files but it seems internal buffers
@@ -293,10 +291,6 @@ WatermarkManager::DataSource WatermarkManager::dataSource() const
 	return _dataSource;
 }
 
-bool WatermarkManager::bypass()
-{
-	return _bypass;
-}
 
 
 unsigned int WatermarkManager::getFrameIncrement() const
@@ -306,13 +300,13 @@ unsigned int WatermarkManager::getFrameIncrement() const
 
 WatermarkBase* WatermarkManager::getWatermarkImplementation() const
 {
-	return _spectral_watermark.get();
+	return _watermark.get();
 }
 
 void WatermarkManager::setWatermarkImplementation(WatermarkBase *value)
 {
-	_spectral_watermark.reset(value);
-	_spectral_watermark->onFFTSizeUpdate();
+	_watermark.reset(value);
+	onFFTSizeUpdate();
 }
 
 unsigned int WatermarkManager::getSamplingRate() const
@@ -328,7 +322,6 @@ void WatermarkManager::setSamplingRate(const unsigned int value)
 
 void WatermarkManager::readParametersFromFile()
 {
-	_bypass = false;
 	enum Algorithm { SSWBasic, Bypass};
 	static const std::map<std::string, Algorithm> algo
 	{
@@ -336,31 +329,27 @@ void WatermarkManager::readParametersFromFile()
 		std::make_pair("bypass", Algorithm::Bypass)
 	};
 
-	std::ifstream f("subtraction.conf");
-	double alpha, beta, alphawt, betawt;
-	unsigned int iterations_tmp;
+//	std::ifstream f("subtraction.conf");
+//	double alpha, beta, alphawt, betawt;
+//	unsigned int iterations_tmp;
 	std::string noise_alg, alg;
 
 	// Class members
 	//f >> ...;
 
-	f.close();
-
-	enableOLA();
+//	f.close();
 
 	if (algo.find(alg) != algo.end())
 	{
 		switch(algo.at(alg))
 		{
-			case Algorithm::SSWBasic:
+			case Algorithm::Bypass:
 			{
 				// Check for memory leak.
-				BypassWatermark* subtraction = new BypassWatermark(*this);
-				setWatermarkImplementation(subtraction);
+				BypassWatermark* wmrk = new BypassWatermark(*this);
+				setWatermarkImplementation(wmrk);
 				break;
 			}
-			default:
-				_bypass = true;
 		}
 	}
 	else

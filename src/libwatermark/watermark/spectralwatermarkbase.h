@@ -3,16 +3,21 @@
 #include "watermarkbase.h"
 
 /**
- * @brief The Subtraction class
+ * @brief The SpectralWatermarkBase class
  *
- *  Base class from which subtraction algorithms must inherit.
+ *  Base class from which spectral watermark algorithms must inherit.
  */
 class SpectralWatermarkBase: public WatermarkBase
 {
 	public:
 
-		SpectralWatermarkBase(const WatermarkManager& configuration);
-		virtual ~SpectralWatermarkBase();
+		SpectralWatermarkBase(const WatermarkManager& configuration):
+			WatermarkBase(configuration)
+		{
+
+		}
+
+		virtual ~SpectralWatermarkBase() = default;
 		virtual SpectralWatermarkBase* clone() = 0;
 
 		/**
@@ -36,6 +41,4 @@ class SpectralWatermarkBase: public WatermarkBase
 		 */
 		virtual void onDataUpdate() = 0;
 
-	protected:
-		const WatermarkManager& conf;
 };

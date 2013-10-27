@@ -5,16 +5,6 @@
 
 namespace MathUtil
 {
-	double CplxToPower(const std::complex<double> val)
-	{
-		return std::norm(val);
-	}
-
-	double CplxToPhase(const std::complex<double> val)
-	{
-		return std::arg(val);
-	}
-
 	double energy(const double * tab, const unsigned int length)
 	{
 		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::pow(x, 2);}, std::plus<double>());

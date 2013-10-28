@@ -1,9 +1,12 @@
 #pragma once
-class Parameters;
+#include "../Parameters.h"
+#include "../Data.h"
 
 class WatermarkBase
 {
 	public:
+		using size_type = Parameters::size_type;
+		using data_type = Parameters::data_type;
 		WatermarkBase(const Parameters& configuration):
 			conf(configuration)
 		{
@@ -12,11 +15,8 @@ class WatermarkBase
 		virtual ~WatermarkBase() = default;
 		virtual WatermarkBase* clone() = 0;
 
-		/**
-		 * @brief Actions to perform if the data changes a lot.
-		 *
-		 * For instance, discard previous data saved by the algorithms which would not have sense anymore.
-		 */
+		virtual void operator()(IData* const) = 0;
+
 		virtual void onDataUpdate() = 0;
 
 	protected:

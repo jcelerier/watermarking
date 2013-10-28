@@ -1,37 +1,27 @@
 #include "fftmanager.h"
 #include <algorithm>
 
-FFTManager::FFTManager()
+FFTManager::FFTManager(const Parameters & config):
+	conf(config)
 {
 }
 
-FFTManager::FFTManager(const FFTManager &fm)
+FFTManager::FFTManager(const FFTManager &fm):
+	conf(fm.conf)
 {
-	_fftSize = fm.size();
-	_in = new double[size()];
-	_out = new double[size()];
-	_spectrum = new std::complex<double>[spectrumSize()];
+	_in = new data_type[conf.bufferSize];
+	_out = new data_type[conf.bufferSize];
+	_spectrum = new std::complex<data_type>[spectrumSize()];
 
-	std::copy_n(fm.input(), size(), _in);
-	std::copy_n(fm.output(), size(), _out);
+	std::copy_n(fm.input(), conf.bufferSize, _in);
+	std::copy_n(fm.output(), conf.bufferSize, _out);
 	std::copy_n(fm.spectrum(), spectrumSize(), _spectrum);
 }
 
 const FFTManager &FFTManager::operator=(const FFTManager &fm)
 {
-	if(_fftSize != fm.size())
-	{
-		_fftSize = fm.size();
-		delete[] _in;
-		delete[] _out;
-		delete[] _spectrum;
-		_in = new double[size()];
-		_out = new double[size()];
-		_spectrum = new std::complex<double>[spectrumSize()];
-	}
-
-	std::copy_n(fm.input(), size(), _in);
-	std::copy_n(fm.output(), size(), _out);
+	std::copy_n(fm.input(), conf.bufferSize, _in);
+	std::copy_n(fm.output(), conf.bufferSize, _out);
 	std::copy_n(fm.spectrum(), spectrumSize(), _spectrum);
 
 	return *this;
@@ -45,35 +35,30 @@ FFTManager::~FFTManager()
 }
 
 
-double *FFTManager::input() const
+FFTManager::data_type *FFTManager::input() const
 {
 	return _in;
 }
 
-double *FFTManager::output() const
+FFTManager::data_type* FFTManager::output() const
 {
 	return _out;
 }
 
-std::complex<double> *FFTManager::spectrum() const
+std::complex<FFTManager::data_type> *FFTManager::spectrum() const
 {
 	return _spectrum;
 }
 
-unsigned int FFTManager::spectrumSize() const
+FFTManager::size_type FFTManager::spectrumSize() const
 {
-	return _fftSize / 2 + 1;
+	return conf.bufferSize / 2 + 1;
 }
 
-unsigned int FFTManager::size() const
-{
-	return _fftSize;
-}
-
-void FFTManager::updateSize(const unsigned int n)
-{
-	_fftSize = n;
-	_in = new double[size()];
-	_out = new double[size()];
-	_spectrum = new std::complex<double>[spectrumSize()];
-}
+//void FFTManager::updateSize(const size_type n)
+//{
+//	_fftSize = n;
+//	_in = new data_type[conf.bufferSize];
+//	_out = new data_type[conf.bufferSize];
+//	_spectrum = new std::complex<data_type>[spectrumSize()];
+//}

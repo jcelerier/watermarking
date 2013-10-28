@@ -21,13 +21,6 @@ class SpectralWatermarkBase: public WatermarkBase
 		virtual SpectralWatermarkBase* clone() = 0;
 
 		/**
-		 * @brief Functor : performs the subtraction algorithm.
-		 * @param input_spectrum Input spectrum to subtract
-		 * @param noise_spectrum Estimated noise spectrum for this frame.
-		 */
-		virtual void operator()(std::complex<double>* const input_spectrum) = 0;
-
-		/**
 		 * @brief Actions to perform if the FFT size changes.
 		 *
 		 * Most of the buffers will have to change.

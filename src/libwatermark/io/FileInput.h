@@ -8,7 +8,8 @@
 class FileInput : public InputManagerBase
 {
 	public:
-		FileInput(std::string filename)
+		FileInput(std::string filename, const Parameters& cfg):
+			InputManagerBase(cfg)
 		{
 			readFile(filename.c_str());
 		}

@@ -2,16 +2,7 @@
 
 #include <memory>
 
-#include "watermark/algorithms.h"
-#include "fft/fftmanager.h"
-#include "io/InputManagerBase.h"
-#include "io/OutputManagerBase.h"
-
-typedef std::shared_ptr<WatermarkBase> Watermark_p;
-typedef std::shared_ptr<OutputManagerBase> Output_p;
-typedef std::shared_ptr<InputManagerBase> Input_p;
-typedef std::shared_ptr<FFTManager> FFT_p;
-
+#include "Parameters.h"
 /**
  * @brief Main class.
  *
@@ -30,27 +21,18 @@ class WatermarkManager
 		 */
 		void onDataUpdate();
 
-		/**
-		 * @brief getSubtractionImplementation
-		 * @return Used subtraction algorithm.
-		 */
-		WatermarkBase* getWatermarkImplementation() const;
-		/**
-		 * @brief setSubtractionImplementation
-		 * @param value Subtraction to use.
-		 */
-		void setWatermarkImplementation(WatermarkBase* value);
 
 		/**
 		 * @brief execute Runs the algorithm.
 		 */
 		void execute();
 
-	private:
+
 		Input_p _input = nullptr;
 		Output_p _output = nullptr;
-
 		Watermark_p _watermark = nullptr;
 
+	public:
 		// Ajouter data : bits à encoder
+		const Parameters& conf;
 };

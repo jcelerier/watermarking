@@ -65,4 +65,9 @@ HEADERS += \
     io/copystyle/Input.h \
     io/copystyle/Output.h \
     Parameters.h \
-    Data.h
+    Data.h \
+    io/FFTProxy.h \
+    watermark/GainTest.h \
+    io/FileOutput.h \
+    io/fftproxy/FFTInputProxy.h \
+    io/fftproxy/FFTOutputProxy.h

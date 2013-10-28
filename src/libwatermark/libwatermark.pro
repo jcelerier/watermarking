@@ -41,7 +41,9 @@ SOURCES += \
 	fft/fftmanager.cpp \
 	fft/fftwmanager.cpp \
     watermark_manager.cpp \
-    watermark/bypass.cpp
+    watermark/bypass.cpp \
+    io/fileinput.cpp \
+    io/bufferinput.cpp
 
 HEADERS += \
 	eval.h \
@@ -52,4 +54,15 @@ HEADERS += \
     watermark/bypass.h \
     watermark_manager.h \
     watermark/spectralwatermarkbase.h \
-    watermark/watermarkbase.h
+    watermark/watermarkbase.h \
+    io/IOManagerBase.h \
+    io/InputManagerBase.h \
+    io/OutputManagerBase.h \
+    io/fileinput.h \
+    io/bufferinput.h \
+    io/copystyle/input.h \
+    io/copystyle/InputSimple.h \
+    io/copystyle/output.h \
+    io/copystyle/InputOLA.h \
+    io/copystyle/OutputSimple.h \
+    io/copystyle/OutputOLA.h

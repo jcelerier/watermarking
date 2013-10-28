@@ -60,22 +60,9 @@ class WatermarkManager
 		 */
 		double *getNoisyData();
 
-		/**
-		 * @brief Reads a file into the internal buffer.
-		 *
-		 * @param str Path to the file.
-		 * @return unsigned int Size of the file.
-		 */
-		unsigned int readFile(const char * str);
 
-		/**
-		 * @brief Reads a buffer into the internal buffer.
-		 *
-		 * @param buffer Short buffer to read from.
-		 * @param length Length of the buffer.
-		 * @return unsigned int Length of the buffer (useless?).
-		 */
-		unsigned int readBuffer(const short * buffer, const unsigned int length);
+
+
 
 		/**
 		 * @brief Writes into a buffer.
@@ -272,6 +259,11 @@ class WatermarkManager
 		// Algorithms
 		Watermark_p _watermark = nullptr;
 
+		// Data to encode / decode
+//		Data_p _data_in = nullptr;
+//		Data_p _data_out = nullptr;
+
+
 		// Storage
 		unsigned int _tabLength = 0; /**< TODO */
 
@@ -282,10 +274,4 @@ class WatermarkManager
 		bool _useOLA = false;
 		unsigned int _ola_frame_increment = 0; /**< TODO */
 		unsigned int _std_frame_increment = 0; /**< TODO */
-
-		unsigned int _iterations = 1; /**< TODO */
-
-
-		// For measurements
-		bool _bypass = false;
 };

@@ -8,6 +8,7 @@
 #include "mathutils/math_util.h"
 #include "fft/fftwmanager.h"
 
+//TODO Passer la FFT en proxy.
 
 WatermarkManager::WatermarkManager(const unsigned int fft_Size, const unsigned int sampling_Rate):
 	_samplingRate(sampling_Rate),
@@ -21,11 +22,7 @@ WatermarkManager::WatermarkManager(const WatermarkManager &sm):
 	_dataSource(sm._dataSource),
 	_samplingRate(sm.getSamplingRate()),
 	_fft(nullptr),
-	_watermark(nullptr),
-	_tabLength(sm._tabLength),
-	_data(new double[_tabLength]),
-	_origData(new double[_tabLength]),
-	_useOLA(sm._useOLA)
+	_watermark(nullptr)
 
 {
 	_fft.reset(sm._fft->clone());
@@ -33,8 +30,6 @@ WatermarkManager::WatermarkManager(const WatermarkManager &sm):
 
 	_fft->updateSize(sm._fft->size());
 	onFFTSizeUpdate();
-	std::copy_n(sm._data, _tabLength, _data);
-	std::copy_n(sm._origData, _tabLength, _origData);
 }
 
 const WatermarkManager &WatermarkManager::operator=(const WatermarkManager &sm)
@@ -42,21 +37,11 @@ const WatermarkManager &WatermarkManager::operator=(const WatermarkManager &sm)
 	_dataSource = sm._dataSource;
 	_samplingRate = sm.getSamplingRate();
 
-	_tabLength = sm._tabLength;
-	delete[] _data;
-	delete[] _origData;
-	_data = new double[_tabLength];
-	_origData = new double[_tabLength];
-	_useOLA = sm._useOLA;
-
 	_fft.reset(sm._fft->clone());
 	_watermark.reset(sm._watermark->clone());
 
 	_fft->updateSize(sm._fft->size());
 	onFFTSizeUpdate();
-	std::copy_n(sm._data, _tabLength, _data);
-	std::copy_n(sm._origData, _tabLength, _origData);
-
 	return *this;
 }
 
@@ -73,6 +58,14 @@ void WatermarkManager::execute()
 
 	SpectralWatermarkBase* specWatermark = dynamic_cast<SpectralWatermarkBase*>(_watermark.get());
 
+	//
+//	while(double* buf = _data_in.getNextBuffer())
+//	{
+//		(*watermark(buf, data_to_encode));
+
+//		_data_out.setNextBuffer(buf);
+//		delete buf;
+//	}
 	// Execution of the spectral algorithm
 	for (auto sample_n = 0U; sample_n < getLength(); sample_n += getFrameIncrement())
 	{
@@ -102,188 +95,35 @@ void WatermarkManager::onFFTSizeUpdate()
 }
 
 
-void WatermarkManager::copyInput(const unsigned int pos)
-{
-	if(_useOLA)
-		copyInputOLA(pos);
-	else
-		copyInputSimple(pos);
-}
-
-void WatermarkManager::copyOutput(const unsigned int pos)
-{
-	if(_useOLA)
-		copyOutputOLA(pos);
-	else
-		copyOutputSimple(pos);
-}
-
 
 WatermarkManager::~WatermarkManager()
 {
 	_watermark.reset();
-
-	delete[] _data;
-	delete[] _origData;
 }
 
-void WatermarkManager::initDataArray()
-{
-	std::copy_n(_origData, _tabLength, _data);
-}
-
-double *WatermarkManager::getData() const
-{
-	return _data;
-}
 
 void WatermarkManager::onDataUpdate()
 {
 	_watermark->onDataUpdate();
 }
 
-double *WatermarkManager::getNoisyData()
-{
-	return _origData;
-}
-
-unsigned int WatermarkManager::getLength() const
-{
-	return _tabLength;
-}
-
-unsigned int WatermarkManager::readFile(const char *str)
-{
-	std::ifstream ifile(str, std::ios_base::ate | std::ios_base::binary);
-	_tabLength = ((unsigned int) ifile.tellg()) / (unsigned int) (sizeof(short) / sizeof(char));
-	ifile.clear();
-	ifile.seekg(0, std::ios_base::beg);
-
-	delete[] _origData;
-	delete[] _data;
-	_origData = new double[_tabLength];
-	_data = new double[_tabLength];
-
-	unsigned int pos = 0;
-	short sample;
-
-	while (ifile.read((char *)&sample, sizeof(short)))
-	{
-		_origData[pos++] = MathUtil::ShortToDouble(sample);
-	}
-
-	ifile.close();
-	_dataSource = DataSource::File;
-	return _tabLength;
-}
-
-unsigned int WatermarkManager::readBuffer(const short *buffer, const unsigned int length)
-{
-	_tabLength = length;
-
-	delete[] _origData;
-	delete[] _data;
-	_origData = new double[_tabLength];
-	_data = new double[_tabLength];
-
-	// Julius accepts only big-endian raw files but it seems internal buffers
-	// are little-endian so no need to convert.
-	// std::transform(buffer, buffer + tab_length, buffer,
-	//                [] (short val) {return (val << 8) | ((val >> 8) & 0xFF)});
-
-	std::transform(buffer, buffer + _tabLength, _origData, MathUtil::ShortToDouble);
-	initDataArray();
-
-	_dataSource = DataSource::Buffer;
-	return _tabLength;
-}
-
 void WatermarkManager::writeBuffer(short * const buffer) const
 {
 	std::transform(_data, _data + _tabLength, buffer, MathUtil::DoubleToShort);
-
-	// Julius accepts only big-endian raw files but it seems internal buffers
-	// are little-endian so no need to convert.
-	// std::transform(buffer, buffer + tab_length, buffer,
-	//                [] (short val) {return (val << 8) | ((val >> 8) & 0xFF)});
-}
-
-void WatermarkManager::copyInputSimple(const unsigned int pos)
-{
-	// Data copying
-	if (_fft->size() <= _tabLength - pos)
-	{
-		std::copy_n(_data + pos, _fft->size(), _fft->input());
-	}
-	else
-	{
-		std::copy_n(_data + pos, _tabLength - pos, _fft->input());
-		std::fill_n(_fft->input() + _tabLength - pos, _fft->size() - (_tabLength - pos), 0);
-	}
 }
 
 void WatermarkManager::copyOutputSimple(const unsigned int pos)
 {
-	auto normalizeFFT = [&](double x) { return x * _fft->normalizationFactor(); };
-	if (_fft->size() <= _tabLength - pos)
-	{
-		std::transform(_fft->output(), _fft->output() + _fft->size(), _data + pos, normalizeFFT);
-	}
-	else //fileSize - pos < fftSize
-	{
-		std::transform(_fft->output(), _fft->output() + _tabLength - pos, _data + pos, normalizeFFT);
-	}
 }
 
 void WatermarkManager::copyInputOLA(const unsigned int pos)
 {
-	// Data copying
-	if (_ola_frame_increment <= _tabLength - pos) // last case
-	{
-		std::copy_n(_data + pos, _ola_frame_increment, _fft->input());
-		std::fill_n(_fft->input() + _ola_frame_increment, _ola_frame_increment, 0);
-
-		std::fill_n(_data + pos, _ola_frame_increment, 0);
-	}
-	else
-	{
-		std::copy_n(_data + pos, _tabLength - pos, _fft->input());
-		std::fill_n(_fft->input() + _tabLength - pos, _ola_frame_increment - (_tabLength - pos), 0);
-
-		std::fill_n(_data + pos, _tabLength - pos, 0);
-	}
 }
 
 void WatermarkManager::copyOutputOLA(const unsigned int pos)
 {
-	// Lock here
-	//ola_mutex.lock();
-	for (auto j = 0U; (j < _fft->size()) && (pos + j < _tabLength); ++j)
-	{
-		_data[pos + j] += _fft->output()[j] / _fft->size();
-	}
-	// Unlock here
-	//ola_mutex.unlock();
-}
-bool WatermarkManager::OLAenabled() const
-{
-	return _useOLA;
 }
 
-void WatermarkManager::enableOLA()
-{
-	_useOLA = true;
-}
-
-void WatermarkManager::disableOLA()
-{
-	_useOLA = false;
-}
-
-void WatermarkManager::setOLA(const bool val)
-{
-	_useOLA = val;
-}
 
 
 WatermarkManager::DataSource WatermarkManager::dataSource() const

@@ -11,7 +11,7 @@ class SpectralWatermarkBase: public WatermarkBase
 {
 	public:
 
-		SpectralWatermarkBase(const WatermarkManager& configuration):
+		SpectralWatermarkBase(const Parameters& configuration):
 			WatermarkBase(configuration)
 		{
 

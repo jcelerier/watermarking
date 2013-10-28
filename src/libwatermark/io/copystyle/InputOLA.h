@@ -1,7 +1,8 @@
 #pragma once
-#include "input.h"
+#include "Input.h"
+#include <algorithm>
 
-class InputOLA
+class InputOLA : public Input
 {
 	public:
 		virtual void copy(std::vector<data_type>::const_iterator in,

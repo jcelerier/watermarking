@@ -1,10 +1,10 @@
 #pragma once
-class WatermarkManager;
+class Parameters;
 
 class WatermarkBase
 {
 	public:
-		WatermarkBase(const WatermarkManager& configuration):
+		WatermarkBase(const Parameters& configuration):
 			conf(configuration)
 		{
 		}
@@ -20,5 +20,5 @@ class WatermarkBase
 		virtual void onDataUpdate() = 0;
 
 	protected:
-		const WatermarkManager& conf;
+		const Parameters& conf;
 };

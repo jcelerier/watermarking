@@ -1,7 +1,8 @@
 #pragma once
-#include "output.h"
+#include "Output.h"
+#include <algorithm>
 
-class OutputSimple
+class OutputSimple : public Output
 {
 	public:
 		virtual void copy(std::vector<data_type>::const_iterator in,
@@ -10,14 +11,13 @@ class OutputSimple
 						  size_type in_length,
 						  size_type out_length) final override
 		{
-			auto normalizeFFT = [&](double x) { return x * _fft->normalizationFactor(); };
-			if (_fft->size() <= _tabLength - pos)
+			if (in_length <= out_length - pos)
 			{
-				std::transform(_fft->output(), _fft->output() + _fft->size(), _data + pos, normalizeFFT);
+				std::copy(in, in+in_length, out + pos);
 			}
 			else //fileSize - pos < fftSize
 			{
-				std::transform(_fft->output(), _fft->output() + _tabLength - pos, _data + pos, normalizeFFT);
+				std::copy(in, in + out_length - in_length, out + pos);
 			}
 		}
 };

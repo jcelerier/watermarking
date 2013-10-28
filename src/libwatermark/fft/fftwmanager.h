@@ -11,7 +11,7 @@
 class FFTWManager : public FFTManager
 {
 	public:
-		FFTWManager();
+		FFTWManager(const Parameters&);
 		FFTWManager(const FFTWManager& fm);
 		const FFTWManager &operator=(const FFTWManager& fm);
 

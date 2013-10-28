@@ -5,11 +5,19 @@
 
 namespace MathUtil
 {
+	// Retourne la somme des carrés
 	double energy(const double * tab, const unsigned int length)
 	{
 		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::pow(x, 2);}, std::plus<double>());
 	}
 
+	// Retourne sqrt(somme des carrés / n)
+	double RMS(const double * tab, const unsigned int length)
+	{
+		return sqrt(energy(tab, length) / length);
+	}
+
+	// Retourne la somme des valeurs absolues
 	double abssum(const double * tab, const unsigned int length)
 	{
 		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::abs(x); },  std::plus<double>());

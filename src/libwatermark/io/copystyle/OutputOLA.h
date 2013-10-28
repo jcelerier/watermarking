@@ -1,7 +1,7 @@
 #pragma once
-#include "output.h"
+#include "Output.h"
 
-class OutputOLA
+class OutputOLA : public Output
 {
 	public:
 		virtual void copy(std::vector<data_type>::const_iterator in,

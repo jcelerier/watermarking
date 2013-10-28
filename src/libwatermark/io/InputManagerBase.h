@@ -1,34 +1,40 @@
-#pragma once
+﻿#pragma once
 #include "IOManagerBase.h"
 #include <vector>
-struct IData
-{
-		virtual ~IData() = default;
-};
+#include "copystyle/Input.h"
+#include "copystyle/InputSimple.h"
 
-template<typename T>
-struct CData : public IData
-{
-	std::vector<T> _data = {};
-};
 
+// Etapes :
+// 1. Chargement depuis l'extérieur dans _baseData
+// 2. Découpage en petits buffers par _copy
 class InputManagerBase : public IOManagerBase
 {
 	public:
-		InputManagerBase() = default;
+		InputManagerBase():
+			_copy(new InputSimple)
+		{
+
+		}
+
 		virtual ~InputManagerBase() = default;
 
 		// Renvoie nullptr quand plus rien
 		virtual IData* getNextBuffer()
 		{
-			CData<data_type>* b = new CData<data_type>;
+			if(_pos < _baseData.size())
+			{
+				CData<data_type>* b = new CData<data_type>;
 
-			_copy->copy(_origData.begin(), b->_data.begin(), _pos, _dataLength, _bufferSize);
+				_copy->copy(_baseData.begin(), b->_data.begin(), _pos, _baseData.size(), _bufferSize);
 
-			return b;
+				return b;
+			}
+
+			_pos += _copy->frameIncrement();
+			return nullptr;
 		}
 
 	protected:
-		std::vector<data_type> _origData = {}; /**< TODO */
 		std::shared_ptr<Input> _copy = nullptr;
 };

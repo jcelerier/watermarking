@@ -9,7 +9,7 @@
 class BypassWatermark : public SpectralWatermarkBase
 {
 	public:
-		BypassWatermark(const WatermarkManager& configuration);
+		BypassWatermark(const Parameters& configuration);
 		~BypassWatermark() = default;
 		virtual SpectralWatermarkBase* clone() override;
 

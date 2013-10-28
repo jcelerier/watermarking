@@ -1,5 +1,5 @@
 #pragma once
-#include "input.h"
+#include "Input.h"
 #include <algorithm>
 
 class InputSimple: public Input

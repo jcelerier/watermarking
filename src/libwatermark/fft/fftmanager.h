@@ -1,5 +1,6 @@
 #pragma once
 #include <complex>
+#include "../Parameters.h"
 
 /**
  * @brief Interface to follow for implementation of FFT algorithms.
@@ -7,7 +8,7 @@
 class FFTManager
 {
 	public:
-		FFTManager();
+		FFTManager(const Parameters&);
 		FFTManager(const FFTManager& fm);
 		const FFTManager& operator=(const FFTManager& fm);
 		virtual FFTManager* clone() = 0;
@@ -73,5 +74,7 @@ class FFTManager
 		double *_in = nullptr;
 		double *_out = nullptr;
 		unsigned int _fftSize = 0;
+
+		const Parameters& conf;
 
 };

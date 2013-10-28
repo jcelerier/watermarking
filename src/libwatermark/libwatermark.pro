@@ -36,17 +36,13 @@ UI_DIR = $${BUILDDIR}/ui
 
 
 SOURCES += \
-	eval.cpp \
 	mathutils/math_util.cpp \
 	fft/fftmanager.cpp \
 	fft/fftwmanager.cpp \
     watermark_manager.cpp \
-    watermark/bypass.cpp \
-    io/fileinput.cpp \
-    io/bufferinput.cpp
+    watermark/bypass.cpp
 
 HEADERS += \
-	eval.h \
 	subtraction/algorithms.h \
 	mathutils/math_util.h \
 	fft/fftmanager.h \
@@ -58,11 +54,15 @@ HEADERS += \
     io/IOManagerBase.h \
     io/InputManagerBase.h \
     io/OutputManagerBase.h \
-    io/fileinput.h \
-    io/bufferinput.h \
-    io/copystyle/input.h \
     io/copystyle/InputSimple.h \
-    io/copystyle/output.h \
     io/copystyle/InputOLA.h \
     io/copystyle/OutputSimple.h \
-    io/copystyle/OutputOLA.h
+    io/copystyle/OutputOLA.h \
+    io/FileInput.h \
+    io/BufferInput.h \
+    io/BufferOutput.h \
+    io/copystyle/CopyStyle.h \
+    io/copystyle/Input.h \
+    io/copystyle/Output.h \
+    Parameters.h \
+    Data.h

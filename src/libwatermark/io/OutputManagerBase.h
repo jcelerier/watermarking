@@ -3,11 +3,12 @@
 #include "copystyle/OutputSimple.h"
 // Note : les output DOIVENT faire un delete du buffer qu'elles prennent en entrée.
 // Ou std::move ?
-class OutputManagerBase : public IOManagerBase
+class OutputManagerBase :  public IOManagerBase
 {
 	public:
-		OutputManagerBase():
-			_copy(new OutputSimple)
+		OutputManagerBase(const Parameters& cfg):
+			IOManagerBase(cfg),
+			_copy(new OutputSimple(cfg))
 		{
 
 		}

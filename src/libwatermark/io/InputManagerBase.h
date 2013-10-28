@@ -11,8 +11,9 @@
 class InputManagerBase : public IOManagerBase
 {
 	public:
-		InputManagerBase():
-			_copy(new InputSimple)
+		InputManagerBase(const Parameters& cfg):
+			IOManagerBase(cfg),
+			_copy(new InputSimple(cfg))
 		{
 
 		}
@@ -25,7 +26,6 @@ class InputManagerBase : public IOManagerBase
 			if(_pos < _baseData.size())
 			{
 				CData<data_type>* b = new CData<data_type>;
-
 				_copy->copy(_baseData.begin(), b->_data.begin(), _pos, _baseData.size(), _bufferSize);
 
 				return b;

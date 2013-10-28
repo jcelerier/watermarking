@@ -21,7 +21,7 @@ class FFTWManager : public FFTManager
 		virtual void forward() const override;
 		virtual void backward() const override;
 
-		virtual void updateSize(const unsigned int) override;
+//		virtual void updateSize(const unsigned int) override;
 		virtual double normalizationFactor() const override;
 
 	private:

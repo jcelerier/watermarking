@@ -9,8 +9,14 @@ class CopyStyle;
 class IOManagerBase
 {
 	public:
+		IOManagerBase(const Parameters& cfg):
+			conf(cfg)
+		{
+
+		}
+
 		using size_type = Parameters::size_type;
-		using data_type = double;
+		using data_type = Parameters::data_type;
 
 		virtual size_type getBufferSize() final;
 		virtual void setBufferSize(size_type bufferSize) final;
@@ -20,4 +26,6 @@ class IOManagerBase
 		size_type _pos = 0;
 
 		size_type _bufferSize = 512;
+
+		const Parameters& conf;
 };

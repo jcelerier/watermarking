@@ -3,21 +3,21 @@
 
 unsigned int FFTWManager::_num_instances = 0;
 
-FFTWManager::FFTWManager(const Parameters& conf):
-	FFTManager(conf)
+FFTWManager::FFTWManager(const Parameters& config):
+	FFTManager(config)
 {
 	_num_instances++;
 }
 
 FFTWManager::FFTWManager(const FFTWManager &fm):
-	FFTWManager()
+	FFTWManager(fm.conf)
 {
-	updateSize(fm._fftSize);
+//	updateSize(fm._fftSize);
 }
 
 const FFTWManager &FFTWManager::operator=(const FFTWManager &fm)
 {
-	updateSize(fm._fftSize);
+//	updateSize(fm._fftSize);
 	return *this;
 }
 
@@ -56,26 +56,26 @@ void FFTWManager::backward() const
 
 double FFTWManager::normalizationFactor() const
 {
-	return 1.0 / size();
+	return 1.0 / conf.bufferSize;
 }
 
-void FFTWManager::updateSize(const unsigned int n)
-{
-	_fftSize = n;
+//void FFTWManager::updateSize(const unsigned int n)
+//{
+//	_fftSize = n;
 
-	if(_in) fftw_free(_in);
-	if(_out) fftw_free(_out);
-	if(_spectrum) fftw_free(_spectrum);
+//	if(_in) fftw_free(_in);
+//	if(_out) fftw_free(_out);
+//	if(_spectrum) fftw_free(_spectrum);
 
-	_in = fftw_alloc_real(_fftSize);
-	_out = fftw_alloc_real(_fftSize);
-	_spectrum = reinterpret_cast<std::complex<double>*>(fftw_alloc_complex(spectrumSize()));
+//	_in = fftw_alloc_real(_fftSize);
+//	_out = fftw_alloc_real(_fftSize);
+//	_spectrum = reinterpret_cast<std::complex<double>*>(fftw_alloc_complex(spectrumSize()));
 
-	if(plan_fw) fftw_destroy_plan(plan_fw);
-	if(plan_bw) fftw_destroy_plan(plan_bw);
+//	if(plan_fw) fftw_destroy_plan(plan_fw);
+//	if(plan_bw) fftw_destroy_plan(plan_bw);
 
-	// Initialize the fftw plans
-	plan_fw = fftw_plan_dft_r2c_1d(_fftSize, _in, reinterpret_cast<fftw_complex*>(_spectrum),  FFTW_ESTIMATE);
-	plan_bw = fftw_plan_dft_c2r_1d(_fftSize, reinterpret_cast<fftw_complex*>(_spectrum), _out, FFTW_ESTIMATE);
-}
+//	// Initialize the fftw plans
+//	plan_fw = fftw_plan_dft_r2c_1d(_fftSize, _in, reinterpret_cast<fftw_complex*>(_spectrum),  FFTW_ESTIMATE);
+//	plan_bw = fftw_plan_dft_c2r_1d(_fftSize, reinterpret_cast<fftw_complex*>(_spectrum), _out, FFTW_ESTIMATE);
+//}
 

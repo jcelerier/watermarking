@@ -18,8 +18,6 @@ int main()
 
 	output->writeFile("out_test.raw");
 
-
-	cout << "Hello World!" << endl;
 	return 0;
 }
 

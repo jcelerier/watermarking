@@ -2,19 +2,20 @@
 #include <algorithm>
 
 #include "Input.h"
+
 class InputOLA : public Input
 {
 	public:
 		InputOLA(const Parameters& cfg):
 			Input(cfg)
 		{
-
 		}
 
 		virtual size_type frameIncrement() final override
 		{
 			return conf.bufferSize / 2;
 		}
+
 		virtual void copy(std::vector<data_type>::const_iterator in,
 						  std::vector<data_type>::iterator out,
 						  size_type pos,

@@ -3,7 +3,7 @@
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
 #include "../copystyle/OutputSimple.h"
-
+#include "../../mathutils/math_util.h"
 class FFTOutputProxy : public FFTProxy, public OutputManagerBase
 {
 	public:
@@ -15,12 +15,9 @@ class FFTOutputProxy : public FFTProxy, public OutputManagerBase
 
 		}
 
-		virtual void writeNextBuffer(IData* buffer)
+		virtual void writeNextBuffer(IData*)
 		{
-			// 0. Copy back the buffer we get into the FFT spectrum buffer
-			//TODO std::move
-			CData<complex_type>* b = dynamic_cast<CData<complex_type>*>(buffer);
-			std::copy(b->_data.begin(), b->_data.end(), fft->spectrum().data());
+			// 0. We use the buffer already in the FFT.
 
 			// 1. Perform reverse FFT
 			fft->backward();
@@ -33,6 +30,12 @@ class FFTOutputProxy : public FFTProxy, public OutputManagerBase
 						_pos,
 						FFTProxy::conf.bufferSize,
 						_outputImpl->_baseData.size());
+
+			// 3. NORMALIZE THE SHIT OUT OF IT
+			std::transform(_outputImpl->_baseData.begin() + _pos,
+						   _outputImpl->_baseData.begin() + _pos + FFTProxy::conf.bufferSize,
+						   _outputImpl->_baseData.begin() + _pos,
+						   [this] (double x) { return x * fft->normalizationFactor(); });
 
 			_pos += _copy->frameIncrement();
 		}

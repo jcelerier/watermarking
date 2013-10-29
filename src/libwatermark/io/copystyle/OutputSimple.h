@@ -3,14 +3,12 @@
 
 #include "Output.h"
 
-
 class OutputSimple : public Output
 {
 	public:
 		OutputSimple(const Parameters& cfg):
 			Output(cfg)
 		{
-
 		}
 
 		virtual size_type frameIncrement() final override
@@ -28,7 +26,7 @@ class OutputSimple : public Output
 			{
 				std::copy(in, in+in_length, out + pos);
 			}
-			else //fileSize - pos < fftSize
+			else
 			{
 				std::copy(in, in + out_length - in_length, out + pos);
 			}

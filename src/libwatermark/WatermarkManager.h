@@ -50,9 +50,7 @@ class WatermarkManager
 		{
 			while(IData* buf = _input->getNextBuffer())
 			{
-
-
-				(*_watermark)(buf);
+				//(*_watermark)(buf);
 
 				_output->writeNextBuffer(buf);
 				delete buf;

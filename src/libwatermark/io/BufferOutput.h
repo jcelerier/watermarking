@@ -1,7 +1,8 @@
 #pragma once
+#include <algorithm>
+
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"
-#include <algorithm>
 
 class BufferOutput : public OutputManagerBase
 {

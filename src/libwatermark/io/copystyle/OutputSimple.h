@@ -1,6 +1,8 @@
 #pragma once
-#include "Output.h"
 #include <algorithm>
+
+#include "Output.h"
+
 
 class OutputSimple : public Output
 {

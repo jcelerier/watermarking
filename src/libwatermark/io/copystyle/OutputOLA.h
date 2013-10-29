@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Output.h"
 
 class OutputOLA : public Output

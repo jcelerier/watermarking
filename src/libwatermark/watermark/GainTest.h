@@ -1,6 +1,7 @@
 #pragma once
-#include "watermarkbase.h"
 #include <algorithm>
+
+#include "watermarkbase.h"
 
 class GainTest : public WatermarkBase
 {

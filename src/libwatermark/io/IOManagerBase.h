@@ -1,8 +1,10 @@
 #pragma once
+#include <memory>
+
 #include "copystyle/CopyStyle.h"
 #include "../Parameters.h"
 #include "../Data.h"
-#include <memory>
+
 
 class CopyStyle;
 class FFTProxy;

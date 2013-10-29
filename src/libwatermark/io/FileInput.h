@@ -1,9 +1,9 @@
 #pragma once
-#include "InputManagerBase.h"
-#include "../mathutils/math_util.h"
 #include <istream>
 #include <fstream>
-#include <algorithm>
+
+#include "InputManagerBase.h"
+#include "../mathutils/math_util.h"
 
 class FileInput : public InputManagerBase
 {

@@ -1,10 +1,9 @@
 ﻿#pragma once
+#include <iostream>
+
 #include "IOManagerBase.h"
-#include <vector>
-#include "copystyle/Input.h"
 #include "copystyle/InputSimple.h"
 
-#include <iostream>
 
 // Etapes :
 // 1. Chargement depuis l'extérieur dans _baseData

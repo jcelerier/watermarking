@@ -2,8 +2,10 @@
 #include <complex>
 #include <algorithm>
 #include <vector>
-#include "../Parameters.h"
 #include <iostream>
+
+#include "../Parameters.h"
+
 /**
  * @brief Interface to follow for implementation of FFT algorithms.
  */

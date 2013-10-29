@@ -1,7 +1,8 @@
 #pragma once
+#include <algorithm>
+
 #include "InputManagerBase.h"
 #include "../mathutils/math_util.h"
-#include <algorithm>
 
 class BufferInput : public InputManagerBase
 {

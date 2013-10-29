@@ -1,6 +1,7 @@
 #pragma once
-#include "spectralwatermarkbase.h"
 #include <iostream>
+
+#include "spectralwatermarkbase.h"
 /**
  * @brief The SimpleSpectralSubtraction class
  *

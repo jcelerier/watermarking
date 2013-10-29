@@ -1,7 +1,7 @@
 #pragma once
-#include "Input.h"
 #include <algorithm>
 
+#include "Input.h"
 class InputOLA : public Input
 {
 	public:

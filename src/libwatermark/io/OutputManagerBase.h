@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
+
 #include "IOManagerBase.h"
 #include "copystyle/OutputSimple.h"
-#include <iostream>
+
 
 class OutputManagerBase :  public IOManagerBase
 {

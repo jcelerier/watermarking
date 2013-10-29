@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <complex>
+
 class WatermarkBase;
 class InputManagerBase;
 class OutputManagerBase;

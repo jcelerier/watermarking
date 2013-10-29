@@ -1,7 +1,7 @@
 #pragma once
+#include <vector>
 
 #include "../../Parameters.h"
-#include <vector>
 
 class CopyStyle
 {

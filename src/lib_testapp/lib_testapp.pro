@@ -12,7 +12,6 @@ unix|win32: LIBS += -L$$PWD/../../output/ -lwaterkmark
 INCLUDEPATH += $$PWD/../libwatermark
 DEPENDPATH += $$PWD/../libwatermark
 
-win32: PRE_TARGETDEPS += $$PWD/../../output/waterkmark.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../output/libwaterkmark.a
+PRE_TARGETDEPS += $$PWD/../../output/libwaterkmark.a
 
 LIBS+=-lsndfile -lfftw3

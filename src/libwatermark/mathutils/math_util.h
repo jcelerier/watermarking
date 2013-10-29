@@ -40,7 +40,11 @@ namespace MathUtil
 	 * @param phaseoutput Phase output.
 	 * @param size Size of array.
 	 */
-	void computePowerAndPhaseSpectrum(const std::complex<double> * const in, double * const powoutput, double * const phaseoutput, const unsigned int size);
+	void computePowerAndPhaseSpectrum(const std::complex<double> * const in, double * const powoutput, double * const phaseoutput, const unsigned int size)
+	{
+		std::transform(in, in + size, powoutput, CplxToPower);
+		std::transform(in, in + size, phaseoutput, CplxToPhase);
+	}
 
 
 	/**
@@ -121,7 +125,10 @@ namespace MathUtil
 	 * @param powoutput Power output.
 	 * @param size Size of array.
 	 */
-	void computePowerSpectrum(const std::complex<double> * const in, double * const powoutput, const unsigned int size);
+	void computePowerSpectrum(const std::complex<double> * const in, double * const powoutput, const unsigned int size)
+	{
+		std::transform(in, in + size, powoutput, CplxToPower);
+	}
 
 	/**
 	 * @brief energy Returns the average energy for a full spectrum
@@ -130,7 +137,10 @@ namespace MathUtil
 	 * @param length Length of tab
 	 * @return Energy
 	 */
-	double energy(const double *tab, const unsigned int length);
+	double energy(const double *tab, const unsigned int length)
+	{
+		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::pow(x, 2);}, std::plus<double>());
+	}
 
 	/**
 	 * @brief abssum Returns the sum of the absolute values in an array
@@ -139,7 +149,10 @@ namespace MathUtil
 	 * @param length Length of tab
 	 * @return Sum of the absolute values
 	 */
-	double abssum(const double *tab, const unsigned int length);
+	double abssum(const double *tab, const unsigned int length)
+	{
+		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::abs(x); },  std::plus<double>());
+	}
 
 	/**
 	 * @brief Puts a signed 16bit integer (red book) between the -1 / 1 range in double.
@@ -147,17 +160,28 @@ namespace MathUtil
 	 * @param x Integer to convert.
 	 * @return double Corresponding floating point value.
 	 */
-	double ShortToDouble(const short x);
+	double ShortToDouble(const short x)
+	{
+		const double normalizationFactor = 1.0 / std::pow(2, sizeof(short) * 8 - 1);
+		return x * normalizationFactor;
+	}
 	/**
 	 * @brief Puts a double between -1 and 1 into a 16 bit signed integer (red book).
 	 *
 	 * @param x Double to convert.
 	 * @return short Corresponding short value.
 	 */
-	short DoubleToShort(const double x);
+	short DoubleToShort(const double x)
+	{
+		const unsigned int denormalizationFactor = (int) std::pow(2, sizeof(short) * 8 - 1);
+		return (short) (x * denormalizationFactor);
+	}
 
 
 	// Retourne sqrt(somme des carrés / n)
-	double RMS(const double * tab, const unsigned int length);
+	double RMS(const double * tab, const unsigned int length)
+	{
+		return sqrt(energy(tab, length) / length);
+	}
 
 }

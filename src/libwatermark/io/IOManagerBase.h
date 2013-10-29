@@ -9,14 +9,16 @@ class CopyStyle;
 class IOManagerBase
 {
 	public:
+		using size_type = Parameters::size_type;
+		using data_type = Parameters::data_type;
+
 		IOManagerBase(const Parameters& cfg):
 			conf(cfg)
 		{
 
 		}
 
-		using size_type = Parameters::size_type;
-		using data_type = Parameters::data_type;
+		virtual ~IOManagerBase() = default;
 
 		virtual size_type getBufferSize() final;
 		virtual void setBufferSize(size_type bufferSize) final;
@@ -24,8 +26,6 @@ class IOManagerBase
 	protected:
 		std::vector<data_type> _baseData = {};
 		size_type _pos = 0;
-
-		size_type _bufferSize = 512;
 
 		const Parameters& conf;
 };

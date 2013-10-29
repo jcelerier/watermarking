@@ -18,6 +18,13 @@ class InputManagerBase : public IOManagerBase
 
 		}
 
+		InputManagerBase(Input* copy, const Parameters& cfg):
+			IOManagerBase(cfg),
+			_copy(copy)
+		{
+
+		}
+
 		virtual ~InputManagerBase() = default;
 
 		// Renvoie nullptr quand plus rien
@@ -26,7 +33,7 @@ class InputManagerBase : public IOManagerBase
 			if(_pos < _baseData.size())
 			{
 				CData<data_type>* b = new CData<data_type>;
-				_copy->copy(_baseData.begin(), b->_data.begin(), _pos, _baseData.size(), _bufferSize);
+				_copy->copy(_baseData.begin(), b->_data.begin(), _pos, _baseData.size(), conf.bufferSize);
 
 				return b;
 			}

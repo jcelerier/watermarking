@@ -23,7 +23,7 @@ class FFTWManager : public FFTManager
 
 //		virtual void updateSize(const unsigned int) override;
 		virtual double normalizationFactor() const override;
-
+		void updateSize();
 	private:
 		fftw_plan plan_fw = nullptr; /**< TODO */
 		fftw_plan plan_bw = nullptr; /**< TODO */

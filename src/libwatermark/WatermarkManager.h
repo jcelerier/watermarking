@@ -17,6 +17,7 @@ class WatermarkManager
 		const Parameters& conf;
 
 	public:
+		// Ajouter data : bits à encoder
 		Input_p _input = nullptr;
 		Output_p _output = nullptr;
 		Watermark_p _watermark = nullptr;
@@ -29,7 +30,6 @@ class WatermarkManager
 		}
 		WatermarkManager(const WatermarkManager& sm):
 			conf(sm.conf)
-
 		{
 			_watermark.reset(sm._watermark->clone());
 		}
@@ -41,22 +41,13 @@ class WatermarkManager
 			return *this;
 		}
 
-		/**
-		 * @brief To call when the data changes
-		 *
-		 */
 		void onDataUpdate()
 		{
 			_watermark->onDataUpdate();
 		}
 
-
-		/**
-		 * @brief execute Runs the algorithm.
-		 */
 		void execute()
 		{
-			std::cerr << "ici\n";
 			while(IData* buf = _input->getNextBuffer())
 			{
 
@@ -71,6 +62,6 @@ class WatermarkManager
 
 
 
-		// Ajouter data : bits à encoder
+
 
 };

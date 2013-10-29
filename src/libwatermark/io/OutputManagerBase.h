@@ -28,7 +28,7 @@ class OutputManagerBase :  public IOManagerBase
 		virtual void writeNextBuffer(IData* buffer)
 		{
 			CData<data_type>* b = dynamic_cast<CData<data_type>*>(buffer);
-			_baseData.resize(_baseData.size() + b->_data.size());
+			_baseData.resize(_baseData.size() + conf.bufferSize);
 
 			_copy->copy(b->_data.begin(), _baseData.begin(), _pos, conf.bufferSize, _baseData.size());
 

@@ -20,10 +20,12 @@ class GainTest : public WatermarkBase
 		virtual void operator()(IData* const data)
 		{
 			CData<data_type>* b = dynamic_cast<CData<data_type>*>(data);
+
 			std::transform(b->_data.begin(),
 						   b->_data.end(),
 						   b->_data.begin(),
 						   [&] (double x) { return x * _gain; });
+
 		}
 
 		virtual void onDataUpdate()

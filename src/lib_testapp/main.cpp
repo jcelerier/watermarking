@@ -1,5 +1,5 @@
 #include <iostream>
-#include "watermark_manager.h"
+#include "WatermarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
 #include "watermark/GainTest.h"
@@ -26,9 +26,9 @@ void SpectralTest()
 	manager->_input.reset(fft_i);
 	manager->_output.reset(fft_o);
 	manager->_watermark.reset(algorithm);
-	std::cerr << "spectraltest\n";
+
 	manager->execute();
-	std::cerr << "poof" << std::endl;
+
 	output->writeFile("out_test.wav");
 }
 
@@ -40,7 +40,7 @@ void TemporalTest()
 	auto input = new FileInput("test_file.raw", conf);
 	auto output = new FileOutput(conf);
 
-	auto algorithm = new BypassWatermark(conf);
+	auto algorithm = new GainTest(conf);
 
 	manager->_input.reset(input);
 	manager->_output.reset(output);

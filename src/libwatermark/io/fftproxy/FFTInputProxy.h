@@ -10,22 +10,24 @@ class FFTInputProxy : public FFTProxy, public InputManagerBase
 		FFTInputProxy(InputManagerBase* input, FFTManager* fftmanager, const Parameters& cfg):
 			FFTProxy(fftmanager, cfg),
 			InputManagerBase(new InputSimple(cfg), cfg),
-			_input(input)
+			_inputImpl(input)
 		{
 
 		}
 
 		virtual IData* getNextBuffer()
 		{
-			if(_pos < _input->_baseData.size())
+			if(_pos < _inputImpl->_baseData.size())
 			{
 				// 1. copier la partie du fichier à traiter
-				_copy->copy(_input->_baseData.begin(), fft->input().begin(), _pos, _input->_baseData.size(), FFTProxy::conf.bufferSize);
+				_copy->copy(_inputImpl->_baseData.begin(), fft->input().begin(), _pos, _inputImpl->_baseData.size(), FFTProxy::conf.bufferSize);
 
-				std::cerr << "Dans 0INPUT << " << fft->spectrum()[0] << std::endl;
+
 				// 2. Effectuer la FFT
+				std::cerr << "Before FFT: " << fft->spectrum()[0] << std::endl;
 				fft->forward();
-				std::cerr << "Dans INPUT << " << fft->spectrum()[0] << std::endl;
+				std::cerr << "After FFT: " << fft->spectrum()[0] << std::endl << std::endl;
+
 				_pos += _copy->frameIncrement();
 
 				// 3. Empaqueter le spectre donné par la FFT
@@ -38,7 +40,7 @@ class FFTInputProxy : public FFTProxy, public InputManagerBase
 			return nullptr;
 		}
 
-		Input_p _input = nullptr;
+		Input_p _inputImpl = nullptr;
 };
 
 

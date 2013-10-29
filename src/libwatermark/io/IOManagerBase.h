@@ -13,7 +13,6 @@ class FFTOutputProxy;
 
 class IOManagerBase
 {
-		friend class FFTProxy;
 		friend class FFTInputProxy;
 		friend class FFTOutputProxy;
 	public:

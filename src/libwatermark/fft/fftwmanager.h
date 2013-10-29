@@ -51,8 +51,8 @@ class FFTWManager : public FFTManager
 			if(plan_bw) fftw_destroy_plan(plan_bw);
 
 			// Initialize the fftw plans
-			plan_fw = fftw_plan_dft_r2c_1d(conf.bufferSize, _in.data(), reinterpret_cast<fftw_complex*>(&_spectrum[0]),  FFTW_ESTIMATE);
-			plan_bw = fftw_plan_dft_c2r_1d(conf.bufferSize, reinterpret_cast<fftw_complex*>(&_spectrum[0]), _out.data(), FFTW_ESTIMATE);
+			plan_fw = fftw_plan_dft_r2c_1d(conf.bufferSize, _in.data(), reinterpret_cast<fftw_complex*>(_spectrum.data()),  FFTW_ESTIMATE);
+			plan_bw = fftw_plan_dft_c2r_1d(conf.bufferSize, reinterpret_cast<fftw_complex*>(_spectrum.data()), _out.data(), FFTW_ESTIMATE);
 		}
 	private:
 		fftw_plan plan_fw = nullptr; /**< TODO */

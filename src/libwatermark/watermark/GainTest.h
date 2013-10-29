@@ -5,7 +5,12 @@
 class GainTest : public WatermarkBase
 {
 	public:
-		GainTest();
+		GainTest(const Parameters& configuration):
+			WatermarkBase(configuration)
+		{
+
+		}
+
 		virtual GainTest* clone()
 		{
 			return new GainTest(*this);

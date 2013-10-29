@@ -7,11 +7,9 @@
 #include "watermark/algorithms.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
-#include "io/FFTProxy/FFTInputProxy.h"
+#include "io/fftproxy/FFTInputProxy.h"
 
 WatermarkManager::WatermarkManager(const Parameters& parameters):
-	_input(new FileInput("test_in.raw", parameters)),
-	_output(new FileOutput(parameters)),
 	conf(parameters)
 {
 

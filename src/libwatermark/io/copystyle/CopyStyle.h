@@ -20,7 +20,7 @@ class CopyStyle
 				  std::vector<data_type>::iterator out,
 				  size_type pos,
 				  size_type in_length,
-				  size_type out_length);
+				  size_type out_length) = 0;
 
 
 		size_type frameIncrement()

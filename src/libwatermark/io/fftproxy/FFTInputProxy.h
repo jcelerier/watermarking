@@ -18,10 +18,11 @@ class FFTInputProxy : public FFTProxy, public InputManagerBase
 		{
 			if(_pos < _baseData.size())
 			{
-				auto b = new CData<std::complex<data_type>>;
 				_copy->copy(_baseData.begin(), ff->input().get().begin(), _pos, _baseData.size(), FFTProxy::conf.bufferSize);
+				ff->forward();
 
-				return b;
+				_pos += _copy->frameIncrement();
+				return new CData<decltype(ff->spectrum())>(ff->spectrum());
 			}
 
 			_pos += _copy->frameIncrement();

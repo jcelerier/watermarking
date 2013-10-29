@@ -8,7 +8,7 @@ class OutputSimple : public Output
 		OutputSimple(const Parameters& cfg):
 			Output(cfg)
 		{
-
+			_frame_increment = cfg.bufferSize;
 		}
 		virtual void copy(std::vector<data_type>::const_iterator in,
 						  std::vector<data_type>::iterator out,

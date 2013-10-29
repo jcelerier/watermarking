@@ -20,9 +20,6 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
-		virtual size_type getBufferSize() final;
-		virtual void setBufferSize(size_type bufferSize) final;
-
 	protected:
 		std::vector<data_type> _baseData = {};
 		size_type _pos = 0;

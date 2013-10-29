@@ -6,7 +6,7 @@
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
 #include "fft/fftwmanager.h"
-#include "watermark/bypass.h"
+#include "watermark/SpectralGain.h"
 using namespace std;
 
 void SpectralTest()
@@ -21,7 +21,7 @@ void SpectralTest()
 	auto fft_i = new FFTInputProxy(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy(output, fft_m, conf);
 
-	auto algorithm = new BypassWatermark(conf);
+	auto algorithm = new SpectralGain(conf);
 
 	manager->_input.reset(fft_i);
 	manager->_output.reset(fft_o);

@@ -30,7 +30,6 @@ class FFTInputProxy : public FFTProxy, public InputManagerBase
 				// 3. Empaqueter le spectre donné par la FFT
 				auto b = new CData<complex_type>;
 				b->_data = fft->spectrum();
-
 				return b;
 			}
 

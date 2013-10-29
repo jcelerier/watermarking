@@ -15,9 +15,11 @@ class FFTOutputProxy : public FFTProxy, public OutputManagerBase
 
 		}
 
-		virtual void writeNextBuffer(IData*)
+		virtual void writeNextBuffer(IData* buf)
 		{
 			// 0. We use the buffer already in the FFT.
+			CData<complex_type>* b = dynamic_cast<CData<complex_type>*>(buf);
+			fft->spectrum() = b->_data;
 
 			// 1. Perform reverse FFT
 			fft->backward();

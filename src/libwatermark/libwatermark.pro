@@ -52,4 +52,4 @@ HEADERS += \
     io/fftproxy/FFTProxy.h \
     io/fftproxy/FFTOutputProxy.h \
     WatermarkManager.h \
-    watermark/Bypass.h
+    watermark/SpectralGain.h

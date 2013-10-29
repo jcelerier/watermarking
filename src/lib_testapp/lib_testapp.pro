@@ -15,4 +15,4 @@ DEPENDPATH += $$PWD/../libwatermark
 win32: PRE_TARGETDEPS += $$PWD/../../output/waterkmark.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../../output/libwaterkmark.a
 
-LIBS+=-lsndfile
+LIBS+=-lsndfile -lfftw3

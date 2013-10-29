@@ -12,8 +12,6 @@ class FFTWManager : public FFTManager
 {
 	public:
 		FFTWManager(const Parameters&);
-		FFTWManager(const FFTWManager& fm);
-		const FFTWManager &operator=(const FFTWManager& fm);
 
 		virtual ~FFTWManager();
 		virtual FFTManager* clone() override;
@@ -21,9 +19,8 @@ class FFTWManager : public FFTManager
 		virtual void forward() const override;
 		virtual void backward() const override;
 
-//		virtual void updateSize(const unsigned int) override;
 		virtual double normalizationFactor() const override;
-		void updateSize();
+		virtual void updateSize() override;
 	private:
 		fftw_plan plan_fw = nullptr; /**< TODO */
 		fftw_plan plan_bw = nullptr; /**< TODO */

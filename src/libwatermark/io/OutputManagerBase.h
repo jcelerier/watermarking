@@ -25,7 +25,6 @@ class OutputManagerBase :  public IOManagerBase
 		// Copie de buffer vers notre buffer interne
 		virtual void writeNextBuffer(IData* buffer)
 		{
-			std::cerr << _baseData.size() << std::endl;
 			CData<data_type>* b = dynamic_cast<CData<data_type>*>(buffer);
 			_baseData.resize(_baseData.size() + b->_data.size());
 
@@ -34,6 +33,6 @@ class OutputManagerBase :  public IOManagerBase
 			_pos += _copy->frameIncrement();
 		}
 
-	private:
+	protected:
 		std::shared_ptr<Output> _copy = nullptr;
 };

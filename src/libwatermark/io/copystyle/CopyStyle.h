@@ -23,12 +23,8 @@ class CopyStyle
 				  size_type out_length) = 0;
 
 
-		size_type frameIncrement()
-		{
-			return _frame_increment;
-		}
+		virtual size_type frameIncrement() = 0;
 
 	protected:
-		size_type _frame_increment = 0;
 		const Parameters& conf;
 };

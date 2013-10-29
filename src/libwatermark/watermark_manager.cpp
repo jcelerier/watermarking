@@ -31,8 +31,11 @@ const WatermarkManager &WatermarkManager::operator=(const WatermarkManager &sm)
 
 void WatermarkManager::execute()
 {
+	std::cerr << "ici\n";
 	while(IData* buf = _input->getNextBuffer())
 	{
+
+
 		(*_watermark)(buf);
 
 		_output->writeNextBuffer(buf);

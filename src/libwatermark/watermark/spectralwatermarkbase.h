@@ -10,6 +10,7 @@
 class SpectralWatermarkBase: public WatermarkBase
 {
 	public:
+		using complex_type = Parameters::complex_type;
 
 		SpectralWatermarkBase(const Parameters& configuration):
 			WatermarkBase(configuration)

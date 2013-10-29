@@ -8,16 +8,19 @@
 
 class FFTProxy
 {
+
 	public:
-		FFTProxy(FFTManager* fft, const Parameters& cfg):
-			ff(fft),
+		using complex_type = Parameters::complex_type;
+		FFTProxy(FFTManager* fftmanager, const Parameters& cfg):
+			fft(fftmanager),
 			conf(cfg)
 		{
 
 		}
 
+		virtual ~FFTProxy() = default;
 	protected:
-		FFTManager* ff;
+		std::shared_ptr<FFTManager> fft;
 
 		const Parameters& conf;
 

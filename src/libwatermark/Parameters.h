@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-
+#include <complex>
 class WatermarkBase;
 class InputManagerBase;
 class OutputManagerBase;
@@ -15,6 +15,7 @@ struct Parameters
 {
 		using data_type = double;
 		using size_type = long unsigned int;
+		using complex_type = std::complex<data_type>;
 
 		size_type samplingRate = 44100;
 		size_type bufferSize = 512;

@@ -19,6 +19,8 @@ namespace MathUtil
 	}
 
 
+
+
 	/**
 	 * @brief Converts a complex into a double corresponding to its phase.
 	 * @param val Complex value
@@ -153,5 +155,9 @@ namespace MathUtil
 	 * @return short Corresponding short value.
 	 */
 	short DoubleToShort(const double x);
+
+
+	// Retourne sqrt(somme des carrés / n)
+	double RMS(const double * tab, const unsigned int length);
 
 }

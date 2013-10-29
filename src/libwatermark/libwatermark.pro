@@ -23,10 +23,8 @@ QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += \
         mathutils/math_util.cpp \
-        fft/fftmanager.cpp \
         fft/fftwmanager.cpp \
-    watermark_manager.cpp \
-    watermark/bypass.cpp
+    watermark_manager.cpp
 
 HEADERS += \
         subtraction/algorithms.h \

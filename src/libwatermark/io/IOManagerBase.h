@@ -5,9 +5,15 @@
 #include <memory>
 
 class CopyStyle;
+class FFTProxy;
+class FFTInputProxy;
+class FFTOutputProxy;
 
 class IOManagerBase
 {
+		friend class FFTProxy;
+		friend class FFTInputProxy;
+		friend class FFTOutputProxy;
 	public:
 		using size_type = Parameters::size_type;
 		using data_type = Parameters::data_type;

@@ -8,7 +8,12 @@ class InputOLA : public Input
 		InputOLA(const Parameters& cfg):
 			Input(cfg)
 		{
-			_frame_increment = cfg.bufferSize / 2;
+
+		}
+
+		virtual size_type frameIncrement() final override
+		{
+			return conf.bufferSize / 2;
 		}
 		virtual void copy(std::vector<data_type>::const_iterator in,
 						  std::vector<data_type>::iterator out,

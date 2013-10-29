@@ -1,13 +1,20 @@
 #pragma once
 
-#include "../IOManagerBase.h"
+#include "../../Parameters.h"
 #include <vector>
 
 class CopyStyle
 {
 	public:
-		using data_type = double;
-		using size_type = long unsigned int;
+		using data_type = Parameters::data_type;
+		using size_type = Parameters::size_type;
+
+		CopyStyle(const Parameters& cfg):
+			conf(cfg)
+		{
+
+		}
+
 		virtual ~CopyStyle() = default;
 		virtual void copy(std::vector<data_type>::const_iterator in,
 				  std::vector<data_type>::iterator out,
@@ -23,5 +30,5 @@ class CopyStyle
 
 	protected:
 		size_type _frame_increment = 0;
-
+		const Parameters& conf;
 };

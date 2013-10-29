@@ -19,7 +19,7 @@ class BypassWatermark : public SpectralWatermarkBase
 		 * @param input_spectrum Input spectrum.
 		 * @param noise_power Estimated noise power.
 		 */
-		virtual void operator()(std::complex<double>* const input_spectrum) override;
+		virtual void operator()(IData* const input_spectrum) override;
 		virtual void onFFTSizeUpdate() override;
 		virtual void onDataUpdate() override;
 };

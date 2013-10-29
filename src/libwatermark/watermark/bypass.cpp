@@ -14,9 +14,10 @@ SpectralWatermarkBase *BypassWatermark::clone()
 	return new BypassWatermark(*this);
 }
 
-void BypassWatermark::operator()(std::complex<double> * const input_spectrum)
+void BypassWatermark::operator()(IData* const input_spectrum)
 {
-	for (auto i = 0U; i < conf.bufferSize; ++i)
+	auto b = dynamic_cast<CData<std::complex<data_type>>*>(data);;
+	for (auto i = 0U; i < b->_data.size(); ++i)
 	{
 		// Do stuff
 	}

@@ -13,6 +13,13 @@ class OutputManagerBase :  public IOManagerBase
 
 		}
 
+		OutputManagerBase(Output* copy, const Parameters& cfg):
+			IOManagerBase(cfg),
+			_copy(copy)
+		{
+
+		}
+
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
@@ -21,7 +28,7 @@ class OutputManagerBase :  public IOManagerBase
 			if(_pos < _baseData.size())
 			{
 				CData<data_type>* b = dynamic_cast<CData<data_type>*>(buffer);
-				_copy->copy(b->_data.begin(), _baseData.begin(), _pos, _bufferSize, _baseData.size());
+				_copy->copy(b->_data.begin(), _baseData.begin(), _pos, conf.bufferSize, _baseData.size());
 			}
 
 			_pos += _copy->frameIncrement();

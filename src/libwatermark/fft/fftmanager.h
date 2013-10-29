@@ -1,5 +1,6 @@
 #pragma once
 #include <complex>
+#include <vector>
 #include "../Parameters.h"
 
 /**
@@ -11,9 +12,18 @@ class FFTManager
 		using size_type = Parameters::size_type;
 		using data_type = Parameters::data_type;
 
+	protected:
+		std::vector<std::complex<data_type>> _spectrum = {};
+		std::vector<data_type> _in = {};
+		std::vector<data_type> _out = {};
+
+		const Parameters& conf;
+
+
+	public:
+
 		FFTManager(const Parameters &);
-		FFTManager(const FFTManager& fm);
-		const FFTManager& operator=(const FFTManager& fm);
+
 		virtual FFTManager* clone() = 0;
 
 		virtual ~FFTManager();
@@ -22,13 +32,28 @@ class FFTManager
 		 * @brief input
 		 * @return a pointer to the input data.
 		 */
-		data_type* input() const;
+		auto input() -> decltype(std::ref(_in))
+		{
+			return _in;
+		}
 
 		/**
 		 * @brief output
 		 * @return a pointer to the output data.
 		 */
-		data_type* output() const;
+		auto output() -> decltype(std::ref(_out))
+		{
+			return _out;
+		}
+
+		/**
+		 * @brief Spectrum
+		 * @return The spectrum
+		 */
+		auto spectrum() -> decltype(std::ref(_spectrum))
+		{
+			return _spectrum;
+		}
 
 		/**
 		 * @brief Forward FFT.
@@ -44,11 +69,7 @@ class FFTManager
 		 */
 		virtual void backward() const = 0;
 
-		/**
-		 * @brief Spectrum
-		 * @return The spectrum
-		 */
-		std::complex<data_type>* spectrum() const;
+		virtual void updateSize() = 0;
 
 		/**
 		 * @brief Spectrum size
@@ -66,11 +87,5 @@ class FFTManager
 
 
 
-	protected:
-		std::complex<data_type>* _spectrum = nullptr;
-		data_type *_in = nullptr;
-		data_type *_out = nullptr;
-
-		const Parameters& conf;
 
 };

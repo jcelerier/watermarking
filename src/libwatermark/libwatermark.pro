@@ -21,32 +21,18 @@ QMAKE_CXXFLAGS += -std=c++11
 }
 
 
-BASEPATH = ../build/libnoisered
-
-CONFIG(debug, debug|release) {
-	BUILDDIR = $${BASEPATH}/debug
-} else {
-	BUILDDIR = $${BASEPATH}/release
-}
-OBJECTS_DIR = $${BUILDDIR}/obj
-MOC_DIR = $${BUILDDIR}/moc
-RCC_DIR = $${BUILDDIR}/rcc
-UI_DIR = $${BUILDDIR}/ui
-
-
-
 SOURCES += \
-	mathutils/math_util.cpp \
-	fft/fftmanager.cpp \
-	fft/fftwmanager.cpp \
+        mathutils/math_util.cpp \
+        fft/fftmanager.cpp \
+        fft/fftwmanager.cpp \
     watermark_manager.cpp \
     watermark/bypass.cpp
 
 HEADERS += \
-	subtraction/algorithms.h \
-	mathutils/math_util.h \
-	fft/fftmanager.h \
-	fft/fftwmanager.h \
+        subtraction/algorithms.h \
+        mathutils/math_util.h \
+        fft/fftmanager.h \
+        fft/fftwmanager.h \
     watermark/bypass.h \
     watermark_manager.h \
     watermark/spectralwatermarkbase.h \
@@ -65,4 +51,10 @@ HEADERS += \
     io/copystyle/Input.h \
     io/copystyle/Output.h \
     Parameters.h \
-    Data.h
+    Data.h \
+    io/FFTProxy.h \
+    watermark/GainTest.h \
+    io/FileOutput.h \
+    io/fftproxy/FFTInputProxy.h \
+    io/fftproxy/FFTProxy.h \
+    io/fftproxy/FFTOutputProxy.h

@@ -1,5 +1,6 @@
 #pragma once
 #include <complex>
+#include <vector>
 #include "../Parameters.h"
 
 /**
@@ -8,9 +9,21 @@
 class FFTManager
 {
 	public:
-		FFTManager(const Parameters&);
-		FFTManager(const FFTManager& fm);
-		const FFTManager& operator=(const FFTManager& fm);
+		using size_type = Parameters::size_type;
+		using data_type = Parameters::data_type;
+
+	protected:
+		std::vector<std::complex<data_type>> _spectrum = {};
+		std::vector<data_type> _in = {};
+		std::vector<data_type> _out = {};
+
+		const Parameters& conf;
+
+
+	public:
+
+		FFTManager(const Parameters &);
+
 		virtual FFTManager* clone() = 0;
 
 		virtual ~FFTManager();
@@ -19,13 +32,28 @@ class FFTManager
 		 * @brief input
 		 * @return a pointer to the input data.
 		 */
-		double* input() const;
+		auto input() -> decltype(std::ref(_in))
+		{
+			return _in;
+		}
 
 		/**
 		 * @brief output
 		 * @return a pointer to the output data.
 		 */
-		double* output() const;
+		auto output() -> decltype(std::ref(_out))
+		{
+			return _out;
+		}
+
+		/**
+		 * @brief Spectrum
+		 * @return The spectrum
+		 */
+		auto spectrum() -> decltype(std::ref(_spectrum))
+		{
+			return _spectrum;
+		}
 
 		/**
 		 * @brief Forward FFT.
@@ -41,17 +69,13 @@ class FFTManager
 		 */
 		virtual void backward() const = 0;
 
-		/**
-		 * @brief Spectrum
-		 * @return The spectrum
-		 */
-		std::complex<double>* spectrum() const;
+		virtual void updateSize() = 0;
 
 		/**
 		 * @brief Spectrum size
 		 * @return Returns the size of the spectrum array.
 		 */
-		virtual unsigned int spectrumSize() const;
+		virtual size_type spectrumSize() const;
 
 		/**
 		 * @brief Normalization factor
@@ -59,22 +83,9 @@ class FFTManager
 		 * Sometimes, the fft implementation might give an output which needs to be normalized.
 		 * @return The factor by which every sample of the ouput must be multiplied.
 		 */
-		virtual double normalizationFactor() const = 0;
+		virtual data_type normalizationFactor() const = 0;
 
-		/**
-		 * @brief size
-		 * @return FFT size.
-		 */
-		unsigned int size() const;
 
-		virtual void updateSize(const unsigned int);
 
-	protected:
-		std::complex<double>* _spectrum = nullptr;
-		double *_in = nullptr;
-		double *_out = nullptr;
-		unsigned int _fftSize = 0;
-
-		const Parameters& conf;
 
 };

@@ -3,6 +3,7 @@
 
 #include "spectralwatermarkbase.h"
 
+// Exemple de comment faire un algo spectral.
 template <typename data_type>
 class SpectralGain : public SpectralWatermarkBase<data_type>
 {
@@ -12,29 +13,29 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 		{
 		}
 
-		virtual ~SpectralGain() = default;
-
 		virtual SpectralWatermarkBase<data_type>* clone() override
 		{
 			return new SpectralGain<data_type>(*this);
 		}
 
+		// La seule méthode importante est celle-ci.
+		// data : les données audio. Ici ce sera un spectre.
 		virtual void operator()(IData* const data) override
 		{
-			std::vector<typename SpectralWatermarkBase<data_type>::complex_type>& input_spectrum = dynamic_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data)->_data;
+			// Recopier cette ligne
+			auto& spectrum = dynamic_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data)->_data;
 
-			for (auto i = 0U; i < input_spectrum.size(); ++i)
+			// Petit exemple qui va multiplier l'amplitude de chaque bande de spectre par _gain.
+			for (auto i = 0U; i < spectrum.size(); ++i)
 			{
 				double phase, power, magnitude;
 
-				power = std::norm(input_spectrum[i]);
-				phase = std::arg(input_spectrum[i]);
+				power = std::norm(spectrum[i]);
+				phase = std::arg(spectrum[i]);
 
-				power *= _gain;
+				magnitude = std::sqrt(power) * _gain;
 
-				magnitude = std::sqrt(power);
-
-				input_spectrum[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
+				spectrum[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 			}
 
 		}

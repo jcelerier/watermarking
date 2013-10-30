@@ -2,6 +2,8 @@
 #include <algorithm>
 
 #include "watermarkbase.h"
+
+// Exemple de comment faire un algo temporel.
 template <typename data_type>
 class GainTest : public WatermarkBase<data_type>
 {
@@ -9,26 +11,29 @@ class GainTest : public WatermarkBase<data_type>
 		GainTest(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
-
 		}
 
-		virtual GainTest* clone()
+		virtual GainTest* clone() override
 		{
 			return new GainTest<data_type>(*this);
 		}
 
-		virtual void operator()(IData* const data)
+		// La seule méthode importante est celle-ci.
+		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
+		virtual void operator()(IData* const data) override
 		{
-			CData<data_type>* b = dynamic_cast<CData<data_type>*>(data);
+			// Recopier cette ligne
+			auto& samples = dynamic_cast<CData<data_type>*>(data)->_data;
 
-			std::transform(b->_data.begin(),
-						   b->_data.end(),
-						   b->_data.begin(),
-						   [&] (double x) { return x * _gain; });
+			// Petit exemple qui va multiplier tout le tableau par _gain.
+			std::transform(samples.begin(),
+						   samples.end(),
+						   samples.begin(),
+						   [&] (data_type x) { return x * _gain; });
 
 		}
 
-		virtual void onDataUpdate()
+		virtual void onDataUpdate() override
 		{
 
 		}

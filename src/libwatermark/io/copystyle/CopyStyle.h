@@ -12,7 +12,6 @@ class CopyStyle
 		CopyStyle(const Parameters<data_type>& cfg):
 			conf(cfg)
 		{
-
 		}
 
 		virtual ~CopyStyle() = default;

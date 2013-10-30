@@ -17,12 +17,6 @@ class FileInput : public InputManagerBase<data_type>
 			readFile(filename.c_str());
 		}
 
-		/**
-		 * @brief Reads a file into the internal buffer.
-		 *
-		 * @param str Path to the file.
-		 * @return unsigned int Size of the file.
-		 */
 		void readFile(const char * str)
 		{
 			SndfileHandle myf = SndfileHandle(str);

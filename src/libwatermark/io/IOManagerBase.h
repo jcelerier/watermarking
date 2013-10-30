@@ -19,9 +19,9 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
-
+// Devraient être protected mais je ne sais pas comment rendre friend FFTProxy.
 		std::vector<data_type> _baseData = {};
-		size_type _pos = 0;
+		mutable size_type _pos = 0;
 
 		const Parameters<data_type>& conf;
 };

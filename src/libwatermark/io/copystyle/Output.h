@@ -9,7 +9,7 @@ class Output: public CopyStyle<data_type>
 		Output(const Parameters<data_type>& cfg):
 			CopyStyle<data_type>(cfg)
 		{
-
 		}
+
 		virtual ~Output() = default;
 };

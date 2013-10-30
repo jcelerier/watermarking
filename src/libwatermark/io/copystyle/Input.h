@@ -9,8 +9,7 @@ class Input: public CopyStyle<data_type>
 		Input(const Parameters<data_type>& cfg):
 			CopyStyle<data_type>(cfg)
 		{
-
 		}
-		virtual ~Input() = default;
 
+		virtual ~Input() = default;
 };

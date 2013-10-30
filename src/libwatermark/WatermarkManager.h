@@ -1,5 +1,4 @@
 #pragma once
-
 #include <memory>
 
 #include "Parameters.h"
@@ -47,9 +46,10 @@ class WatermarkManager
 			_watermark->onDataUpdate();
 		}
 
+		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		void execute()
 		{
-			while(IData* buf = _input->getNextBuffer())
+			while(auto buf = _input->getNextBuffer())
 			{
 				(*_watermark)(buf);
 

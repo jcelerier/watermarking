@@ -20,7 +20,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		}
 
-		virtual void writeNextBuffer(IData* buf)
+		virtual void writeNextBuffer(IData* buf) final override
 		{
 			auto output_real = dynamic_cast<OutputManagerBase<data_type>*>(_outputImpl.get());
 			// 0. We use the buffer already in the FFT.

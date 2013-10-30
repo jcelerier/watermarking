@@ -12,6 +12,7 @@ class IWatermark
 		virtual void onDataUpdate() = 0;
 };
 
+typedef std::shared_ptr<IWatermark> Watermark_p;
 
 template <typename data_type>
 class WatermarkBase: public IWatermark
@@ -28,6 +29,3 @@ class WatermarkBase: public IWatermark
 	protected:
 		const Parameters<data_type>& conf;
 };
-
-
-typedef std::shared_ptr<IWatermark> Watermark_p;

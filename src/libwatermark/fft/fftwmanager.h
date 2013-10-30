@@ -19,7 +19,6 @@ class FFTWManager : public FFTManager<data_type>
 			updateSize();
 		}
 
-
 		virtual ~FFTWManager()
 		{
 			if(plan_fw) fftw_destroy_plan(plan_fw);

@@ -34,12 +34,12 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
-		virtual void writeNextBuffer(IData* buffer)
+		virtual void writeNextBuffer(IData* abstract_buffer) override
 		{
-			CData<data_type>* b = dynamic_cast<CData<data_type>*>(buffer);
+			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
 			IOManagerBase<data_type>::_baseData.resize(IOManagerBase<data_type>::_baseData.size() + IOManagerBase<data_type>::conf.bufferSize);
 
-			_copy->copy(b->_data.begin(),
+			_copy->copy(buffer.begin(),
 						IOManagerBase<data_type>::_baseData.begin(),
 						IOManagerBase<data_type>::_pos,
 						IOManagerBase<data_type>::conf.bufferSize,

@@ -20,8 +20,6 @@ namespace MathUtil
 	}
 
 
-
-
 	/**
 	 * @brief Converts a complex into a double corresponding to its phase.
 	 * @param val Complex value

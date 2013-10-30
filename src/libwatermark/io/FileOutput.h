@@ -11,7 +11,6 @@ class FileOutput : public OutputManagerBase<data_type>
 		FileOutput(const Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)
 		{
-
 		}
 
 		void writeFile(const char * str)

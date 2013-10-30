@@ -7,7 +7,7 @@
 class IInputManager
 {
 	public:
-		virtual IData* getNextBuffer() = 0;
+		virtual IData* getNextBuffer() const = 0;
 };
 
 template <typename data_type>
@@ -34,7 +34,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 		virtual ~InputManagerBase() = default;
 
 		// Renvoie nullptr quand plus rien
-		virtual IData* getNextBuffer()
+		virtual IData* getNextBuffer() const override
 		{
 			if(IOManagerBase<data_type>::_pos < IOManagerBase<data_type>::_baseData.size())
 			{

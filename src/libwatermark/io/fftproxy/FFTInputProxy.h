@@ -4,6 +4,7 @@
 #include "../InputManagerBase.h"
 #include "../copystyle/InputSimple.h"
 
+// Templates, never again
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {
@@ -19,7 +20,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 
 		}
 
-		virtual IData* getNextBuffer()
+		virtual IData* getNextBuffer() const final override
 		{
 			auto input_real = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get());
 			if(InputManagerBase<data_type>::_pos < input_real->_baseData.size())

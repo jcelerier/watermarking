@@ -2,24 +2,26 @@
 #include <iostream>
 
 #include "spectralwatermarkbase.h"
-class SpectralGain : public SpectralWatermarkBase
+
+template <typename data_type>
+class SpectralGain : public SpectralWatermarkBase<data_type>
 {
 	public:
-		SpectralGain(const Parameters& configuration):
-			SpectralWatermarkBase(configuration)
+		SpectralGain(const Parameters<data_type>& configuration):
+			SpectralWatermarkBase<data_type>(configuration)
 		{
 		}
 
 		virtual ~SpectralGain() = default;
 
-		virtual SpectralWatermarkBase* clone() override
+		virtual SpectralWatermarkBase<data_type>* clone() override
 		{
-			return new SpectralGain(*this);
+			return new SpectralGain<data_type>(*this);
 		}
 
 		virtual void operator()(IData* const data) override
 		{
-			std::vector<complex_type>& input_spectrum = dynamic_cast<CData<complex_type>*>(data)->_data;
+			std::vector<typename SpectralWatermarkBase<data_type>::complex_type>& input_spectrum = dynamic_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data)->_data;
 
 			for (auto i = 0U; i < input_spectrum.size(); ++i)
 			{

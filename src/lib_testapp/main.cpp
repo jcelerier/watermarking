@@ -7,21 +7,22 @@
 #include "io/fftproxy/FFTOutputProxy.h"
 #include "fft/fftwmanager.h"
 #include "watermark/SpectralGain.h"
+
 using namespace std;
 
 void SpectralTest()
 {
-	Parameters conf;
-	auto manager = new WatermarkManager(conf);
+	Parameters<double> conf;
+	auto manager = new WatermarkManager<double>(conf);
 
-	auto input = new FileInput("input_mono.wav", conf);
-	auto output = new FileOutput(conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto output = new FileOutput<double>(conf);
 
-	auto fft_m = new FFTWManager(conf);
-	auto fft_i = new FFTInputProxy(input, fft_m, conf);
-	auto fft_o = new FFTOutputProxy(output, fft_m, conf);
+	auto fft_m = new FFTWManager<double>(conf);
+	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
+	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
-	auto algorithm = new SpectralGain(conf);
+	auto algorithm = new SpectralGain<double>(conf);
 
 	manager->_input.reset(fft_i);
 	manager->_output.reset(fft_o);
@@ -34,13 +35,13 @@ void SpectralTest()
 
 void TemporalTest()
 {
-	Parameters conf;
-	auto manager = new WatermarkManager(conf);
+	Parameters<double> conf;
+	auto manager = new WatermarkManager<double>(conf);
 
-	auto input = new FileInput("test_file.raw", conf);
-	auto output = new FileOutput(conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto output = new FileOutput<double>(conf);
 
-	auto algorithm = new GainTest(conf);
+	auto algorithm = new GainTest<double>(conf);
 
 	manager->_input.reset(input);
 	manager->_output.reset(output);
@@ -54,8 +55,8 @@ void TemporalTest()
 void TestFFTWManager()
 {
 	// Generer une sine
-	Parameters conf;
-	auto fft_m = new FFTWManager(conf);
+	Parameters<double> conf;
+	auto fft_m = new FFTWManager<double>(conf);
 
 	for(auto i = 0U; i < conf.bufferSize; ++i)
 		fft_m->input()[i] = sin(440.0 * (2.0 * 3.1415) * i / 44100.0);
@@ -69,7 +70,7 @@ void TestFFTWManager()
 
 int main()
 {
-	SpectralTest();
+	TemporalTest();
 	return 0;
 }
 

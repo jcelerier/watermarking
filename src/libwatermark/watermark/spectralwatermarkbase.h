@@ -8,19 +8,20 @@
  *
  *  Base class from which spectral watermark algorithms must inherit.
  */
-class SpectralWatermarkBase: public WatermarkBase
+template <typename data_type>
+class SpectralWatermarkBase: public WatermarkBase<data_type>
 {
 	public:
-		using complex_type = Parameters::complex_type;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
-		SpectralWatermarkBase(const Parameters& configuration):
-			WatermarkBase(configuration)
+		SpectralWatermarkBase(const Parameters<data_type>& configuration):
+			WatermarkBase<data_type>(configuration)
 		{
 
 		}
 
 		virtual ~SpectralWatermarkBase() = default;
-		virtual SpectralWatermarkBase* clone() = 0;
+		virtual SpectralWatermarkBase<data_type>* clone() = 0;
 
 		/**
 		 * @brief Actions to perform if the FFT size changes.

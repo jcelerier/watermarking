@@ -11,10 +11,11 @@
  * @brief Main class.
  *
  */
+template<typename data_type>
 class WatermarkManager
 {
 	private:
-		const Parameters& conf;
+		const Parameters<data_type>& conf;
 
 	public:
 		// Ajouter data : bits à encoder
@@ -23,18 +24,18 @@ class WatermarkManager
 		Watermark_p _watermark = nullptr;
 
 
-		WatermarkManager(const Parameters& parameters):
+		WatermarkManager(const Parameters<data_type>& parameters):
 			conf(parameters)
 		{
 
 		}
-		WatermarkManager(const WatermarkManager& sm):
+		WatermarkManager(const WatermarkManager<data_type>& sm):
 			conf(sm.conf)
 		{
 			_watermark.reset(sm._watermark->clone());
 		}
 
-		const WatermarkManager& operator=(const WatermarkManager& sm)
+		const WatermarkManager& operator=(const WatermarkManager<data_type>& sm)
 		{
 			_watermark.reset(sm._watermark->clone());
 
@@ -56,10 +57,4 @@ class WatermarkManager
 				delete buf;
 			}
 		}
-
-
-
-
-
-
 };

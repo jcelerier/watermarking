@@ -9,24 +9,24 @@
 /**
  * @brief Interface to follow for implementation of FFT algorithms.
  */
+template <typename data_type>
 class FFTManager
 {
 	public:
-		using size_type = Parameters::size_type;
-		using data_type = Parameters::data_type;
-		using complex_type = Parameters::complex_type;
+		using size_type = typename Parameters<data_type>::size_type;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
 	protected:
 		std::vector<complex_type> _spectrum = {};
 		std::vector<data_type> _in = {};
 		std::vector<data_type> _out = {};
 
-		const Parameters& conf;
+		const Parameters<data_type>& conf;
 
 
 	public:
 
-		FFTManager(const Parameters & config):
+		FFTManager(const Parameters<data_type> & config):
 			conf(config)
 		{
 			_in.resize(conf.bufferSize);

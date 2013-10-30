@@ -2,11 +2,12 @@
 
 #include "CopyStyle.h"
 
-class Input: public CopyStyle
+template <typename data_type>
+class Input: public CopyStyle<data_type>
 {
 	public:
-		Input(const Parameters& cfg):
-			CopyStyle(cfg)
+		Input(const Parameters<data_type>& cfg):
+			CopyStyle<data_type>(cfg)
 		{
 
 		}

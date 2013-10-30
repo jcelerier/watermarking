@@ -5,21 +5,13 @@
 #include "../Parameters.h"
 #include "../Data.h"
 
-
-class CopyStyle;
-class FFTProxy;
-class FFTInputProxy;
-class FFTOutputProxy;
-
+template <typename data_type>
 class IOManagerBase
 {
-		friend class FFTInputProxy;
-		friend class FFTOutputProxy;
 	public:
-		using size_type = Parameters::size_type;
-		using data_type = Parameters::data_type;
+		using size_type = typename Parameters<data_type>::size_type;
 
-		IOManagerBase(const Parameters& cfg):
+		IOManagerBase(const Parameters<data_type>& cfg):
 			conf(cfg)
 		{
 
@@ -27,9 +19,9 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
-	protected:
+
 		std::vector<data_type> _baseData = {};
 		size_type _pos = 0;
 
-		const Parameters& conf;
+		const Parameters<data_type>& conf;
 };

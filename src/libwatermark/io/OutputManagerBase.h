@@ -4,19 +4,28 @@
 #include "IOManagerBase.h"
 #include "copystyle/OutputSimple.h"
 
-
-class OutputManagerBase :  public IOManagerBase
+class IOutputManager
 {
 	public:
-		OutputManagerBase(const Parameters& cfg):
-			IOManagerBase(cfg),
-			_copy(new OutputSimple(cfg))
+		virtual void writeNextBuffer(IData* buffer) = 0;
+};
+
+template <typename data_type>
+class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManager
+{
+	protected:
+		std::shared_ptr<Output<data_type>> _copy = nullptr;
+
+	public:
+		OutputManagerBase(const Parameters<data_type>& cfg):
+			IOManagerBase<data_type>(cfg),
+			_copy(new OutputSimple<data_type>(cfg))
 		{
 
 		}
 
-		OutputManagerBase(Output* copy, const Parameters& cfg):
-			IOManagerBase(cfg),
+		OutputManagerBase(Output<data_type>* copy, const Parameters<data_type>& cfg):
+			IOManagerBase<data_type>(cfg),
 			_copy(copy)
 		{
 
@@ -28,13 +37,18 @@ class OutputManagerBase :  public IOManagerBase
 		virtual void writeNextBuffer(IData* buffer)
 		{
 			CData<data_type>* b = dynamic_cast<CData<data_type>*>(buffer);
-			_baseData.resize(_baseData.size() + conf.bufferSize);
+			IOManagerBase<data_type>::_baseData.resize(IOManagerBase<data_type>::_baseData.size() + IOManagerBase<data_type>::conf.bufferSize);
 
-			_copy->copy(b->_data.begin(), _baseData.begin(), _pos, conf.bufferSize, _baseData.size());
+			_copy->copy(b->_data.begin(),
+						IOManagerBase<data_type>::_baseData.begin(),
+						IOManagerBase<data_type>::_pos,
+						IOManagerBase<data_type>::conf.bufferSize,
+						IOManagerBase<data_type>::_baseData.size());
 
-			_pos += _copy->frameIncrement();
+			IOManagerBase<data_type>::_pos += _copy->frameIncrement();
 		}
 
-	protected:
-		std::shared_ptr<Output> _copy = nullptr;
+
 };
+
+typedef std::shared_ptr<IOutputManager> Output_p;

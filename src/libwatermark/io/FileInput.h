@@ -7,12 +7,12 @@
 #include "InputManagerBase.h"
 #include "../mathutils/math_util.h"
 
-
-class FileInput : public InputManagerBase
+template <typename data_type>
+class FileInput : public InputManagerBase<data_type>
 {
 	public:
-		FileInput(std::string filename, const Parameters& cfg):
-			InputManagerBase(cfg)
+		FileInput(std::string filename, const Parameters<data_type>& cfg):
+			InputManagerBase<data_type>(cfg)
 		{
 			readFile(filename.c_str());
 		}
@@ -27,7 +27,7 @@ class FileInput : public InputManagerBase
 		{
 			SndfileHandle myf = SndfileHandle(str);
 
-			_baseData.resize(myf.frames());
-			myf.read(_baseData.data(), myf.frames());
+			InputManagerBase<data_type>::_baseData.resize(myf.frames());
+			myf.read(InputManagerBase<data_type>::_baseData.data(), myf.frames());
 		}
 };

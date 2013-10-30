@@ -4,11 +4,12 @@
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"
 
-class FileOutput : public OutputManagerBase
+template <typename data_type>
+class FileOutput : public OutputManagerBase<data_type>
 {
 	public:
-		FileOutput(const Parameters& cfg):
-			OutputManagerBase(cfg)
+		FileOutput(const Parameters<data_type>& cfg):
+			OutputManagerBase<data_type>(cfg)
 		{
 
 		}
@@ -17,8 +18,9 @@ class FileOutput : public OutputManagerBase
 		{
 			const int format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
 			const int channels = 1;
-			SndfileHandle outfile(str, SFM_WRITE, format, channels, conf.samplingRate);
+			SndfileHandle outfile(str, SFM_WRITE, format, channels, OutputManagerBase<data_type>::conf.samplingRate);
 
-			outfile.write(_baseData.data(), _baseData.size());
+			outfile.write(OutputManagerBase<data_type>::_baseData.data(),
+						  OutputManagerBase<data_type>::_baseData.size());
 		}
 };

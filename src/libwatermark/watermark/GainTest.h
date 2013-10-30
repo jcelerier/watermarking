@@ -2,19 +2,19 @@
 #include <algorithm>
 
 #include "watermarkbase.h"
-
-class GainTest : public WatermarkBase
+template <typename data_type>
+class GainTest : public WatermarkBase<data_type>
 {
 	public:
-		GainTest(const Parameters& configuration):
-			WatermarkBase(configuration)
+		GainTest(const Parameters<data_type>& configuration):
+			WatermarkBase<data_type>(configuration)
 		{
 
 		}
 
 		virtual GainTest* clone()
 		{
-			return new GainTest(*this);
+			return new GainTest<data_type>(*this);
 		}
 
 		virtual void operator()(IData* const data)

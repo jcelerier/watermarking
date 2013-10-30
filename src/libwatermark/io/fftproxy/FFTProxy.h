@@ -4,22 +4,25 @@
 #include "../OutputManagerBase.h"
 #include "../../fft/fftwmanager.h"
 
+template <typename data_type>
 class FFTProxy
 {
+	protected:
+		const Parameters<data_type>& conf;
 
 	public:
-		using complex_type = Parameters::complex_type;
-		FFTProxy(FFTManager* fftmanager, const Parameters& cfg):
-			fft(fftmanager),
-			conf(cfg)
+		std::shared_ptr<FFTManager<data_type>> _fft;
+		using complex_type = typename Parameters<data_type>::complex_type;
+
+		FFTProxy(FFTManager<data_type>* fftmanager, const Parameters<data_type>& cfg):
+			conf(cfg),
+			_fft(fftmanager)
+
 		{
 
 		}
 
 		virtual ~FFTProxy() = default;
-	protected:
-		std::shared_ptr<FFTManager> fft;
 
-		const Parameters& conf;
 
 };

@@ -3,24 +3,25 @@
 
 #include "Input.h"
 
-class InputSimple: public Input
+template <typename data_type>
+class InputSimple: public Input<data_type>
 {
 	public:
-		InputSimple(const Parameters& cfg):
-			Input(cfg)
+		InputSimple(const Parameters<data_type>& cfg):
+			Input<data_type>(cfg)
 		{
 		}
 
-		virtual size_type frameIncrement() final override
+		virtual typename CopyStyle<data_type>::size_type frameIncrement() final override
 		{
-			return conf.bufferSize;
+			return CopyStyle<data_type>::conf.bufferSize;
 		}
 
-		virtual void copy(std::vector<data_type>::const_iterator in,
-						  std::vector<data_type>::iterator out,
-						  size_type pos,
-						  size_type in_length,
-						  size_type out_length) final override
+		virtual void copy(typename std::vector<data_type>::const_iterator in,
+						  typename std::vector<data_type>::iterator out,
+						  typename CopyStyle<data_type>::size_type pos,
+						  typename CopyStyle<data_type>::size_type in_length,
+						  typename CopyStyle<data_type>::size_type out_length) final override
 		{
 			if (out_length <= in_length - pos)
 			{

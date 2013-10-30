@@ -13,7 +13,8 @@ namespace MathUtil
 	 * @return x^2 + y^2
 	 */
 	//TODO std::bind ?
-	inline double CplxToPower(const std::complex<double> val)
+	template <typename data_type>
+	inline data_type CplxToPower(const std::complex<data_type> val)
 	{
 		return std::norm(val);
 	}
@@ -26,7 +27,8 @@ namespace MathUtil
 	 * @param val Complex value
 	 * @return arc tan(y, x)
 	 */
-	inline double CplxToPhase(const std::complex<double> val)
+	template <typename data_type>
+	inline data_type CplxToPhase(const std::complex<data_type> val)
 	{
 		return std::arg(val);
 	}
@@ -40,10 +42,11 @@ namespace MathUtil
 	 * @param phaseoutput Phase output.
 	 * @param size Size of array.
 	 */
-	void computePowerAndPhaseSpectrum(const std::complex<double> * const in, double * const powoutput, double * const phaseoutput, const unsigned int size)
+	template <typename data_type>
+	void computePowerAndPhaseSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, data_type * const phaseoutput, const unsigned int size)
 	{
-		std::transform(in, in + size, powoutput, CplxToPower);
-		std::transform(in, in + size, phaseoutput, CplxToPhase);
+		std::transform(in, in + size, powoutput, CplxToPower<data_type>);
+		std::transform(in, in + size, phaseoutput, CplxToPhase<data_type>);
 	}
 
 
@@ -125,9 +128,10 @@ namespace MathUtil
 	 * @param powoutput Power output.
 	 * @param size Size of array.
 	 */
-	void computePowerSpectrum(const std::complex<double> * const in, double * const powoutput, const unsigned int size)
+	template <typename data_type>
+	void computePowerSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, const unsigned int size)
 	{
-		std::transform(in, in + size, powoutput, CplxToPower);
+		std::transform(in, in + size, powoutput, CplxToPower<data_type>);
 	}
 
 	/**
@@ -137,9 +141,10 @@ namespace MathUtil
 	 * @param length Length of tab
 	 * @return Energy
 	 */
-	double energy(const double *tab, const unsigned int length)
+	template <typename data_type>
+	data_type energy(const data_type *tab, const unsigned int length)
 	{
-		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::pow(x, 2);}, std::plus<double>());
+		return mapReduce_n(tab, length, 0.0, [] (data_type x) { return std::pow(x, 2);}, std::plus<data_type>());
 	}
 
 	/**
@@ -149,9 +154,10 @@ namespace MathUtil
 	 * @param length Length of tab
 	 * @return Sum of the absolute values
 	 */
-	double abssum(const double *tab, const unsigned int length)
+	template <typename data_type>
+	data_type abssum(const data_type *tab, const unsigned int length)
 	{
-		return mapReduce_n(tab, length, 0.0, [] (double x) { return std::abs(x); },  std::plus<double>());
+		return mapReduce_n(tab, length, 0.0, [] (data_type x) { return std::abs(x); },  std::plus<data_type>());
 	}
 
 	/**
@@ -179,9 +185,10 @@ namespace MathUtil
 
 
 	// Retourne sqrt(somme des carrés / n)
-	double RMS(const double * tab, const unsigned int length)
+	template <typename data_type>
+	data_type RMS(const data_type * tab, const unsigned int length)
 	{
-		return sqrt(energy(tab, length) / length);
+		return sqrt(energy<data_type>(tab, length) / length);
 	}
 
 }

@@ -3,21 +3,21 @@
 
 #include "../../Parameters.h"
 
+template <typename data_type>
 class CopyStyle
 {
 	public:
-		using data_type = Parameters::data_type;
-		using size_type = Parameters::size_type;
+		using size_type = typename Parameters<data_type>::size_type;
 
-		CopyStyle(const Parameters& cfg):
+		CopyStyle(const Parameters<data_type>& cfg):
 			conf(cfg)
 		{
 
 		}
 
 		virtual ~CopyStyle() = default;
-		virtual void copy(std::vector<data_type>::const_iterator in,
-				  std::vector<data_type>::iterator out,
+		virtual void copy(typename std::vector<data_type>::const_iterator in,
+				  typename std::vector<data_type>::iterator out,
 				  size_type pos,
 				  size_type in_length,
 				  size_type out_length) = 0;
@@ -26,5 +26,5 @@ class CopyStyle
 		virtual size_type frameIncrement() = 0;
 
 	protected:
-		const Parameters& conf;
+		const Parameters<data_type>& conf;
 };

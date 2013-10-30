@@ -1,6 +1,6 @@
 #pragma once
+#include <sndfile.hh>
 
-#include "sndfile.hh"
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"
 

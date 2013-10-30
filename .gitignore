@@ -18,3 +18,6 @@ Makefile
 
 *.exe
 *.out
+*.wav
+*.raw
+*.mp3

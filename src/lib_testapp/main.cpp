@@ -14,7 +14,7 @@ void SpectralTest()
 	Parameters conf;
 	auto manager = new WatermarkManager(conf);
 
-	auto input = new FileInput("test_file.raw", conf);
+	auto input = new FileInput("input_mono.wav", conf);
 	auto output = new FileOutput(conf);
 
 	auto fft_m = new FFTWManager(conf);

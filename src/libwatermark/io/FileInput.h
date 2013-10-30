@@ -2,8 +2,11 @@
 #include <istream>
 #include <fstream>
 
+#include <sndfile.hh>
+
 #include "InputManagerBase.h"
 #include "../mathutils/math_util.h"
+
 
 class FileInput : public InputManagerBase
 {
@@ -20,22 +23,11 @@ class FileInput : public InputManagerBase
 		 * @param str Path to the file.
 		 * @return unsigned int Size of the file.
 		 */
-		// Utiliser sndfile, fmod...
 		void readFile(const char * str)
 		{
-			std::ifstream ifile(str, std::ios_base::ate | std::ios_base::binary);
-			_baseData.resize(((unsigned int) ifile.tellg()) / (unsigned int) (sizeof(short) / sizeof(char)));
-			ifile.clear();
-			ifile.seekg(0, std::ios_base::beg);
+			SndfileHandle myf = SndfileHandle(str);
 
-			unsigned int pos = 0;
-			short sample;
-
-			while (ifile.read((char *)&sample, sizeof(short)))
-			{
-				_baseData[pos++] = MathUtil::ShortToDouble(sample);
-			}
-
-			ifile.close();
+			_baseData.resize(myf.frames());
+			myf.read(_baseData.data(), myf.frames());
 		}
 };

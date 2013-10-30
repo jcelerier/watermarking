@@ -99,5 +99,5 @@ class FFTManager
 		 * Sometimes, the fft implementation might give an output which needs to be normalized.
 		 * @return The factor by which every sample of the ouput must be multiplied.
 		 */
-		virtual data_type normalizationFactor() const = 0;
+		virtual double normalizationFactor() const = 0;
 };

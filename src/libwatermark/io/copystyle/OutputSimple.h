@@ -20,16 +20,13 @@ class OutputSimple : public Output<data_type>
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
 						  typename std::vector<data_type>::iterator out,
 						  typename CopyStyle<data_type>::size_type pos,
-						  typename CopyStyle<data_type>::size_type in_length,
+						  typename CopyStyle<data_type>::size_type ,
 						  typename CopyStyle<data_type>::size_type out_length) final override
 		{
-			if (in_length <= out_length - pos)
-			{
-				std::copy(in, in+in_length, out + pos);
-			}
-			else
-			{
-				std::copy(in, in + out_length - in_length, out + pos);
-			}
+			std::copy(in,
+					  (frameIncrement() <= out_length - pos) ?
+						in + frameIncrement() :
+						in + out_length - frameIncrement(),
+					  out + pos);
 		}
 };

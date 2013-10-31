@@ -34,18 +34,13 @@ class FFTManager
 			_spectrum.resize(spectrumSize());
 		}
 
-		virtual FFTManager* clone() = 0;
-
-		virtual ~FFTManager()
-		{
-
-		}
+		virtual ~FFTManager() = default;
 
 		/**
 		 * @brief input
 		 * @return a pointer to the input data.
 		 */
-		std::vector<data_type>& input()
+		virtual std::vector<data_type>& input() final
 		{
 			return _in;
 		}
@@ -54,7 +49,7 @@ class FFTManager
 		 * @brief output
 		 * @return a pointer to the output data.
 		 */
-		std::vector<data_type>& output()
+		virtual std::vector<data_type>& output() final
 		{
 			return _out;
 		}
@@ -63,7 +58,7 @@ class FFTManager
 		 * @brief Spectrum
 		 * @return The spectrum
 		 */
-		std::vector<complex_type>& spectrum()
+		virtual std::vector<complex_type>& spectrum() final
 		{
 			return _spectrum;
 		}

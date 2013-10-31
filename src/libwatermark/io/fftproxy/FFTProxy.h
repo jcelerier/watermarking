@@ -17,9 +17,7 @@ class FFTProxy
 		FFTProxy(FFTManager<data_type>* fftmanager, const Parameters<data_type>& cfg):
 			conf(cfg),
 			_fft(fftmanager)
-
 		{
-
 		}
 
 		virtual ~FFTProxy() = default;

@@ -102,18 +102,19 @@ void TestFFTWManager()
 	auto fft_m = new FFTWManager<double>(conf);
 
 	for(auto i = 0U; i < conf.bufferSize; ++i)
-		fft_m->input()[i] = sin(440.0 * (2.0 * 3.1415) * i / 44100.0);
+		fft_m->input()[i] = sin(440.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate);
 
 	fft_m->forward();
 	fft_m->backward();
 
 	for(auto i = 0U; i < conf.bufferSize; ++i)
-		std::cerr << fft_m->input()[i] << "\t\t" << fft_m->output()[i] / conf.bufferSize << std::endl;
+		std::cerr << fft_m->input()[i] << "\t\t" << fft_m->output()[i] / (double) conf.bufferSize << std::endl;
 }
 
 int main()
 {
-	TemporalTest();
+
+	SpectralTest();
 	return 0;
 }
 

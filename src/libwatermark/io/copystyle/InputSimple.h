@@ -21,17 +21,16 @@ class InputSimple: public Input<data_type>
 						  typename std::vector<data_type>::iterator out,
 						  typename CopyStyle<data_type>::size_type pos,
 						  typename CopyStyle<data_type>::size_type in_length,
-						  typename CopyStyle<data_type>::size_type out_length) final override
+						  typename CopyStyle<data_type>::size_type ) final override
 		{
-			if (out_length <= in_length - pos)
+			if (frameIncrement() <= in_length - pos)
 			{
-				std::copy_n(in + pos, out_length, out);
+				std::copy_n(in + pos, frameIncrement(), out);
 			}
 			else
 			{
 				std::copy_n(in + pos, in_length - pos, out);
-				std::fill_n(out + in_length - pos, out_length - (in_length - pos), 0);
+				std::fill_n(out + in_length - pos, frameIncrement() - (in_length - pos), 0);
 			}
 		}
-
 };

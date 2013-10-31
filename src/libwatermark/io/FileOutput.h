@@ -15,11 +15,11 @@ class FileOutput : public OutputManagerBase<data_type>
 
 		void writeFile(const char * str)
 		{
-			const int format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-			const int channels = 1;
-			SndfileHandle outfile(str, SFM_WRITE, format, channels, OutputManagerBase<data_type>::conf.samplingRate);
+			auto format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+			auto channels = 1;
+			SndfileHandle outfile(str, SFM_WRITE, format, channels, (int) this->conf.samplingRate);
 
-			outfile.write(OutputManagerBase<data_type>::_baseData.data(),
-						  OutputManagerBase<data_type>::_baseData.size());
+			outfile.write(this->data().data(),
+						  this->data().size());
 		}
 };

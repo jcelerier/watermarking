@@ -2,7 +2,7 @@
 
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
-#include "../copystyle/OutputSimple.h"
+#include "../copystyle/OutputOLA.h"
 #include "../../mathutils/math_util.h"
 
 template <typename data_type>
@@ -14,39 +14,39 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 	public:
 		FFTOutputProxy(OutputManagerBase<data_type>* output, FFTManager<data_type>* fft, const Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fft, cfg),
-			OutputManagerBase<data_type>(new OutputSimple<data_type>(cfg), cfg),
+			OutputManagerBase<data_type>(new OutputOLA<data_type>(cfg), cfg),
 			_outputImpl(output)
 		{
-
 		}
 
 		virtual void writeNextBuffer(IData* buf) final override
 		{
 			auto output_real = dynamic_cast<OutputManagerBase<data_type>*>(_outputImpl.get());
+
 			// 0. We use the buffer already in the FFT.
-			auto b = dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf);
-			FFTProxy<data_type>::_fft->spectrum() = b->_data;
+			//TODO optimiser ça
+			this->_fft->spectrum() = dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf)->_data;;
 
 			// 1. Perform reverse FFT
-			FFTProxy<data_type>::_fft->backward();
+			this->_fft->backward();
 
 			// 2. Copy the content of the FFT output into inner buffer
-			output_real->_baseData.resize(output_real->_baseData.size() + FFTProxy<data_type>::conf.bufferSize);
+			output_real->_baseData.resize(output_real->_baseData.size() + this->_copy->frameIncrement());
 
-			OutputManagerBase<data_type>::_copy->copy(FFTProxy<data_type>::_fft->output().begin(),
+			this->_copy->copy(this->_fft->output().begin(),
 						output_real->_baseData.begin(),
-						OutputManagerBase<data_type>::_pos,
+						this->pos(),
 						FFTProxy<data_type>::conf.bufferSize,
 						output_real->_baseData.size());
 
 			// 3. NORMALIZE THE SHIT OUT OF IT
-			std::transform(output_real->_baseData.begin() + OutputManagerBase<data_type>::_pos,
-						   output_real->_baseData.begin() + OutputManagerBase<data_type>::_pos + FFTProxy<data_type>::conf.bufferSize,
-						   output_real->_baseData.begin() + OutputManagerBase<data_type>::_pos,
-						   [&] (data_type x) { return x * FFTProxy<data_type>::_fft->normalizationFactor(); }
+			std::transform(output_real->_baseData.begin() + this->pos(),
+						   output_real->_baseData.begin() + this->pos() + this->_copy->frameIncrement(),
+						   output_real->_baseData.begin() + this->pos(),
+						   [&] (data_type x) { return x * this->_fft->normalizationFactor(); }
 						  );
 
-			OutputManagerBase<data_type>::_pos += OutputManagerBase<data_type>::_copy->frameIncrement();
+			this->pos() += this->_copy->frameIncrement();
 		}
 
 

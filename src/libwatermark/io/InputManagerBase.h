@@ -7,7 +7,8 @@
 class IInputManager
 {
 	public:
-		virtual IData* getNextBuffer() const = 0;
+		virtual IData* getNextBuffer() = 0;
+		virtual ~IInputManager() = default;
 };
 
 template <typename data_type>
@@ -21,40 +22,42 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 			IOManagerBase<data_type>(cfg),
 			_copy(new InputSimple<data_type>(cfg))
 		{
+		}
 
+		InputManagerBase(const InputManagerBase<data_type>& orig):
+			IOManagerBase<data_type>(orig.conf),
+			_copy(*orig._copy.get())
+		{
 		}
 
 		InputManagerBase(Input<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			_copy(copy)
 		{
-
 		}
 
 		virtual ~InputManagerBase() = default;
 
 		// Renvoie nullptr quand plus rien
-		virtual IData* getNextBuffer() const override
+		virtual IData* getNextBuffer() override
 		{
-			if(IOManagerBase<data_type>::_pos < IOManagerBase<data_type>::_baseData.size())
+			if(this->pos() < this->data().size())
 			{
-				CData<data_type>* b = new CData<data_type>;
+				auto buffer = new CData<data_type>;
 
-				b->_data.resize(IOManagerBase<data_type>::conf.bufferSize);
-				_copy->copy(IOManagerBase<data_type>::_baseData.begin(),
-							b->_data.begin(),
-							IOManagerBase<data_type>::_pos,
-							IOManagerBase<data_type>::_baseData.size(),
-							IOManagerBase<data_type>::conf.bufferSize);
+				buffer->_data.resize(this->conf.bufferSize);
+				_copy->copy(this->data().begin(),
+							buffer->_data.begin(),
+							this->pos(),
+							this->data().size(),
+							this->conf.bufferSize);
 
-				IOManagerBase<data_type>::_pos += _copy->frameIncrement();
-				return b;
+				this->pos() += _copy->frameIncrement();
+				return buffer;
 			}
 
 			return nullptr;
 		}
-
-
 };
 
 typedef std::shared_ptr<IInputManager> Input_p;

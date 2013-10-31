@@ -21,14 +21,18 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 			IOManagerBase<data_type>(cfg),
 			_copy(new OutputSimple<data_type>(cfg))
 		{
+		}
 
+		OutputManagerBase(const OutputManagerBase<data_type>& orig):
+			IOManagerBase<data_type>(orig.conf),
+			_copy(*orig._copy.get())
+		{
 		}
 
 		OutputManagerBase(Output<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			_copy(copy)
 		{
-
 		}
 
 		virtual ~OutputManagerBase() = default;
@@ -37,15 +41,15 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		virtual void writeNextBuffer(IData* abstract_buffer) override
 		{
 			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
-			IOManagerBase<data_type>::_baseData.resize(IOManagerBase<data_type>::_baseData.size() + IOManagerBase<data_type>::conf.bufferSize);
+			this->data().resize(this->data().size() + this->conf.bufferSize);
 
 			_copy->copy(buffer.begin(),
-						IOManagerBase<data_type>::_baseData.begin(),
-						IOManagerBase<data_type>::_pos,
-						IOManagerBase<data_type>::conf.bufferSize,
-						IOManagerBase<data_type>::_baseData.size());
+						this->data().begin(),
+						this->pos(),
+						this->conf.bufferSize,
+						this->data().size());
 
-			IOManagerBase<data_type>::_pos += _copy->frameIncrement();
+			this->pos() += _copy->frameIncrement();
 		}
 
 

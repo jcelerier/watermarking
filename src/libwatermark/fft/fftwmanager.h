@@ -3,38 +3,35 @@
 
 #include "fftmanager.h"
 
-
-/**
- * @brief The FFTWManager class
- *
- * Implementation of the FFTW process.
- */
 template <typename data_type>
 class FFTWManager : public FFTManager<data_type>
 {
 	public:
-		FFTWManager(const Parameters<data_type>& conf):
-			FFTManager<data_type>(conf)
+		FFTWManager(const Parameters<data_type>& cfg):
+			FFTManager<data_type>(cfg)
 		{
+			num_instances++;
 			updateSize();
 		}
+
+		FFTWManager(const FFTWManager<data_type>& orig) = delete;
+
+		const FFTWManager<data_type>& operator=(const FFTWManager<data_type>& orig) = delete;
 
 		virtual ~FFTWManager()
 		{
 			if(plan_fw) fftw_destroy_plan(plan_fw);
 			if(plan_bw) fftw_destroy_plan(plan_bw);
 
-			fftw_cleanup();
-		}
-		virtual FFTManager<data_type>* clone() override
-		{
-			return new FFTWManager<data_type>(*this);
+			if(!num_instances--)
+				fftw_cleanup();
 		}
 
 		virtual void forward() const override
 		{
 			fftw_execute(plan_fw);
 		}
+
 		virtual void backward() const override
 		{
 			fftw_execute(plan_bw);
@@ -42,7 +39,7 @@ class FFTWManager : public FFTManager<data_type>
 
 		virtual double normalizationFactor() const override
 		{
-			return 1.0 / FFTManager<data_type>::conf.bufferSize;
+			return 1.0 / this->conf.bufferSize;
 		}
 
 		virtual void updateSize() override
@@ -51,19 +48,22 @@ class FFTWManager : public FFTManager<data_type>
 			if(plan_bw) fftw_destroy_plan(plan_bw);
 
 			// Initialize the fftw plans
-			plan_fw = fftw_plan_dft_r2c_1d(FFTManager<data_type>::conf.bufferSize,
-										   FFTManager<data_type>::_in.data(),
-										   reinterpret_cast<fftw_complex*>(FFTManager<data_type>::_spectrum.data()),
+			plan_fw = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
+										   this->_in.data(),
+										   reinterpret_cast<fftw_complex*>(this->_spectrum.data()),
 										   FFTW_ESTIMATE);
-			plan_bw = fftw_plan_dft_c2r_1d(FFTManager<data_type>::conf.bufferSize,
-										   reinterpret_cast<fftw_complex*>(FFTManager<data_type>::_spectrum.data()),
-										   FFTManager<data_type>::_out.data(),
+			plan_bw = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
+										   reinterpret_cast<fftw_complex*>(this->_spectrum.data()),
+										   this->_out.data(),
 										   FFTW_ESTIMATE);
 		}
 
 	private:
 		fftw_plan plan_fw = nullptr; /**< TODO */
 		fftw_plan plan_bw = nullptr; /**< TODO */
+
+		static unsigned int num_instances;
 };
 
-
+template<>
+unsigned int FFTWManager<double>::num_instances = 0;

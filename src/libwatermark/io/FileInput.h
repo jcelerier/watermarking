@@ -21,7 +21,7 @@ class FileInput : public InputManagerBase<data_type>
 		{
 			SndfileHandle myf = SndfileHandle(str);
 
-			InputManagerBase<data_type>::_baseData.resize(myf.frames());
-			myf.read(InputManagerBase<data_type>::_baseData.data(), myf.frames());
+			this->data().resize(myf.frames());
+			myf.read(this->data().data(), myf.frames());
 		}
 };

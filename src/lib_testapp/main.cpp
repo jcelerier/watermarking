@@ -78,6 +78,29 @@ void TemporalTest()
 	output->writeFile("out_test_temp.wav");
 }
 
+
+// Test : réduction temporelle de gain ( on divise chaque sample).
+void TemporalTestStereo()
+{
+	Parameters<double> conf;
+
+	auto manager = new WatermarkManager<double>(conf);
+
+	// Ici on n'utilise pas le proxy FFT
+	auto input = new FileInput<double>("input_stereo.wav", conf);
+	auto output = new FileOutput<double>(conf);
+
+	auto algorithm = new GainTest<double>(conf);
+
+	manager->_input.reset(input);
+	manager->_output.reset(output);
+	manager->_watermark.reset(algorithm);
+
+	manager->execute();
+
+	output->writeFile("out_test_temp_st.wav");
+}
+
 // Test : la même chose avec des shorts au lieu de double. Cela permet
 // l'accès à l'information des bits et permet le codage par LSB. Poke qmidy.
 // (rappel : format des samples standard dans un fichier wav, cd audio, etc... = 16 bit signé (i.e. short))
@@ -153,6 +176,9 @@ void BufferTest()
 int main()
 {
 	TemporalTest();
+	TemporalTestShorts();
+	TemporalTestStereo();
+	SpectralTest();
 	return 0;
 }
 

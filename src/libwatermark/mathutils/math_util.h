@@ -190,14 +190,11 @@ namespace MathUtil
 		std::vector<std::vector<T>> out;
 		out.resize(channels);
 
-		for(auto i = 0U; i < channels; ++i)
+		for(auto channel = 0U; channel < channels; ++channel)
 		{
-			out[i].resize(frames);
-			int k = i + 1;
-			for(auto j = 0U; j < frames; ++j)
-			{
-				out[i][j] = in[k * j];
-			}
+			out[channel].resize(frames);
+			for(auto frame = 0U; frame < frames; ++frame)
+				out[channel][frame] = in[frame * channels + channel];
 		}
 
 		return out;
@@ -207,11 +204,13 @@ namespace MathUtil
 	std::vector<T> interleave(std::vector<std::vector<T>>& in)
 	{
 		std::vector<T> out;
-		out.resize(in.size() * in[0].size());
+		auto channels = in.size();
+		auto frames = in[0].size();
+		out.resize(channels * frames);
 
-		for(auto chan = 0U; chan < in.size(); ++chan)
-			for(auto i = 0U; i < in[0].size(); ++i)
-				out[i + chan] = in[chan][i];
+		for(auto channel = 0U; channel < channels; ++channel)
+			for(auto frame = 0U; frame < frames; ++frame)
+				out[frame * channels + channel] = in[channel][frame];
 
 		return out;
 	}

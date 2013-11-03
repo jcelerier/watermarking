@@ -35,6 +35,8 @@ class FFTWManager : public FFTManager<data_type>
 			fw.resize(n);
 			bw.resize(n);
 
+			updateSize();
+
 		}
 
 		virtual void forward() const override

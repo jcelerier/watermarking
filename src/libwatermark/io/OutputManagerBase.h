@@ -57,6 +57,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 							this->conf.bufferSize,
 							this->v()[i].size());
 			}
+
 			this->pos() += _copy->frameIncrement();
 		}
 };

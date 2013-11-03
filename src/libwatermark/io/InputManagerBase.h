@@ -14,6 +14,8 @@ class IInputManager
 template <typename data_type>
 class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 {
+		using IOManagerBase<data_type>::pos;
+
 	protected:
 		std::shared_ptr<Input<data_type>> _copy = nullptr;
 
@@ -41,26 +43,26 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 		// Renvoie nullptr quand plus rien
 		virtual IData* getNextBuffer() override
 		{
-			if(this->pos() < this->v()[0].size())
+			auto channels = this->v().size();
+			auto frames = this->v()[0].size();
+
+			if(pos() < frames)
 			{
-				// Création d'un truc qui va contenir les data
+				// Création d'un wrapper qui va contenir les data
 				auto buffer = new CData<data_type>;
-				buffer->_data.resize(this->v().size());
+				buffer->_data.resize(channels);
 
 				// Remplissage pour chaque canal
-				for(auto i = 0U; i < this->v().size(); ++i)
+				for(auto i = 0U; i < channels; ++i)
 				{
 					buffer->_data[i].resize(this->conf.bufferSize);
 
 					_copy->copy(this->v()[i].begin(),
 								buffer->_data[i].begin(),
-								this->pos(),
-								this->v()[i].size(),
+								pos(),
+								frames,
 								this->conf.bufferSize);
 				}
-
-				//for(int i = 0;i < 50; ++i)
-				//	std::cerr << buffer->_data[0][i] << " ";
 
 				this->pos() += _copy->frameIncrement();
 				return buffer;

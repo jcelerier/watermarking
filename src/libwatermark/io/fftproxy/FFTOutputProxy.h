@@ -8,6 +8,8 @@
 template <typename data_type>
 class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data_type>
 {
+		using IOManagerBase<data_type>::pos;
+		using FFTProxy<data_type>::_fft;
 	private:
 		Output_p _outputImpl = nullptr;
 
@@ -21,33 +23,40 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		virtual void writeNextBuffer(IData* buf) final override
 		{
-			auto output_real = dynamic_cast<OutputManagerBase<data_type>*>(_outputImpl.get());
+			auto& in_vec = dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf)->_data;
+			auto& out_vec = dynamic_cast<OutputManagerBase<data_type>*>(_outputImpl.get())->v();
 
-			// 0. We use the buffer already in the FFT.
-			this->_fft->setSpectrum(std::move(dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf)->_data));
+			auto channels = in_vec.size();
+			if(out_vec.size() != channels)
+			{
+				out_vec.resize(channels);
+			}
+
+			// 0. We put our buffer back in the FFT.
+			_fft->spectrum() = in_vec;
 
 			// 1. Perform reverse FFT
-			this->_fft->backward();
+			_fft->backward();
 
 			// 2. Copy the content of the FFT output into inner buffer
-			for(auto i = 0U; i < this->v().size(); ++i) // Pour chaque canal
+			for(auto i = 0U; i < channels; ++i) // Pour chaque canal
 			{
-				output_real->_baseData.resize(output_real->_baseData.size() + this->_copy->frameIncrement());
+				out_vec[i].resize(out_vec.size() + this->_copy->frameIncrement());
 
-				this->_copy->copy(this->_fft->output()[i].begin(),
-								  output_real->_baseData[i].begin(),
-								  this->pos(),
+				this->_copy->copy(_fft->output()[i].begin(),
+								  out_vec[i].begin(),
+								  pos(),
 								  FFTProxy<data_type>::conf.bufferSize,
-								  output_real->_baseData[i].size());
+								  out_vec.size());
 
 				// 3. NORMALIZE THE SHIT OUT OF IT
-				std::transform(output_real->_baseData[i].begin() + this->pos(),
-							   output_real->_baseData[i].begin() + this->pos() + this->_copy->frameIncrement(),
-							   output_real->_baseData[i].begin() + this->pos(),
-							   [this] (data_type x) { return x * this->_fft->normalizationFactor(); }
+				std::transform(out_vec[i].begin() + pos(),
+							   out_vec[i].begin() + pos() + this->_copy->frameIncrement(),
+							   out_vec[i].begin() + pos(),
+							   [this] (data_type x) { return x * _fft->normalizationFactor(); }
 				);
 			}
-			this->pos() += this->_copy->frameIncrement();
+			pos() += this->_copy->frameIncrement();
 		}
 
 

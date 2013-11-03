@@ -3,7 +3,7 @@
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
 #include "../copystyle/InputOLA.h"
-
+#include <utility>
 // Templates, never again
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
@@ -20,22 +20,24 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			InputManagerBase<data_type>(new InputOLA<data_type>(cfg), cfg),
 			_inputImpl(input)
 		{
-
 		}
 
 		virtual IData* getNextBuffer() final override
 		{
-			auto input_mgr = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get());
+			auto& vec = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get())->v();
 
-			if(this->pos() < input_mgr->_baseData[0].size())
+			auto channels = vec.size();
+			auto frames = vec[0].size();
+
+			if(pos() < frames)
 			{
 				// 1. copier la partie du buffer à traiter
-				for(auto i = 0U; i < this->v().size(); ++i)
+				for(auto i = 0U; i < channels; ++i)
 				{
-					this->_copy->copy(input_mgr->v()[i].begin(),
+					this->_copy->copy(vec[i].begin(),
 									_fft->input()[i].begin(),
 									pos(),
-									input_mgr->v()[i].size(),
+									frames,
 									FFTProxy<data_type>::conf.bufferSize);
 				}
 
@@ -43,19 +45,14 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 				// 2. Effectuer la FFT
 				_fft->forward();
 
-				pos() += this->_copy->frameIncrement();
-
 				// 3. Empaqueter le spectre donné par la FFT
-				auto b = new CData<typename FFTProxy<data_type>::complex_type>;
+				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
+				buffer->_data = _fft->spectrum();
 
-				b->_data = _fft->moveSpectrum();
-				return b;
+				pos() += this->_copy->frameIncrement();
+				return buffer;
 			}
 
 			return nullptr;
 		}
-
-
 };
-
-

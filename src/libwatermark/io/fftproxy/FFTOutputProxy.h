@@ -24,8 +24,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 			auto output_real = dynamic_cast<OutputManagerBase<data_type>*>(_outputImpl.get());
 
 			// 0. We use the buffer already in the FFT.
-			//TODO optimiser ça
-			this->_fft->spectrum() = dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf)->_data;;
+			this->_fft->setSpectrum(std::move(dynamic_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf)->_data));
 
 			// 1. Perform reverse FFT
 			this->_fft->backward();

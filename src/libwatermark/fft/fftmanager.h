@@ -58,9 +58,18 @@ class FFTManager
 		 * @brief Spectrum
 		 * @return The spectrum
 		 */
-		virtual std::vector<complex_type>& spectrum() final
+		virtual std::vector<complex_type>&& moveSpectrum() final
 		{
-			return _spectrum;
+			return std::move(_spectrum);
+		}
+
+		/**
+		 * @brief Spectrum
+		 * @return The spectrum
+		 */
+		virtual void setSpectrum(std::vector<complex_type>&& v) final
+		{
+			_spectrum = std::move(v);
 		}
 
 		/**

@@ -45,6 +45,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 			{
 				auto buffer = new CData<data_type>;
 
+
 				buffer->_data.resize(this->conf.bufferSize);
 				_copy->copy(this->data().begin(),
 							buffer->_data.begin(),

@@ -59,8 +59,8 @@ class FFTWManager : public FFTManager<data_type>
 		}
 
 	private:
-		fftw_plan plan_fw = nullptr; /**< TODO */
-		fftw_plan plan_bw = nullptr; /**< TODO */
+		fftw_plan plan_fw = nullptr;
+		fftw_plan plan_bw = nullptr;
 
 		static unsigned int num_instances;
 };

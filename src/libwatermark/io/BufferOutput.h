@@ -5,11 +5,29 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
-class BufferOutput : public OutputManagerBase
+class BufferOutput : public OutputManagerBase<data_type>
 {
 	public:
-		void writeOutBuffer(short * address)
+		BufferOutput(const Parameters<data_type>& cfg):
+			OutputManagerBase<data_type>(cfg)
 		{
-			std::transform(_baseData.begin(), _baseData.end(), address, MathUtil::DoubleToShort);
+		}
+
+		template<typename external_type>
+		void writeOutBuffer(external_type * address)
+		{
+			if(typeid(data_type) == typeid(external_type))
+			{
+				std::copy(this->data().begin(),
+						  this->data().end(),
+						  address);
+			}
+			else
+			{
+				std::transform(this->data().begin(),
+							   this->data().end(),
+							   address,
+							   MathUtil::FromDouble<external_type>);
+			}
 		}
 };

@@ -6,7 +6,8 @@
 #include "io/fftproxy/FFTOutputProxy.h"
 #include "fft/fftwmanager.h"
 #include "watermark/SpectralGain.h"
-
+#include "io/BufferInput.h"
+#include "io/BufferOutput.h"
 /***
  *
  * Ce fichier montre quelques tests cool.
@@ -111,10 +112,43 @@ void TestFFTWManager()
 		std::cerr << fft_m->input()[i] << "\t\t" << fft_m->output()[i] / (double) conf.bufferSize << std::endl;
 }
 
+void BufferTest()
+{
+	Parameters<double> conf;
+
+	auto n = 4096U;
+	short* in_test = new short[n];
+
+	for(auto i = 0U; i < n; ++i)
+		in_test[i] = 16384 * sin(220.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate);
+
+	auto format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+	auto channels = 1;
+	SndfileHandle outfile("out_test_buffer.wav", SFM_WRITE, format, channels, (int) conf.samplingRate);
+
+	auto input = new BufferInput<double>(conf);
+	auto output = new BufferOutput<double>(conf);
+
+	input->readBuffer(in_test, n);
+
+	auto algorithm = new GainTest<double>(conf);
+
+	auto manager = new WatermarkManager<double>(conf);
+	manager->_input.reset(input);
+	manager->_output.reset(output);
+	manager->_watermark.reset(algorithm);
+
+	manager->execute();
+
+	output->writeOutBuffer(in_test);
+
+	outfile.write(in_test,
+				  n);
+}
+
 int main()
 {
-
-	SpectralTest();
+	BufferTest();
 	return 0;
 }
 

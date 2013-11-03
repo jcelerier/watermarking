@@ -5,16 +5,26 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
-class BufferInput : public InputManagerBase
+class BufferInput : public InputManagerBase<data_type>
 {
 	public:
-		void readBuffer(short * buffer, const size_type length)
+		BufferInput(Parameters<data_type>& cfg):
+			InputManagerBase<data_type>(cfg)
 		{
-			_baseData.resize(length);
+		}
 
-			//Faire une conversion de plusieurs types d'entiers en utilisant template & spécialisations ?
-			// TODO : typeid ? template ?
+		template<typename external_type>
+		void readBuffer(external_type * buffer, const typename Parameters<data_type>::size_type length)
+		{
+			this->data().resize(length);
 
-			std::transform(buffer, buffer + length, _baseData.begin(), MathUtil::ShortToDouble);
+			if(typeid(data_type) == typeid(external_type))
+			{
+				std::copy(buffer, buffer + length, this->data().begin());
+			}
+			else
+			{
+				std::transform(buffer, buffer + length, this->data().begin(), MathUtil::ToDouble<external_type>);
+			}
 		}
 };

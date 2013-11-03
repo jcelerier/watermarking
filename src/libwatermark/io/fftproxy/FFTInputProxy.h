@@ -39,8 +39,8 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 
 				// 3. Empaqueter le spectre donné par la FFT
 				auto b = new CData<typename FFTProxy<data_type>::complex_type>;
-				//TODO optimiser ça
-				b->_data = this->_fft->spectrum();
+
+				b->_data = this->_fft->moveSpectrum();
 				return b;
 			}
 

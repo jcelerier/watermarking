@@ -164,9 +164,10 @@ namespace MathUtil
 	 * @param x Integer to convert.
 	 * @return double Corresponding floating point value.
 	 */
-	double ShortToDouble(const short x)
+	template<typename T>
+	double ToDouble(const T x)
 	{
-		const double normalizationFactor = 1.0 / std::pow(2, sizeof(short) * 8 - 1);
+		const double normalizationFactor = std::pow(2.0, -(sizeof(T) * 8.0 - 1.0));
 		return x * normalizationFactor;
 	}
 	/**
@@ -175,10 +176,11 @@ namespace MathUtil
 	 * @param x Double to convert.
 	 * @return short Corresponding short value.
 	 */
-	short DoubleToShort(const double x)
+	template<typename T>
+	T FromDouble(const double x)
 	{
-		const unsigned int denormalizationFactor = (int) std::pow(2, sizeof(short) * 8 - 1);
-		return (short) (x * denormalizationFactor);
+		const unsigned long denormalizationFactor = (unsigned long) std::pow(2, sizeof(T) * 8 - 1);
+		return x * denormalizationFactor;
 	}
 
 

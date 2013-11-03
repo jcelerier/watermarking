@@ -26,16 +26,19 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 			auto& spectrum = dynamic_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data)->_data;
 
 			// Petit exemple qui va multiplier l'amplitude de chaque bande de spectre par _gain.
-			for (auto i = 0U; i < spectrum.size(); ++i)
+			for(auto& channel : spectrum)
 			{
-				double phase, power, magnitude;
+				for (auto i = 0U; i < channel.size(); ++i)
+				{
+					double phase, power, magnitude;
 
-				power = std::norm(spectrum[i]);
-				phase = std::arg(spectrum[i]);
+					power = std::norm(channel[i]);
+					phase = std::arg(channel[i]);
 
-				magnitude = std::sqrt(power) * _gain;
+					magnitude = std::sqrt(power) * _gain;
 
-				spectrum[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
+					channel[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
+				}
 			}
 
 		}

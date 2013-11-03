@@ -18,8 +18,11 @@
  * Il faudra surcharger l'opérateur de foncteur de WatermarkBase et lui rajouter ça en paramètre.
  */
 //A faire: gestion de la stéréo
-
+//TODO multicanal
+//TODO module de sortie audio
+//TODO module de sortie gnuplot
 // Test : réduction spectrale de gain (on divise chaque bande du spectre)
+
 void SpectralTest()
 {
 	// Instanciation des paramètres
@@ -111,7 +114,7 @@ void TestFFTWManager()
 	for(auto i = 0U; i < conf.bufferSize; ++i)
 		std::cerr << fft_m->input()[i] << "\t\t" << fft_m->output()[i] / (double) conf.bufferSize << std::endl;
 }
-
+/*
 void BufferTest()
 {
 	Parameters<double> conf;
@@ -145,10 +148,10 @@ void BufferTest()
 	outfile.write(in_test,
 				  n);
 }
-
+*/
 int main()
 {
-	BufferTest();
+	TemporalTest();
 	return 0;
 }
 

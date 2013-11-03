@@ -41,14 +41,17 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		virtual void writeNextBuffer(IData* abstract_buffer) override
 		{
 			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
-			this->data().resize(this->data().size() + this->conf.bufferSize);
 
-			_copy->copy(buffer.begin(),
-						this->data().begin(),
-						this->pos(),
-						this->conf.bufferSize,
-						this->data().size());
+			for(auto i = 0U; i < this->data().size(); ++i)
+			{
+				this->data()[i].resize(this->data()[i].size() + this->conf.bufferSize);
 
+				_copy->copy(buffer[i].begin(),
+							this->data()[i].begin(),
+							this->pos(),
+							this->conf.bufferSize,
+							this->data()[i].size());
+			}
 			this->pos() += _copy->frameIncrement();
 		}
 

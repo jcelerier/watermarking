@@ -9,5 +9,5 @@ struct IData
 template<typename T>
 struct CData : public IData
 {
-	std::vector<T> _data = {};
+	std::vector<std::vector<T>> _data = {};
 };

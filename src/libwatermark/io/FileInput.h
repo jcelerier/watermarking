@@ -19,9 +19,12 @@ class FileInput : public InputManagerBase<data_type>
 
 		void readFile(const char * str)
 		{
-			SndfileHandle myf = SndfileHandle(str);
+			auto myf = SndfileHandle(str);
 
-			this->data().resize(myf.frames());
-			myf.read(this->data().data(), myf.frames());
+			std::vector<data_type> vec;
+			vec.resize(myf.frames() * myf.channels());
+			myf.read(vec.data(), myf.frames());
+
+			this->data() = MathUtil::deinterleave(vec, myf.channels());
 		}
 };

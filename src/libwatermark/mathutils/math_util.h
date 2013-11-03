@@ -67,17 +67,17 @@ namespace MathUtil
 	{
 		T val = baseval;
 
-		#pragma omp parallel
+#pragma omp parallel
 		{
 			T map_val = baseval;
 
-			#pragma omp for nowait
+#pragma omp for nowait
 			for (auto i = 0U; i < size; ++i)
 			{
 				map_val = reduce(map_val, map(*(in + i)));
 			}
 
-			#pragma omp critical
+#pragma omp critical
 			val = reduce(val, map_val);
 		}
 
@@ -102,17 +102,17 @@ namespace MathUtil
 	{
 		T val = baseval;
 
-		#pragma omp parallel
+#pragma omp parallel
 		{
 			T map_val = baseval;
 
-			#pragma omp for nowait
+#pragma omp for nowait
 			for (auto i = 0U; i < size; ++i)
 			{
 				map_val = reduce(map_val, map(*(in + i), *(in2 + i)));
 			}
 
-			#pragma omp critical
+#pragma omp critical
 			val = reduce(val, map_val);
 		}
 
@@ -183,6 +183,37 @@ namespace MathUtil
 		return x * denormalizationFactor;
 	}
 
+	// Permet de passer d'un format entrelacé (alternance sample gauche et droit par exemple)
+	// à un format désentrelacé (un tableau par canal)
+	template<typename T>
+	std::vector<std::vector<T> >&& deinterleave(std::vector<T>& in, unsigned int channels)
+	{
+		std::vector<std::vector<T>> out;
+		out.resize(channels);
+		auto j = 0U;
+		for(auto i = 0U; i < in.size(); ++i)
+		{
+			out[i % channels][j] = in[i];
+			if(!(i % channels - 1))
+			{
+				++j;
+			}
+		}
+		return std::move(out);
+	}
+
+	template<typename T>
+	std::vector<T>&& interleave(std::vector<std::vector<T>>& in)
+	{
+		std::vector<T> out;
+		out.resize(in.size() * in[0].size());
+
+		for(auto chan = 0U; chan < in.size(); ++chan)
+			for(auto i = 0U; i < in[0].size(); ++i)
+				out[i + chan] = in[chan][i];
+
+		return std::move(out);
+	}
 
 	// Retourne sqrt(somme des carrés / n)
 	template <typename data_type>

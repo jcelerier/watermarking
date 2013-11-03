@@ -25,7 +25,7 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
-		std::vector<data_type>& data()
+		std::vector<std::vector<data_type>>& data()
 		{
 			return _baseData;
 		}
@@ -35,7 +35,7 @@ class IOManagerBase
 		}
 
 	protected:
-		std::vector<data_type> _baseData = {};
+		std::vector<std::vector<data_type>> _baseData = {};
 		size_type _pos = 0;
 
 		const Parameters<data_type>& conf;

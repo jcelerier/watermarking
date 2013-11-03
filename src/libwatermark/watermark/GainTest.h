@@ -26,10 +26,13 @@ class GainTest : public WatermarkBase<data_type>
 			auto& samples = dynamic_cast<CData<data_type>*>(data)->_data;
 
 			// Petit exemple qui va multiplier tout le tableau par _gain.
-			std::transform(samples.begin(),
-						   samples.end(),
-						   samples.begin(),
-						   [&] (data_type x) { return x * _gain; });
+			for(auto& channel : samples)
+			{
+				std::transform(channel.begin(),
+						channel.end(),
+						channel.begin(),
+						[&] (data_type x) { return x * _gain; });
+			}
 
 		}
 

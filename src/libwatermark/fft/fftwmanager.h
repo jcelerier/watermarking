@@ -15,26 +15,38 @@ class FFTWManager : public FFTManager<data_type>
 		}
 
 		FFTWManager(const FFTWManager<data_type>& orig) = delete;
-
 		const FFTWManager<data_type>& operator=(const FFTWManager<data_type>& orig) = delete;
 
 		virtual ~FFTWManager()
 		{
-			if(plan_fw) fftw_destroy_plan(plan_fw);
-			if(plan_bw) fftw_destroy_plan(plan_bw);
+			for(auto& plan : fw)
+				if(plan) fftw_destroy_plan(plan);
+
+			for(auto& plan : bw)
+				if(plan) fftw_destroy_plan(plan);
 
 			if(!num_instances--)
 				fftw_cleanup();
 		}
 
+		virtual void setChannels(unsigned int n) override
+		{
+			FFTManager<data_type>::setChannels(n);
+			fw.resize(n);
+			bw.resize(n);
+
+		}
+
 		virtual void forward() const override
 		{
-			fftw_execute(plan_fw);
+			for(auto& plan : fw)
+				fftw_execute(plan);
 		}
 
 		virtual void backward() const override
 		{
-			fftw_execute(plan_bw);
+			for(auto& plan : bw)
+				fftw_execute(plan);
 		}
 
 		virtual double normalizationFactor() const override
@@ -44,23 +56,26 @@ class FFTWManager : public FFTManager<data_type>
 
 		virtual void updateSize() override
 		{
-			if(plan_fw) fftw_destroy_plan(plan_fw);
-			if(plan_bw) fftw_destroy_plan(plan_bw);
+			// channels
+			for(auto i = 0U; i < this->_in.size(); ++i)
+			{
+				if(fw[i]) fftw_destroy_plan(fw[i]);
+				fw[i] = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
+												 this->_in[i].data(),
+												 reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
+												 FFTW_ESTIMATE);
 
-			// Initialize the fftw plans
-			plan_fw = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
-										   this->_in.data(),
-										   reinterpret_cast<fftw_complex*>(this->_spectrum.data()),
-										   FFTW_ESTIMATE);
-			plan_bw = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
-										   reinterpret_cast<fftw_complex*>(this->_spectrum.data()),
-										   this->_out.data(),
-										   FFTW_ESTIMATE);
+				if(bw[i]) fftw_destroy_plan(bw[i]);
+				bw[i] = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
+												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
+												  this->_out[i].data(),
+												  FFTW_ESTIMATE);
+			}
 		}
 
 	private:
-		fftw_plan plan_fw = nullptr;
-		fftw_plan plan_bw = nullptr;
+		std::vector<fftw_plan> fw = {};
+		std::vector<fftw_plan> bw = {};
 
 		static unsigned int num_instances;
 };

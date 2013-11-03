@@ -38,6 +38,7 @@ void SpectralTest()
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
 	auto fft_m = new FFTWManager<double>(conf); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	fft_m->setChannels(1); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
@@ -104,15 +105,15 @@ void TestFFTWManager()
 	// Generer une sine
 	Parameters<double> conf;
 	auto fft_m = new FFTWManager<double>(conf);
-
+	fft_m->setChannels(1);
 	for(auto i = 0U; i < conf.bufferSize; ++i)
-		fft_m->input()[i] = sin(440.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate);
+		fft_m->input()[0][i] = sin(440.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate);
 
 	fft_m->forward();
 	fft_m->backward();
 
 	for(auto i = 0U; i < conf.bufferSize; ++i)
-		std::cerr << fft_m->input()[i] << "\t\t" << fft_m->output()[i] / (double) conf.bufferSize << std::endl;
+		std::cerr << fft_m->input()[0][i] << "\t\t" << fft_m->output()[0][i] / (double) conf.bufferSize << std::endl;
 }
 /*
 void BufferTest()

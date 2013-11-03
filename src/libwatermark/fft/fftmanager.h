@@ -17,39 +17,48 @@ class FFTManager
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	protected:
-		std::vector<complex_type> _spectrum = {};
-		std::vector<data_type> _in = {};
-		std::vector<data_type> _out = {};
+		std::vector<std::vector<complex_type>> _spectrum = {};
+		std::vector<std::vector<data_type>> _in = {};
+		std::vector<std::vector<data_type>> _out = {};
 
 		const Parameters<data_type>& conf;
 
-
 	public:
-
 		FFTManager(const Parameters<data_type> & config):
 			conf(config)
 		{
-			_in.resize(conf.bufferSize);
-			_out.resize(conf.bufferSize);
-			_spectrum.resize(spectrumSize());
 		}
 
 		virtual ~FFTManager() = default;
+
+		virtual void setChannels(unsigned int n)
+		{
+			_in.resize(n);
+			_out.resize(n);
+			_spectrum.resize(n);
+
+			for(auto i = 0U; i < n; ++i)
+			{
+				_in[i].resize(conf.bufferSize);
+				_out[i].resize(conf.bufferSize);
+				_spectrum[i].resize(spectrumSize());
+			}
+		}
 
 		/**
 		 * @brief input
 		 * @return a pointer to the input data.
 		 */
-		virtual std::vector<data_type>& input() final
+		virtual std::vector<std::vector<data_type> >& input() final
 		{
 			return _in;
 		}
 
 		/**
-		 * @brief output
-		 * @return a pointer to the output data.
-		 */
-		virtual std::vector<data_type>& output() final
+		* @brief output
+		* @return a pointer to the output data.
+		*/
+		virtual std::vector<std::vector<data_type> >& output() final
 		{
 			return _out;
 		}
@@ -58,7 +67,7 @@ class FFTManager
 		 * @brief Spectrum
 		 * @return The spectrum
 		 */
-		virtual std::vector<complex_type>&& moveSpectrum() final
+		virtual std::vector<std::vector<complex_type> >&& moveSpectrum() final
 		{
 			return std::move(_spectrum);
 		}
@@ -67,7 +76,7 @@ class FFTManager
 		 * @brief Spectrum
 		 * @return The spectrum
 		 */
-		virtual void setSpectrum(std::vector<complex_type>&& v) final
+		virtual void setSpectrum(std::vector<std::vector<complex_type>>&& v) final
 		{
 			_spectrum = std::move(v);
 		}

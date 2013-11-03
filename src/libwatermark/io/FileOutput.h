@@ -15,13 +15,14 @@ class FileOutput : public OutputManagerBase<data_type>
 
 		void writeFile(const char * str)
 		{
-			auto v = MathUtil::interleave(this->data());
+			auto tmp = MathUtil::interleave(this->v());
+
 
 			auto format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-			auto channels = this->data().size();
+			int channels = (int) this->v().size();
 			SndfileHandle outfile(str, SFM_WRITE, format, channels, (int) this->conf.samplingRate);
 
-			outfile.write(v.data(),
-						  v.size());
+			outfile.write(tmp.data(),
+						  tmp.size());
 		}
 };

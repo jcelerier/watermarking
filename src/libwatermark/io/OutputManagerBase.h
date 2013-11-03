@@ -41,21 +41,24 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		virtual void writeNextBuffer(IData* abstract_buffer) override
 		{
 			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
-
-			for(auto i = 0U; i < this->data().size(); ++i)
+			// On met le bon nombre de canaux
+			if(this->v().size() != buffer.size())
 			{
-				this->data()[i].resize(this->data()[i].size() + this->conf.bufferSize);
+				this->v().resize(buffer.size());
+			}
+
+			for(auto i = 0U; i < this->v().size(); ++i)
+			{
+				this->v()[i].resize(this->v()[i].size() + this->conf.bufferSize);
 
 				_copy->copy(buffer[i].begin(),
-							this->data()[i].begin(),
+							this->v()[i].begin(),
 							this->pos(),
 							this->conf.bufferSize,
-							this->data()[i].size());
+							this->v()[i].size());
 			}
 			this->pos() += _copy->frameIncrement();
 		}
-
-
 };
 
 typedef std::shared_ptr<IOutputManager> Output_p;

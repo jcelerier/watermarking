@@ -8,6 +8,9 @@
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {
+		using IOManagerBase<data_type>::pos;
+		using FFTProxy<data_type>::_fft;
+
 	private:
 		Input_p _inputImpl = nullptr;
 
@@ -22,25 +25,30 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 
 		virtual IData* getNextBuffer() final override
 		{
-			auto input_real = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get());
-			if(this->pos() < input_real->_baseData.size())
+			auto input_mgr = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get());
+
+			if(this->pos() < input_mgr->_baseData[0].size())
 			{
-				// 1. copier la partie du fichier à traiter
-				this->_copy->copy(input_real->_baseData.begin(),
-							this->_fft->input().begin(),
-							this->pos(),
-							input_real->_baseData.size(),
-							FFTProxy<data_type>::conf.bufferSize);
+				// 1. copier la partie du buffer à traiter
+				for(auto i = 0U; i < this->v().size(); ++i)
+				{
+					this->_copy->copy(input_mgr->v()[i].begin(),
+									_fft->input()[i].begin(),
+									pos(),
+									input_mgr->v()[i].size(),
+									FFTProxy<data_type>::conf.bufferSize);
+				}
+
 
 				// 2. Effectuer la FFT
-				this->_fft->forward();
+				_fft->forward();
 
-				this->pos() += this->_copy->frameIncrement();
+				pos() += this->_copy->frameIncrement();
 
 				// 3. Empaqueter le spectre donné par la FFT
 				auto b = new CData<typename FFTProxy<data_type>::complex_type>;
 
-				b->_data = this->_fft->moveSpectrum();
+				b->_data = _fft->moveSpectrum();
 				return b;
 			}
 

@@ -16,15 +16,15 @@ class BufferInput : public InputManagerBase<data_type>
 		template<typename external_type>
 		void readBuffer(external_type * buffer, const typename Parameters<data_type>::size_type length)
 		{
-			this->data().resize(length);
+			this->v().resize(length);
 
 			if(typeid(data_type) == typeid(external_type))
 			{
-				std::copy(buffer, buffer + length, this->data().begin());
+				std::copy(buffer, buffer + length, this->v().begin());
 			}
 			else
 			{
-				std::transform(buffer, buffer + length, this->data().begin(), MathUtil::ToDouble<external_type>);
+				std::transform(buffer, buffer + length, this->v().begin(), MathUtil::ToDouble<external_type>);
 			}
 		}
 };

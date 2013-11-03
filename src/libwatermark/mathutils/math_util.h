@@ -12,7 +12,6 @@ namespace MathUtil
 	 * @param val Complex value
 	 * @return x^2 + y^2
 	 */
-	//TODO std::bind ?
 	template <typename data_type>
 	inline data_type CplxToPower(const std::complex<data_type> val)
 	{
@@ -186,24 +185,26 @@ namespace MathUtil
 	// Permet de passer d'un format entrelacé (alternance sample gauche et droit par exemple)
 	// à un format désentrelacé (un tableau par canal)
 	template<typename T>
-	std::vector<std::vector<T> >&& deinterleave(std::vector<T>& in, unsigned int channels)
+	std::vector<std::vector<T> > deinterleave(std::vector<T>& in, unsigned int channels, unsigned int frames)
 	{
 		std::vector<std::vector<T>> out;
 		out.resize(channels);
-		auto j = 0U;
-		for(auto i = 0U; i < in.size(); ++i)
+
+		for(auto i = 0U; i < channels; ++i)
 		{
-			out[i % channels][j] = in[i];
-			if(!(i % channels - 1))
+			out[i].resize(frames);
+			int k = i + 1;
+			for(auto j = 0U; j < frames; ++j)
 			{
-				++j;
+				out[i][j] = in[k * j];
 			}
 		}
-		return std::move(out);
+
+		return out;
 	}
 
 	template<typename T>
-	std::vector<T>&& interleave(std::vector<std::vector<T>>& in)
+	std::vector<T> interleave(std::vector<std::vector<T>>& in)
 	{
 		std::vector<T> out;
 		out.resize(in.size() * in[0].size());
@@ -212,7 +213,7 @@ namespace MathUtil
 			for(auto i = 0U; i < in[0].size(); ++i)
 				out[i + chan] = in[chan][i];
 
-		return std::move(out);
+		return out;
 	}
 
 	// Retourne sqrt(somme des carrés / n)

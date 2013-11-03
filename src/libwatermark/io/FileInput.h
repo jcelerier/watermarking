@@ -25,6 +25,6 @@ class FileInput : public InputManagerBase<data_type>
 			vec.resize(myf.frames() * myf.channels());
 			myf.read(vec.data(), myf.frames());
 
-			this->data() = MathUtil::deinterleave(vec, myf.channels());
+			this->v() = MathUtil::deinterleave(vec, myf.channels(), myf.frames());
 		}
 };

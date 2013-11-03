@@ -18,14 +18,14 @@ class BufferOutput : public OutputManagerBase<data_type>
 		{
 			if(typeid(data_type) == typeid(external_type))
 			{
-				std::copy(this->data().begin(),
-						  this->data().end(),
+				std::copy(this->v().begin(),
+						  this->v().end(),
 						  address);
 			}
 			else
 			{
-				std::transform(this->data().begin(),
-							   this->data().end(),
+				std::transform(this->v().begin(),
+							   this->v().end(),
 							   address,
 							   MathUtil::FromDouble<external_type>);
 			}

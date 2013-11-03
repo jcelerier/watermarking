@@ -41,21 +41,27 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 		// Renvoie nullptr quand plus rien
 		virtual IData* getNextBuffer() override
 		{
-			if(this->pos() < this->data()[0].size())
+			if(this->pos() < this->v()[0].size())
 			{
+				// Création d'un truc qui va contenir les data
 				auto buffer = new CData<data_type>;
-				buffer->_data.resize(this->data().size());
+				buffer->_data.resize(this->v().size());
 
-				for(auto i = 0U; i < this->data().size(); ++i)
+				// Remplissage pour chaque canal
+				for(auto i = 0U; i < this->v().size(); ++i)
 				{
 					buffer->_data[i].resize(this->conf.bufferSize);
 
-					_copy->copy(this->data()[i].begin(),
+					_copy->copy(this->v()[i].begin(),
 								buffer->_data[i].begin(),
 								this->pos(),
-								this->data()[i].size(),
+								this->v()[i].size(),
 								this->conf.bufferSize);
 				}
+
+				//for(int i = 0;i < 50; ++i)
+				//	std::cerr << buffer->_data[0][i] << " ";
+
 				this->pos() += _copy->frameIncrement();
 				return buffer;
 			}

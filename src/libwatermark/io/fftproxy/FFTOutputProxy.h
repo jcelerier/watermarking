@@ -9,7 +9,8 @@
 template <typename data_type>
 class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::pos;
+		using OutputManagerBase<data_type>::pos;
+		using OutputManagerBase<data_type>::copyHandler;
 		using FFTProxy<data_type>::_fft;
 	private:
 		Output_p _outputImpl = nullptr;
@@ -34,7 +35,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 			}
 
 			// 0. We put our buffer back in the FFT.
-			_fft->spectrum() = buffer;
+			_fft->spectrum() = std::move(buffer);
 
 			// 1. Perform reverse FFT
 			_fft->backward();
@@ -42,21 +43,21 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 			// 2. Copy the content of the FFT output into inner buffer
 			for(auto i = 0U; i < channels; ++i) // Pour chaque canal
 			{
-				out_vec[i].resize(out_vec[i].size() + this->_copy->frameIncrement());
+				out_vec[i].resize(out_vec[i].size() + copyHandler->frameIncrement());
 
-				this->_copy->copy(_fft->output()[i].begin(),
+				copyHandler->copy(_fft->output()[i].begin(),
 								  out_vec[i].begin(),
 								  pos(),
 								  out_vec[i].size());
 
 				// 3. NORMALIZE THE SHIT OUT OF IT
 				std::transform(out_vec[i].begin() + pos(),
-							   out_vec[i].begin() + pos() + this->_copy->frameIncrement(),
+							   out_vec[i].begin() + pos() + copyHandler->frameIncrement(),
 							   out_vec[i].begin() + pos(),
 							   [this] (data_type x) { return x * _fft->normalizationFactor(); }
 				);
 			}
-			pos() += this->_copy->frameIncrement();
+			pos() += copyHandler->frameIncrement();
 		}
 
 

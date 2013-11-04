@@ -7,7 +7,8 @@
 template <typename data_type>
 class FileOutput : public OutputManagerBase<data_type>
 {
-		using OutputManagerBase<data_type>::v;
+		using IOManagerBase<data_type>::pos;
+		using IOManagerBase<data_type>::v;
 	public:
 		FileOutput(const Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)

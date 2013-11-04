@@ -21,6 +21,4 @@ class FFTProxy
 		}
 
 		virtual ~FFTProxy() = default;
-
-
 };

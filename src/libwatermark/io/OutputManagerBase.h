@@ -14,24 +14,27 @@ template <typename data_type>
 class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManager
 {
 	protected:
-		std::shared_ptr<Output<data_type>> _copy = nullptr;
+		std::shared_ptr<Output<data_type>> copyHandler = nullptr;
 
 	public:
+		using IOManagerBase<data_type>::pos;
+		using IOManagerBase<data_type>::v;
+
 		OutputManagerBase(const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
-			_copy(new OutputSimple<data_type>(cfg))
+			copyHandler(new OutputSimple<data_type>(cfg))
 		{
 		}
 
 		OutputManagerBase(const OutputManagerBase<data_type>& orig):
 			IOManagerBase<data_type>(orig.conf),
-			_copy(*orig._copy.get())
+			copyHandler(*orig.copyHandler.get())
 		{
 		}
 
 		OutputManagerBase(Output<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
-			_copy(copy)
+			copyHandler(copy)
 		{
 		}
 
@@ -42,22 +45,22 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		{
 			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
 			// On met le bon nombre de canaux
-			if(this->v().size() != buffer.size())
+			if(v().size() != buffer.size())
 			{
-				this->v().resize(buffer.size());
+				v().resize(buffer.size());
 			}
 
-			for(auto i = 0U; i < this->v().size(); ++i)
+			for(auto i = 0U; i < v().size(); ++i)
 			{
-				this->v()[i].resize(this->v()[i].size() + this->conf.bufferSize);
+				v()[i].resize(v()[i].size() + this->conf.bufferSize);
 
-				_copy->copy(buffer[i].begin(),
-							this->v()[i].begin(),
-							this->pos(),
-							this->v()[i].size());
+				copyHandler->copy(buffer[i].begin(),
+							v()[i].begin(),
+							pos(),
+							v()[i].size());
 			}
 
-			this->pos() += _copy->frameIncrement();
+			pos() += copyHandler->frameIncrement();
 		}
 };
 

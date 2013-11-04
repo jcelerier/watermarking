@@ -14,27 +14,27 @@ class IInputManager
 template <typename data_type>
 class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 {
-		using IOManagerBase<data_type>::pos;
-
 	protected:
-		std::shared_ptr<Input<data_type>> _copy = nullptr;
+		std::shared_ptr<Input<data_type>> copyHandler = nullptr;
 
 	public:
+		using IOManagerBase<data_type>::pos;
+		using IOManagerBase<data_type>::v;
 		InputManagerBase(const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
-			_copy(new InputSimple<data_type>(cfg))
+			copyHandler(new InputSimple<data_type>(cfg))
 		{
 		}
 
 		InputManagerBase(const InputManagerBase<data_type>& orig):
 			IOManagerBase<data_type>(orig.conf),
-			_copy(*orig._copy.get())
+			copyHandler(*orig.copyHandler.get())
 		{
 		}
 
 		InputManagerBase(Input<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
-			_copy(copy)
+			copyHandler(copy)
 		{
 		}
 
@@ -43,8 +43,8 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 		// Renvoie nullptr quand plus rien
 		virtual IData* getNextBuffer() override
 		{
-			auto channels = this->v().size();
-			auto frames = this->v()[0].size();
+			auto channels = v().size();
+			auto frames = v()[0].size();
 
 			if(pos() < frames)
 			{
@@ -57,13 +57,13 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 				{
 					buffer->_data[i].resize(this->conf.bufferSize);
 
-					_copy->copy(this->v()[i].begin(),
+					copyHandler->copy(v()[i].begin(),
 								buffer->_data[i].begin(),
 								pos(),
 								frames);
 				}
 
-				this->pos() += _copy->frameIncrement();
+				pos() += copyHandler->frameIncrement();
 				return buffer;
 			}
 

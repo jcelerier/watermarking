@@ -10,6 +10,9 @@
 template <typename data_type>
 class FileInput : public InputManagerBase<data_type>
 {
+		using IOManagerBase<data_type>::pos;
+		using IOManagerBase<data_type>::v;
+
 	public:
 		FileInput(std::string filename, const Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
@@ -29,6 +32,6 @@ class FileInput : public InputManagerBase<data_type>
 				myf.read(vec.data() + i * (myf.frames() - 1),  myf.frames() - 1);
 			}
 
-			this->v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
+			v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
 		}
 };

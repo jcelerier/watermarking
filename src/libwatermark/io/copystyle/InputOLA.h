@@ -31,7 +31,6 @@ class InputOLA : public Input<data_type>
 			{
 				std::copy_n(in + pos, big_vector_length - pos, out);
 				std::fill_n(out + big_vector_length - pos, frameIncrement() - (big_vector_length - pos), 0);
-
 			}
 		}
 

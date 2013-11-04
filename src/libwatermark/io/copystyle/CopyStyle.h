@@ -27,7 +27,6 @@ class CopyStyle : public ICopyStyle
 				  size_type pos,
 				  size_type big_vector_length) = 0;
 
-
 		virtual size_type frameIncrement() = 0;
 
 	protected:

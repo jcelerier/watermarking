@@ -28,18 +28,8 @@ class WatermarkManager
 		{
 
 		}
-		WatermarkManager(const WatermarkManager<data_type>& sm):
-			conf(sm.conf)
-		{
-			_watermark.reset(sm._watermark->clone());
-		}
-
-		const WatermarkManager& operator=(const WatermarkManager<data_type>& sm)
-		{
-			_watermark.reset(sm._watermark->clone());
-
-			return *this;
-		}
+		WatermarkManager(const WatermarkManager<data_type>& sm) = delete;
+		const WatermarkManager& operator=(const WatermarkManager<data_type>& sm) = delete;
 
 		void onDataUpdate()
 		{

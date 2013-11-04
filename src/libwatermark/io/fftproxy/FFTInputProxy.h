@@ -9,7 +9,8 @@
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::pos;
+		using InputManagerBase<data_type>::pos;
+		using InputManagerBase<data_type>::copyHandler;
 		using FFTProxy<data_type>::_fft;
 
 	private:
@@ -37,7 +38,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 				// 1. copier la partie du buffer à traiter
 				for(auto i = 0U; i < channels; ++i)
 				{
-					this->_copy->copy(vec[i].begin(),
+					copyHandler->copy(vec[i].begin(),
 									_fft->input()[i].begin(),
 									pos(),
 									frames);
@@ -50,9 +51,9 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 				// 3. Empaqueter le spectre donné par la FFT
 				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
 
-				buffer->_data = _fft->spectrum();
+				buffer->_data = std::move(_fft->spectrum());
 
-				pos() += this->_copy->frameIncrement();
+				pos() += copyHandler->frameIncrement();
 				return buffer;
 			}
 

@@ -26,8 +26,6 @@ SOURCES +=
 HEADERS += \
         subtraction/algorithms.h \
         mathutils/math_util.h \
-        fft/fftmanager.h \
-        fft/fftwmanager.h \
     io/IOManagerBase.h \
     io/InputManagerBase.h \
     io/OutputManagerBase.h \
@@ -39,8 +37,6 @@ HEADERS += \
     io/BufferInput.h \
     io/BufferOutput.h \
     io/copystyle/CopyStyle.h \
-    io/copystyle/Input.h \
-    io/copystyle/Output.h \
     Parameters.h \
     Data.h \
     io/FFTProxy.h \
@@ -52,4 +48,8 @@ HEADERS += \
     WatermarkManager.h \
     watermark/SpectralGain.h \
     watermark/WatermarkBase.h \
-    watermark/SpectralWatermarkBase.h
+    watermark/SpectralWatermarkBase.h \
+    io/copystyle/InputCopy.h \
+    io/copystyle/OutputCopy.h \
+    fft/FFTManager.h \
+    fft/FFTWManager.h

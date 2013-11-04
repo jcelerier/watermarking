@@ -1,7 +1,7 @@
 #pragma once
 #include <fftw3.h>
 
-#include "fftmanager.h"
+#include "FFTManager.h"
 
 template <typename data_type>
 class FFTWManager : public FFTManager<data_type>

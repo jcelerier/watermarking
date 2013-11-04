@@ -27,7 +27,7 @@ class FileInput : public InputManagerBase<data_type>
 			std::vector<data_type> vec;
 			vec.resize(myf.frames() * myf.channels());
 
-			for(int i = 0; i < myf.channels(); ++i)
+			for(auto i = 0U; i < myf.channels(); ++i)
 				myf.read(vec.data() + i * (myf.frames() - 1),  myf.frames() - 1);
 
 			v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());

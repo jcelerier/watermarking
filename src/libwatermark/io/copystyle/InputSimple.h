@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-#include "Input.h"
+#include "InputCopy.h"
 
 template <typename data_type>
 class InputSimple: public InputCopy<data_type>

@@ -13,6 +13,8 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 	public:
 		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
+		using IOManagerBase<data_type>::channels;
+		using IOManagerBase<data_type>::frames;
 
 		OutputManagerBase(const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
@@ -35,19 +37,19 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
 			// On met le bon nombre de canaux
-			if(v().size() != buffer.size())
+			if(channels() != buffer.size())
 			{
 				v().resize(buffer.size());
 			}
 
-			for(auto i = 0U; i < v().size(); ++i)
+			for(auto i = 0U; i < channels(); ++i)
 			{
-				v()[i].resize(v()[i].size() + this->conf.bufferSize);
+				v()[i].resize(frames() + this->conf.bufferSize);
 
 				copyHandler->copy(buffer[i].begin(),
-							v()[i].begin(),
-							pos(),
-							v()[i].size());
+								  v()[i].begin(),
+								  pos(),
+								  frames());
 			}
 
 			pos() += copyHandler->frameIncrement();

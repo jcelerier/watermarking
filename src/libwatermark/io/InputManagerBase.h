@@ -14,6 +14,9 @@ class InputManagerBase : public IOManagerBase<data_type>
 	public:
 		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
+		using IOManagerBase<data_type>::channels;
+		using IOManagerBase<data_type>::frames;
+
 		InputManagerBase(const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(new InputSimple<data_type>(cfg))
@@ -32,25 +35,21 @@ class InputManagerBase : public IOManagerBase<data_type>
 
 		virtual Audio_p getNextBuffer()
 		{
-
-			auto channels = v().size();
-			auto frames = v()[0].size();
-
-			if(pos() < frames)
+			if(pos() < frames())
 			{
 				auto buffer = new CData<data_type>;
 				// Création d'un wrapper qui va contenir les data
-				buffer->_data.resize(channels);
+				buffer->_data.resize(channels());
 
 				// Remplissage pour chaque canal
-				for(auto i = 0U; i < channels; ++i)
+				for(auto i = 0U; i < channels(); ++i)
 				{
 					buffer->_data[i].resize(this->conf.bufferSize);
 
 					copyHandler->copy(v()[i].begin(),
-								buffer->_data[i].begin(),
-								pos(),
-								frames);
+									  buffer->_data[i].begin(),
+									  pos(),
+									  frames());
 				}
 
 				pos() += copyHandler->frameIncrement();

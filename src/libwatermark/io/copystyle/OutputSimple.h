@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-#include "Output.h"
+#include "OutputCopy.h"
 
 template <typename data_type>
 class OutputSimple : public OutputCopy<data_type>

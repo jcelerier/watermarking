@@ -9,6 +9,8 @@ class FileOutput : public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
+		using IOManagerBase<data_type>::channels;
+		using IOManagerBase<data_type>::frames;
 	public:
 		FileOutput(const Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)
@@ -19,10 +21,7 @@ class FileOutput : public OutputManagerBase<data_type>
 		{
 			auto tmp = MathUtil::interleave(v());
 
-			//std::cerr << v()[1][3] << " = " << tmp[7] << std::endl;
-			auto format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-			int channels = (int) v().size();
-			SndfileHandle outfile(str, SFM_WRITE, format, channels, (int) this->conf.samplingRate);
+			SndfileHandle outfile(str, SFM_WRITE, SF_FORMAT_WAV | SF_FORMAT_PCM_16, (int) channels(), (int) this->conf.samplingRate);
 
 			outfile.write(tmp.data(),
 						  tmp.size());

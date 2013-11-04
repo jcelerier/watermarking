@@ -9,6 +9,8 @@
 template <typename data_type>
 class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data_type>
 {
+		using IOManagerBase<data_type>::channels;
+		using IOManagerBase<data_type>::frames;
 		using OutputManagerBase<data_type>::pos;
 		using OutputManagerBase<data_type>::copyHandler;
 		using FFTProxy<data_type>::_fft;
@@ -25,14 +27,18 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		virtual ~FFTOutputProxy() = default;
 
+		virtual std::vector<std::vector<data_type> >& v()
+		{
+			return _outputImpl->v();
+		}
+
 		virtual void writeNextBuffer(Audio_p& buf) final override
 		{
 			auto& buffer = static_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf.get())->_data;
 
-			auto channels = buffer.size();
-			if(v().size() != channels)
+			if(channels() != buffer.size())
 			{
-				v().resize(channels);
+				v().resize(buffer.size());
 			}
 
 			// 0. We put our buffer back in the FFT.
@@ -42,7 +48,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 			_fft->backward();
 
 			// 2. Copy the content of the FFT output into inner buffer
-			for(auto i = 0U; i < channels; ++i) // Pour chaque canal
+			for(auto i = 0U; i < channels(); ++i) // Pour chaque canal
 			{
 				v()[i].resize(v()[i].size() + copyHandler->frameIncrement());
 
@@ -59,11 +65,6 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 				);
 			}
 			pos() += copyHandler->frameIncrement();
-		}
-
-		virtual std::vector<std::vector<data_type> >& v()
-		{
-			return _outputImpl->v();
 		}
 };
 

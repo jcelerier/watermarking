@@ -9,6 +9,9 @@
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {
+		using IOManagerBase<data_type>::channels;
+		using IOManagerBase<data_type>::frames;
+
 		using InputManagerBase<data_type>::pos;
 		using InputManagerBase<data_type>::copyHandler;
 		using FFTProxy<data_type>::_fft;
@@ -26,25 +29,26 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		{
 		}
 
+		virtual std::vector<std::vector<data_type> >& v()
+		{
+			return _inputImpl->v();
+		}
+
 		virtual ~FFTInputProxy() = default;
 
 		virtual Audio_p getNextBuffer() final override
 		{
-			auto channels = v().size();
-			auto frames = v()[0].size();
-
-			if(pos() < frames)
+			if(pos() < frames())
 			{
 				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
 				// 1. copier la partie du buffer à traiter
-				for(auto i = 0U; i < channels; ++i)
+				for(auto i = 0U; i < channels(); ++i)
 				{
 					copyHandler->copy(v()[i].begin(),
-									_fft->input()[i].begin(),
-									pos(),
-									frames);
+									  _fft->input()[i].begin(),
+									  pos(),
+									  frames());
 				}
-
 
 				// 2. Effectuer la FFT
 				_fft->forward();
@@ -59,8 +63,4 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			return Audio_p(nullptr);
 		}
 
-		virtual std::vector<std::vector<data_type> >& v()
-		{
-			return _inputImpl->v();
-		}
 };

@@ -2,7 +2,7 @@
 
 #include "../InputManagerBase.h"
 #include "../OutputManagerBase.h"
-#include "../../fft/fftwmanager.h"
+#include "../../fft/FFTManager.h"
 
 template <typename data_type>
 class FFTProxy

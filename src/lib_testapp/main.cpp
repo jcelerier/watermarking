@@ -4,7 +4,7 @@
 #include "watermark/GainTest.h"
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
-#include "fft/fftwmanager.h"
+#include "fft/FFTWManager.h"
 #include "watermark/SpectralGain.h"
 #include "io/BufferInput.h"
 #include "io/BufferOutput.h"
@@ -19,8 +19,8 @@
  */
 //TODO module de sortie audio
 //TODO module de sortie gnuplot
-// Test : réduction spectrale de gain (on divise chaque bande du spectre)
 
+// Test : réduction spectrale de gain (on divise chaque bande du spectre)
 void SpectralTest()
 {
 	// Instanciation des paramètres
@@ -30,13 +30,13 @@ void SpectralTest()
 	WatermarkManager<double> manager(conf);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_stereo.wav", conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
 	auto output = new FileOutput<double>(conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
-	fft_m->setChannels(2); // important.
+	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
@@ -52,7 +52,41 @@ void SpectralTest()
 	manager.execute();
 
 	// On écrit dans un fichier de sortie.
-	output->writeFile("out_test_spec.wav");
+	output->writeFile("out_test_spec_mono.wav");
+}
+
+void SpectralTestStereo()
+{
+	// Instanciation des paramètres
+	Parameters<double> conf;
+
+	// Instanciation de la classe qui gère tout
+	WatermarkManager<double> manager(conf);
+
+	// Instanciation du mode d'entrée et de sortie
+	auto input = new FileInput<double>("input_stereo.wav", conf);
+	auto output = new FileOutput<double>(conf);
+
+	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
+	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
+	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	fft_m->setChannels((unsigned int) input->channels()); // important.
+	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
+	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
+
+	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
+	auto algorithm = new SpectralGain<double>(conf);
+
+	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
+	manager.input.reset(fft_i);
+	manager.output.reset(fft_o);
+	manager.algorithm.reset(algorithm);
+
+	// On fait tourner l'algo
+	manager.execute();
+
+	// On écrit dans un fichier de sortie.
+	output->writeFile("out_test_spec_stereo.wav");
 }
 
 // Test : réduction temporelle de gain ( on divise chaque sample).
@@ -138,7 +172,7 @@ void TestFFTWManager()
 
 	delete fft_m;
 }
-/*
+
 void BufferTest()
 {
 	Parameters<double> conf;
@@ -147,7 +181,7 @@ void BufferTest()
 	short* in_test = new short[n];
 
 	for(auto i = 0U; i < n; ++i)
-		in_test[i] = 16384 * sin(220.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate);
+		in_test[i] = (short) (16384 * sin(220.0 * (2.0 * 3.1415) * i / (double) conf.samplingRate));
 
 	auto format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
 	auto channels = 1;
@@ -156,30 +190,33 @@ void BufferTest()
 	auto input = new BufferInput<double>(conf);
 	auto output = new BufferOutput<double>(conf);
 
-	input->readBuffer(in_test, n);
+	input->readBuffer(in_test, n, 1);
 
 	auto algorithm = new GainTest<double>(conf);
 
-	auto manager = new WatermarkManager<double>(conf);
-	manager->_input.reset(input);
-	manager->_output.reset(output);
-	manager->_watermark.reset(algorithm);
+	WatermarkManager<double> manager(conf);
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
 
-	manager->execute();
+	manager.execute();
 
 	output->writeOutBuffer(in_test);
 
 	outfile.write(in_test,
 				  n);
+	delete[] in_test;
 }
-*/
+
 int main()
 {
 	//TestFFTWManager();
+	BufferTest();
 	TemporalTest();
 	TemporalTestShorts();
 	TemporalTestStereo();
 	SpectralTest();
+	SpectralTestStereo();
 	return 0;
 }
 

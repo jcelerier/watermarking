@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Output.h"
+#include "OutputCopy.h"
 
 template <typename data_type>
 class OutputOLA : public OutputCopy<data_type>

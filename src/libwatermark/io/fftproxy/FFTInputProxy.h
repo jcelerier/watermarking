@@ -2,6 +2,7 @@
 
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
+#include "../copystyle/InputSimple.h"
 #include "../copystyle/InputOLA.h"
 #include <utility>
 // Templates, never again
@@ -15,9 +16,11 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		Input_p _inputImpl = nullptr;
 
 	public:
-		FFTInputProxy(InputManagerBase<data_type>* input, FFTManager<data_type>* fftmanager, const Parameters<data_type>& cfg):
+		FFTInputProxy(InputManagerBase<data_type>* input,
+					  FFTManager<data_type>* fftmanager,
+					  const Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fftmanager, cfg),
-			InputManagerBase<data_type>(new InputOLA<data_type>(cfg), cfg),
+			InputManagerBase<data_type>(new InputSimple<data_type>(cfg), cfg),
 			_inputImpl(input)
 		{
 		}
@@ -38,7 +41,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 									_fft->input()[i].begin(),
 									pos(),
 									frames,
-									FFTProxy<data_type>::conf.bufferSize);
+									0);
 				}
 
 
@@ -47,6 +50,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 
 				// 3. Empaqueter le spectre donné par la FFT
 				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
+
 				buffer->_data = _fft->spectrum();
 
 				pos() += this->_copy->frameIncrement();

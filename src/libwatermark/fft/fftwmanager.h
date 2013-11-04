@@ -11,7 +11,6 @@ class FFTWManager : public FFTManager<data_type>
 			FFTManager<data_type>(cfg)
 		{
 			num_instances++;
-			updateSize();
 		}
 
 		FFTWManager(const FFTWManager<data_type>& orig) = delete;
@@ -63,9 +62,9 @@ class FFTWManager : public FFTManager<data_type>
 			{
 				if(fw[i]) fftw_destroy_plan(fw[i]);
 				fw[i] = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
-												 this->_in[i].data(),
-												 reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
-												 FFTW_ESTIMATE);
+												  this->_in[i].data(),
+												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
+												  FFTW_ESTIMATE);
 
 				if(bw[i]) fftw_destroy_plan(bw[i]);
 				bw[i] = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,

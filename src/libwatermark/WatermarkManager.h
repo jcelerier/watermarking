@@ -51,7 +51,6 @@ class WatermarkManager
 		{
 			while(auto buf = _input->getNextBuffer())
 			{
-				std::cerr << "coucou\n";
 				(*_watermark)(buf);
 
 				_output->writeNextBuffer(buf);

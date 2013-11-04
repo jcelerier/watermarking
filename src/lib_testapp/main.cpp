@@ -17,8 +17,6 @@
  * Important : pour l'instant il n'y a pas de gestion des "données" à encoder (genre le message qu'on veut mettre dans la watermark).
  * Il faudra surcharger l'opérateur de foncteur de WatermarkBase et lui rajouter ça en paramètre.
  */
-//A faire: gestion de la stéréo
-//TODO multicanal
 //TODO module de sortie audio
 //TODO module de sortie gnuplot
 // Test : réduction spectrale de gain (on divise chaque bande du spectre)
@@ -32,13 +30,13 @@ void SpectralTest()
 	auto manager = new WatermarkManager<double>(conf);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto input = new FileInput<double>("input_stereo.wav", conf);
 	auto output = new FileOutput<double>(conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
 	auto fft_m = new FFTWManager<double>(conf); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
-	fft_m->setChannels(1); // important.
+	fft_m->setChannels(2); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 

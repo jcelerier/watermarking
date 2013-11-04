@@ -3,15 +3,8 @@
 
 #include "../../Parameters.h"
 
-class ICopyStyle
-{
-	public:
-		virtual ~ICopyStyle() = default;
-};
-typedef std::shared_ptr<ICopyStyle> Copy_p;
-
 template <typename data_type>
-class CopyStyle : public ICopyStyle
+class CopyStyle
 {
 	public:
 		using size_type = typename Parameters<data_type>::size_type;
@@ -32,4 +25,3 @@ class CopyStyle : public ICopyStyle
 	protected:
 		const Parameters<data_type>& conf;
 };
-

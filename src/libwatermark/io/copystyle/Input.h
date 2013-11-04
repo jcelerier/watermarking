@@ -3,13 +3,16 @@
 #include "CopyStyle.h"
 
 template <typename data_type>
-class Input: public CopyStyle<data_type>
+class InputCopy: public CopyStyle<data_type>
 {
 	public:
-		Input(const Parameters<data_type>& cfg):
+		InputCopy(const Parameters<data_type>& cfg):
 			CopyStyle<data_type>(cfg)
 		{
 		}
 
-		virtual ~Input() = default;
+		virtual ~InputCopy() = default;
 };
+
+template <typename T>
+using InputCopy_p = std::shared_ptr<InputCopy<T>>;

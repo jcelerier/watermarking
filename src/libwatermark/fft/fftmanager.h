@@ -1,8 +1,8 @@
 #pragma once
-#include <complex>
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <memory>
 
 #include "../Parameters.h"
 
@@ -118,3 +118,6 @@ class FFTManager
 		 */
 		virtual double normalizationFactor() const = 0;
 };
+
+template <typename T>
+using  FFT_p = std::shared_ptr<FFTManager<T>>;

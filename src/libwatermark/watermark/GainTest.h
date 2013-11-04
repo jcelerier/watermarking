@@ -13,17 +13,12 @@ class GainTest : public WatermarkBase<data_type>
 		{
 		}
 
-		virtual GainTest* clone() override
-		{
-			return new GainTest<data_type>(*this);
-		}
-
 		// La seule méthode importante est celle-ci.
 		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
-		virtual void operator()(IData* const data) override
+		virtual void operator()(Audio_p data) override
 		{
 			// Recopier cette ligne
-			auto& samples = dynamic_cast<CData<data_type>*>(data)->_data;
+			auto& samples = static_cast<CData<data_type>*>(data.get())->_data;
 
 			// Petit exemple qui va multiplier tout par _gain.
 			for(auto& channel : samples)

@@ -4,17 +4,17 @@
 #include "Input.h"
 
 template <typename data_type>
-class InputOLA : public Input<data_type>
+class InputOLA : public InputCopy<data_type>
 {
 	public:
 		InputOLA(const Parameters<data_type>& cfg):
-			Input<data_type>(cfg)
+			InputCopy<data_type>(cfg)
 		{
 		}
 
-		virtual typename Input<data_type>::size_type frameIncrement() final override
+		virtual typename InputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return Input<data_type>::conf.bufferSize / 2;
+			return InputCopy<data_type>::conf.bufferSize / 2;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,

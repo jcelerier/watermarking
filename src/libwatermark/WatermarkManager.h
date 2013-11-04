@@ -18,9 +18,9 @@ class WatermarkManager
 
 	public:
 		// Ajouter data : bits à encoder
-		Input_p _input = nullptr;
-		Output_p _output = nullptr;
-		Watermark_p _watermark = nullptr;
+		Input_p<data_type> _input = nullptr;
+		Output_p<data_type> _output = nullptr;
+		Watermark_p<data_type> _watermark = nullptr;
 
 
 		WatermarkManager(const Parameters<data_type>& parameters):
@@ -39,12 +39,11 @@ class WatermarkManager
 		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		void execute()
 		{
-			while(auto buf = _input->getNextBuffer())
+			while(Audio_p buf = _input->getNextBuffer())
 			{
 				(*_watermark)(buf);
 
 				_output->writeNextBuffer(buf);
-				delete buf;
 			}
 		}
 };

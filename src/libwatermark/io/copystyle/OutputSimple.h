@@ -4,11 +4,11 @@
 #include "Output.h"
 
 template <typename data_type>
-class OutputSimple : public Output<data_type>
+class OutputSimple : public OutputCopy<data_type>
 {
 	public:
 		OutputSimple(const Parameters<data_type>& cfg):
-			Output<data_type>(cfg)
+			OutputCopy<data_type>(cfg)
 		{
 		}
 

@@ -35,7 +35,6 @@ class FFTWManager : public FFTManager<data_type>
 			bw.resize(n);
 
 			updateSize();
-
 		}
 
 		virtual void forward() const override
@@ -57,20 +56,20 @@ class FFTWManager : public FFTManager<data_type>
 
 		virtual void updateSize() override
 		{
-			// channels
+			// Attention : FFTW_EXHAUSTIVE écrit dans les array d'entrée.
 			for(auto i = 0U; i < this->_in.size(); ++i)
 			{
 				if(fw[i]) fftw_destroy_plan(fw[i]);
 				fw[i] = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
 												  this->_in[i].data(),
 												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
-												  FFTW_EXHAUSTIVE);
+												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 
 				if(bw[i]) fftw_destroy_plan(bw[i]);
 				bw[i] = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
 												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
 												  this->_out[i].data(),
-												  FFTW_EXHAUSTIVE);
+												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 			}
 		}
 
@@ -83,3 +82,4 @@ class FFTWManager : public FFTManager<data_type>
 
 template<>
 unsigned int FFTWManager<double>::num_instances = 0;
+//TODO autres types

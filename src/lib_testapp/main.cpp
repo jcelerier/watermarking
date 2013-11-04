@@ -27,7 +27,7 @@ void SpectralTest()
 	Parameters<double> conf;
 
 	// Instanciation de la classe qui gère tout
-	auto manager = new WatermarkManager<double>(conf);
+	WatermarkManager<double> manager(conf);
 
 	// Instanciation du mode d'entrée et de sortie
 	auto input = new FileInput<double>("input_stereo.wav", conf);
@@ -35,7 +35,7 @@ void SpectralTest()
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
-	auto fft_m = new FFTWManager<double>(conf); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels(2); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
@@ -44,12 +44,12 @@ void SpectralTest()
 	auto algorithm = new SpectralGain<double>(conf);
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
-	manager->_input.reset(fft_i);
-	manager->_output.reset(fft_o);
-	manager->_watermark.reset(algorithm);
+	manager._input.reset(fft_i);
+	manager._output.reset(fft_o);
+	manager._watermark.reset(algorithm);
 
 	// On fait tourner l'algo
-	manager->execute();
+	manager.execute();
 
 	// On écrit dans un fichier de sortie.
 	output->writeFile("out_test_spec.wav");
@@ -59,7 +59,7 @@ void SpectralTest()
 void TemporalTest()
 {
 	Parameters<double> conf;
-	auto manager = new WatermarkManager<double>(conf);
+	WatermarkManager<double> manager(conf);
 
 	// Ici on n'utilise pas le proxy FFT
 	auto input = new FileInput<double>("input_mono.wav", conf);
@@ -67,11 +67,11 @@ void TemporalTest()
 
 	auto algorithm = new GainTest<double>(conf);
 
-	manager->_input.reset(input);
-	manager->_output.reset(output);
-	manager->_watermark.reset(algorithm);
+	manager._input.reset(input);
+	manager._output.reset(output);
+	manager._watermark.reset(algorithm);
 
-	manager->execute();
+	manager.execute();
 
 	output->writeFile("out_test_temp.wav");
 }
@@ -82,7 +82,7 @@ void TemporalTestStereo()
 {
 	Parameters<double> conf;
 
-	auto manager = new WatermarkManager<double>(conf);
+	WatermarkManager<double> manager(conf);
 
 	// Ici on n'utilise pas le proxy FFT
 	auto input = new FileInput<double>("input_stereo.wav", conf);
@@ -90,11 +90,11 @@ void TemporalTestStereo()
 
 	auto algorithm = new GainTest<double>(conf);
 
-	manager->_input.reset(input);
-	manager->_output.reset(output);
-	manager->_watermark.reset(algorithm);
+	manager._input.reset(input);
+	manager._output.reset(output);
+	manager._watermark.reset(algorithm);
 
-	manager->execute();
+	manager.execute();
 
 	output->writeFile("out_test_temp_st.wav");
 }
@@ -105,18 +105,18 @@ void TemporalTestStereo()
 void TemporalTestShorts()
 {
 	Parameters<short> conf;
-	auto manager = new WatermarkManager<short>(conf);
+	WatermarkManager<short> manager(conf);
 
 	auto input = new FileInput<short>("input_mono.wav", conf);
 	auto output = new FileOutput<short>(conf);
 
 	auto algorithm = new GainTest<short>(conf);
 
-	manager->_input.reset(input);
-	manager->_output.reset(output);
-	manager->_watermark.reset(algorithm);
+	manager._input.reset(input);
+	manager._output.reset(output);
+	manager._watermark.reset(algorithm);
 
-	manager->execute();
+	manager.execute();
 
 	output->writeFile("out_test_shorts.wav");
 }
@@ -135,6 +135,8 @@ void TestFFTWManager()
 
 	for(auto i = 0U; i < conf.bufferSize; ++i)
 		std::cerr << fft_m->input()[0][i] << "\t\t" << fft_m->output()[0][i] / (double) conf.bufferSize << std::endl;
+
+	delete fft_m;
 }
 /*
 void BufferTest()
@@ -173,6 +175,7 @@ void BufferTest()
 */
 int main()
 {
+	//TestFFTWManager();
 	TemporalTest();
 	TemporalTestShorts();
 	TemporalTestStereo();

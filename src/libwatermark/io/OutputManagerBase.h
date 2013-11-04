@@ -4,17 +4,11 @@
 #include "IOManagerBase.h"
 #include "copystyle/OutputSimple.h"
 
-class IOutputManager
-{
-	public:
-		virtual void writeNextBuffer(IData* buffer) = 0;
-};
-
 template <typename data_type>
-class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManager
+class OutputManagerBase :  public IOManagerBase<data_type>
 {
 	protected:
-		std::shared_ptr<Output<data_type>> copyHandler = nullptr;
+		OutputCopy_p<data_type> copyHandler = nullptr;
 
 	public:
 		using IOManagerBase<data_type>::pos;
@@ -32,7 +26,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		{
 		}
 
-		OutputManagerBase(Output<data_type>* copy, const Parameters<data_type>& cfg):
+		OutputManagerBase(OutputCopy<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(copy)
 		{
@@ -41,9 +35,9 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
-		virtual void writeNextBuffer(IData* abstract_buffer) override
+		virtual void writeNextBuffer(Audio_p abstract_buffer)
 		{
-			auto& buffer = dynamic_cast<CData<data_type>*>(abstract_buffer)->_data;
+			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
 			// On met le bon nombre de canaux
 			if(v().size() != buffer.size())
 			{
@@ -64,4 +58,5 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 		}
 };
 
-typedef std::shared_ptr<IOutputManager> Output_p;
+template<typename T>
+using Output_p = std::shared_ptr<OutputManagerBase<T>>;

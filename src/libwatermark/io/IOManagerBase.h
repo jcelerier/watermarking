@@ -25,7 +25,7 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
-		std::vector<std::vector<data_type>>& v()
+		virtual std::vector<std::vector<data_type>>& v()
 		{
 			return _baseData;
 		}

@@ -13,17 +13,12 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 		{
 		}
 
-		virtual SpectralWatermarkBase<data_type>* clone() override
-		{
-			return new SpectralGain<data_type>(*this);
-		}
-
 		// La seule méthode importante est celle-ci.
 		// data : les données audio. Ici ce sera un spectre.
-		virtual void operator()(IData* const data) override
+		virtual void operator()(Audio_p data) override
 		{
 			// Recopier cette ligne
-			auto& spectrum = dynamic_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data)->_data;
+			auto& spectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
 
 			// Petit exemple qui va multiplier l'amplitude de chaque bande de spectre par _gain.
 			for(auto& channel : spectrum)

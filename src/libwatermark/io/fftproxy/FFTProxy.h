@@ -14,7 +14,7 @@ class FFTProxy
 		std::shared_ptr<FFTManager<data_type>> _fft;
 		using complex_type = typename Parameters<data_type>::complex_type;
 
-		FFTProxy(FFTManager<data_type>* fftmanager, const Parameters<data_type>& cfg):
+		FFTProxy(FFT_p<data_type> fftmanager, const Parameters<data_type>& cfg):
 			conf(cfg),
 			_fft(fftmanager)
 		{

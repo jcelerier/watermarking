@@ -4,7 +4,7 @@
 #include "../InputManagerBase.h"
 #include "../copystyle/InputSimple.h"
 #include "../copystyle/InputOLA.h"
-#include <utility>
+
 // Templates, never again
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
@@ -14,11 +14,11 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		using FFTProxy<data_type>::_fft;
 
 	private:
-		Input_p _inputImpl = nullptr;
+		Input_p<data_type> _inputImpl = nullptr;
 
 	public:
 		FFTInputProxy(InputManagerBase<data_type>* input,
-					  FFTManager<data_type>* fftmanager,
+					  FFT_p<data_type> fftmanager,
 					  const Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(new InputOLA<data_type>(cfg), cfg),
@@ -26,19 +26,20 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		{
 		}
 
-		virtual IData* getNextBuffer() final override
-		{
-			auto& vec = dynamic_cast<InputManagerBase<data_type>*>(_inputImpl.get())->v();
+		virtual ~FFTInputProxy() = default;
 
-			auto channels = vec.size();
-			auto frames = vec[0].size();
+		virtual Audio_p getNextBuffer() final override
+		{
+			auto channels = v().size();
+			auto frames = v()[0].size();
 
 			if(pos() < frames)
 			{
+				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
 				// 1. copier la partie du buffer à traiter
 				for(auto i = 0U; i < channels; ++i)
 				{
-					copyHandler->copy(vec[i].begin(),
+					copyHandler->copy(v()[i].begin(),
 									_fft->input()[i].begin(),
 									pos(),
 									frames);
@@ -49,14 +50,17 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 				_fft->forward();
 
 				// 3. Empaqueter le spectre donné par la FFT
-				auto buffer = new CData<typename FFTProxy<data_type>::complex_type>;
-
 				buffer->_data = std::move(_fft->spectrum());
 
 				pos() += copyHandler->frameIncrement();
-				return buffer;
+				return Audio_p(buffer);
 			}
 
-			return nullptr;
+			return Audio_p(nullptr);
+		}
+
+		virtual std::vector<std::vector<data_type> >& v()
+		{
+			return _inputImpl->v();
 		}
 };

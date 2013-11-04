@@ -3,18 +3,18 @@
 #include "Output.h"
 
 template <typename data_type>
-class OutputOLA : public Output<data_type>
+class OutputOLA : public OutputCopy<data_type>
 {
 	public:
 		OutputOLA(const Parameters<data_type>& cfg):
-			Output<data_type>(cfg)
+			OutputCopy<data_type>(cfg)
 		{
 
 		}
 
-		virtual typename Output<data_type>::size_type frameIncrement() final override
+		virtual typename OutputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return Output<data_type>::conf.bufferSize / 2;
+			return OutputCopy<data_type>::conf.bufferSize / 2;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,

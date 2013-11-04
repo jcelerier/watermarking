@@ -1,21 +1,15 @@
 ﻿#pragma once
 #include <iostream>
+#include <memory>
 
 #include "IOManagerBase.h"
 #include "copystyle/InputSimple.h"
 
-class IInputManager
-{
-	public:
-		virtual IData* getNextBuffer() = 0;
-		virtual ~IInputManager() = default;
-};
-
 template <typename data_type>
-class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
+class InputManagerBase : public IOManagerBase<data_type>
 {
 	protected:
-		std::shared_ptr<Input<data_type>> copyHandler = nullptr;
+		InputCopy_p<data_type> copyHandler = nullptr;
 
 	public:
 		using IOManagerBase<data_type>::pos;
@@ -32,7 +26,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 		{
 		}
 
-		InputManagerBase(Input<data_type>* copy, const Parameters<data_type>& cfg):
+		InputManagerBase(InputCopy<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(copy)
 		{
@@ -40,16 +34,16 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 
 		virtual ~InputManagerBase() = default;
 
-		// Renvoie nullptr quand plus rien
-		virtual IData* getNextBuffer() override
+		virtual Audio_p getNextBuffer()
 		{
+
 			auto channels = v().size();
 			auto frames = v()[0].size();
 
 			if(pos() < frames)
 			{
-				// Création d'un wrapper qui va contenir les data
 				auto buffer = new CData<data_type>;
+				// Création d'un wrapper qui va contenir les data
 				buffer->_data.resize(channels);
 
 				// Remplissage pour chaque canal
@@ -64,11 +58,12 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 				}
 
 				pos() += copyHandler->frameIncrement();
-				return buffer;
+				return Audio_p(buffer);
 			}
 
-			return nullptr;
+			return Audio_p(nullptr);
 		}
 };
 
-typedef std::shared_ptr<IInputManager> Input_p;
+template<typename T>
+using Input_p = std::shared_ptr<InputManagerBase<T>>;

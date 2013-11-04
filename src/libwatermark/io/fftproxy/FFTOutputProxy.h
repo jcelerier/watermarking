@@ -17,7 +17,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 	public:
 		FFTOutputProxy(OutputManagerBase<data_type>* output, FFTManager<data_type>* fft, const Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fft, cfg),
-			OutputManagerBase<data_type>(new OutputSimple<data_type>(cfg), cfg),
+			OutputManagerBase<data_type>(new OutputOLA<data_type>(cfg), cfg),
 			_outputImpl(output)
 		{
 		}
@@ -47,7 +47,6 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 				this->_copy->copy(_fft->output()[i].begin(),
 								  out_vec[i].begin(),
 								  pos(),
-								  FFTProxy<data_type>::conf.bufferSize,
 								  out_vec[i].size());
 
 				// 3. NORMALIZE THE SHIT OUT OF IT

@@ -99,7 +99,6 @@ class FFTManager
 		 * From spectral domain to time domain.
 		 */
 		virtual void backward() const = 0;
-
 		virtual void updateSize() = 0;
 
 		/**

@@ -20,7 +20,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 					  FFTManager<data_type>* fftmanager,
 					  const Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fftmanager, cfg),
-			InputManagerBase<data_type>(new InputSimple<data_type>(cfg), cfg),
+			InputManagerBase<data_type>(new InputOLA<data_type>(cfg), cfg),
 			_inputImpl(input)
 		{
 		}
@@ -40,8 +40,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 					this->_copy->copy(vec[i].begin(),
 									_fft->input()[i].begin(),
 									pos(),
-									frames,
-									0);
+									frames);
 				}
 
 

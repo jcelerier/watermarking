@@ -54,7 +54,6 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public IOutputManage
 				_copy->copy(buffer[i].begin(),
 							this->v()[i].begin(),
 							this->pos(),
-							this->conf.bufferSize,
 							this->v()[i].size());
 			}
 

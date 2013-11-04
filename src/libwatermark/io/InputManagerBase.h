@@ -60,8 +60,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public IInputManager
 					_copy->copy(this->v()[i].begin(),
 								buffer->_data[i].begin(),
 								pos(),
-								frames,
-								0);
+								frames);
 				}
 
 				this->pos() += _copy->frameIncrement();

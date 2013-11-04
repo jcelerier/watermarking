@@ -29,6 +29,6 @@ class FileInput : public InputManagerBase<data_type>
 				myf.read(vec.data() + i * (myf.frames() - 1),  myf.frames() - 1);
 			}
 
-			this->v() = MathUtil::deinterleave(vec, myf.channels(), myf.frames());
+			this->v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
 		}
 };

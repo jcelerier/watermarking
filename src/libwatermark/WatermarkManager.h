@@ -1,8 +1,7 @@
 #pragma once
-#include <memory>
 
 #include "Parameters.h"
-#include "watermark/watermarkbase.h"
+#include "watermark/WatermarkBase.h"
 #include "io/InputManagerBase.h"
 #include "io/OutputManagerBase.h"
 
@@ -18,9 +17,9 @@ class WatermarkManager
 
 	public:
 		// Ajouter data : bits à encoder
-		Input_p<data_type> _input = nullptr;
-		Output_p<data_type> _output = nullptr;
-		Watermark_p<data_type> _watermark = nullptr;
+		Input_p<data_type> input = nullptr;
+		Output_p<data_type> output = nullptr;
+		Watermark_p<data_type> algorithm = nullptr;
 
 
 		WatermarkManager(const Parameters<data_type>& parameters):
@@ -33,17 +32,16 @@ class WatermarkManager
 
 		void onDataUpdate()
 		{
-			_watermark->onDataUpdate();
+			algorithm->onDataUpdate();
 		}
 
 		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		void execute()
 		{
-			while(Audio_p buf = _input->getNextBuffer())
+			while(Audio_p buf = input->getNextBuffer())
 			{
-				(*_watermark)(buf);
-
-				_output->writeNextBuffer(buf);
+				(*algorithm)(buf);
+				output->writeNextBuffer(buf);
 			}
 		}
 };

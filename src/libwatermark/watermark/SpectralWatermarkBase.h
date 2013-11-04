@@ -1,7 +1,6 @@
 #pragma once
-#include <complex>
 
-#include "watermarkbase.h"
+#include "WatermarkBase.h"
 
 /**
  * @brief The SpectralWatermarkBase class

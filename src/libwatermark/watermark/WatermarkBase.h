@@ -14,7 +14,7 @@ class WatermarkBase
 		{
 		}
 
-		virtual void operator()(Audio_p data) = 0;
+		virtual void operator()(Audio_p& data) = 0;
 		virtual void onDataUpdate() = 0;
 		virtual ~WatermarkBase() = default;
 

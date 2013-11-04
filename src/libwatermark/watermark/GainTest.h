@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-#include "watermarkbase.h"
+#include "WatermarkBase.h"
 
 // Exemple de comment faire un algo temporel.
 template <typename data_type>
@@ -15,7 +15,7 @@ class GainTest : public WatermarkBase<data_type>
 
 		// La seule méthode importante est celle-ci.
 		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
-		virtual void operator()(Audio_p data) override
+		virtual void operator()(Audio_p& data) override
 		{
 			// Recopier cette ligne
 			auto& samples = static_cast<CData<data_type>*>(data.get())->_data;

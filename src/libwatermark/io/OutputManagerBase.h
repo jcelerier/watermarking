@@ -20,11 +20,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		{
 		}
 
-		OutputManagerBase(const OutputManagerBase<data_type>& orig):
-			IOManagerBase<data_type>(orig.conf),
-			copyHandler(*orig.copyHandler.get())
-		{
-		}
+		OutputManagerBase(const OutputManagerBase<data_type>& orig) = delete;
 
 		OutputManagerBase(OutputCopy<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
@@ -35,7 +31,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
-		virtual void writeNextBuffer(Audio_p abstract_buffer)
+		virtual void writeNextBuffer(Audio_p& abstract_buffer)
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
 			// On met le bon nombre de canaux

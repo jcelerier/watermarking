@@ -44,9 +44,9 @@ void SpectralTest()
 	auto algorithm = new SpectralGain<double>(conf);
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
-	manager._input.reset(fft_i);
-	manager._output.reset(fft_o);
-	manager._watermark.reset(algorithm);
+	manager.input.reset(fft_i);
+	manager.output.reset(fft_o);
+	manager.algorithm.reset(algorithm);
 
 	// On fait tourner l'algo
 	manager.execute();
@@ -67,9 +67,9 @@ void TemporalTest()
 
 	auto algorithm = new GainTest<double>(conf);
 
-	manager._input.reset(input);
-	manager._output.reset(output);
-	manager._watermark.reset(algorithm);
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
 
 	manager.execute();
 
@@ -90,9 +90,9 @@ void TemporalTestStereo()
 
 	auto algorithm = new GainTest<double>(conf);
 
-	manager._input.reset(input);
-	manager._output.reset(output);
-	manager._watermark.reset(algorithm);
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
 
 	manager.execute();
 
@@ -112,9 +112,9 @@ void TemporalTestShorts()
 
 	auto algorithm = new GainTest<short>(conf);
 
-	manager._input.reset(input);
-	manager._output.reset(output);
-	manager._watermark.reset(algorithm);
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
 
 	manager.execute();
 

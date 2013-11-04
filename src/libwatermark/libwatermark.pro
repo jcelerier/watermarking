@@ -28,8 +28,6 @@ HEADERS += \
         mathutils/math_util.h \
         fft/fftmanager.h \
         fft/fftwmanager.h \
-    watermark/spectralwatermarkbase.h \
-    watermark/watermarkbase.h \
     io/IOManagerBase.h \
     io/InputManagerBase.h \
     io/OutputManagerBase.h \
@@ -52,4 +50,6 @@ HEADERS += \
     io/fftproxy/FFTProxy.h \
     io/fftproxy/FFTOutputProxy.h \
     WatermarkManager.h \
-    watermark/SpectralGain.h
+    watermark/SpectralGain.h \
+    watermark/WatermarkBase.h \
+    watermark/SpectralWatermarkBase.h

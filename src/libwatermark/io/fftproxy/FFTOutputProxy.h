@@ -25,7 +25,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		virtual ~FFTOutputProxy() = default;
 
-		virtual void writeNextBuffer(Audio_p buf) final override
+		virtual void writeNextBuffer(Audio_p& buf) final override
 		{
 			auto& buffer = static_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf.get())->_data;
 

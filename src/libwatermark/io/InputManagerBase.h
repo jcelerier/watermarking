@@ -20,11 +20,7 @@ class InputManagerBase : public IOManagerBase<data_type>
 		{
 		}
 
-		InputManagerBase(const InputManagerBase<data_type>& orig):
-			IOManagerBase<data_type>(orig.conf),
-			copyHandler(*orig.copyHandler.get())
-		{
-		}
+		InputManagerBase(const InputManagerBase<data_type>& orig) = delete;
 
 		InputManagerBase(InputCopy<data_type>* copy, const Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),

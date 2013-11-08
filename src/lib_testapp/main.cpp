@@ -8,6 +8,8 @@
 #include "watermark/SpectralGain.h"
 #include "io/BufferInput.h"
 #include "io/BufferOutput.h"
+#include "io/SilenceInput.h"
+#include "io/GnuplotOutput.h"
 /***
  *
  * Ce fichier montre quelques tests cool.
@@ -87,6 +89,41 @@ void SpectralTestStereo()
 
 	// On écrit dans un fichier de sortie.
 	output->writeFile("out_test_spec_stereo.wav");
+}
+
+void SilenceSpectralTest()
+{
+	// Instanciation des paramètres
+	Parameters<double> conf;
+
+	// Instanciation de la classe qui gère tout
+	WatermarkManager<double> manager(conf);
+
+	// Instanciation du mode d'entrée et de sortie
+	auto input = new SilenceInput<double>(conf);
+	input->silence(8192, 1, 1);
+	auto output = new FileOutput<double>(conf);
+
+	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
+	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
+	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	fft_m->setChannels((unsigned int) input->channels()); // important.
+	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
+	auto fft_o = new GnuplotOutput<double>(new FFTOutputProxy<double>(output, fft_m, conf), conf);
+
+	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
+	auto algorithm = new SpectralGain<double>(conf);
+
+	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
+	manager.input.reset(fft_i);
+	manager.output.reset(fft_o);
+	manager.algorithm.reset(algorithm);
+
+	// On fait tourner l'algo
+	manager.execute();
+
+	// On écrit dans un fichier de sortie.
+	output->writeFile("out_test_spec_sil.wav");
 }
 
 // Test : réduction temporelle de gain ( on divise chaque sample).
@@ -211,12 +248,13 @@ void BufferTest()
 int main()
 {
 	//TestFFTWManager();
-	BufferTest();
-	TemporalTest();
-	TemporalTestShorts();
-	TemporalTestStereo();
-	SpectralTest();
-	SpectralTestStereo();
+//	BufferTest();
+//	TemporalTest();
+//	TemporalTestShorts();
+//	TemporalTestStereo();
+//	SpectralTest();
+	SilenceSpectralTest();
+	//SpectralTestStereo();
 	return 0;
 }
 

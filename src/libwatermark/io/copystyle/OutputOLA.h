@@ -9,12 +9,11 @@ class OutputOLA : public OutputCopy<data_type>
 		OutputOLA(const Parameters<data_type>& cfg):
 			OutputCopy<data_type>(cfg)
 		{
-
 		}
 
 		virtual typename OutputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return OutputCopy<data_type>::conf.bufferSize / 2;
+			return OutputCopy<data_type>::conf.bufferSize / 4;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,

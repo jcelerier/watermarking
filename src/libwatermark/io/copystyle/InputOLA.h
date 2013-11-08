@@ -14,7 +14,7 @@ class InputOLA : public InputCopy<data_type>
 
 		virtual typename InputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return InputCopy<data_type>::conf.bufferSize / 2;
+			return InputCopy<data_type>::conf.bufferSize / 4;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,

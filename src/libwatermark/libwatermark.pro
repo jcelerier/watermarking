@@ -21,7 +21,8 @@ QMAKE_CXXFLAGS += -std=c++11
 }
 
 
-SOURCES +=
+SOURCES += \
+    io/gnuplot/gnuplot_i.c
 
 HEADERS += \
         subtraction/algorithms.h \
@@ -52,4 +53,13 @@ HEADERS += \
     io/copystyle/InputCopy.h \
     io/copystyle/OutputCopy.h \
     fft/FFTManager.h \
-    fft/FFTWManager.h
+    fft/FFTWManager.h \
+    io/fftproxy/window/WindowBase.h \
+    io/fftproxy/window/HannWindow.h \
+    io/fftproxy/window/RectWindow.h \
+    io/fftproxy/window/HammingWindow.h \
+    io/SilenceInput.h \
+    io/fftproxy/window/BlackmanWindow.h \
+    io/fftproxy/window/BartlettWindow.h \
+    io/gnuplot/gnuplot_i.h \
+    io/GnuplotOutput.h

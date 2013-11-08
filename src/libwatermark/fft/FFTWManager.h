@@ -6,6 +6,9 @@
 template <typename data_type>
 class FFTWManager : public FFTManager<data_type>
 {
+		using FFTManager<data_type>::_in;
+		using FFTManager<data_type>::_out;
+		using FFTManager<data_type>::_spectrum;
 	public:
 		FFTWManager(const Parameters<data_type>& cfg):
 			FFTManager<data_type>(cfg)
@@ -57,18 +60,18 @@ class FFTWManager : public FFTManager<data_type>
 		virtual void updateSize() override
 		{
 			// Attention : FFTW_EXHAUSTIVE écrit dans les array d'entrée.
-			for(auto i = 0U; i < this->_in.size(); ++i)
+			for(auto i = 0U; i < _in.size(); ++i)
 			{
 				if(fw[i]) fftw_destroy_plan(fw[i]);
 				fw[i] = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
-												  this->_in[i].data(),
-												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
+												  _in[i].data(),
+												  reinterpret_cast<fftw_complex*>(_spectrum[i].data()),
 												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 
 				if(bw[i]) fftw_destroy_plan(bw[i]);
 				bw[i] = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
-												  reinterpret_cast<fftw_complex*>(this->_spectrum[i].data()),
-												  this->_out[i].data(),
+												  reinterpret_cast<fftw_complex*>(_spectrum[i].data()),
+												  _out[i].data(),
 												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 			}
 		}

@@ -21,9 +21,6 @@ QMAKE_CXXFLAGS += -std=c++11
 }
 
 
-SOURCES += \
-    io/gnuplot/gnuplot_i.c
-
 HEADERS += \
         subtraction/algorithms.h \
         mathutils/math_util.h \

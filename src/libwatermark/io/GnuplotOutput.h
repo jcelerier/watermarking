@@ -30,7 +30,7 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
-			std::cerr << "heyy\n";
+
 			for(auto& channel : buffer)
 			{
 				gnuplot_resetplot(h);

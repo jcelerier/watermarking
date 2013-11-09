@@ -44,7 +44,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 
 			for(auto i = 0U; i < channels(); ++i)
 			{
-				v()[i].resize(frames() + this->conf.bufferSize);
+				v()[i].resize(frames() + copyHandler->frameIncrement());
 
 				copyHandler->copy(buffer[i].begin(),
 								  v()[i].begin(),

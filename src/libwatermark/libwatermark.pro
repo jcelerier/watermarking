@@ -59,4 +59,5 @@ HEADERS += \
     io/fftproxy/window/BlackmanWindow.h \
     io/fftproxy/window/BartlettWindow.h \
     io/gnuplot/gnuplot_i.h \
-    io/GnuplotOutput.h
+    io/GnuplotOutput.h \
+    io/GnuplotFFTOutput.h

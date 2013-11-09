@@ -8,9 +8,6 @@
 template <typename data_type>
 class InputManagerBase : public IOManagerBase<data_type>
 {
-	protected:
-		InputCopy_p<data_type> copyHandler = nullptr;
-
 	public:
 		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
@@ -58,6 +55,9 @@ class InputManagerBase : public IOManagerBase<data_type>
 
 			return Audio_p(nullptr);
 		}
+
+		InputCopy_p<data_type> copyHandler = nullptr;
+
 };
 
 template<typename T>

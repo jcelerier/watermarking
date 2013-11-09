@@ -7,7 +7,6 @@
 template <typename data_type>
 class BufferOutput : public OutputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;

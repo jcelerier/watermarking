@@ -10,6 +10,7 @@
 #include "io/BufferOutput.h"
 #include "io/SilenceInput.h"
 #include "io/GnuplotOutput.h"
+#include "io/GnuplotFFTOutput.h"
 /***
  *
  * Ce fichier montre quelques tests cool.
@@ -32,8 +33,8 @@ void SpectralTest()
 	WatermarkManager<double> manager(conf);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_mono.wav", conf);
-	auto output = new FileOutput<double>(conf);
+	auto input = new FileInput<double>("input_mono.wav", new InputOLA<double>(conf), conf);
+	auto output = new FileOutput<double>(new OutputOLA<double>(conf), conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
@@ -66,8 +67,8 @@ void SpectralTestStereo()
 	WatermarkManager<double> manager(conf);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_stereo.wav", conf);
-	auto output = new FileOutput<double>(conf);
+	auto input = new FileInput<double>("input_stereo.wav", new InputOLA<double>(conf), conf);
+	auto output = new FileOutput<double>(new OutputOLA<double>(conf), conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
@@ -94,22 +95,22 @@ void SpectralTestStereo()
 void SilenceSpectralTest()
 {
 	// Instanciation des paramètres
-	Parameters<double> conf;
+	const Parameters<double> conf;
 
 	// Instanciation de la classe qui gère tout
 	WatermarkManager<double> manager(conf);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new SilenceInput<double>(conf);
+	auto input = new SilenceInput<double>(new InputOLA<double>(conf), conf);
 	input->silence(8192, 1, 1);
-	auto output = new FileOutput<double>(conf);
+	auto output = new FileOutput<double>(new OutputOLA<double>(conf), conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
-	auto fft_o = new GnuplotOutput<double>(new FFTOutputProxy<double>(output, fft_m, conf), conf);
+	auto fft_o = /*new GnuplotFFTOutput<double>(*/new FFTOutputProxy<double>(output, fft_m, conf)/*, conf)*/;
 
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
 	auto algorithm = new SpectralGain<double>(conf);
@@ -248,11 +249,11 @@ void BufferTest()
 int main()
 {
 	//TestFFTWManager();
-//	BufferTest();
-//	TemporalTest();
-//	TemporalTestShorts();
-//	TemporalTestStereo();
-//	SpectralTest();
+	//BufferTest();
+	//TemporalTest();
+	//TemporalTestShorts();
+	//TemporalTestStereo();
+	//SpectralTest();
 	SilenceSpectralTest();
 	//SpectralTestStereo();
 	return 0;

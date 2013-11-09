@@ -7,15 +7,19 @@
 template <typename data_type>
 class SilenceInput : public InputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::frames;
 
 		using size_type = typename Parameters<data_type>::size_type;
 
 	public:
-		SilenceInput(Parameters<data_type>& cfg):
+		SilenceInput(const Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
+		{
+		}
+
+		SilenceInput(InputCopy<data_type>* icp, const Parameters<data_type>& cfg):
+			InputManagerBase<data_type>(icp, cfg)
 		{
 		}
 

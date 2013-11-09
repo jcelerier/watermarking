@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"
@@ -8,7 +7,6 @@
 template <typename data_type>
 class GnuplotOutput:public OutputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::pos;
 		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
@@ -26,7 +24,13 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 			gnuplot_setstyle(h, "lines");
 		}
 
-		//TODO recoder la FFT de la même manière
+		virtual ~GnuplotOutput()
+		{
+			gnuplot_close(h);
+		}
+
+		GnuplotOutput(const GnuplotOutput&) = delete;
+		const GnuplotOutput& operator=(const GnuplotOutput&) = delete;
 		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;

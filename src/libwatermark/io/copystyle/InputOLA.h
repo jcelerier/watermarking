@@ -24,7 +24,7 @@ class InputOLA : public InputCopy<data_type>
 		{
 			if (frameIncrement() <= big_vector_length - pos)
 			{
-				std::copy_n(in + pos, frameIncrement(), out);
+				std::copy_n(in + pos, 2 * frameIncrement(), out);
 				//std::fill_n(out + frameIncrement() * 2, frameIncrement() * 2, 0);
 			}
 			else

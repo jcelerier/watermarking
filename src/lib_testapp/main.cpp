@@ -277,6 +277,7 @@ void TestLSB()
 
 int main()
 {
+	SpectralTest();
 	TestLSB();
 	return 0;
 }

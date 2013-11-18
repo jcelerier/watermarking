@@ -2,6 +2,7 @@
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
 #include "watermark/GainTest.h"
+#include "watermark/LSBEncode.h"
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
 #include "fft/FFTWManager.h"
@@ -246,16 +247,37 @@ void BufferTest()
 	delete[] in_test;
 }
 
+
+void TestLSB()
+{
+	Parameters<short> conf;
+	WatermarkManager<short> manager(conf);
+	WatermarkData data;
+	data.bits.push_back(true);
+	data.bits.push_back(false);
+	data.bits.push_back(true);
+	data.bits.push_back(true);
+
+	auto input = new FileInput<short>("input_mono.wav", conf);
+	auto output = new FileOutput<short>(conf);
+
+	auto algorithm = new LSBEncode<short>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_lsb.wav");
+}
+
+
+
+
 int main()
 {
-	//TestFFTWManager();
-	//BufferTest();
-	//TemporalTest();
-	//TemporalTestShorts();
-	//TemporalTestStereo();
-	//SpectralTest();
-	SilenceSpectralTest();
-	//SpectralTestStereo();
+	TestLSB();
 	return 0;
 }
 

@@ -2,6 +2,7 @@
 
 #include "../Parameters.h"
 #include "../Data.h"
+#include "../WatermarkData.h"
 
 
 template <typename data_type>
@@ -14,7 +15,7 @@ class WatermarkBase
 		{
 		}
 
-		virtual void operator()(Audio_p& data) = 0;
+		virtual void operator()(Audio_p& data, WatermarkData& watermark) = 0;
 		virtual void onDataUpdate() = 0;
 		virtual ~WatermarkBase() = default;
 

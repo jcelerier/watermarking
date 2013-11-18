@@ -5,6 +5,7 @@
 #include "../copystyle/InputOLA.h"
 #include "window/HannWindow.h"
 #include "window/BartlettWindow.h"
+#include "window/BlackmanWindow.h"
 #include "window/RectWindow.h"
 // Templates, never again
 template <typename data_type>
@@ -26,7 +27,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input),
-			window(new BartlettWindow<data_type>(cfg))
+			window(new HannWindow<data_type>(cfg))
 		{
 		}
 
@@ -41,7 +42,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 
 			// 2. On fenêtre
 			for(auto& channel : inbuff)
-				window->apply(channel, inputImpl->copyHandler->frameIncrement());
+				window->apply(channel, inputImpl->copyHandler->frameIncrement() * 2);
 
 			// 3. On copie dans le buffer de la fft
 			std::copy(inbuff.begin(), inbuff.end(), fft->input().begin());

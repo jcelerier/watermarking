@@ -60,4 +60,6 @@ HEADERS += \
     io/fftproxy/window/BartlettWindow.h \
     io/gnuplot/gnuplot_i.h \
     io/GnuplotOutput.h \
-    io/GnuplotFFTOutput.h
+    io/GnuplotFFTOutput.h \
+    watermark/LSBEncode.h \
+    WatermarkData.h

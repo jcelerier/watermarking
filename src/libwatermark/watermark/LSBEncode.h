@@ -5,10 +5,11 @@
 
 // Exemple de comment faire un algo temporel.
 template <typename data_type>
-class GainTest : public WatermarkBase<data_type>
+class LSBEncode : public WatermarkBase<data_type>
 {
+
 	public:
-		GainTest(const Parameters<data_type>& configuration):
+		LSBEncode(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
 		}
@@ -18,15 +19,15 @@ class GainTest : public WatermarkBase<data_type>
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			// Recopier cette ligne
-			auto& samples = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channels = static_cast<CData<data_type>*>(data.get())->_data;
 
 			// Petit exemple qui va multiplier tout par _gain.
-			for(auto& channel : samples)
+			for(auto& channel : channels)
 			{
-				std::transform(channel.begin(),
-						channel.end(),
-						channel.begin(),
-						[&] (data_type x) { return x * _gain; });
+				for(int i = 0; i < channel.size(); ++i)
+				{
+					channel[i] += 5000;
+				}
 			}
 
 		}

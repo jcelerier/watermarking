@@ -20,6 +20,7 @@ class WatermarkManager
 		Input_p<data_type> input = nullptr;
 		Output_p<data_type> output = nullptr;
 		Watermark_p<data_type> algorithm = nullptr;
+		WatermarkData_p data = nullptr;
 
 
 		WatermarkManager(const Parameters<data_type>& parameters):
@@ -40,7 +41,7 @@ class WatermarkManager
 		{
 			while(Audio_p buf = input->getNextBuffer())
 			{
-				(*algorithm)(buf);
+				(*algorithm)(buf, *data.get());
 				output->writeNextBuffer(buf);
 			}
 		}

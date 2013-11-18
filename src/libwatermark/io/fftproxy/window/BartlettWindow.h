@@ -19,8 +19,8 @@ class BartlettWindow: public WindowBase<data_type>
 			for(auto i = 0U; i < increment; ++i)
 			{
 				v[i] *= (i < increment / 2) ?
-							2 * i / increment :
-							2 * (increment - i) / increment;
+							2.0 * (double)i / increment :
+							2.0 * (double)(increment - i) / increment;
 			}
 		}
 };

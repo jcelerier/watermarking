@@ -20,8 +20,6 @@ class LSBEncode : public WatermarkBase<data_type>
 		{
 			// Recopier cette ligne
 			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
-			short bit16 = 0x0001;
-			short nonbit16 = ~bit16;
 
 			// Petit exemple qui va multiplier tout par _gain.
 			for(int j = 0; j < channelsData.size(); j++)
@@ -29,8 +27,9 @@ class LSBEncode : public WatermarkBase<data_type>
 				auto& sampleData = channelsData[j];
 				for(int i = 0; i < sampleData.size(); ++i)
 				{
-					short testBit = 0x0001 & (short)watermark.bits[i];
-					sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);					
+					short testBit = 0x0001 & sampleData[i];
+					bool bit = (testBit != 0);
+					watermark.bits.push_back(bit);					
 				}
 			}
 

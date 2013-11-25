@@ -4,7 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    testlsb.cpp
+    testlsb.cpp \
+    testssw.cpp
 DESTDIR = $$PWD/../../output
 
 contains(QMAKE_TARGET.arch, 64):{
@@ -27,3 +28,6 @@ INCLUDEPATH += $$PWD/../libwatermark
 DEPENDPATH += $$PWD/../libwatermark
 
 LIBS+=-lsndfile -lfftw3
+
+OTHER_FILES += \
+    Vieux_tests.txt

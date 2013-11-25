@@ -32,6 +32,7 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 
 					magnitude = std::sqrt(power) * _gain;
 
+
 					channel[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 				}
 			}

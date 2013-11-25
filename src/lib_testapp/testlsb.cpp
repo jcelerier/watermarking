@@ -18,6 +18,7 @@ void encode()
     Parameters<short> conf;
     WatermarkManager<short> manager(conf);
     WatermarkData* data = new WatermarkData;
+	data->setSize(4);
     data->bits.push_back(true);
     data->bits.push_back(false);
     data->bits.push_back(true);
@@ -56,6 +57,7 @@ void decode()
 
     manager.execute();
 
+	//TODO LIRE LA TAILLE
     std::cerr << data->bits[0] << data->bits[1] << data->bits[2] << data->bits[3];
 
 }

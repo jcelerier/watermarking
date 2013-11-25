@@ -222,10 +222,10 @@ namespace MathUtil
 		return sqrt(energy<data_type>(tab, length) / length);
 	}
 
-	template <typename data_type> dotProduct(const std::vector<data_type>::iterator in1,
+/*	template <typename data_type> dotProduct(const std::vector<data_type>::iterator in1,
 											 const std::vector<data_type>::iterator in2,
 											 const unsigned int size)
 	{
 		mapReduce2_n(in1, in2, size, 0, std::plus<data_type>(), std::multiplies<data_type>());
-	}
+	}*/
 }

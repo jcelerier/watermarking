@@ -5,11 +5,11 @@
 
 // Exemple de comment faire un algo temporel.
 template <typename data_type>
-class LSBEncode : public WatermarkBase<data_type>
+class LSBDecode : public WatermarkBase<data_type>
 {
 
 	public:
-		LSBEncode(const Parameters<data_type>& configuration):
+        LSBDecode(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
 		}
@@ -38,8 +38,5 @@ class LSBEncode : public WatermarkBase<data_type>
 		virtual void onDataUpdate() override
 		{
 
-		}
-
-	private:
-		double _gain = 0.1;
+        }
 };

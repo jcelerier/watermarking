@@ -62,4 +62,6 @@ HEADERS += \
     io/GnuplotOutput.h \
     io/GnuplotFFTOutput.h \
     watermark/LSBEncode.h \
-    WatermarkData.h
+    watermark/LSBDecode.h \
+    WatermarkData.h \
+    watermark/SSWEncode.h

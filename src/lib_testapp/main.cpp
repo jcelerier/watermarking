@@ -248,36 +248,13 @@ void BufferTest()
 }
 
 
-void TestLSB()
-{
-	Parameters<short> conf;
-	WatermarkManager<short> manager(conf);
-	WatermarkData data;
-	data.bits.push_back(true);
-	data.bits.push_back(false);
-	data.bits.push_back(true);
-	data.bits.push_back(true);
-
-	auto input = new FileInput<short>("input_mono.wav", conf);
-	auto output = new FileOutput<short>(conf);
-
-	auto algorithm = new LSBEncode<short>(conf);
-
-	manager.input.reset(input);
-	manager.output.reset(output);
-	manager.algorithm.reset(algorithm);
-
-	manager.execute();
-
-	output->writeFile("out_test_lsb.wav");
-}
 
 
-
+void TestLSB();
 
 int main()
 {
-	SpectralTest();
+//	SpectralTest();
 	TestLSB();
 	return 0;
 }

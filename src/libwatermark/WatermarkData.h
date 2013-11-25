@@ -14,7 +14,7 @@ class WatermarkData
 
 		void setSize(const uint64_t size)
 		{
-			const auto size_bits = sizeof(_size) * 8;
+			const auto size_bits = sizeof(_size) * 8U;
 			_size = size + size_bits;
 			std::bitset<size_bits> num(_size);
 
@@ -24,22 +24,19 @@ class WatermarkData
 
 		uint64_t readSizeFromBits()
 		{
-			const auto size_bits = sizeof(_size) * 8;
+			const auto size_bits = sizeof(_size) * 8U;
 			std::bitset<size_bits> num;
-			for(auto i = 0U; i < size_bits; ++i)
-			{
-				num[i] = bits[i];
-			}
 
-			std::cerr << std::endl;
-			_size = num.to_ullong();
-			return _size;
+			for(auto i = 0U; i < size_bits; ++i)
+				num[i] = bits[i];
+
+			return _size = num.to_ullong();
 		}
 
 		void printBits()
 		{
 			std::cerr << "Affichage des données :" << std::endl;
-			const auto size_bits = sizeof(_size) * 8;
+			const auto size_bits = sizeof(_size) * 8U;
 			for(auto i = size_bits; i < _size; ++i)
 			{
 				std::cerr << bits[i];

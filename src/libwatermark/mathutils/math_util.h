@@ -223,7 +223,7 @@ namespace MathUtil
 	}
 
 	template <typename InputIterator, typename data_type>
-	data_type dotProduct(const InputIterator in1,
+	data_type dotProduct_n(const InputIterator in1,
 			   const InputIterator in2,
 			   const unsigned int size)
 	{

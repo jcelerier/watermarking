@@ -29,7 +29,7 @@ class FFTManager
 		{
 		}
 
-		virtual ~FFTManager() = default;
+        virtual ~FFTManager() { }
 
 		virtual void setChannels(unsigned int n)
 		{

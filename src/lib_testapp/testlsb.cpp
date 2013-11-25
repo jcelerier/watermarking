@@ -18,11 +18,14 @@ void encode()
     Parameters<short> conf;
     WatermarkManager<short> manager(conf);
     WatermarkData* data = new WatermarkData;
-	data->setSize(4);
+	data->setSize(7);
     data->bits.push_back(true);
     data->bits.push_back(false);
     data->bits.push_back(true);
     data->bits.push_back(true);
+	data->bits.push_back(false);
+	data->bits.push_back(false);
+	data->bits.push_back(true);
 
     auto input = new FileInput<short>("input_mono.wav", conf);
     auto output = new FileOutput<short>(conf);
@@ -57,8 +60,8 @@ void decode()
 
     manager.execute();
 
-	//TODO LIRE LA TAILLE
-	for(auto i = 0U; i < 68; ++i)
-		std::cerr << data->bits[i];
-
+	// LIRE LA TAILLE
+	auto taille = data->readSizeFromBits();
+	std::cerr << "taille: " << taille << std::endl;
+	data->printBits();
 }

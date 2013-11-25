@@ -1,26 +1,51 @@
 #pragma once
 #include <vector>
 #include <stdint.h>
-
+#include <bitset>
+#include <algorithm>
+#include <iostream>
 class WatermarkData
 {
 	public:
-		uint64_t _size;
-		std::vector<bool> bits;
+		uint64_t _size = 0;
+		std::vector<bool> bits = { };
 		unsigned int position = 0;
 		WatermarkData() = default;
 
-		void setSize(uint64_t size)
+		void setSize(const uint64_t size)
 		{
-			_size = size;
-			for(int index = 0; index<sizeof(size); index++)
+			const auto size_bits = sizeof(_size) * 8;
+			_size = size + size_bits;
+			std::bitset<size_bits> num(_size);
+
+			for(auto i = 0U; i < size_bits; ++i)
+				bits.push_back(num[i]);
+		}
+
+		uint64_t readSizeFromBits()
+		{
+			const auto size_bits = sizeof(_size) * 8;
+			std::bitset<size_bits> num;
+			for(auto i = 0U; i < size_bits; ++i)
 			{
-				uint64_t bit64 = 0x00000001;
-				bool bit;
-				bit = size & (0x000000001 >> index);
-				bits.push_back(bit);
-				position++;
+				num[i] = bits[i];
 			}
+
+			std::cerr << std::endl;
+			_size = num.to_ullong();
+			return _size;
+		}
+
+		void printBits()
+		{
+			std::cerr << "Affichage des données :" << std::endl;
+			const auto size_bits = sizeof(_size) * 8;
+			for(auto i = size_bits; i < _size; ++i)
+			{
+				std::cerr << bits[i];
+			}
+
+			std::cerr << std::endl;
 		}
 };
 

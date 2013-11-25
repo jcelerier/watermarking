@@ -18,7 +18,6 @@ class LSBEncode : public WatermarkBase<data_type>
 		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-			// Recopier cette ligne
 			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
 			short bit16 = 0x0001;
 			short nonbit16 = (short) ~bit16;

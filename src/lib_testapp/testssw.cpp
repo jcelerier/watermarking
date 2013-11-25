@@ -40,8 +40,8 @@ void sswencode()
 	data->bits.push_back(true);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_mono.wav", new InputOLA<double>(conf), conf);
-	auto output = new FileOutput<double>(new OutputOLA<double>(conf), conf);
+	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
+	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
 	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.

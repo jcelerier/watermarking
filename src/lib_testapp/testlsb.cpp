@@ -58,6 +58,7 @@ void decode()
     manager.execute();
 
 	//TODO LIRE LA TAILLE
-    std::cerr << data->bits[0] << data->bits[1] << data->bits[2] << data->bits[3];
+	for(auto i = 0U; i < 68; ++i)
+		std::cerr << data->bits[i];
 
 }

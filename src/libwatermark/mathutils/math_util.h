@@ -8,30 +8,6 @@
 namespace MathUtil
 {
 	/**
-	 * @brief Converts a complex into a double corresponding to its power.
-	 * @param val Complex value
-	 * @return x^2 + y^2
-	 */
-	template <typename data_type>
-	inline data_type CplxToPower(const std::complex<data_type> val)
-	{
-		return std::norm(val);
-	}
-
-
-	/**
-	 * @brief Converts a complex into a double corresponding to its phase.
-	 * @param val Complex value
-	 * @return arc tan(y, x)
-	 */
-	template <typename data_type>
-	inline data_type CplxToPhase(const std::complex<data_type> val)
-	{
-		return std::arg(val);
-	}
-
-
-	/**
 	 * @brief Computes power and phase array from the magnitude spectrum.
 	 *
 	 * @param in Input spectrum.
@@ -42,9 +18,23 @@ namespace MathUtil
 	template <typename data_type>
 	void computePowerAndPhaseSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, data_type * const phaseoutput, const unsigned int size)
 	{
-		std::transform(in, in + size, powoutput, CplxToPower<data_type>);
-		std::transform(in, in + size, phaseoutput, CplxToPhase<data_type>);
+		std::transform(in, in + size, powoutput, std::norm<data_type>);
+		std::transform(in, in + size, phaseoutput, std::arg<data_type>);
 	}
+
+	/**
+	 * @brief Computes power array from the magnitude spectrum.
+	 *
+	 * @param in Input spectrum.
+	 * @param powoutput Power output.
+	 * @param size Size of array.
+	 */
+	template <typename data_type>
+	void computePowerSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, const unsigned int size)
+	{
+		std::transform(in, in + size, powoutput, std::norm<data_type>);
+	}
+
 
 
 	/**
@@ -118,18 +108,6 @@ namespace MathUtil
 		return val;
 	}
 
-	/**
-	 * @brief Computes power array from the magnitude spectrum.
-	 *
-	 * @param in Input spectrum.
-	 * @param powoutput Power output.
-	 * @param size Size of array.
-	 */
-	template <typename data_type>
-	void computePowerSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, const unsigned int size)
-	{
-		std::transform(in, in + size, powoutput, CplxToPower<data_type>);
-	}
 
 	/**
 	 * @brief energy Returns the average energy for a full spectrum
@@ -224,9 +202,9 @@ namespace MathUtil
 
 	template <typename InputIterator, typename data_type>
 	data_type dotProduct_n(const InputIterator in1,
-			   const InputIterator in2,
-			   const unsigned int size)
+						   const InputIterator in2,
+						   const unsigned int size)
 	{
-		return mapReduce2_n(in1, in2, size, 0.0, std::plus<data_type>(), std::multiplies<data_type>());
+		return mapReduce2_n(in1, in2, size, (data_type) 0, std::plus<data_type>(), std::multiplies<data_type>());
 	}
 }

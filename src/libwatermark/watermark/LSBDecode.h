@@ -18,10 +18,8 @@ class LSBDecode : public WatermarkBase<data_type>
 		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-			// Recopier cette ligne
 			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
 
-			// Petit exemple qui va multiplier tout par _gain.
 			for(int j = 0; j < channelsData.size(); j++)
 			{
 				auto& sampleData = channelsData[j];

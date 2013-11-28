@@ -64,4 +64,5 @@ HEADERS += \
     watermark/LSBEncode.h \
     watermark/LSBDecode.h \
     WatermarkData.h \
-    watermark/SSWEncode.h
+    watermark/SSWEncode.h \
+    mathutils/MCLT.h

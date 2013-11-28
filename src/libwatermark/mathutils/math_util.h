@@ -197,7 +197,7 @@ namespace MathUtil
 	template <typename data_type>
 	data_type RMS(const data_type * tab, const unsigned int length)
 	{
-		return sqrt(energy<data_type>(tab, length) / length);
+		return std::sqrt(energy<data_type>(tab, length) / length);
 	}
 
 	template <typename InputIterator, typename data_type>

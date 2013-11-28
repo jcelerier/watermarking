@@ -31,14 +31,10 @@ class LSBEncode : public WatermarkBase<data_type>
 					sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);					
 				}
 			}
-
 		}
 
 		virtual void onDataUpdate() override
 		{
 
 		}
-
-	private:
-		double _gain = 0.1;
 };

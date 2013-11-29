@@ -15,6 +15,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		using InputManagerBase<data_type>::frames;
 
 		using FFTProxy<data_type>::fft;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
 		Input_p<data_type> inputImpl = nullptr;
@@ -53,7 +54,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			fft->forward();
 
 			// 4. On crée un autre buffer pour le spectre
-			auto outbuff = new CData<typename FFTProxy<data_type>::complex_type>;
+			auto outbuff = new CData<complex_type>;
 
 			// 5. On move fft.spectrum
 			outbuff->_data = std::move(fft->spectrum());

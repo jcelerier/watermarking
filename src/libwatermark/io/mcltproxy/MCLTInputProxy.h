@@ -10,12 +10,13 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 		using InputManagerBase<data_type>::frames;
 
 		using MCLTProxy<data_type>::mclt;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
 		Input_p<data_type> inputImpl = nullptr;
 
 	public:
-		MCLTInputProxy(InputManagerBase<data_type>* input,
+		MCLTInputProxy(Input_p<data_type> input,
 					  const Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
@@ -23,15 +24,20 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 		{
 		}
 
-		virtual ~MCLTInputProxy() = default;
+		virtual ~MCLTInputProxy()
+		{
+			std::cerr << "mcltinputproxy\n";
+		}
 
 		virtual Audio_p getNextBuffer() final override
 		{
 			// 1. On get le buffer.
 			Audio_p tmp = inputImpl->getNextBuffer();
 			if(tmp == nullptr) return tmp;
-			auto& inbuff = static_cast<CData<complex_type>*>(tmp.get())->_data;
-			mclt.forward(inbuff);
+			auto& buffer = static_cast<CData<complex_type>*>(tmp.get())->_data;
+
+			for(auto& channel : buffer)
+				mclt.forward(channel);
 
 			return tmp;
 		}

@@ -10,35 +10,31 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 		using OutputManagerBase<data_type>::frames;
 
 		using MCLTProxy<data_type>::mclt;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Output_p<data_type> OutputImpl = nullptr;
+		Output_p<data_type> outputImpl = nullptr;
 
 	public:
-		MCLTOutputProxy(OutputManagerBase<data_type>* Output,
+		MCLTOutputProxy(Output_p<data_type> output,
 					  const Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			OutputManagerBase<data_type>(nullptr, cfg),
-			OutputImpl(Output)
+			outputImpl(output)
 		{
 		}
 
-		virtual ~MCLTOutputProxy() = default;
-
-		virtual Audio_p getNextBuffer() final override
+		virtual ~MCLTOutputProxy()
 		{
-			// 1. On get le buffer.
-			Audio_p tmp = OutputImpl->getNextBuffer();
-			if(tmp == nullptr) return tmp;
-			auto& inbuff = static_cast<CData<complex_type>*>(tmp.get())->_data;
-			mclt.forward(inbuff);
-
-			return tmp;
+			std::cerr << "mcltoutputproxy\n";
 		}
+
 		virtual void writeNextBuffer(Audio_p& buf) final override
 		{
-			auto& buffer = static_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf.get())->_data;
-			mclt.backward(buffer);
+			auto& buffer = static_cast<CData<complex_type>*>(buf.get())->_data;
+			for(auto& channel : buffer)
+				mclt.backward(channel);
+
 			outputImpl->writeNextBuffer(buf);
 		}
 

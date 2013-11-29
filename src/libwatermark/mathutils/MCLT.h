@@ -3,60 +3,99 @@
 #include <complex>
 #include <algorithm>
 #include <numeric>
-namespace MCLT
+#include "../Parameters.h"
+
+template<typename data_type>
+class MCLTManager
 {
-	std::complex<double> complexExp(double M, double r)
-	{
-		static double cst = - 2 * M_PI;
-		return std::polar(1.0, cst * r / M);
-	}
+	public:
+		using size_type = typename Parameters<data_type>::size_type;
+		using complex_type = typename Parameters<data_type>::complex_type;
 
-
-	std::vector<std::complex<double> > forward(std::vector<std::complex<double>> in)
-	{
-		auto L = in.size() - 1 * 2;
-		auto M = L / 2;
-
-		// normalized FFT of input
-		std::vector<std::complex<double>> U(in.size());
-		std::transform(in.begin(), in.end(), U.begin(), [M] (std::complex<double> x)
+		void forward(std::vector<complex_type>& in)
 		{
-			static const double cst = sqrt( 1.0 / ( 2.0 * (double)M ) );
-			return cst * x;
-		});
+			auto M = in.size() - 1;
+			initDataFw(in.size());
 
-		// compute modulation function
-		std::vector<int> k(M+1);
-		// Ce truc est constant
-		std::iota(k.begin(), k.end(), 0);
+			// normalization de la fft faite plus tard
 
-		std::vector<std::complex<double> > c(M);
-		std::transform(k.begin(), k.end(), c.begin(), [&] (int i)
+			// modulate U into V
+			std::transform(c.begin(), c.end(), U.begin(), V.begin(), std::multiplies<complex_type>());
+
+			// compute MCLT coefficients
+			std::fill(in.begin(), in.end(), complex_type(0, 0));
+			std::transform(V.begin(), V.end() - 1, V.begin() + 1, in.begin(), [this] (complex_type a, complex_type b)
+			{
+				return a * j + b;
+			});
+		}
+
+		void backward(std::vector<complex_type>& in)
 		{
-			return complexExp(8, 2 * i + 1) * complexExp(4 * (double)M, i);
-		});
-		// Fin partie constante
+			//	determine # of subbands, M
+			auto M = in.size() - 1;
+			initDataBw(in.size());
 
-		// modulate U into V
-		std::vector<std::complex<double>> V(in.size());
-		std::transform(c.begin(), c.end(), U.begin(), V.begin(), std::multiplies<std::complex<double>>());
+			//	allocate vector Y
+			std::vector<complex_type> y(2*M);
 
-		// compute MCLT coefficients
-		std::vector<std::complex<double>> X(in.size());
-		std::transform(V.begin(), V.end(), V.begin() + 1, X.begin(), [] (std::complex<double> a, std::complex<double> b)
+			//	map X into Y
+			for(auto i = 0U; i < M; ++i)
+			{
+				y[i+1] = 0.25 * conj(c[i]) * (in[i] - j * in[i + 1]);
+			}
+			y[0] =   std::sqrt(0.125) * (in[0].real() + in[0].imag());
+			y[M] = - std::sqrt(0.125) * (in[M].real() + in[M].imag());
+
+			std::copy(y.begin(), y.end(), in.begin());
+		}
+
+	private:
+		complex_type complexExp(const double M, const double r)
 		{
-			std::complex<double> j;
-			j.real(0);
-			j.imag(1);
-			return a * j + b;
-		});
+			static double cst = - 2 * M_PI;
+			return std::polar(1.0, cst * r / M);
+		}
 
-		return X;
-	}
+		void initDataFw(const size_type spectrum_size)
+		{
+			if(k.size() != spectrum_size)
+			{
+				k.resize(spectrum_size);
+				c.resize(spectrum_size);
+				U.resize(spectrum_size);
+				V.resize(spectrum_size);
 
-	void backward()
-	{
+				std::iota(k.begin(), k.end(), 0);
+				std::transform(k.begin(), k.end(), c.begin(), [&] (int i)
+				{
+					return complexExp(8, 2 * i + 1) * complexExp(4 * ((double)spectrum_size - 1), i);
+				});
+			}
+		}
 
-	}
 
-}
+		void initDataBw(const size_type spectrum_size)
+		{
+			auto size = spectrum_size - 2;
+			if(k.size() != size)
+			{
+				k.resize(size);
+				c.resize(size);
+
+				std::iota(k.begin(), k.end(), 1);
+				std::transform(k.begin(), k.end(), c.begin(), [&] (int i)
+				{
+					return complexExp(8, 2 * i + 1) * complexExp(4 * ((double)spectrum_size - 1), i);
+				});
+			}
+		}
+
+		std::vector<int> k;
+		std::vector<complex_type> c;
+		std::vector<complex_type> U;
+		std::vector<complex_type> V;
+
+		const complex_type j = std::complex<double>(0.0, 1.0);
+
+};

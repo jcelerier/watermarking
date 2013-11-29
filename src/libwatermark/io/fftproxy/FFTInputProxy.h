@@ -7,7 +7,7 @@
 #include "window/BartlettWindow.h"
 #include "window/BlackmanWindow.h"
 #include "window/RectWindow.h"
-// Templates, never again
+
 template <typename data_type>
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {

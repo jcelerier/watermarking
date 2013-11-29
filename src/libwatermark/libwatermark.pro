@@ -65,4 +65,7 @@ HEADERS += \
     watermark/LSBDecode.h \
     WatermarkData.h \
     watermark/SSWEncode.h \
-    mathutils/MCLT.h
+    mathutils/MCLT.h \
+    io/mcltproxy/MCLTInputProxy.h \
+    io/mcltproxy/MCLTProxy.h \
+    io/mcltproxy/MCLTOutputProxy.h

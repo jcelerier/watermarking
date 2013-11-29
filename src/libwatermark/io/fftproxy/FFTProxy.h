@@ -1,7 +1,4 @@
 #pragma once
-
-#include "../InputManagerBase.h"
-#include "../OutputManagerBase.h"
 #include "../../fft/FFTManager.h"
 
 template <typename data_type>

@@ -61,7 +61,6 @@ void decode()
     manager.execute();
 
 	// LIRE LA TAILLE
-	auto taille = data->readSizeFromBits();
-	std::cerr << "taille: " << taille << std::endl;
+	data->readSizeFromBits();
 	data->printBits();
 }

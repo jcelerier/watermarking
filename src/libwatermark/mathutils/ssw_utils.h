@@ -1,16 +1,28 @@
 #pragma once
-#include <cstdlib>
+#include <random>
 #include <vector>
-
+#include <algorithm>
 namespace SSWUtil
 {
 	/* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}
 	   de taille size */
         std::vector<int> generatePNSequence(int size)
         {
-            srand(time(0));
-            vector<int> pnsequence;
-	    
+			// Générer séquence de nombres entre 0 et 1
+			// Méthode C++
+			std::default_random_engine rng(std::random_device{}());
+			std::uniform_int_distribution<int> dist(0, 1);
+
+			std::vector<int> pnsequence;
+			std::generate_n(pnsequence.begin(), size, [&] ()
+			{
+				return dist(rng) * 2 - 1;
+			});
+
+			return pnsequence;
+
+			/* Méthode C
+			srand(time(0));
             for(int i = 0; i < size; i++)
             {
                 int j = rand()%2;
@@ -19,26 +31,37 @@ namespace SSWUtil
                 else
                     pnsequence.push_back(1);
             }
-
-            return pnsequence;
+			*/
         }
 
         /* Génère une plage de fréquence aléatoire de taille size et comprise dans
-            l'intervalle [1,sampleRate] */
-        std::vector<int> generateFrequencyRange(int size, int sampleRate)
+			l'intervalle [1,sampleRate] (pourquoi pas sampleRate / 2 ?) */
+		std::vector<unsigned int> generateFrequencyRange(unsigned int size, unsigned int sampleRate)
         {
-            srand(time(0));
-	    std::vector<int> frequencyRange;
+			std::default_random_engine rng(std::random_device{}());
+			std::uniform_int_distribution<int> dist(1, sampleRate);
+
+			std::vector<unsigned int> range;
+			std::generate_n(range.begin(), size, [&] ()
+			{
+				return dist(rng);
+			});
+
+			return range;
+
+			/*
+			srand(time(0));
+			std::vector<int> frequencyRange;
 
             int j = (rand()%(sampleRate-size))+1;
             frequencyRange.push_back(j);
 
             for(int i = 1; i < size; i++)
-            {
-		    frequencyRange.push_back(i+j);
+			{
+				frequencyRange.push_back(i+j);
             }
 
             return frequencyRange;
+			*/
         }
-
 }

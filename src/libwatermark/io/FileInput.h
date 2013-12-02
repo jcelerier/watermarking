@@ -16,7 +16,7 @@ class FileInput : public InputManagerBase<data_type>
 		FileInput(std::string filename, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
 		{
-			readFile(filename.c_str(), cfg);
+			readFile(filename.c_str());
 		}
 
 		FileInput(std::string filename, InputCopy<data_type>* icp, Parameters<data_type>& cfg):
@@ -25,11 +25,11 @@ class FileInput : public InputManagerBase<data_type>
 			readFile(filename.c_str());
 		}
 
-		void readFile(const char * str, Parameters<data_type>& cfg)
+		void readFile(const char * str)
 		{
 			auto myf = SndfileHandle(str);
 
-			cfg.samplingRate = myf.samplerate();
+			this->conf.samplingRate = myf.samplerate();
 
 			std::vector<data_type> vec;
 			vec.resize(myf.frames() * myf.channels());

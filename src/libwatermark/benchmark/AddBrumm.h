@@ -9,6 +9,8 @@
 template <typename data_type>
 class AddBrumm : public BenchmarkBase<data_type>
 {
+		using BenchmarkBase<data_type>::conf;
+		using size_type = typename Parameters<data_type>::size_type;
 
 	public:
         AddBrumm(const Parameters<data_type>& configuration):
@@ -16,20 +18,20 @@ class AddBrumm : public BenchmarkBase<data_type>
 		{
 		}
 
-		// La seule méthode importante est celle-ci.
-		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
-		virtual void operator()(Audio_p& data)  override
+		virtual void operator()(Audio_p& data) override
 		{
 			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
 
-			double const cst = 2.0 * M_PI * _frequence / this->conf.samplingRate;
+			double const cst = 2.0 * M_PI * _frequence / conf.samplingRate;
+
+			// Pour chaque canal (gauche - droite)
 			for(auto& sampleData : channelsData)
 			{
+				// Pour chaque échantillon (dans l'ordre)
 				for(auto& sample : sampleData)
 				{
-					if(pos == taille) pos = 0;
 					sample = _amplitude * (sample + sin(cst * pos));
-					pos++;
+					pos = (pos == taille - 1) ? 0 : pos + 1;
 				}
 			}
 		}
@@ -37,17 +39,17 @@ class AddBrumm : public BenchmarkBase<data_type>
 		void setFreq(int freq)
 		{
 			_frequence = freq;
-			taille = this->conf.samplingRate / freq;
+			taille = conf.samplingRate / freq;
 		}
 
-		void amplitude(double amp)
+		void setAmpli(double amp)
 		{
 			_amplitude = amp;
 		}
 
 	private:
-		int _frequence = 50;
-		double _amplitude = 1.0;
-		int pos = 0;
-		int taille = 44100 / 800;
+		unsigned int _frequence = 50;
+		data_type _amplitude = 1.0;
+		size_type pos = 0;
+		size_type taille = 44100 / 50;
 };

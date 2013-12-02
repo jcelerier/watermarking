@@ -19,6 +19,8 @@ void bench()
 	auto output = new FileOutput<double>(conf);
 
 	auto algorithm = new AddBrumm<double>(conf);
+	algorithm->setFreq(50);
+	algorithm->setAmpli(0.8);
 
     manager.input.reset(input);
     manager.output.reset(output);

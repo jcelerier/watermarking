@@ -16,7 +16,6 @@ class WatermarkManager
 		const Parameters<data_type>& conf;
 
 	public:
-		// Ajouter data : bits à encoder
 		Input_p<data_type> input = nullptr;
 		Output_p<data_type> output = nullptr;
 		Watermark_p<data_type> algorithm = nullptr;

@@ -69,4 +69,5 @@ HEADERS += \
     io/mcltproxy/MCLTProxy.h \
     io/mcltproxy/MCLTOutputProxy.h \
     mathutils/ssw_utils.h \
-    watermark/SSWDecode.h
+    watermark/SSWDecode.h \
+    benchmark/AddBrumm.h

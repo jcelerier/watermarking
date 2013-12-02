@@ -15,7 +15,8 @@ class MCLTProxy
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 		MCLTProxy(const Parameters<data_type>& cfg):
-			conf(cfg)
+			conf(cfg),
+			mclt()
 		{
 		}
 

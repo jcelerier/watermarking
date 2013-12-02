@@ -207,4 +207,11 @@ namespace MathUtil
 	{
 		return mapReduce2_n(in1, in2, size, (data_type) 0, std::plus<data_type>(), std::multiplies<data_type>());
 	}
+
+	template <typename InputIterator, typename data_type>
+	data_type norm_n(const InputIterator in,
+					 const unsigned int size)
+	{
+		return std::sqrt(dotProduct_n(in, InputIterator(in), size));
+	}
 }

@@ -21,9 +21,9 @@ void TestMCLT();
 
 void TestSSW()
 {
-	//TestMCLT();
-	sswencode();
-	sswdecode();
+	TestMCLT();
+	//sswencode();
+	//sswdecode();
 }
 
 void sswdecode(){//todo
@@ -85,13 +85,13 @@ void TestMCLT()
 	auto fft_i = Input_p<double>(new FFTInputProxy<double>(input, fft_m, conf));
 	auto fft_o = Output_p<double>(new FFTOutputProxy<double>(output, fft_m, conf));
 
-	auto mclt_i = new MCLTInputProxy<double>(fft_i, conf);
-	auto mclt_o = new MCLTOutputProxy<double>(fft_o, conf);
+	auto mclt_i = Input_p<double>(new MCLTInputProxy<double>(fft_i, conf));
+	auto mclt_o = Output_p<double>(new MCLTOutputProxy<double>(fft_o, conf));
 
 	auto algorithm = new SpectralGain<double>(conf);
 
-	manager.input.reset(mclt_i);
-	manager.output.reset(mclt_o);
+	manager.input.swap(mclt_i);
+	manager.output.swap(mclt_o);
 	manager.algorithm.reset(algorithm);
 
 	manager.execute();

@@ -16,7 +16,6 @@ class MCLTManager
 
 		void forward(std::vector<complex_type>& in)
 		{
-			auto M = in.size() - 1;
 			initDataFw(in.size());
 
 			// normalization de la fft faite plus tard
@@ -49,7 +48,7 @@ class MCLTManager
 			y[0] =   std::sqrt(0.125) * (in[0].real() + in[0].imag());
 			y[M] = - std::sqrt(0.125) * (in[M].real() + in[M].imag());
 
-			std::copy(y.begin(), y.end(), in.begin());
+			std::copy_n(y.begin(), in.size(), in.begin());
 		}
 
 	private:
@@ -93,10 +92,10 @@ class MCLTManager
 			}
 		}
 
-		std::vector<int> k;
-		std::vector<complex_type> c;
-		std::vector<complex_type> U;
-		std::vector<complex_type> V;
+		std::vector<int> k = {};
+		std::vector<complex_type> c = {};
+		std::vector<complex_type> U = {};
+		std::vector<complex_type> V = {};
 
 		const complex_type j = std::complex<double>(0.0, 1.0);
 

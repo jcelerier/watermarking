@@ -69,4 +69,6 @@ HEADERS += \
     io/mcltproxy/MCLTInputProxy.h \
     io/mcltproxy/MCLTProxy.h \
     io/mcltproxy/MCLTOutputProxy.h \
-    benchmark/AddBrumm.h
+    benchmark/AddBrumm.h \
+    BenchmarkManager.h \
+    benchmark/BenchmarkBase.h

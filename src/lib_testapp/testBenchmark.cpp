@@ -1,4 +1,4 @@
-#include "WatermarkManager.h"
+#include "BenchmarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
 #include "benchmark/AddBrumm.h"
@@ -12,13 +12,13 @@ void TestBenchmark()
 
 void bench()
 {
-    Parameters<short> conf;
-    WatermarkManager<short> manager(conf);
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
 
-    auto input = new FileInput<short>("input_mono.wav", conf);
-    auto output = new FileOutput<short>(conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto output = new FileOutput<double>(conf);
 
-    auto algorithm = new AddBrumm<short>(conf);
+	auto algorithm = new AddBrumm<double>(conf);
 
     manager.input.reset(input);
     manager.output.reset(output);
@@ -26,6 +26,6 @@ void bench()
 
     manager.execute();
 
-    output->writeFile("out_test_lsb_encode.wav");
+	output->writeFile("out_test_bench.wav");
 }
 

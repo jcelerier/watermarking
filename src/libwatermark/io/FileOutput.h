@@ -11,12 +11,12 @@ class FileOutput : public OutputManagerBase<data_type>
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 	public:
-		FileOutput(const Parameters<data_type>& cfg):
+		FileOutput(Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)
 		{
 		}
 
-		FileOutput(OutputCopy<data_type> * oc, const Parameters<data_type>& cfg):
+		FileOutput(OutputCopy<data_type> * oc, Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(oc, cfg)
 		{
 		}

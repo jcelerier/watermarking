@@ -13,12 +13,12 @@ class SilenceInput : public InputManagerBase<data_type>
 		using size_type = typename Parameters<data_type>::size_type;
 
 	public:
-		SilenceInput(const Parameters<data_type>& cfg):
+		SilenceInput(Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
 		{
 		}
 
-		SilenceInput(InputCopy<data_type>* icp, const Parameters<data_type>& cfg):
+		SilenceInput(InputCopy<data_type>* icp, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(icp, cfg)
 		{
 		}

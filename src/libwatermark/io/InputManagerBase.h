@@ -14,7 +14,7 @@ class InputManagerBase : public IOManagerBase<data_type>
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 
-		InputManagerBase(const Parameters<data_type>& cfg):
+		InputManagerBase(Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(new InputSimple<data_type>(cfg))
 		{
@@ -22,7 +22,7 @@ class InputManagerBase : public IOManagerBase<data_type>
 
 		InputManagerBase(const InputManagerBase<data_type>& orig) = delete;
 
-		InputManagerBase(InputCopy<data_type>* copy, const Parameters<data_type>& cfg):
+		InputManagerBase(InputCopy<data_type>* copy, Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(copy)
 		{

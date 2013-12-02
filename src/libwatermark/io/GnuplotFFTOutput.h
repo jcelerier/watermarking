@@ -12,7 +12,7 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 		Output_p<data_type> outputImpl = nullptr;
 
 	public:
-		GnuplotFFTOutput(OutputManagerBase<data_type>* output, const Parameters<data_type>& cfg):
+		GnuplotFFTOutput(OutputManagerBase<data_type>* output, Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(nullptr, cfg),
 			outputImpl(output)
 		{

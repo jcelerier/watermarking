@@ -11,7 +11,7 @@ class BufferOutput : public OutputManagerBase<data_type>
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 	public:
-		BufferOutput(const Parameters<data_type>& cfg):
+		BufferOutput(Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)
 		{
 		}

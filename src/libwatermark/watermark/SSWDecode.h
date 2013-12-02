@@ -1,17 +1,17 @@
-#ifndef SSWENCODE_H
-#define SSWENCODE_H
+#ifndef SSWDECODE_H
+#define SSWDECODE_H
 
 #include <cstdlib>
 #include <vector>
 
 #include "SpectralWatermarkBase.h"
 
-// Algorithme d'encodage en SSW
+// Algorithme de décodate de la méthode SSW
 template <typename data_type>
-class SSWEncode : public SpectralWatermarkBase<data_type>
+class SSWDecode : public SpectralWatermarkBase<data_type>
 {
     public:
-        SSWEncode(const Parameters<data_type>& configuration, 
+        SSWDecode(const Parameters<data_type>& configuration, 
 		  std::vector<int> & PNSequence,
 		  std::vector<int> & freqWinIndexes,
 		  double watermarkAmp):
@@ -28,11 +28,9 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 
             // Recopier cette ligne
             auto& spectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
-
-	    for (int i = 0; i < _PNSequence.size(); i++)
-	    {
-		    spectrum[freqWinIndexes[i]] += _watermarkAmp * (double) _PNSequence[i];
-	    }    
+	    
+	    // produit scalaire normalisé entre (PNSequence * watermarkAmp) et spectrum[FreqIndexes]
+	    // Seuil pour décider si watermark présent ou pas
 
         }
 
@@ -53,4 +51,4 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 
 };
 
-#endif // SSWENCODE_H
+#endif // SSWDECODE_H

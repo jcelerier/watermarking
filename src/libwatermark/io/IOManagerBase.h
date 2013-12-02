@@ -24,7 +24,7 @@ class IOManagerBase
 		friend class FFTInputProxy<data_type>;
 		friend class FFTOutputProxy<data_type>;
 
-		IOManagerBase(const Parameters<data_type>& cfg):
+		IOManagerBase(Parameters<data_type>& cfg):
 			conf(cfg)
 		{
 		}

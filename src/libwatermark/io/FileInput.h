@@ -13,13 +13,13 @@ class FileInput : public InputManagerBase<data_type>
 		using IOManagerBase<data_type>::v;
 
 	public:
-		FileInput(std::string filename, const Parameters<data_type>& cfg):
+		FileInput(std::string filename, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
 		{
 			readFile(filename.c_str());
 		}
 
-		FileInput(std::string filename, InputCopy<data_type>* icp, const Parameters<data_type>& cfg):
+		FileInput(std::string filename, InputCopy<data_type>* icp, Parameters<data_type>& cfg):
 					InputManagerBase<data_type>(icp, cfg)
 		{
 			readFile(filename.c_str());

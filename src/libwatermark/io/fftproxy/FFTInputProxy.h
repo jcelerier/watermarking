@@ -24,7 +24,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 	public:
 		FFTInputProxy(InputManagerBase<data_type>* input,
 					  FFT_p<data_type> fftmanager,
-					  const Parameters<data_type>& cfg):
+					  Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input),

@@ -16,7 +16,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 
-		OutputManagerBase(const Parameters<data_type>& cfg):
+		OutputManagerBase(Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(new OutputSimple<data_type>(cfg))
 		{
@@ -24,7 +24,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 
 		OutputManagerBase(const OutputManagerBase<data_type>& orig) = delete;
 
-		OutputManagerBase(OutputCopy<data_type>* copy, const Parameters<data_type>& cfg):
+		OutputManagerBase(OutputCopy<data_type>* copy, Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
 			copyHandler(copy)
 		{

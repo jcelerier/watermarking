@@ -17,7 +17,7 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 
 	public:
 		MCLTOutputProxy(Output_p<data_type> output,
-					  const Parameters<data_type>& cfg):
+					  Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			OutputManagerBase<data_type>(nullptr, cfg),
 			outputImpl(output)

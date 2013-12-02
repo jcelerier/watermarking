@@ -16,7 +16,7 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 		Output_p<data_type> outputImpl = nullptr;
 
 	public:
-		GnuplotOutput(OutputManagerBase<data_type>* output, const Parameters<data_type>& cfg):
+		GnuplotOutput(OutputManagerBase<data_type>* output, Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(nullptr, cfg),
 			outputImpl(output)
 		{

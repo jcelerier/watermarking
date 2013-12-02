@@ -17,7 +17,7 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 
 	public:
 		MCLTInputProxy(Input_p<data_type> input,
-					  const Parameters<data_type>& cfg):
+					  Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input)

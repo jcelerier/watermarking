@@ -17,7 +17,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 		Output_p<data_type> outputImpl = nullptr;
 
 	public:
-		FFTOutputProxy(OutputManagerBase<data_type>* output, FFT_p<data_type> fft_impl, const Parameters<data_type>& cfg):
+		FFTOutputProxy(OutputManagerBase<data_type>* output, FFT_p<data_type> fft_impl, Parameters<data_type>& cfg):
 			FFTProxy<data_type>(fft_impl, cfg),
 			OutputManagerBase<data_type>(nullptr, cfg),
 			outputImpl(output)

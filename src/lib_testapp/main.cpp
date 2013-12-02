@@ -6,7 +6,7 @@ void TestLSB();
 
 int main()
 {
-	TestLSB();
+	//TestLSB();
 	TestSSW();
 	return 0;
 }

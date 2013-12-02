@@ -1,12 +1,11 @@
 #include "WatermarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
-#include "watermark/GainTest.h"
-#include "watermark/LSBEncode.h"
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
 #include "fft/FFTWManager.h"
-#include "watermark/SpectralGain.h"
+#include "watermark/SSWEncode.h"
+#include "watermark/SSWDecode.h"
 #include "io/BufferInput.h"
 #include "io/BufferOutput.h"
 #include "io/SilenceInput.h"
@@ -14,6 +13,7 @@
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
 
+#include "mathutils/ssw_utils.h"
 
 void sswencode();
 void sswdecode();
@@ -21,14 +21,51 @@ void TestMCLT();
 
 void TestSSW()
 {
-	TestMCLT();
-	//sswencode();
-	//sswdecode();
+	int SeqSize = 100;
+	double watermarkAmplitude = 5.0;
+
+	std::vector<int> PNSequence = generatePNSequence(SeqSize);
+	sswencode(PNSequence, watermarkAmplitude);
+	sswdecode(PNSequence, watermarkAmplitude);
 }
 
-void sswdecode(){//todo
+void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude)
+{
+	// Instanciation des paramètres
+	Parameters<double> conf;
+
+	// Instanciation de la classe qui gère tout
+	WatermarkManager<double> manager(conf);
+
+	// Données du watermark détecté
+	WatermarkData* data = new WatermarkData;
+
+	// Instanciation du mode d'entrée et de sortie
+	auto input = new FileInput<double>("out_test_ssw_mono.wav", new InputSimple<double>(conf), conf);
+
+	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
+	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
+	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	fft_m->setChannels((unsigned int) input->channels()); // important.
+	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
+	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
+
+	std::vector<int> FreqRange = generateFrequencyRange(PNSequence.size(), conf.samplerate());
+	auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude);
+
+	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
+	manager.data.reset(data);
+	manager.input.reset(fft_i);
+	manager.output.reset(fft_o);
+	manager.algorithm.reset(algorithm);
+
+	// On fait tourner l'algo
+	manager.execute();
+
+	// TODO : écrire les données détectées sur la sortie standard
 }
-void sswencode()
+
+void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 {
 	// Instanciation des paramètres
 	Parameters<double> conf;
@@ -56,7 +93,10 @@ void sswencode()
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
-	auto algorithm = new SpectralGain<double>(conf);
+	//auto algorithm = new SpectralGain<double>(conf);
+
+	std::vector<int> FreqRange = generateFrequencyRange(PNSequence.size(), conf.samplerate());
+	auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude);
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
 	manager.data.reset(data);

@@ -22,7 +22,6 @@ QMAKE_CXXFLAGS += -std=c++11
 
 
 HEADERS += \
-        subtraction/algorithms.h \
         mathutils/math_util.h \
     io/IOManagerBase.h \
     io/InputManagerBase.h \
@@ -37,7 +36,7 @@ HEADERS += \
     io/copystyle/CopyStyle.h \
     Parameters.h \
     Data.h \
-    io/FFTProxy.h \
+    io/fftproxy/FFTProxy.h \
     watermark/GainTest.h \
     io/FileOutput.h \
     io/fftproxy/FFTInputProxy.h \
@@ -69,6 +68,8 @@ HEADERS += \
     io/mcltproxy/MCLTInputProxy.h \
     io/mcltproxy/MCLTProxy.h \
     io/mcltproxy/MCLTOutputProxy.h \
-    benchmark/AddBrumm.h \
     BenchmarkManager.h \
-    benchmark/BenchmarkBase.h
+    benchmark/BenchmarkBase.h \
+    mathutils/ssw_utils.h \
+    watermark/SSWDecode.h \
+    benchmark/AddBrumm.h

@@ -5,7 +5,8 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     testlsb.cpp \
-    testssw.cpp
+    testssw.cpp \
+    testBenchmark.cpp
 DESTDIR = $$PWD/../../output
 
 contains(QMAKE_TARGET.arch, 64):{
@@ -31,3 +32,7 @@ LIBS+=-lsndfile -lfftw3
 
 OTHER_FILES += \
     Vieux_tests.txt
+
+HEADERS += \
+    sndfile.hh \
+    sndfile.h

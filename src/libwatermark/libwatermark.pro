@@ -68,4 +68,5 @@ HEADERS += \
     mathutils/MCLT.h \
     io/mcltproxy/MCLTInputProxy.h \
     io/mcltproxy/MCLTProxy.h \
-    io/mcltproxy/MCLTOutputProxy.h
+    io/mcltproxy/MCLTOutputProxy.h \
+    benchmark/AddBrumm.h

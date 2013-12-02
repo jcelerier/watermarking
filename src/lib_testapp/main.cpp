@@ -3,11 +3,13 @@
 
 void TestSSW();
 void TestLSB();
+void TestBenchmark();
 
 int main()
 {
-	TestLSB();
-	TestSSW();
+    //TestLSB();
+    //TestSSW();
+    TestBenchmark();
 	return 0;
 }
 

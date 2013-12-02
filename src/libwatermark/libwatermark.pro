@@ -73,4 +73,7 @@ HEADERS += \
     mathutils/ssw_utils.h \
     watermark/SSWDecode.h \
     benchmark/AddBrumm.h \
-    io/DummyOutput.h
+    io/DummyOutput.h \
+    benchmark/Invert.h \
+    benchmark/AddWhiteNoise.h \
+    benchmark/Exchange.h

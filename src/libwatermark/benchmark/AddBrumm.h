@@ -30,7 +30,7 @@ class AddBrumm : public BenchmarkBase<data_type>
 				// Pour chaque échantillon (dans l'ordre)
 				for(auto& sample : sampleData)
 				{
-					sample = _amplitude * (sample + sin(cst * pos));
+					sample =  sample + _amplitude * sin(cst * pos);
 					pos = (pos == taille - 1) ? 0 : pos + 1;
 				}
 			}

@@ -18,7 +18,7 @@ class IOManagerBase
 		size_type _pos = 0;
 
 	protected:
-		const Parameters<data_type>& conf;
+		Parameters<data_type>& conf;
 
 	public:
 		friend class FFTInputProxy<data_type>;

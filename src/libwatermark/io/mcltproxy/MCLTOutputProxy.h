@@ -24,11 +24,7 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 		{
 		}
 
-		virtual ~MCLTOutputProxy()
-		{
-			std::cerr << "mcltoutputproxy\n";
-		}
-
+		virtual ~MCLTOutputProxy() = default;
 		virtual void writeNextBuffer(Audio_p& buf) final override
 		{
 			auto& buffer = static_cast<CData<complex_type>*>(buf.get())->_data;

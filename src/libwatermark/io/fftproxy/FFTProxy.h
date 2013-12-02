@@ -17,5 +17,5 @@ class FFTProxy
 		{
 		}
 
-		virtual ~FFTProxy() { std::cerr << "coucou\n"; }
+		virtual ~FFTProxy() = default;
 };

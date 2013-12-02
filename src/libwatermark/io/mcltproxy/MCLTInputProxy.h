@@ -24,10 +24,7 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 		{
 		}
 
-		virtual ~MCLTInputProxy()
-		{
-			std::cerr << "mcltinputproxy\n";
-		}
+		virtual ~MCLTInputProxy() = default;
 
 		virtual Audio_p getNextBuffer() final override
 		{

@@ -31,7 +31,7 @@ class FFTWManager : public FFTManager<data_type>
 				if(plan) fftw_destroy_plan(plan);
 				plan = nullptr;
 			}
-			std::cerr << "instances : " << num_instances << std::endl;
+
 			if(!num_instances--)
 				fftw_cleanup();
 		}

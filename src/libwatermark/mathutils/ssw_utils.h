@@ -13,7 +13,7 @@ namespace SSWUtil
 			std::default_random_engine rng(std::random_device{}());
 			std::uniform_int_distribution<int> dist(0, 1);
 
-			std::vector<int> pnsequence;
+			std::vector<int> pnsequence(size);
 			std::generate_n(pnsequence.begin(), size, [&] ()
 			{
 				return dist(rng) * 2 - 1;
@@ -41,7 +41,7 @@ namespace SSWUtil
 			std::default_random_engine rng(std::random_device{}());
 			std::uniform_int_distribution<int> dist(1, sampleRate);
 
-			std::vector<unsigned int> range;
+			std::vector<unsigned int> range(size);
 			std::generate_n(range.begin(), size, [&] ()
 			{
 				return dist(rng);

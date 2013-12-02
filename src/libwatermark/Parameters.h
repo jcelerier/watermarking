@@ -3,6 +3,7 @@
 #include <complex>
 
 #define DEBUG(x) std::cerr << #x << ": " << ( x ) << std::endl;
+#define M_PI 3.141592653589793238462
 
 template <typename data_type>
 struct Parameters

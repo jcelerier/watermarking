@@ -11,12 +11,17 @@
 #include "io/BufferOutput.h"
 #include "io/SilenceInput.h"
 
+#include "io/mcltproxy/MCLTInputProxy.h"
+#include "io/mcltproxy/MCLTOutputProxy.h"
+
 
 void sswencode();
 void sswdecode();
+void TestMCLT();
 
 void TestSSW()
 {
+	//TestMCLT();
 	sswencode();
 	sswdecode();
 }
@@ -64,4 +69,32 @@ void sswencode()
 
 	// On écrit dans un fichier de sortie.
 	output->writeFile("out_test_ssw_mono.wav");
+}
+
+/***** Test du fonctionnement de la MCLT *****/
+void TestMCLT()
+{
+	Parameters<double> conf;
+	WatermarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
+	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
+
+	FFT_p<double> fft_m(new FFTWManager<double>(conf));
+	fft_m->setChannels((unsigned int) input->channels());
+	auto fft_i = Input_p<double>(new FFTInputProxy<double>(input, fft_m, conf));
+	auto fft_o = Output_p<double>(new FFTOutputProxy<double>(output, fft_m, conf));
+
+	auto mclt_i = new MCLTInputProxy<double>(fft_i, conf);
+	auto mclt_o = new MCLTOutputProxy<double>(fft_o, conf);
+
+	auto algorithm = new SpectralGain<double>(conf);
+
+	manager.input.reset(mclt_i);
+	manager.output.reset(mclt_o);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_mclt_mono.wav");
 }

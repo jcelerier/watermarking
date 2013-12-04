@@ -37,7 +37,6 @@ HEADERS += \
     Parameters.h \
     Data.h \
     io/fftproxy/FFTProxy.h \
-    watermark/GainTest.h \
     io/FileOutput.h \
     io/fftproxy/FFTInputProxy.h \
     io/fftproxy/FFTProxy.h \
@@ -76,4 +75,7 @@ HEADERS += \
     io/DummyOutput.h \
     benchmark/Invert.h \
     benchmark/AddWhiteNoise.h \
-    benchmark/Exchange.h
+    benchmark/Exchange.h \
+    benchmark/Smooth.h \
+    benchmark/Amplify.h \
+    benchmark/ZeroCross.h

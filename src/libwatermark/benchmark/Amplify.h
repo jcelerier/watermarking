@@ -3,17 +3,15 @@
 #include <random>
 
 #include "BenchmarkBase.h"
-#include "../mathutils/math_util.h"
 
 template <typename data_type>
-class AddWhiteNoise : public BenchmarkBase<data_type>
+class Amplify : public BenchmarkBase<data_type>
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
 
-
 	public:
-		AddWhiteNoise(const Parameters<data_type>& configuration):
+		Amplify(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
 		}
@@ -25,23 +23,19 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 			for(auto& sampleData : channelsData)
 			{
 				apply(sampleData,
-					  [this] (data_type x)
+					  [&] (data_type x)
 				{
-					return x + _amplitude * dist(rng);
+					return x * _gain;
 				});
+
 			}
 		}
 
-
-		void setAmpli(double amp)
+		void setGain(double g)
 		{
-			_amplitude = amp;
+			_gain = g;
 		}
 
 	private:
-		unsigned int _frequence = 50;
-		data_type _amplitude = 1.0;
-		std::default_random_engine rng = std::default_random_engine(std::random_device{}());
-		std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(-1, 1);
-
+		double _gain = 1;
 };

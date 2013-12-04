@@ -7,8 +7,8 @@ void TestBenchmark();
 
 int main()
 {
-	TestSSW();
-	//TestBenchmark();
+	//TestSSW();
+	TestBenchmark();
 	return 0;
 }
 

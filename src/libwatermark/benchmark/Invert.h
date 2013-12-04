@@ -21,10 +21,8 @@ class Invert : public BenchmarkBase<data_type>
 
 			for(auto& sampleData : channelsData)
 			{
-				std::transform(sampleData.begin(),
-							   sampleData.end(),
-							   sampleData.begin(),
-							   [] (data_type x)
+				apply(sampleData,
+					  [] (data_type x)
 				{
 					return conf.normFactor() - x;
 				});

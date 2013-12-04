@@ -1,7 +1,7 @@
 #include "BenchmarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
-#include "benchmark/AddBrumm.h"
+#include "benchmark/Amplify.h"
 
 void bench();
 void TestBenchmark()
@@ -18,9 +18,8 @@ void bench()
 	auto input = new FileInput<double>("input_mono.wav", conf);
 	auto output = new FileOutput<double>(conf);
 
-	auto algorithm = new AddBrumm<double>(conf);
-	algorithm->setFreq(50);
-	algorithm->setAmpli(0.8);
+	auto algorithm = new Amplify<double>(conf);
+	algorithm->setGain(0.5);
 
     manager.input.reset(input);
     manager.output.reset(output);

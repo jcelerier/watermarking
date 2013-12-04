@@ -214,4 +214,13 @@ namespace MathUtil
 	{
 		return std::sqrt(dotProduct_n(in, InputIterator(in), size));
 	}
+
+	template <typename Vector, typename Lambda>
+	void apply(Vector v, Lambda l)
+	{
+		std::transform(v.begin(),
+					   v.end(),
+					   v.begin(),
+					   l);
+	}
 }

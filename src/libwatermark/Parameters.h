@@ -15,7 +15,7 @@ struct Parameters
 		size_type samplingRate = 44100U;
 		size_type bufferSize = 512U;
 
-		data_type normFactor()
+		constexpr data_type normFactor()
 		{
 			if(typeid(data_type) == typeid(double))
 				return 1.0;

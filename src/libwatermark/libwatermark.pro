@@ -78,4 +78,9 @@ HEADERS += \
     benchmark/Exchange.h \
     benchmark/Smooth.h \
     benchmark/Amplify.h \
-    benchmark/ZeroCross.h
+    benchmark/ZeroCross.h \
+    timeadapter/AtTime.h \
+    timeadapter/TimeAdapter.h \
+    watermarkdata/WatermarkData.h \
+    watermarkdata/SimpleWatermarkData.h \
+    watermarkdata/LoopingWatermarkData.h

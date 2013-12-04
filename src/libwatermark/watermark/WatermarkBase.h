@@ -2,7 +2,7 @@
 
 #include "../Parameters.h"
 #include "../Data.h"
-#include "../WatermarkData.h"
+#include "../watermarkdata/WatermarkData.h"
 
 
 template <typename data_type>

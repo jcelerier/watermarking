@@ -3,6 +3,7 @@
 #include "io/FileOutput.h"
 #include "watermark/LSBEncode.h"
 #include "watermark/LSBDecode.h"
+#include "watermarkdata/SimpleWatermarkData.h"
 
 void encode();
 void decode();
@@ -17,7 +18,7 @@ void encode()
 {
     Parameters<short> conf;
     WatermarkManager<short> manager(conf);
-    WatermarkData* data = new WatermarkData;
+	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(7);
     data->bits.push_back(true);
     data->bits.push_back(false);
@@ -46,7 +47,7 @@ void decode()
 {
     Parameters<short> conf;
     WatermarkManager<short> manager(conf);
-    WatermarkData* data = new WatermarkData;
+	WatermarkData* data = new SimpleWatermarkData;
 
     auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
     auto output = new FileOutput<short>(conf);

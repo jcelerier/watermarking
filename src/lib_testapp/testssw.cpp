@@ -10,6 +10,7 @@
 #include "io/BufferOutput.h"
 #include "io/SilenceInput.h"
 #include "io/DummyOutput.h"
+#include "watermarkdata/SimpleWatermarkData.h"
 
 #include "watermark/SpectralGain.h"
 
@@ -42,7 +43,7 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	WatermarkManager<double> manager(conf);
 
 	// Données du watermark détecté
-	WatermarkData* data = new WatermarkData;
+	WatermarkData* data = new SimpleWatermarkData;
 
 	// Instanciation du mode d'entrée et de sortie
 	auto input = new FileInput<double>("out_test_ssw_mono.wav", new InputSimple<double>(conf), conf);
@@ -81,7 +82,7 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	WatermarkManager<double> manager(conf);
 
 	// Données à watermarker
-	WatermarkData* data = new WatermarkData;
+	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(4);
 	data->bits.push_back(true);
 	data->bits.push_back(false);

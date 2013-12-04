@@ -9,9 +9,11 @@ class WatermarkData
 	public:
 		uint64_t _size = 0;
 		std::vector<bool> bits = { };
-		unsigned int position = 0;
-		WatermarkData() = default;
+		unsigned int _position = 0;
+		virtual ~WatermarkData() = default;
 
+		// Note : il ne faut appeler setSize qu'au début,
+		//        avant d'avoir ajouté des données.
 		void setSize(const uint64_t size)
 		{
 			const auto size_bits = sizeof(_size) * 8U;
@@ -44,6 +46,14 @@ class WatermarkData
 
 			std::cerr << std::endl;
 		}
+
+		void resetPosition()
+		{
+			_position = 0;
+		}
+
+		virtual bool nextBit() = 0;
+		virtual bool isComplete() = 0;
 };
 
 

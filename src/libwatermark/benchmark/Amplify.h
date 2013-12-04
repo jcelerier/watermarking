@@ -3,6 +3,7 @@
 #include <random>
 
 #include "BenchmarkBase.h"
+#include "mathutils/math_util.h"
 
 template <typename data_type>
 class Amplify : public BenchmarkBase<data_type>
@@ -22,7 +23,7 @@ class Amplify : public BenchmarkBase<data_type>
 
 			for(auto& sampleData : channelsData)
 			{
-				apply(sampleData,
+				MathUtil::apply(sampleData,
 					  [&] (data_type x)
 				{
 					return x * _gain;

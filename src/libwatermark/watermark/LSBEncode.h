@@ -27,8 +27,11 @@ class LSBEncode : public WatermarkBase<data_type>
 				auto& sampleData = channelsData[j];
 				for(int i = 0; i < sampleData.size(); ++i)
 				{
-					short testBit = 0x0001 & (short)watermark.bits[i];
-					sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);					
+					if(!watermark.isComplete())
+					{
+						short testBit = 0x0001 & (short)watermark.nextBit();
+						sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);
+					}
 				}
 			}
 		}

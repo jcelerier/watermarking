@@ -4,7 +4,8 @@
 #include "watermark/WatermarkBase.h"
 #include "io/InputManagerBase.h"
 #include "io/OutputManagerBase.h"
-
+#include "timeadapter/TimeAdapter.h"
+#include "timeadapter/AtTime.h"
 /**
  * @brief Main class.
  *
@@ -20,10 +21,12 @@ class WatermarkManager
 		Output_p<data_type> output = nullptr;
 		Watermark_p<data_type> algorithm = nullptr;
 		WatermarkData_p data = nullptr;
+		TimeAdapter_p timeAdapter = nullptr;
 
 
 		WatermarkManager(const Parameters<data_type>& parameters):
-			conf(parameters)
+			conf(parameters),
+			timeAdapter(new AtTime)
 		{
 
 		}
@@ -36,13 +39,21 @@ class WatermarkManager
 			algorithm->onDataUpdate();
 		}
 
+		void prepare()
+		{
+			timeAdapter->addHandler(std::bind(&WatermarkData::resetPosition, data));
+		}
+
 		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		void execute()
 		{
 			while(Audio_p buf = input->getNextBuffer())
 			{
-				(*algorithm)(buf, *data.get());
+				if(timeAdapter->check())
+					(*algorithm)(buf, *data.get());
+
 				output->writeNextBuffer(buf);
+				timeAdapter->increment();
 			}
 		}
 };

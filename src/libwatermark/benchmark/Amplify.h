@@ -28,7 +28,6 @@ class Amplify : public BenchmarkBase<data_type>
 				{
 					return x * _gain;
 				});
-
 			}
 		}
 

@@ -6,7 +6,7 @@
 void bench();
 void TestBenchmark()
 {
-    bench();
+	bench();
 }
 
 
@@ -15,17 +15,17 @@ void bench()
 	Parameters<double> conf;
 	BenchmarkManager<double> manager(conf);
 
-	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto input = new FileInput<double>("sine.wav", conf);
 	auto output = new FileOutput<double>(conf);
 
 	auto algorithm = new Amplify<double>(conf);
-	algorithm->setGain(0.5);
+	algorithm->setGain(0.1);
 
-    manager.input.reset(input);
-    manager.output.reset(output);
-    manager.algorithm.reset(algorithm);
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
 
-    manager.execute();
+	manager.execute();
 
 	output->writeFile("out_test_bench.wav");
 }

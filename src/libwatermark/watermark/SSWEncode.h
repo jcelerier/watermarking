@@ -26,7 +26,6 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 		// data : les données audio. Ici ce sera un spectre.
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-
 			// Recopier cette ligne
 			auto& spectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
 

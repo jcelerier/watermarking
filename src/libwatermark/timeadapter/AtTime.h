@@ -4,16 +4,28 @@
 class AtTime : public TimeAdapter
 {
 	public:
-		virtual bool check() override
+		AtTime() = default;
+		AtTime(long unsigned int time):
+			startTime(time)
 		{
-			return count >= startTime;
+			running = false;
 		}
 
-		void setTime(long unsigned int t)
+		virtual bool startCheck() override
+		{
+			return count == startTime;
+		}
+
+		virtual bool stopCheck() override
+		{
+			return false;
+		}
+
+		void setStartTime(long unsigned int t)
 		{
 			startTime = t;
 		}
 
-	private:
+	protected:
 		long unsigned int startTime = 0;
 };

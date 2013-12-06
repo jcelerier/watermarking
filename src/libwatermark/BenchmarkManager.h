@@ -4,6 +4,9 @@
 #include "benchmark/BenchmarkBase.h"
 #include "io/InputManagerBase.h"
 #include "io/OutputManagerBase.h"
+#include "timeadapter/TimeAdapter.h"
+#include "timeadapter/AtTime.h"
+#include "timeadapter/Every_For.h"
 
 /**
  * @brief Main class.
@@ -20,10 +23,18 @@ class BenchmarkManager
 		Input_p<data_type> input = nullptr;
 		Output_p<data_type> output = nullptr;
 		Benchmark_p<data_type> algorithm = nullptr;
+		TimeAdapter_p timeAdapter = nullptr;
 
 
 		BenchmarkManager(const Parameters<data_type>& parameters):
-			conf(parameters)
+			conf(parameters),
+			timeAdapter(new AtTime)
+			//timeAdapter(new Every_For(400, 200, 30))
+		{
+
+		}
+
+		void prepare()
 		{
 
 		}
@@ -36,7 +47,10 @@ class BenchmarkManager
 		{
 			while(Audio_p buf = input->getNextBuffer())
 			{
-				(*algorithm)(buf);
+				timeAdapter->perform();
+
+				if(timeAdapter->isRunning()) (*algorithm)(buf);
+
 				output->writeNextBuffer(buf);
 			}
 		}

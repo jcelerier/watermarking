@@ -49,11 +49,11 @@ class WatermarkManager
 		{
 			while(Audio_p buf = input->getNextBuffer())
 			{
-				if(timeAdapter->check())
-					(*algorithm)(buf, *data.get());
+				timeAdapter->perform();
+
+				if(timeAdapter->isRunning()) (*algorithm)(buf, *data.get());
 
 				output->writeNextBuffer(buf);
-				timeAdapter->increment();
 			}
 		}
 };

@@ -3,7 +3,7 @@
 #include <functional>
 #include <iterator>
 #include <type_traits>
-
+#include <iostream>
 //! Mathematic utilities.
 namespace MathUtil
 {
@@ -216,11 +216,21 @@ namespace MathUtil
 	}
 
 	template <typename Vector, typename Lambda>
-	void apply(Vector v, Lambda l)
+	void apply(Vector& v, Lambda l)
 	{
 		std::transform(v.begin(),
 					   v.end(),
 					   v.begin(),
 					   l);
+	}
+
+	template <class ForwardIterator, class Generator>
+	void i_generate ( ForwardIterator first, ForwardIterator last, Generator gen )
+	{
+		auto i = 0U;
+		while (first != last)
+		{
+			*first++ = gen(i++);
+		}
 	}
 }

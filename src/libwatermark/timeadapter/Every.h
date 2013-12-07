@@ -2,6 +2,13 @@
 #include "AtTime.h"
 
 
+/**
+ * @brief The Every class
+ *
+ * Déclenche un algorithme tous les tant de buffers, à partir d'un temps donné.
+ *
+ * Exemple : à partir de 20 buffers, déclencher tous les 30 buffers.
+ */
 class Every : virtual public AtTime
 {
 	public:

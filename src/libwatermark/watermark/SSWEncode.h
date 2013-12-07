@@ -1,7 +1,4 @@
-#ifndef SSWENCODE_H
-#define SSWENCODE_H
-
-#include <cstdlib>
+#pragma once
 #include <vector>
 
 #include "SpectralWatermarkBase.h"
@@ -46,5 +43,3 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 		double _watermarkAmp;
 
 };
-
-#endif // SSWENCODE_H

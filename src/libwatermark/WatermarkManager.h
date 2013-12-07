@@ -49,13 +49,13 @@ class WatermarkManager
 		 */
 		void prepare()
 		{
-			timeAdapter->addHandler(std::bind(&WatermarkData::resetPosition, data));
+			timeAdapter->addStartHandler(std::bind(&WatermarkData::resetPosition, data));
 		}
 
 		/**
 		 * @brief execute
 		 *
-		 * Méthode principale qui va traiter tout l'audio
+		 * Méthode principale qui va traiter tout l'audio.
 		 */
 		void execute()
 		{

@@ -1,6 +1,12 @@
 #pragma once
 #include "AtTime.h"
 
+/**
+ * @brief The For class
+ *
+ * Déclenche l'algorithme à partir d'un certain temps,
+ * et l'arrête au bout de duration.
+ */
 class For : virtual public AtTime
 {
 	public:

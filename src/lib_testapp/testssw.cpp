@@ -84,10 +84,10 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	// Données à watermarker
 	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(4);
-	data->bits.push_back(true);
-	data->bits.push_back(false);
-	data->bits.push_back(true);
-	data->bits.push_back(true);
+	data->setNextBit(true);
+	data->setNextBit(false);
+	data->setNextBit(true);
+	data->setNextBit(true);
 
 	// Instanciation du mode d'entrée et de sortie
 	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);

@@ -15,6 +15,11 @@ class LoopingWatermarkData : public WatermarkData
 			return bits[_position++];
 		}
 
+		virtual void setNextBit(bool b)
+		{
+			bits.push_back(b);
+		}
+
 		virtual bool isComplete() final override
 		{
 			return false;

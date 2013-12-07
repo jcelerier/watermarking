@@ -28,7 +28,7 @@ class LSBDecode : public WatermarkBase<data_type>
 				{
 					short testBit = 0x0001 & sampleData[i];
 					bool bit = (testBit != 0);
-					watermark.bits.push_back(bit);					
+					watermark.setNextBit(bit);
 				}
 			}
 		}

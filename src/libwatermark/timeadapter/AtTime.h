@@ -1,6 +1,12 @@
 #pragma once
 #include "TimeAdapter.h"
 
+/**
+ * @brief The AtTime class
+ *
+ * Déclenche l'algorithme à un temps donné.
+ * Attention : il n'y a pas d'arrêt !
+ */
 class AtTime : public TimeAdapter
 {
 	public:

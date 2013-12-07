@@ -36,7 +36,7 @@ class WatermarkData
 			_size = size;
 
 			bits.clear();
-			bits.resize(size + size_bits);
+			bits.resize(size_bits);
 
 			std::bitset<size_bits> num(_size);
 
@@ -72,7 +72,8 @@ class WatermarkData
 		{
 			std::cerr << "Affichage des données :" << std::endl;
 			const auto size_bits = sizeof(_size) * 8U;
-			for(auto i = size_bits; i < _size; ++i)
+
+			for(auto i = size_bits; i < size_bits + _size; ++i)
 			{
 				std::cerr << bits[i];
 			}
@@ -85,7 +86,7 @@ class WatermarkData
 		 *
 		 * Utilisé lorsqu'on veut écrire plusieurs fois la watermark dans
 		 * les données audio.
-		 * Note : remet à 0, header inclus
+		 * Note : remet à 0, header inclus. Donc on recopie le header.
 		 */
 		void resetPosition()
 		{
@@ -94,9 +95,15 @@ class WatermarkData
 
 		/**
 		 * @brief nextBit
-		 * @return Référence vers le prochain bit
+		 * @return Valeur du prochain bit
 		 */
-		virtual bool& nextBit() = 0;
+		virtual bool nextBit() = 0;
+
+		/**
+		 * @brief setNextBit
+		 * @param b prochain bit
+		 */
+		virtual void setNextBit(bool b) = 0;
 
 		/**
 		 * @brief isComplete

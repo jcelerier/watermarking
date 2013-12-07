@@ -16,6 +16,11 @@ class SimpleWatermarkData : public WatermarkData
 
 		virtual bool isComplete() final override
 		{
-			return _position >= _size;
+			return _position >= _size + sizeof(_size) * 8U;
+		}
+
+		virtual void setNextBit(bool b)
+		{
+			bits.push_back(b);
 		}
 };

@@ -15,7 +15,7 @@ void bench()
 	Parameters<double> conf;
 	BenchmarkManager<double> manager(conf);
 
-	auto input = new FileInput<double>("sine.wav", conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
 	auto output = new FileOutput<double>(conf);
 
 	auto algorithm = new Amplify<double>(conf);

@@ -20,13 +20,13 @@ void encode()
     WatermarkManager<short> manager(conf);
 	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(7);
-    data->bits.push_back(true);
-    data->bits.push_back(false);
-    data->bits.push_back(true);
-    data->bits.push_back(true);
-	data->bits.push_back(false);
-	data->bits.push_back(false);
-	data->bits.push_back(true);
+	data->setNextBit(true);
+	data->setNextBit(false);
+	data->setNextBit(true);
+	data->setNextBit(true);
+	data->setNextBit(false);
+	data->setNextBit(false);
+	data->setNextBit(true);
 
     auto input = new FileInput<short>("input_mono.wav", conf);
     auto output = new FileOutput<short>(conf);

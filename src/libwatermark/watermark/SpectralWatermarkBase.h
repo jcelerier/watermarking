@@ -19,6 +19,4 @@ class SpectralWatermarkBase: public WatermarkBase<data_type>
 		}
 
 		virtual ~SpectralWatermarkBase() = default;
-
-		virtual void onFFTSizeUpdate() = 0;
 };

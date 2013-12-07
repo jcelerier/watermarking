@@ -1,12 +1,13 @@
-#ifndef SSWDECODE_H
-#define SSWDECODE_H
-
-#include <cstdlib>
+#pragma once
 #include <vector>
 
 #include "SpectralWatermarkBase.h"
 
-// Algorithme de décodate de la méthode SSW
+/**
+ * @brief The SSWDecode class
+ *
+ * Décodage SSW.
+ */
 template <typename data_type>
 class SSWDecode : public SpectralWatermarkBase<data_type>
 {
@@ -22,12 +23,8 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 		{
 		}
 
-		// La seule méthode importante est celle-ci.
-		// data : les données audio. Ici ce sera un spectre.
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-
-			// Recopier cette ligne
 			auto& spectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
 
 			// produit scalaire normalisé entre (PNSequence * watermarkAmp) et spectrum[FreqIndexes]
@@ -35,22 +32,8 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 
 		}
 
-		virtual void onFFTSizeUpdate() override
-		{
-
-		}
-
-		virtual void onDataUpdate() override
-		{
-
-		}
-
 	private :
 		std::vector<int> _PNSequence = {};
 		std::vector<unsigned int> _freqWinIndexes = {};
 		double _watermarkAmp;
-
-
 };
-
-#endif // SSWDECODE_H

@@ -6,9 +6,12 @@
 #include "io/OutputManagerBase.h"
 #include "timeadapter/TimeAdapter.h"
 #include "timeadapter/AtTime.h"
+
+
 /**
- * @brief Main class.
+ * @brief The WatermarkManager class
  *
+ * Classe servant à appliquer une watermark à un signal audio.
  */
 template<typename data_type>
 class WatermarkManager
@@ -39,12 +42,21 @@ class WatermarkManager
 			algorithm->onDataUpdate();
 		}
 
+		/**
+		 * @brief prepare Prépare les données nécessaires
+		 *
+		 * A appeler juste avant execute() de l'algorithme.
+		 */
 		void prepare()
 		{
 			timeAdapter->addHandler(std::bind(&WatermarkData::resetPosition, data));
 		}
 
-		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
+		/**
+		 * @brief execute
+		 *
+		 * Méthode principale qui va traiter tout l'audio
+		 */
 		void execute()
 		{
 			while(Audio_p buf = input->getNextBuffer())

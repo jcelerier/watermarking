@@ -3,19 +3,20 @@
 
 #include "WatermarkBase.h"
 
-// Exemple de comment faire un algo temporel.
+/**
+ * @brief The LSBDecode class
+ *
+ * Implémente le décodage sur bit de poids faible.
+ */
 template <typename data_type>
 class LSBDecode : public WatermarkBase<data_type>
 {
-
 	public:
         LSBDecode(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
 		}
 
-		// La seule méthode importante est celle-ci.
-		// data : les données audio. Ici ce seront des samples, au format choisi (double, short...).
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
@@ -30,11 +31,5 @@ class LSBDecode : public WatermarkBase<data_type>
 					watermark.bits.push_back(bit);					
 				}
 			}
-
 		}
-
-		virtual void onDataUpdate() override
-		{
-
-        }
 };

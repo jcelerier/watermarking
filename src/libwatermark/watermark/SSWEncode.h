@@ -6,8 +6,12 @@
 
 #include "SpectralWatermarkBase.h"
 
-// Algorithme d'encodage en SSW
 template <typename data_type>
+/**
+ * @brief The SSWEncode class
+ *
+ * Encodage SSW.
+ */
 class SSWEncode : public SpectralWatermarkBase<data_type>
 {
 	public:
@@ -33,16 +37,6 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 			{
 				//TODO	spectrum[_freqWinIndexes[i]] += _watermarkAmp * (double) _PNSequence[i];
 			}
-
-		}
-
-		virtual void onFFTSizeUpdate() override
-		{
-
-		}
-
-		virtual void onDataUpdate() override
-		{
 
 		}
 

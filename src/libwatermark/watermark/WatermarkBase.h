@@ -5,6 +5,13 @@
 #include "../watermarkdata/WatermarkData.h"
 
 
+
+/**
+ * @brief The WatermarkBase class
+ *
+ * Classe de base pour les algorithmes de watermark.
+ * TODO : faire une méta-classe AudioFX qui ne précise pas de foncteur.
+ */
 template <typename data_type>
 class WatermarkBase
 {
@@ -15,8 +22,13 @@ class WatermarkBase
 		{
 		}
 
+		/**
+		 * @brief operator ()
+		 * @param data Données audio (samples ou spectre)
+		 * @param watermark Données à watermarker.
+		 */
 		virtual void operator()(Audio_p& data, WatermarkData& watermark) = 0;
-		virtual void onDataUpdate() = 0;
+
 		virtual ~WatermarkBase() = default;
 
 	protected:

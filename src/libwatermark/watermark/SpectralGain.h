@@ -3,7 +3,12 @@
 
 #include "SpectralWatermarkBase.h"
 
-// Exemple de comment faire un algo spectral.
+/**
+ * @brief The SpectralGain class
+ *
+ * Example d'algorithme de réduction de volume par action sur
+ * les bandes de magnitude. Sera supprimé quand SSW aura été implémenté.
+ */
 template <typename data_type>
 class SpectralGain : public SpectralWatermarkBase<data_type>
 {
@@ -13,8 +18,6 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 		{
 		}
 
-		// La seule méthode importante est celle-ci.
-		// data : les données audio. Ici ce sera un spectre.
 		virtual void operator()(Audio_p& data, WatermarkData& /*watermark*/)  override
 		{
 			// Recopier cette ligne
@@ -36,16 +39,6 @@ class SpectralGain : public SpectralWatermarkBase<data_type>
 					channel[i] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 				}
 			}
-
-		}
-
-		virtual void onFFTSizeUpdate() override
-		{
-
-		}
-
-		virtual void onDataUpdate() override
-		{
 
 		}
 

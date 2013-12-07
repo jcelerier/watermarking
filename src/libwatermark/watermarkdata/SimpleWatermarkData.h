@@ -1,7 +1,11 @@
 #pragma once
 #include "WatermarkData.h"
 
-
+/**
+ * @brief The SimpleWatermarkData class
+ *
+ * Ecrit les données une unique fois.
+ */
 class SimpleWatermarkData : public WatermarkData
 {
 	public:

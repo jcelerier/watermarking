@@ -1,7 +1,11 @@
 #pragma once
 #include "WatermarkData.h"
 
-
+/**
+ * @brief The LoopingWatermarkData class
+ *
+ * Ecrit les données en boucle.
+ */
 class LoopingWatermarkData : public WatermarkData
 {
 	public:

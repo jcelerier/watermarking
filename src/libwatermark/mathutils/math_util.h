@@ -212,7 +212,7 @@ namespace MathUtil
 	data_type norm_n(const InputIterator in,
 					 const unsigned int size)
 	{
-		return std::sqrt(dotProduct_n(in, InputIterator(in), size));
+		return std::sqrt(dotProduct_n<InputIterator, data_type>(in, InputIterator(in), size));
 	}
 
 	template <typename Vector, typename Lambda>

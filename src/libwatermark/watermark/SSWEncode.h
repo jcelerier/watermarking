@@ -28,13 +28,21 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			// Recopier cette ligne
-			auto& spectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
+			auto& channelsSpectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
 
-			for (int i = 0; i < _PNSequence.size(); i++)
-			{
-				//TODO	spectrum[_freqWinIndexes[i]] += _watermarkAmp * (double) _PNSequence[i];
+			if(!watermark.isComplete()) {
+				double bit = (watermark.nextBit()) ? (1.0): (-1.0);
+
+				for(int j = 0; j < channelsSpectrum.size(); j++)
+				{
+					auto& spectrumData = channelsSpectrum[j];
+
+					for (int i = 0; i < _PNSequence.size(); i++)
+					{
+						spectrumData[_freqWinIndexes[i]] += bit * _watermarkAmp * (double) _PNSequence[i];
+					}
+				}
 			}
-
 		}
 
 	private :

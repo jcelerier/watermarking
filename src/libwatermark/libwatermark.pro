@@ -86,4 +86,7 @@ HEADERS += \
     watermarkdata/LoopingWatermarkData.h \
     timeadapter/Every.h \
     timeadapter/For.h \
-    timeadapter/Every_For.h
+    timeadapter/Every_For.h \
+    io/copystyle/InputFilter.h \
+    io/copystyle/OutputFilter.h \
+    benchmark/Convolution.h

@@ -8,6 +8,11 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The FileInput class
+ *
+ * Lit un fichier à l'aide de libsndfile
+ */
 class FileInput : public InputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

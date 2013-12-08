@@ -4,6 +4,12 @@
 #include "OutputCopy.h"
 
 template <typename data_type>
+/**
+ * @brief The OutputSimple class
+ *
+ * Gère la copie depuis le buffer de sortie.
+ * Copie simple : On copie tout le buffer et on progresse de bufferSize
+ */
 class OutputSimple : public OutputCopy<data_type>
 {
 	public:
@@ -17,6 +23,13 @@ class OutputSimple : public OutputCopy<data_type>
 			return CopyStyle<data_type>::conf.bufferSize;
 		}
 
+		/**
+		 * @brief copy
+		 * @param in Petit buffer
+		 * @param out Grand buffer
+		 * @param pos
+		 * @param big_vector_length
+		 */
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
 						  typename std::vector<data_type>::iterator out,
 						  typename CopyStyle<data_type>::size_type pos,

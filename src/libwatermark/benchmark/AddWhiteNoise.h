@@ -43,5 +43,4 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 		data_type _amplitude = 1.0;
 		std::default_random_engine rng = std::default_random_engine(std::random_device{}());
 		std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(-1, 1);
-
 };

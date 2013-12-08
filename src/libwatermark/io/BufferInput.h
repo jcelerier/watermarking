@@ -5,6 +5,12 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The BufferInput class
+ *
+ * Lit (et convertit potentiellement)
+ * un gros buffer (genre 2048 samples)
+ */
 class BufferInput : public InputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

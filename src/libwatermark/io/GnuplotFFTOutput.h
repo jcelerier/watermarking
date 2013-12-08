@@ -5,6 +5,12 @@
 
 
 template <typename data_type>
+/**
+ * @brief The GnuplotFFTOutput class
+ *
+ * Affichage de spectre avec gnuplot
+ * (les buffers sont passés en sortie)
+ */
 class GnuplotFFTOutput:public OutputManagerBase<data_type>
 {
 	private:

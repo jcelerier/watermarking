@@ -5,6 +5,11 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The FileOutput class
+ *
+ * Ecrit dans un fichier à l'aide de libsndfile
+ */
 class FileOutput : public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

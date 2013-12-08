@@ -5,6 +5,11 @@
 #include "copystyle/OutputSimple.h"
 
 template <typename data_type>
+/**
+ * @brief The OutputManagerBase class
+ *
+ * Classe de base pour les sorties
+ */
 class OutputManagerBase :  public IOManagerBase<data_type>
 {
 	protected:

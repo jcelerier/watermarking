@@ -3,9 +3,6 @@
 
 #include "BenchmarkBase.h"
 
-
-// Ajoute du "buzz" ou un signal de basse fréquence au signal audio pour simuler l'impact d'une source d'alimentation.
-
 template <typename data_type>
 class AddBrumm : public BenchmarkBase<data_type>
 {
@@ -30,7 +27,7 @@ class AddBrumm : public BenchmarkBase<data_type>
 				// Pour chaque échantillon (dans l'ordre)
 				for(auto& sample : sampleData)
 				{
-					sample =  sample + _amplitude * sin(cst * pos);
+					sample =  sample + _amplitude * sin(cst * pos + dist(rng));
 					pos = (pos == taille - 1) ? 0 : pos + 1;
 				}
 			}
@@ -49,7 +46,11 @@ class AddBrumm : public BenchmarkBase<data_type>
 
 	private:
 		unsigned int _frequence = 50;
-		data_type _amplitude = 1.0;
+		data_type _amplitude = 0.5;
 		size_type pos = 0;
 		size_type taille = 44100 / 50;
+
+		std::default_random_engine rng = std::default_random_engine(std::random_device{}());
+		std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(0, 0.1);
+
 };

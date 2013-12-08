@@ -11,6 +11,15 @@ template <typename data_type>
 class FFTOutputProxy;
 
 template <typename data_type>
+/**
+ * @brief The IOManagerBase class
+ *
+ * Classe de base pour la gestion des entrées sorties.
+ * Concept : séparation en buffers. Entrée et sortie marchent main dans la main
+ * et peuvent se plugger les unes aux autres, ou appliquer des transformations.
+ *
+ * Réalise un découpage buffer par buffer des données dans vec.
+ */
 class IOManagerBase
 {
 		using size_type = typename Parameters<data_type>::size_type;
@@ -31,21 +40,37 @@ class IOManagerBase
 
 		virtual ~IOManagerBase() = default;
 
+		/**
+		 * @brief v Accès au vecteur sous-jacent
+		 * @return  Vecteur sous-j	xznr
+		 */
 		virtual std::vector<std::vector<data_type> >& v()
 		{
 			return _baseData;
 		}
 
+		/**
+		 * @brief channels
+		 * @return Nombre de canaux
+		 */
 		size_type channels()
 		{
 			return v().size();
 		}
 
+		/**
+		 * @brief frames
+		 * @return Nombre de samples
+		 */
 		size_type frames()
 		{
 			return v()[0].size();
 		}
 
+		/**
+		 * @brief pos
+		 * @return Position
+		 */
 		size_type& pos()
 		{
 			return _pos;

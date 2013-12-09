@@ -11,6 +11,7 @@
 #include "io/SilenceInput.h"
 #include "io/DummyOutput.h"
 #include "watermarkdata/SimpleWatermarkData.h"
+#include "timeadapter/Every.h"
 
 #include "watermark/SpectralGain.h"
 
@@ -20,22 +21,25 @@
 #include "mathutils/ssw_utils.h"
 
 void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude);
-void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude);
+void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double threshold);
 void TestMCLT();
 
 void TestSSW()
 {
 	int SeqSize = 100;
 	double watermarkAmplitude = 5.0;
+	double threshold = 0.9;
 
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
 
 	sswencode(PNSequence, watermarkAmplitude);
-	sswdecode(PNSequence, watermarkAmplitude);
+	sswdecode(PNSequence, watermarkAmplitude, threshold);
 }
 
-void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude)
+void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double threshold)
 {
+	std::cout << "Décodage..." << std::endl;
+
 	// Instanciation des paramètres
 	Parameters<double> conf;
 
@@ -57,7 +61,7 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude)
 
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.samplingRate);
 
-	auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude);
+	auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude, threshold);
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
 	manager.data.reset(data);
@@ -68,18 +72,24 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	// On fait tourner l'algo
 	manager.execute();
 
-	// TODO : écrire les données détectées sur la sortie standard
-//	data->readSizeFromBits();
-//	data->printBits();
+	std::cout << "Décodé" << std::endl;
+
+	// écrire les données détectées sur la sortie standard
+	data->readSizeFromBits();
+	data->printBits();
 }
 
 void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 {
+	std::cout << "Encodage..." << std::endl;
+
 	// Instanciation des paramètres
 	Parameters<double> conf;
 
 	// Instanciation de la classe qui gère tout
 	WatermarkManager<double> manager(conf);
+
+	//manager.timeAdapter = (TimeAdapter_p) new Every;
 
 	// Données à watermarker
 	WatermarkData* data = new SimpleWatermarkData;
@@ -117,6 +127,8 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 
 	// On écrit dans un fichier de sortie.
 	output->writeFile("out_test_ssw_mono.wav");
+
+	std::cout << "Encodé." << std::endl;
 }
 
 /***** Test du fonctionnement de la MCLT *****/

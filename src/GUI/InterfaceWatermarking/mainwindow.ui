@@ -281,11 +281,17 @@
                <string>Load host audio file </string>
               </property>
               <property name="text">
-               <string>Select watermark base file ...</string>
+               <string>Select Watermark base file ...</string>
               </property>
               <property name="icon">
                <iconset resource="icons/qstyle.qrc">
-                <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</iconset>
+                <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
               </property>
               <property name="autoDefault">
                <bool>false</bool>
@@ -416,7 +422,17 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <widget class="QPushButton" name="watermarkSelectionButton_2">
             <property name="text">
-             <string>Select watermark base file ...</string>
+             <string>Select Watermark base file ...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/qstyle.qrc">
+              <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -424,6 +440,16 @@ p, li { white-space: pre-wrap; }
            <widget class="QPushButton" name="decodeButton">
             <property name="text">
              <string>Decode ...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/qstyle.qrc">
+              <normaloff>:/trolltech/styles/commonstyle/images/filecontents-32.png</normaloff>:/trolltech/styles/commonstyle/images/filecontents-32.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>

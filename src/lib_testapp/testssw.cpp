@@ -59,7 +59,7 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
-	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.samplingRate);
+	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
 
 	auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude, threshold);
 
@@ -75,8 +75,8 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 	std::cout << "Décodé" << std::endl;
 
 	// écrire les données détectées sur la sortie standard
-	data->readSizeFromBits();
-	data->printBits();
+	//data->readSizeFromBits();
+	//data->printBits();
 }
 
 void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
@@ -113,7 +113,7 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
 	//auto algorithm = new SpectralGain<double>(conf);
 
-	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.samplingRate);
+	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
 	auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude);
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.

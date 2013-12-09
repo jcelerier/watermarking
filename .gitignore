@@ -21,3 +21,6 @@ Makefile
 *.wav
 *.raw
 *.mp3
+
+build-*
+*/build-*

@@ -5,6 +5,11 @@
 
 
 template <typename data_type>
+/**
+ * @brief The BenchmarkBase class
+ *
+ * Classe de base pour des benchmarks / effets audio.
+ */
 class BenchmarkBase
 {
 	public:

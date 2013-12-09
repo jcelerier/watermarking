@@ -5,6 +5,11 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The BufferOutput class
+ *
+ * Ecrit un gros buffer (genre 2048 samples)
+ */
 class BufferOutput : public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

@@ -5,6 +5,12 @@
 #include "gnuplot/gnuplot_i.h"
 
 template <typename data_type>
+/**
+ * @brief The GnuplotOutput class
+ *
+ * Affichage de tableaux de samples avec gnuplot.
+ * (les buffers sont passés en sortie)
+ */
 class GnuplotOutput:public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

@@ -4,6 +4,11 @@
 #include "../../../Parameters.h"
 
 template <typename data_type>
+/**
+ * @brief The WindowBase class
+ *
+ * Classe pour les fonctions de fenêtrage
+ */
 class WindowBase
 {
 	using size_type = typename Parameters<data_type>::size_type;

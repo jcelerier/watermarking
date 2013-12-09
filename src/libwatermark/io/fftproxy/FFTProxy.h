@@ -2,6 +2,14 @@
 #include "../../fft/FFTManager.h"
 
 template <typename data_type>
+/**
+ * @brief The FFTProxy class
+ *
+ * Classe de base pour la transformée de fourier.
+ * Comme FFTW utilise des plans définis à la construction,
+ * on a besoin que ce soit le même FFTManager qui serve
+ * à l'initialisation de la fft et de la fft inverse.
+ */
 class FFTProxy
 {
 	protected:

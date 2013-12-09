@@ -5,6 +5,11 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The SilenceInput class
+ *
+ * Génère du silence
+ */
 class SilenceInput : public InputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;
@@ -23,6 +28,12 @@ class SilenceInput : public InputManagerBase<data_type>
 		{
 		}
 
+		/**
+		 * @brief silence Génère un silence sur une certaine durée, et un certain nb de canaux
+		 * @param n_frames Nombre de samples
+		 * @param chans Nombre de canaux
+		 * @param val Valeur à générer
+		 */
 		void silence(const size_type n_frames, const size_type chans, const data_type val = 0)
 		{
 			// 1. On définit les trucs à la bonne taille.

@@ -1,6 +1,7 @@
 #include "WatermarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
+#include "io/DummyOutput.h"
 #include "watermark/LSBEncode.h"
 #include "watermark/LSBDecode.h"
 #include "watermarkdata/SimpleWatermarkData.h"
@@ -50,7 +51,7 @@ void decode()
 	WatermarkData* data = new SimpleWatermarkData;
 
     auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
-    auto output = new FileOutput<short>(conf);
+	auto output = new DummyOutput<short>(conf);
 
     auto algorithm = new LSBDecode<short>(conf);
 

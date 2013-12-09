@@ -7,6 +7,11 @@
 #include "../../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The FFTOutputProxy class
+ *
+ * Réalise une short time invese fourier transform
+ */
 class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::channels;

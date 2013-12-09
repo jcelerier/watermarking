@@ -3,6 +3,11 @@
 #include "OutputManagerBase.h"
 
 template <typename data_type>
+/**
+ * @brief The DummyOutput class
+ *
+ * Ecrit dans rien
+ */
 class DummyOutput : public OutputManagerBase<data_type>
 {
 	public:

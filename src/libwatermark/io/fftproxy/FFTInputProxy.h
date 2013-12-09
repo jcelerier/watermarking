@@ -9,6 +9,11 @@
 #include "window/RectWindow.h"
 
 template <typename data_type>
+/**
+ * @brief The FFTInputProxy class
+ *
+ * Réalise une STFT (short time fourier transform)
+ */
 class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_type>
 {
 		using InputManagerBase<data_type>::channels;

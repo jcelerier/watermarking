@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "BenchmarkBase.h"
-
+#include "mathutils/math_util.h"
 template <typename data_type>
 class Invert : public BenchmarkBase<data_type>
 {
@@ -21,10 +21,10 @@ class Invert : public BenchmarkBase<data_type>
 
 			for(auto& sampleData : channelsData)
 			{
-				apply(sampleData,
-					  [] (data_type x)
+				MathUtil::apply(sampleData,
+					  [&] (data_type x)
 				{
-					return conf.normFactor() - x;
+					return -x;
 				});
 			}
 		}

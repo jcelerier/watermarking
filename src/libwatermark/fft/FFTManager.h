@@ -31,6 +31,10 @@ class FFTManager
 
         virtual ~FFTManager() { }
 
+		/**
+		 * @brief setChannels Set number of channels.
+		 * @param n number of channels.
+		 */
 		virtual void setChannels(unsigned int n)
 		{
 			_in.resize(n);

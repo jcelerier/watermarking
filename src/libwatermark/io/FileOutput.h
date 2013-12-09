@@ -1,10 +1,15 @@
 #pragma once
-#include <sndfile.hh>
+#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
 
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
+/**
+ * @brief The FileOutput class
+ *
+ * Ecrit dans un fichier à l'aide de libsndfile
+ */
 class FileOutput : public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::v;

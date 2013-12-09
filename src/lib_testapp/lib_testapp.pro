@@ -27,8 +27,10 @@ QMAKE_CXXFLAGS += -std=c++11
 
 INCLUDEPATH += $$PWD/../libwatermark
 DEPENDPATH += $$PWD/../libwatermark
-
-LIBS+=-lsndfile -lfftw3
+macx {
+ LIBS += -L/usr/local/Cellar/libsndfile/1.0.25/lib/ -L/usr/local/Cellar/fftw/3.3.3/lib/
+}
+LIBS+=-lsndfile  -lfftw3
 
 OTHER_FILES += \
     Vieux_tests.txt

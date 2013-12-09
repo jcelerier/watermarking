@@ -6,17 +6,15 @@
 #include "io/copystyle/OutputFilter.h"
 #include "benchmark/Convolution.h"
 #include "benchmark/AddBrumm.h"
-
-void bench();
-void filter();
-void TestBenchmark()
-{
-	filter();
-	//bench();
-}
+#include "benchmark/AddWhiteNoise.h"
+#include "benchmark/Amplify.h"
+#include "benchmark/Exchange.h"
+#include "benchmark/Invert.h"
+#include "benchmark/Smooth.h"
+#include "benchmark/ZeroCross.h"
 
 
-void bench()
+void addBrumm()
 {
 	Parameters<double> conf;
 	BenchmarkManager<double> manager(conf);
@@ -33,10 +31,10 @@ void bench()
 
 	manager.execute();
 
-	output->writeFile("out_test_bench.wav");
+	output->writeFile("out_test_brumm.wav");
 }
 
-void filter()
+void convolution()
 {
 	Parameters<double> conf;
 	BenchmarkManager<double> manager(conf);
@@ -53,4 +51,110 @@ void filter()
 	manager.execute();
 
 	output->writeFile("out_test_lowpass.wav");
+}
+
+void amplify()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+	auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+	auto algorithm = new Convolution<double>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_amplify.wav");
+}
+
+void exchange()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+	auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+	auto algorithm = new Exchange<double>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_exchange.wav");
+}
+
+void smooth()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+	auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+	auto algorithm = new Smooth<double>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_smooth.wav");
+}
+
+void invert()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+	auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+	auto algorithm = new Invert<double>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_invert.wav");
+}
+
+void zerocross()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+	auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+	auto algorithm = new ZeroCross<double>(conf);
+
+	manager.input.reset(input);
+	manager.output.reset(output);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_zerocross.wav");
+}
+
+void TestBenchmark()
+{
+	addBrumm();
+	amplify();
+	convolution();
+	exchange();
+	smooth();
+	invert();
+	zerocross();
 }

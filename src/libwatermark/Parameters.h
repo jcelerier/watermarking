@@ -41,7 +41,7 @@ struct Parameters
 		 *
 		 * Exemple : si on travaille en doubles ça renvoie 1, en shorts 32768, etc..
 		 */
-		constexpr data_type normFactor()
+		data_type normFactor()
 		{
 			if(typeid(data_type) == typeid(double))
 				return 1.0;

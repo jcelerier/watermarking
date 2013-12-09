@@ -6,13 +6,13 @@
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
-class Amplify : public BenchmarkBase<data_type>
+class ZeroCross : public BenchmarkBase<data_type>
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
 
 	public:
-		Amplify(const Parameters<data_type>& configuration):
+		ZeroCross(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
 		}
@@ -23,7 +23,7 @@ class Amplify : public BenchmarkBase<data_type>
 
 			for(auto& sampleData : channelsData)
 			{
-				apply(sampleData,
+				MathUtil::apply(sampleData,
 					  [&] (data_type x)
 				{
 					return x > _thr ? x : 0;
@@ -37,5 +37,5 @@ class Amplify : public BenchmarkBase<data_type>
 		}
 
 	private:
-		double _thr = 0;
+		double _thr = 0.5;
 };

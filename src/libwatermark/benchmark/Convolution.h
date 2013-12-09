@@ -24,13 +24,12 @@ class Convolution : public BenchmarkBase<data_type>
 			for(auto& sampleData : channelsData)
 			{
 				std::vector<data_type> y(sampleData.size());
-				for (int i = 0; i < sampleData.size(); i++ )
+				for (auto i = 0U; i < sampleData.size(); i++)
 				{
-					y[i] = 0;                       // set to zero before sum
-					for (int j = 0; j < h.size(); j++ )
+					y[i] = 0;
+					for (auto j = 0U; j < h.size() && i >= j; j++ )
 					{
-						if(i - j >= 0)
-							y[i] += sampleData[i - j] * h[j];    // convolve: multiply and accumulate
+						y[i] += sampleData[i - j] * h[j];
 					}
 				}
 				sampleData = y;

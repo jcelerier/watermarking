@@ -98,6 +98,7 @@ namespace MathUtil
 #pragma omp for nowait
 			for (auto i = 0U; i < size; ++i)
 			{
+				std::cerr << "Val1: " << (*in + i) << "\tVal2: " << *(in2 + i) << std::endl;
 				map_val = reduce(map_val, map(*(in + i), *(in2 + i)));
 			}
 
@@ -205,7 +206,7 @@ namespace MathUtil
 						   const InputIterator in2,
 						   const unsigned int size)
 	{
-		return mapReduce2_n(in1, in2, size, (data_type) 0, std::plus<data_type>(), std::multiplies<data_type>());
+		return mapReduce2_n(in1, in2, size, (data_type) 0, std::multiplies<data_type>(), std::plus<data_type>());
 	}
 
 	template <typename InputIterator, typename data_type>

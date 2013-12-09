@@ -12,7 +12,7 @@
 #include "benchmark/Invert.h"
 #include "benchmark/Smooth.h"
 #include "benchmark/ZeroCross.h"
-
+#include "benchmark/Stat1.h"
 
 void addBrumm()
 {
@@ -148,6 +148,25 @@ void zerocross()
 	output->writeFile("out_test_zerocross.wav");
 }
 
+void stat1()
+{
+    Parameters<double> conf;
+    BenchmarkManager<double> manager(conf);
+
+    auto input = new FileInput<double>("input_mono.wav", new InputFilter<double>(11, conf), conf);
+    auto output = new FileOutput<double>(new OutputFilter<double>(11, conf), conf);
+
+    auto algorithm = new Stat1<double>(conf);
+
+    manager.input.reset(input);
+    manager.output.reset(output);
+    manager.algorithm.reset(algorithm);
+
+    manager.execute();
+
+    output->writeFile("out_test_stat1.wav");
+}
+
 void TestBenchmark()
 {
 	addBrumm();
@@ -157,4 +176,5 @@ void TestBenchmark()
 	smooth();
 	invert();
 	zerocross();
+    stat1();
 }

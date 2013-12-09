@@ -1,5 +1,5 @@
 #pragma once
-#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
+#include "sndfile.hh"
 
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"

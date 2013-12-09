@@ -1,5 +1,5 @@
 #pragma once
-#include "/usr/local/Cellar/fftw/3.3.3/include/fftw3.h"
+#include <fftw3.h>
 
 #include "FFTManager.h"
 

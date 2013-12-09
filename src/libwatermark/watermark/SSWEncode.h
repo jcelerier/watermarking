@@ -31,6 +31,7 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 			auto& channelsSpectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
 
 			if(!watermark.isComplete()) {
+
 				double bit = (watermark.nextBit()) ? (1.0): (-1.0);
 
 				for(int j = 0; j < channelsSpectrum.size(); j++)
@@ -39,7 +40,15 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 
 					for (int i = 0; i < _PNSequence.size(); i++)
 					{
-						spectrumData[_freqWinIndexes[i]] += bit * _watermarkAmp * (double) _PNSequence[i];
+						double phase, power, magnitude;
+
+						power = std::norm(spectrumData[_freqWinIndexes[i]]);
+						phase = std::arg(spectrumData[_freqWinIndexes[i]]);
+
+						magnitude = std::sqrt(power) + bit * _watermarkAmp * (double) _PNSequence[i];
+
+						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
+						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}
 				}
 			}

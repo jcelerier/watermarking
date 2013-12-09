@@ -66,4 +66,5 @@ HEADERS += \
     timeadapter/Every_For.h \
     io/copystyle/InputFilter.h \
     io/copystyle/OutputFilter.h \
-    benchmark/Convolution.h
+    benchmark/Convolution.h \
+    benchmark/Stat1.h

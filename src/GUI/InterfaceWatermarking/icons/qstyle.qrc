@@ -125,6 +125,7 @@
 <file>images/media-skip-backward-32.png</file>
 <file>images/media-volume-16.png</file>
 <file>images/media-volume-muted-16.png</file>
+<file>images/watermark-32.png</file>
 </qresource>
 <qresource prefix="/trolltech/styles/macstyle">
 <file>images/closedock-16.png</file>

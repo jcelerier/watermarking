@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
+    <width>671</width>
     <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Watermark Queiros Soares</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="icons/qstyle.qrc">
+    <normaloff>:/trolltech/styles/commonstyle/images/watermark-32.png</normaloff>:/trolltech/styles/commonstyle/images/watermark-32.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -559,7 +563,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>663</width>
+     <width>671</width>
      <height>21</height>
     </rect>
    </property>

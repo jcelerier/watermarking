@@ -46,11 +46,10 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			if(tmp == nullptr) return tmp;
 			auto& inbuff = static_cast<CData<data_type>*>(tmp.get())->_data;
 
-			// 2. On fenêtre
-			/*
+			// 2. On fenêtrer
 			for(auto& channel : inbuff)
-				window->apply(channel, inputImpl->copyHandler->frameIncrement() * 2);
-			*/
+				window->apply(channel, channel.size());
+
 
 			// 3. On copie dans le buffer de la fft
 			std::copy(inbuff.begin(), inbuff.end(), fft->input().begin());

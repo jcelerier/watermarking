@@ -51,8 +51,8 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 				std::transform(fft->output()[i].begin(),
 							   fft->output()[i].end(),
 							   outbuff->_data[i].begin(),
-							   [this] (const data_type& x) { return x * fft->normalizationFactor(); }
-				);
+							   [this] (const data_type& x)
+				{ return x * fft->normalizationFactor(); });
 			}
 
 			buf.reset(outbuff);

@@ -13,7 +13,7 @@ class OutputOLA : public OutputCopy<data_type>
 
 		virtual typename OutputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return OutputCopy<data_type>::conf.bufferSize / 2;
+			return this->conf.bufferSize / 2;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
@@ -21,7 +21,7 @@ class OutputOLA : public OutputCopy<data_type>
 						  typename CopyStyle<data_type>::size_type pos,
 						  typename CopyStyle<data_type>::size_type big_vector_length) final override
 		{
-			for (auto j = 0U; (j < 2 * frameIncrement()) && (pos + j < big_vector_length); ++j)
+			for (auto j = 0U; (j < this->conf.bufferSize) && (pos + j < big_vector_length); ++j)
 			{
 				out[pos + j] += in[j];
 			}

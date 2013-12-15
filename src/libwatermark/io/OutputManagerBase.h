@@ -45,11 +45,14 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 			if(channels() != buffer.size())
 			{
 				v().resize(buffer.size());
+				if(copyHandler->frameIncrement() != this->conf.bufferSize)
+				for(auto& vec : v())
+					vec.resize(copyHandler->frameIncrement());
 			}
 
 			for(auto i = 0U; i < channels(); ++i)
 			{
-				v()[i].resize(frames() + copyHandler->frameIncrement());
+				v()[i].resize(v()[i].size() + copyHandler->frameIncrement());
 
 				copyHandler->copy(buffer[i].begin(),
 								  v()[i].begin(),

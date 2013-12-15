@@ -18,6 +18,16 @@ class FileInput : public InputManagerBase<data_type>
 		using IOManagerBase<data_type>::v;
 
 	public:
+		FileInput(Parameters<data_type>& cfg):
+			InputManagerBase<data_type>(cfg)
+		{
+		}
+
+		FileInput(InputCopy<data_type>* icp, Parameters<data_type>& cfg):
+					InputManagerBase<data_type>(icp, cfg)
+		{
+		}
+
 		FileInput(std::string filename, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
 		{

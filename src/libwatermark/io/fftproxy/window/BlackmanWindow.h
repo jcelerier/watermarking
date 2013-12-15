@@ -16,9 +16,13 @@ class BlackmanWindow: public WindowBase<data_type>
 		{
 			const double f = 2.0 * M_PI / increment;
 			const double g = 4.0 * M_PI / increment;
+			const double a0 = 7938.0 / 18608.0,
+						 a1 = 9240.0 / 18608.0,
+						 a2 = 1430.0 / 18608.0;
+
 			for(auto i = 0U; i < increment; ++i)
 			{
-				v[i] *= 0.42 - 0.5 * std::cos((double)i * f) + 0.08 * std::cos((double)i * g);
+				v[i] *= a0 - a1 * std::cos((double)i * f) + a2 * std::cos((double)i * g);
 			}
 		}
 };

@@ -21,7 +21,7 @@ class OutputFilter: public OutputCopy<data_type>
 
 		virtual typename CopyStyle<data_type>::size_type frameIncrement() final override
 		{
-			return CopyStyle<data_type>::conf.bufferSize - filterSize + 1;
+			return this->conf.bufferSize - filterSize + 1;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
@@ -29,7 +29,7 @@ class OutputFilter: public OutputCopy<data_type>
 						  typename CopyStyle<data_type>::size_type pos,
 						  typename CopyStyle<data_type>::size_type big_vector_length) final override
 		{
-			for (auto j = 0U; (j < CopyStyle<data_type>::conf.bufferSize) && (pos + j < big_vector_length); ++j)
+			for (auto j = 0U; (j < this->conf.bufferSize) && (pos + j < big_vector_length); ++j)
 			{
 				out[pos + j] += in[j];
 			}

@@ -32,7 +32,7 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 		}
 
 		GnuplotFFTOutput(const GnuplotFFTOutput&) = delete;
-		const GnuplotFFTOutput& operator=(const GnuplotFFTOutput&) = delete;
+		GnuplotFFTOutput& operator=(const GnuplotFFTOutput&) = delete;
 
 
 		virtual void writeNextBuffer(Audio_p& abstract_buffer) override

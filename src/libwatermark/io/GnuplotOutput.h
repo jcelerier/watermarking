@@ -36,7 +36,7 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 		}
 
 		GnuplotOutput(const GnuplotOutput&) = delete;
-		const GnuplotOutput& operator=(const GnuplotOutput&) = delete;
+		GnuplotOutput& operator=(const GnuplotOutput&) = delete;
 		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;

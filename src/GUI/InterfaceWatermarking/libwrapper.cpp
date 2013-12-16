@@ -14,6 +14,7 @@ LibWrapper::LibWrapper():
 {
 
 
+
 }
 
 /**
@@ -31,7 +32,8 @@ LibWrapper::~LibWrapper()
  * containing every of its elements.
  * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
  */
-LibWrapper::LibWrapper(Ui::MainWindow* gui)
+LibWrapper::LibWrapper(Ui::MainWindow* gui):
+	LibWrapper()
 {
 	m_gui = gui;
 
@@ -59,15 +61,14 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui)
 void LibWrapper::loadHostWatermarkFile()
 {
 
-	QString tempFile = QFileDialog::getOpenFileName(this, tr("Open Audio File"),
+	m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File"),
 													"",
 													tr("Audio File (*.wav)"));
 
 
-
-	if(!tempFile.isEmpty())
+	if(!m_inputName.isEmpty())
 	{
-		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + tempFile);
+		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
 	}
 }
 

@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = InterfaceWatermarking
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++11 -fopenmp
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -25,7 +25,7 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     icons/qstyle.qrc
 
-INCLUDEPATH += $$PWD/../../libwatermark
-DEPENDPATH += $$PWD/../../libwatermark
+INCLUDEPATH += $$PWD/../../
+DEPENDPATH += $$PWD/../../
 
 LIBS+=-lsndfile  -lfftw3

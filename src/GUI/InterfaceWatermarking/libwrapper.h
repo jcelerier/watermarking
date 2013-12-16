@@ -28,8 +28,9 @@ public slots:
 	void encode();
 	void loadHostWatermarkFile();
 	void updateMethodConfigurationTab(int i);
-    void loadConfigurationScriptMethod(int i);
-
+    void loadConfigurationScriptMethodLsb();
+    void loadConfigurationScriptMethodSsw();
+    void loadConfigurationScriptMethodCompExp();
 
 private:
 	template<typename T>

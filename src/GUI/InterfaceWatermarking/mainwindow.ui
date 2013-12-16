@@ -527,6 +527,16 @@ p, li { white-space: pre-wrap; }
               <property name="text">
                <string>Load Watermark file ...</string>
               </property>
+              <property name="icon">
+               <iconset resource="icons/qstyle.qrc">
+                <normaloff>:/trolltech/styles/commonstyle/images/parentdir-128.png</normaloff>:/trolltech/styles/commonstyle/images/parentdir-128.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
              </widget>
             </item>
            </layout>

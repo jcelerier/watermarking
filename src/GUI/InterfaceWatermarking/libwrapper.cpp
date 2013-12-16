@@ -5,6 +5,10 @@
 #include "libwatermark/mathutils/math_util.h"
 
 
+/**
+ * @brief LibWrapper::LibWrapper
+ * Default constructor.
+ */
 LibWrapper::LibWrapper():
 	m_data(new SimpleWatermarkData)
 {
@@ -12,11 +16,21 @@ LibWrapper::LibWrapper():
 
 }
 
+/**
+ * @brief LibWrapper::~LibWrapper
+ * Destructor.
+ */
 LibWrapper::~LibWrapper()
 {
 	delete m_data;
 }
 
+/**
+ * @brief LibWrapper::LibWrapper
+ * Overloaded constructor to get a pointer to the Graphical User Interface
+ * containing every of its elements.
+ * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
+ */
 LibWrapper::LibWrapper(Ui::MainWindow* gui)
 {
 	m_gui = gui;
@@ -25,9 +39,11 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui)
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
 
-    connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethod(0)));
+    connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
+    connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
+    connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
 
-	//Initializing selection method tab
+    //Initializing selection method tab
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
 	m_gui->selectingMethodTab->setTabEnabled(0,true);
 	m_gui->selectingMethodTab->setTabEnabled(1,false);
@@ -35,6 +51,11 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui)
 
 }
 
+/**
+ * @brief LibWrapper::loadHostWatermarkFile
+ * Function triggered by clicking on the Load Host Watermark
+ * button to load the audio file that will host the watermark
+ */
 void LibWrapper::loadHostWatermarkFile()
 {
 
@@ -50,6 +71,11 @@ void LibWrapper::loadHostWatermarkFile()
 	}
 }
 
+/**
+ * @brief LibWrapper::updateMethodConfigurationTab
+ * Function triggered by selecting any method tab.
+ * @param i: index tab to enable
+ */
 void LibWrapper::updateMethodConfigurationTab(int i)
 {
 
@@ -84,30 +110,71 @@ void LibWrapper::updateMethodConfigurationTab(int i)
 	}
 }
 
-void LibWrapper::loadConfigurationScriptMethod(int i)
+/**
+ * @brief LibWrapper::loadConfigurationScriptMethodLsb
+ * Function triggered by clicking on the Load Configuration Script
+ * for LSB method button: allow to load a configuration script
+ * to apply pre-defined parameters.
+ */
+void LibWrapper::loadConfigurationScriptMethodLsb()
 {
+ //TODO: loading a configuration script for LSB method
 
-    switch(i)
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+                                                    "",
+                                                    tr("LSB Script File (*.txt)"));
+
+    if(!tempFile.isEmpty())
     {
-
-        case 0: // lsb method selected
-
-            break;
-
-        case 1: // ssw method selected
-
-            break;
-
-        case 2: // compression-expansion method selected
-
-            break;
-
-        default:
-            break;
-
+        m_gui->informationHostWatermark->setText("Opened config script for LSB method:" + tempFile);
     }
 }
 
+/**
+ * @brief LibWrapper::loadConfigurationScriptMethodSsw
+ * Function triggered by clicking on the Load Configuration Script
+ * for SSW method button: allow to load a configuration script
+ * to apply pre-defined parameters.
+ */
+void LibWrapper::loadConfigurationScriptMethodSsw()
+{
+ //TODO: loading a configuration script for SSW method
+
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+                                                    "",
+                                                    tr("SSW Script file(*.txt)"));
+
+    if(!tempFile.isEmpty())
+    {
+        m_gui->informationHostWatermark->setText("Opened config script for SSW method:" + tempFile);
+    }
+
+}
+
+/**
+ * @brief LibWrapper::loadConfigurationScriptMethodCompExp
+ * Function triggered by clicking on the Load Configuration Script
+ * for Compression-Expansion method button: allow to load a configuration
+ * script to apply pre-defined parameters.
+ */
+void LibWrapper::loadConfigurationScriptMethodCompExp()
+{
+ //TODO: loading a configuration script for Compression-Expansion method
+
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+                                                    "",
+                                                    tr("Compression-Expansion Script File (*.txt)"));
+
+    if(!tempFile.isEmpty())
+    {
+        m_gui->informationHostWatermark->setText("Opened config script for Compression-Expansion method:" + tempFile);
+    }
+}
+
+/**
+ * @brief LibWrapper::dataToBits
+ * Function that converts text data to binary sequence data.
+ */
 void LibWrapper::dataToBits()
 {
 	// 1. Calculer la taille en bits
@@ -125,6 +192,12 @@ void LibWrapper::dataToBits()
 	m_data->setNextBit(true);
 }
 
+/**
+ * @brief LibWrapper::encode
+ * Function triggered by clicking on the Encode button:
+ * launch the encoding algorithm thanks to the desired
+ * method and parameters.
+ */
 void LibWrapper::encode()
 {
 	dataToBits();

@@ -508,7 +508,7 @@ p, li { white-space: pre-wrap; }
             <item row="5" column="0" colspan="2">
              <widget class="QProgressBar" name="usedWatermarkCapacity">
               <property name="value">
-               <number>85</number>
+               <number>0</number>
               </property>
               <property name="format">
                <string>Available capacity: %p%</string>
@@ -524,6 +524,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="2" column="0" colspan="2">
              <widget class="QPushButton" name="loadWatermarkTextButton">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
               <property name="text">
                <string>Load Watermark file ...</string>
               </property>
@@ -640,7 +643,17 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionLoad_watermark_base_file"/>
+    <widget class="QMenu" name="selectMethodMenu">
+     <property name="title">
+      <string>Select method ...</string>
+     </property>
+     <addaction name="selectLsbMethodAction"/>
+     <addaction name="selectSswMethodAction"/>
+     <addaction name="selectCompExpMethodAction"/>
+    </widget>
+    <addaction name="actionLoadHostWatermarkFile"/>
+    <addaction name="separator"/>
+    <addaction name="selectMethodMenu"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -669,14 +682,29 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionLoad_watermark_base_file">
+  <action name="actionLoadHostWatermarkFile">
    <property name="text">
-    <string>Load watermark base file ...</string>
+    <string>Load Watermark Host Audio file ...</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="selectLsbMethodAction">
+   <property name="text">
+    <string>LSB Method</string>
+   </property>
+  </action>
+  <action name="selectSswMethodAction">
+   <property name="text">
+    <string>SSW Method</string>
+   </property>
+  </action>
+  <action name="selectCompExpMethodAction">
+   <property name="text">
+    <string>Compression-Expansion Method</string>
    </property>
   </action>
  </widget>

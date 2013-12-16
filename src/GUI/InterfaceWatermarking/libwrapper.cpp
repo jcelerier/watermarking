@@ -37,6 +37,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 {
 	m_gui = gui;
 
+    //Connecting signals between GUI and watermark library
 	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
@@ -45,12 +46,44 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
     connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
     connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
 
+    m_gui->actionQuit->setShortcut(tr("CTRL+Q"));
+    connect(m_gui->actionQuit,SIGNAL(triggered()),qApp, SLOT(closeAllWindows()));
+
+    connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
+
+    connect(m_gui->selectLsbMethodAction,SIGNAL(triggered()),this,SLOT(selectLsbMethodActionSlot()));
+    connect(m_gui->selectSswMethodAction,SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
+    connect(m_gui->selectCompExpMethodAction,SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
+
     //Initializing selection method tab
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
 	m_gui->selectingMethodTab->setTabEnabled(0,true);
 	m_gui->selectingMethodTab->setTabEnabled(1,false);
 	m_gui->selectingMethodTab->setTabEnabled(2,false);
 
+    //Initializing watermark module
+    m_gui->watermarkBeginningTime->setEnabled(false);
+    m_gui->watermarkEndingTime->setEnabled(false);
+    m_gui->usedWatermarkCapacity->setEnabled(false);
+
+}
+
+void LibWrapper::selectLsbMethodActionSlot()
+{
+    m_gui->selectingMethodComboBox->setCurrentIndex(0);
+    updateMethodConfigurationTab(0);
+}
+
+void LibWrapper::selectSswMethodActionSlot()
+{
+    m_gui->selectingMethodComboBox->setCurrentIndex(1);
+    updateMethodConfigurationTab(1);
+}
+
+void LibWrapper::selectCompExpMethodActionSlot()
+{
+    m_gui->selectingMethodComboBox->setCurrentIndex(2);
+    updateMethodConfigurationTab(2);
 }
 
 /**
@@ -68,6 +101,11 @@ void LibWrapper::loadHostWatermarkFile()
 
 	if(!m_inputName.isEmpty())
 	{
+        //Enabling / Updating watermark module
+        m_gui->watermarkBeginningTime->setEnabled(true);
+        m_gui->watermarkEndingTime->setEnabled(true);
+        m_gui->usedWatermarkCapacity->setEnabled(true);
+
 		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
 	}
 }
@@ -178,6 +216,7 @@ void LibWrapper::loadConfigurationScriptMethodCompExp()
  */
 void LibWrapper::dataToBits()
 {
+    // TODO:
 	// 1. Calculer la taille en bits
 	//m_data->setSize(taille); // taille ici
 
@@ -201,26 +240,62 @@ void LibWrapper::dataToBits()
  */
 void LibWrapper::encode()
 {
-	dataToBits();
 
-	switch(m_gui->selectingMethodTab->currentIndex())
-	{
-		case 0:
-		{
-			Parameters<short> conf;
-			auto alg = Watermark_p<short>(new LSBEncode<short>(conf));
-			sub_exec<short>(conf, alg);
-			break;
-		}
-		case 1:
-		{
-			/*Parameters<double> conf;
-			auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
-			sub_exec<double>(conf, alg);
-			break;*/
-		}
-		//case 2:
-			// Rien pour l'instant
-			//break;
-	}
+    if(!m_inputName.isEmpty() && defineSavedFile())
+    {
+
+        dataToBits();
+
+        switch(m_gui->selectingMethodTab->currentIndex())
+        {
+        case 0:
+        {
+            Parameters<short> conf;
+            auto alg = Watermark_p<short>(new LSBEncode<short>(conf));
+            sub_exec<short>(conf, alg);
+            m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
+            break;
+        }
+        //case 1:
+        //{
+            /*Parameters<double> conf;
+            auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
+            sub_exec<double>(conf, alg);
+            break;*/
+        //}
+            //case 2:
+            // Rien pour l'instant
+            //break;
+
+        default:
+            m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
+            break;
+        }
+    }
+    else
+    {
+        m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+    }
+}
+
+/**
+ * @brief LibWrapper::defineSavedFile
+ * @return boolean: true if output name is correct
+ * false otherwise
+ */
+bool LibWrapper::defineSavedFile()
+{
+    m_outputName = QFileDialog::getSaveFileName(this, tr("Save Watermarked Output File (.wav)"),
+                                                "./",
+                                                tr("Audio File (*.wav)"));
+
+    if(!m_outputName.isEmpty())
+    {
+
+        if(!m_outputName.endsWith(".wav"))
+            m_outputName.append(".wav");
+        return true;
+    }
+    else
+        return false;
 }

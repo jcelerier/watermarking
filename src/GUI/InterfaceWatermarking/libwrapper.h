@@ -31,6 +31,9 @@ public slots:
     void loadConfigurationScriptMethodLsb();
     void loadConfigurationScriptMethodSsw();
     void loadConfigurationScriptMethodCompExp();
+    void selectLsbMethodActionSlot();
+    void selectSswMethodActionSlot();
+    void selectCompExpMethodActionSlot();
 
 private:
 	template<typename T>
@@ -53,6 +56,7 @@ private:
 	}
 
 	void dataToBits();
+    bool defineSavedFile();
 
 	Ui::MainWindow* m_gui;
 

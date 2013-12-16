@@ -25,6 +25,8 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui)
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
 
+    connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethod(0)));
+
 	//Initializing selection method tab
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
 	m_gui->selectingMethodTab->setTabEnabled(0,true);
@@ -80,6 +82,30 @@ void LibWrapper::updateMethodConfigurationTab(int i)
 			break;
 
 	}
+}
+
+void LibWrapper::loadConfigurationScriptMethod(int i)
+{
+
+    switch(i)
+    {
+
+        case 0: // lsb method selected
+
+            break;
+
+        case 1: // ssw method selected
+
+            break;
+
+        case 2: // compression-expansion method selected
+
+            break;
+
+        default:
+            break;
+
+    }
 }
 
 void LibWrapper::dataToBits()

@@ -8,7 +8,6 @@
 #include <libwatermark/io/FileInput.h>
 #include <libwatermark/io/FileOutput.h>
 
-
 #include "libwatermark/watermark/LSBEncode.h"
 #include "libwatermark/watermark/SSWEncode.h"
 #include "libwatermark/watermarkdata/SimpleWatermarkData.h"
@@ -27,9 +26,9 @@ public:
 
 public slots:
 	void encode();
-
 	void loadHostWatermarkFile();
 	void updateMethodConfigurationTab(int i);
+    void loadConfigurationScriptMethod(int i);
 
 
 private:

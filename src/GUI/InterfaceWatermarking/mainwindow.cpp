@@ -12,3 +12,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+Ui::MainWindow* MainWindow::getUi()
+{
+    return ui;
+}

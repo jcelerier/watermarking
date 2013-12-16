@@ -35,7 +35,7 @@ class WatermarkManager
 		}
 
 		WatermarkManager(const WatermarkManager<data_type>& sm) = delete;
-		const WatermarkManager& operator=(const WatermarkManager<data_type>& sm) = delete;
+		WatermarkManager& operator=(const WatermarkManager<data_type>& sm) = delete;
 
 		void onDataUpdate()
 		{

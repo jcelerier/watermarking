@@ -40,7 +40,7 @@ class BenchmarkManager
 		}
 
 		BenchmarkManager(const BenchmarkManager<data_type>& sm) = delete;
-		const BenchmarkManager& operator=(const BenchmarkManager<data_type>& sm) = delete;
+		BenchmarkManager& operator=(const BenchmarkManager<data_type>& sm) = delete;
 
 		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		void execute()

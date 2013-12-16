@@ -4,9 +4,9 @@
 #include <QtWidgets>
 
 #include "ui_mainwindow.h"
-#include <libwatermark/WatermarkManager.h>
-#include <libwatermark/io/FileInput.h>
-#include <libwatermark/io/FileOutput.h>
+#include "libwatermark/WatermarkManager.h"
+#include "libwatermark/io/FileInput.h"
+#include "libwatermark/io/FileOutput.h"
 
 #include "libwatermark/watermark/LSBEncode.h"
 #include "libwatermark/watermark/SSWEncode.h"

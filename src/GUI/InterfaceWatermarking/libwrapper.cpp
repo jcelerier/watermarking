@@ -93,7 +93,6 @@ void LibWrapper::selectCompExpMethodActionSlot()
  */
 void LibWrapper::loadHostWatermarkFile()
 {
-
 	m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File"),
 													"",
 													tr("Audio File (*.wav)"));
@@ -117,10 +116,8 @@ void LibWrapper::loadHostWatermarkFile()
  */
 void LibWrapper::updateMethodConfigurationTab(int i)
 {
-
 	switch(i)
 	{
-
 		case 0: // lsb method selected
 			m_gui->selectingMethodTab->setTabEnabled(0,true);
 			m_gui->selectingMethodTab->setTabEnabled(1,false);

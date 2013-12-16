@@ -41,6 +41,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
+    connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
 
     connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
     connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
@@ -55,6 +56,8 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
     connect(m_gui->selectSswMethodAction,SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
     connect(m_gui->selectCompExpMethodAction,SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
 
+    connect(m_gui->watermarkedSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+
     //Initializing selection method tab
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
 	m_gui->selectingMethodTab->setTabEnabled(0,true);
@@ -68,21 +71,39 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 
 }
 
+/**
+ * @brief LibWrapper::selectLsbMethodActionSlot
+ * Function triggered by the action menu to switch
+ * between methods
+ */
 void LibWrapper::selectLsbMethodActionSlot()
 {
     m_gui->selectingMethodComboBox->setCurrentIndex(0);
+    m_gui->selectingDecodingMethodTab->setCurrentIndex(0);
     updateMethodConfigurationTab(0);
 }
 
+/**
+ * @brief LibWrapper::selectSswMethodActionSlot
+ * Function triggered by the action menu to switch
+ * between methods
+ */
 void LibWrapper::selectSswMethodActionSlot()
 {
     m_gui->selectingMethodComboBox->setCurrentIndex(1);
+    m_gui->selectingDecodingMethodTab->setCurrentIndex(1);
     updateMethodConfigurationTab(1);
 }
 
+/**
+ * @brief LibWrapper::selectCompExpMethodActionSlot
+ * Function triggered by the action menu to switch
+ * between methods
+ */
 void LibWrapper::selectCompExpMethodActionSlot()
 {
     m_gui->selectingMethodComboBox->setCurrentIndex(2);
+    m_gui->selectingDecodingMethodTab->setCurrentIndex(2);
     updateMethodConfigurationTab(2);
 }
 
@@ -93,7 +114,7 @@ void LibWrapper::selectCompExpMethodActionSlot()
  */
 void LibWrapper::loadHostWatermarkFile()
 {
-	m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File"),
+    m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File (.wav)"),
 													"",
 													tr("Audio File (*.wav)"));
 
@@ -156,7 +177,7 @@ void LibWrapper::loadConfigurationScriptMethodLsb()
 {
  //TODO: loading a configuration script for LSB method
 
-    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
                                                     tr("LSB Script File (*.txt)"));
 
@@ -176,7 +197,7 @@ void LibWrapper::loadConfigurationScriptMethodSsw()
 {
  //TODO: loading a configuration script for SSW method
 
-    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
                                                     tr("SSW Script file(*.txt)"));
 
@@ -197,7 +218,7 @@ void LibWrapper::loadConfigurationScriptMethodCompExp()
 {
  //TODO: loading a configuration script for Compression-Expansion method
 
-    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file"),
+    QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
                                                     tr("Compression-Expansion Script File (*.txt)"));
 
@@ -266,13 +287,28 @@ void LibWrapper::encode()
 
         default:
             m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
+            QMessageBox::information(this,"Warning - method",
+                                     "This method is not yet implemented!");
             break;
         }
     }
     else
     {
         m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+        QMessageBox::information(this,"Warning - missing file",
+                                 "Please, load a Watermark host file!");
     }
+}
+
+/**
+ * @brief LibWrapper::decode
+ * Function triggered by clicking on the Decode button:
+ * launch the decoding algorithm thanks to the desired
+ * method and parameters.
+ */
+void LibWrapper::decode()
+{
+
 }
 
 /**

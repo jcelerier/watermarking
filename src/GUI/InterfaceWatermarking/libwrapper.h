@@ -26,6 +26,7 @@ public:
 
 public slots:
 	void encode();
+    void decode();
 	void loadHostWatermarkFile();
 	void updateMethodConfigurationTab(int i);
     void loadConfigurationScriptMethodLsb();

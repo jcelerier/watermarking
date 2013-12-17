@@ -23,7 +23,6 @@ LibWrapper::LibWrapper():
  */
 LibWrapper::~LibWrapper()
 {
-	delete m_data;
 }
 
 /**
@@ -205,8 +204,20 @@ void LibWrapper::encode()
 		case 0:
 		{
 			Parameters<short> conf;
-			auto alg = Watermark_p<short>(new LSBEncode<short>(conf));
-			sub_exec<short>(conf, alg);
+			WatermarkManager<short> manager(conf);
+
+			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+			auto output = new FileOutput<short>(conf);
+
+			manager.data = m_data;
+			manager.input.reset(input);
+			manager.output.reset(output);
+			manager.algorithm.reset(new LSBEncode<short>(conf));
+
+			manager.execute();
+
+			output->writeFile(m_outputName.toStdString().c_str());
+
 			break;
 		}
 		case 1:

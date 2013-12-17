@@ -36,7 +36,6 @@ private:
 	template<typename T>
 	void sub_exec(Parameters<T>& conf, Watermark_p<T> algorithm)
 	{
-
 		WatermarkManager<T> manager(conf);
 
 		auto input = new FileInput<T>(m_inputName.toStdString(), conf);
@@ -53,13 +52,14 @@ private:
 	}
 
 	void dataToBits();
+	void bitsToData();
 
 	Ui::MainWindow* m_gui;
 
 	QString m_inputName;
 	QString m_outputName;
 
-	WatermarkData* m_data;
+	WatermarkData_p m_data;
 
 };
 

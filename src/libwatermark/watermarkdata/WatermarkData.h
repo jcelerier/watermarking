@@ -118,4 +118,4 @@ class WatermarkData
 };
 
 
-using WatermarkData_p = std::unique_ptr<WatermarkData>;
+using WatermarkData_p = std::shared_ptr<WatermarkData>;

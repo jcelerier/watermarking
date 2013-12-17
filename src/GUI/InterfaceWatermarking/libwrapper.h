@@ -7,8 +7,9 @@
 #include "libwatermark/WatermarkManager.h"
 #include "libwatermark/io/FileInput.h"
 #include "libwatermark/io/FileOutput.h"
-
+#include "libwatermark/io/DummyOutput.h"
 #include "libwatermark/watermark/LSBEncode.h"
+#include "libwatermark/watermark/LSBDecode.h"
 #include "libwatermark/watermark/SSWEncode.h"
 #include "libwatermark/watermarkdata/SimpleWatermarkData.h"
 
@@ -26,11 +27,15 @@ public:
 
 public slots:
 	void encode();
+    void decode();
 	void loadHostWatermarkFile();
 	void updateMethodConfigurationTab(int i);
     void loadConfigurationScriptMethodLsb();
     void loadConfigurationScriptMethodSsw();
     void loadConfigurationScriptMethodCompExp();
+    void selectLsbMethodActionSlot();
+    void selectSswMethodActionSlot();
+    void selectCompExpMethodActionSlot();
 
 private:
 	template<typename T>
@@ -53,6 +58,8 @@ private:
 
 	void dataToBits();
 	void bitsToData();
+
+	bool defineSavedFile();
 
 	Ui::MainWindow* m_gui;
 

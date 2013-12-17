@@ -508,7 +508,7 @@ p, li { white-space: pre-wrap; }
             <item row="5" column="0" colspan="2">
              <widget class="QProgressBar" name="usedWatermarkCapacity">
               <property name="value">
-               <number>85</number>
+               <number>0</number>
               </property>
               <property name="format">
                <string>Available capacity: %p%</string>
@@ -524,6 +524,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="2" column="0" colspan="2">
              <widget class="QPushButton" name="loadWatermarkTextButton">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
               <property name="text">
                <string>Load Watermark file ...</string>
               </property>
@@ -552,35 +555,91 @@ p, li { white-space: pre-wrap; }
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="0">
-           <widget class="QTabWidget" name="selectingMethodTab_2">
-            <property name="currentIndex">
-             <number>0</number>
+          <item row="3" column="2">
+           <widget class="QTextEdit" name="informationHostWatermark2">
+            <property name="palette">
+             <palette>
+              <active>
+               <colorrole role="Text">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </active>
+              <inactive>
+               <colorrole role="Text">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </inactive>
+              <disabled>
+               <colorrole role="Text">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>190</red>
+                  <green>190</green>
+                  <blue>190</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>239</red>
+                  <green>235</green>
+                  <blue>231</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </disabled>
+             </palette>
             </property>
-            <widget class="QWidget" name="tab_7">
-             <attribute name="title">
-              <string>LSB Method</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_8">
-             <attribute name="title">
-              <string>SSW Method</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_9">
-             <attribute name="title">
-              <string>Compression-Expansion Method</string>
-             </attribute>
-            </widget>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; color:#ffffff;&quot;&gt;Here will be printed information about the loaded host file and/or some logs about computational part of the program.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="watermarkSelectionButton_2">
+          <item row="0" column="0" colspan="3">
+           <widget class="QPushButton" name="watermarkedSelectionButton">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="text">
-             <string>Select Watermark base file ...</string>
+             <string>Select Watermark Host Audio file ...</string>
             </property>
             <property name="icon">
              <iconset resource="icons/qstyle.qrc">
@@ -594,7 +653,7 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="4" column="0" colspan="3">
            <widget class="QPushButton" name="decodeButton">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
@@ -611,6 +670,91 @@ p, li { white-space: pre-wrap; }
               <width>32</width>
               <height>32</height>
              </size>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QTextEdit" name="getDecodedDataTextEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Here will be printed the decoding data found on the selected Watermark Host Audio file ...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QTabWidget" name="selectingDecodingMethodTab">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab_7">
+             <attribute name="title">
+              <string>LSB Method</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_13">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Here is the configuration tab for the LSB method. May be useful to define editable parameters such as:&lt;/p&gt;&lt;p&gt;- sample size&lt;/p&gt;&lt;p&gt;- number of less significant bits used for watermarking datas (1 by default)&lt;/p&gt;&lt;p&gt;- any idea ?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_8">
+             <attribute name="title">
+              <string>SSW Method</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_12">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_14">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Here is the configuration tab for the SSW method. May be useful to define editable parameters such as:&lt;/p&gt;&lt;p&gt;- any idea ?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_9">
+             <attribute name="title">
+              <string>Compression-Expansion Method</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_13">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_15">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Here is the configuration tab for the Compression-Expansion method. May be useful to define editable parameters such as:&lt;/p&gt;&lt;p&gt;- any idea ?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Line" name="line_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
@@ -640,7 +784,17 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionLoad_watermark_base_file"/>
+    <widget class="QMenu" name="selectMethodMenu">
+     <property name="title">
+      <string>Select method ...</string>
+     </property>
+     <addaction name="selectLsbMethodAction"/>
+     <addaction name="selectSswMethodAction"/>
+     <addaction name="selectCompExpMethodAction"/>
+    </widget>
+    <addaction name="actionLoadHostWatermarkFile"/>
+    <addaction name="separator"/>
+    <addaction name="selectMethodMenu"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -669,14 +823,29 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionLoad_watermark_base_file">
+  <action name="actionLoadHostWatermarkFile">
    <property name="text">
-    <string>Load watermark base file ...</string>
+    <string>Load Watermark Host Audio file ...</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="selectLsbMethodAction">
+   <property name="text">
+    <string>LSB Method</string>
+   </property>
+  </action>
+  <action name="selectSswMethodAction">
+   <property name="text">
+    <string>SSW Method</string>
+   </property>
+  </action>
+  <action name="selectCompExpMethodAction">
+   <property name="text">
+    <string>Compression-Expansion Method</string>
    </property>
   </action>
  </widget>

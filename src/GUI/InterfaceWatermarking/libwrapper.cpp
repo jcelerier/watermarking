@@ -10,7 +10,7 @@
  * Default constructor.
  */
 LibWrapper::LibWrapper():
-	m_data(new SimpleWatermarkData)
+    m_data(new SimpleWatermarkData)
 {
 
 
@@ -23,7 +23,7 @@ LibWrapper::LibWrapper():
  */
 LibWrapper::~LibWrapper()
 {
-	delete m_data;
+    delete m_data;
 }
 
 /**
@@ -33,19 +33,23 @@ LibWrapper::~LibWrapper()
  * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
  */
 LibWrapper::LibWrapper(Ui::MainWindow* gui):
-	LibWrapper()
+    LibWrapper()
 {
-	m_gui = gui;
+    m_gui = gui;
 
     //Connecting signals between GUI and watermark library
-	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
-	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
-	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
+    connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+    connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
+    connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
     connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
 
     connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
     connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
     connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
+
+    connect(m_gui->lsbSaveConfigurationButton,SIGNAL(clicked()),this,SLOT(saveConfigurationScriptMethodLsb()));
+    connect(m_gui->sswSaveConfigurationButton,SIGNAL(clicked()),this,SLOT(saveConfigurationScriptMethodSsw()));
+    connect(m_gui->compExpSaveConfigurationButton,SIGNAL(clicked()),this,SLOT(saveConfigurationScriptMethodCompExp()));
 
     m_gui->actionQuit->setShortcut(tr("CTRL+Q"));
     connect(m_gui->actionQuit,SIGNAL(triggered()),qApp, SLOT(closeAllWindows()));
@@ -58,11 +62,13 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 
     connect(m_gui->watermarkedSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 
+    connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
+
     //Initializing selection method tab
-	m_gui->selectingMethodComboBox->setCurrentIndex(0);
-	m_gui->selectingMethodTab->setTabEnabled(0,true);
-	m_gui->selectingMethodTab->setTabEnabled(1,false);
-	m_gui->selectingMethodTab->setTabEnabled(2,false);
+    m_gui->selectingMethodComboBox->setCurrentIndex(0);
+    m_gui->selectingMethodTab->setTabEnabled(0,true);
+    m_gui->selectingMethodTab->setTabEnabled(1,false);
+    m_gui->selectingMethodTab->setTabEnabled(2,false);
 
     //Initializing watermark module
     m_gui->watermarkBeginningTime->setEnabled(false);
@@ -115,19 +121,19 @@ void LibWrapper::selectCompExpMethodActionSlot()
 void LibWrapper::loadHostWatermarkFile()
 {
     m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File (.wav)"),
-													"",
-													tr("Audio File (*.wav)"));
+                                               "",
+                                               tr("Audio File (*.wav)"));
 
 
-	if(!m_inputName.isEmpty())
-	{
+    if(!m_inputName.isEmpty())
+    {
         //Enabling / Updating watermark module
         m_gui->watermarkBeginningTime->setEnabled(true);
         m_gui->watermarkEndingTime->setEnabled(true);
         m_gui->usedWatermarkCapacity->setEnabled(true);
 
-		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
-	}
+        m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
+    }
 }
 
 /**
@@ -137,34 +143,34 @@ void LibWrapper::loadHostWatermarkFile()
  */
 void LibWrapper::updateMethodConfigurationTab(int i)
 {
-	switch(i)
-	{
-		case 0: // lsb method selected
-			m_gui->selectingMethodTab->setTabEnabled(0,true);
-			m_gui->selectingMethodTab->setTabEnabled(1,false);
-			m_gui->selectingMethodTab->setTabEnabled(2,false);
-			m_gui->selectingMethodTab->setCurrentIndex(0);
+    switch(i)
+    {
+    case 0: // lsb method selected
+        m_gui->selectingMethodTab->setTabEnabled(0,true);
+        m_gui->selectingMethodTab->setTabEnabled(1,false);
+        m_gui->selectingMethodTab->setTabEnabled(2,false);
+        m_gui->selectingMethodTab->setCurrentIndex(0);
 
-			break;
+        break;
 
-		case 1: // ssw method selected
-			m_gui->selectingMethodTab->setTabEnabled(0,false);
-			m_gui->selectingMethodTab->setTabEnabled(1,true);
-			m_gui->selectingMethodTab->setTabEnabled(2,false);
-			m_gui->selectingMethodTab->setCurrentIndex(1);
-			break;
+    case 1: // ssw method selected
+        m_gui->selectingMethodTab->setTabEnabled(0,false);
+        m_gui->selectingMethodTab->setTabEnabled(1,true);
+        m_gui->selectingMethodTab->setTabEnabled(2,false);
+        m_gui->selectingMethodTab->setCurrentIndex(1);
+        break;
 
-		case 2: // compression-expansion method selected
-			m_gui->selectingMethodTab->setTabEnabled(0,false);
-			m_gui->selectingMethodTab->setTabEnabled(1,false);
-			m_gui->selectingMethodTab->setTabEnabled(2,true);
-			m_gui->selectingMethodTab->setCurrentIndex(2);
-			break;
+    case 2: // compression-expansion method selected
+        m_gui->selectingMethodTab->setTabEnabled(0,false);
+        m_gui->selectingMethodTab->setTabEnabled(1,false);
+        m_gui->selectingMethodTab->setTabEnabled(2,true);
+        m_gui->selectingMethodTab->setCurrentIndex(2);
+        break;
 
-		default:
-			break;
+    default:
+        break;
 
-	}
+    }
 }
 
 /**
@@ -175,7 +181,7 @@ void LibWrapper::updateMethodConfigurationTab(int i)
  */
 void LibWrapper::loadConfigurationScriptMethodLsb()
 {
- //TODO: loading a configuration script for LSB method
+    //TODO: loading a configuration script for LSB method
 
     QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
@@ -195,7 +201,7 @@ void LibWrapper::loadConfigurationScriptMethodLsb()
  */
 void LibWrapper::loadConfigurationScriptMethodSsw()
 {
- //TODO: loading a configuration script for SSW method
+    //TODO: loading a configuration script for SSW method
 
     QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
@@ -216,7 +222,7 @@ void LibWrapper::loadConfigurationScriptMethodSsw()
  */
 void LibWrapper::loadConfigurationScriptMethodCompExp()
 {
- //TODO: loading a configuration script for Compression-Expansion method
+    //TODO: loading a configuration script for Compression-Expansion method
 
     QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
                                                     "",
@@ -229,25 +235,80 @@ void LibWrapper::loadConfigurationScriptMethodCompExp()
 }
 
 /**
+ * @brief LibWrapper::saveConfigurationScriptMethodLsb
+ * Function triggered by the save configuration script
+ * button (LSB tab): allow to export configuration as
+ * an XML script
+ */
+void LibWrapper::saveConfigurationScriptMethodLsb()
+{
+
+    m_gui->informationHostWatermark->setText("Saving configuration script query for LSB method");
+
+    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+                                                 "./",
+                                                 tr("Configuration Script File (*.wconf)"));
+
+    //TODO
+
+}
+
+/**
+ * @brief LibWrapper::saveConfigurationScriptMethodSsw
+ * Function triggered by the save configuration script
+ * button (SSW tab): allow to export configuration as
+ * an XML script
+ */
+void LibWrapper::saveConfigurationScriptMethodSsw()
+{
+
+    m_gui->informationHostWatermark->setText("Saving configuration script query for SSW method");
+
+    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+                                                 "./",
+                                                 tr("Configuration Script File (*.wconf)"));
+
+    //TODO
+}
+
+/**
+ * @brief LibWrapper::saveConfigurationScriptMethodLsb
+ * Function triggered by the save configuration script
+ * button (Compression-Expansion tab): allow to export
+ * configuration as an XML script
+ */
+void LibWrapper::saveConfigurationScriptMethodCompExp()
+{
+
+    m_gui->informationHostWatermark->setText("Saving configuration script query for Compression-Expansion method");
+
+    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+                                                 "./",
+                                                 tr("Configuration Script File (*.wconf)"));
+
+    //TODO
+}
+
+/**
  * @brief LibWrapper::dataToBits
  * Function that converts text data to binary sequence data.
  */
 void LibWrapper::dataToBits()
 {
     // TODO:
-	// 1. Calculer la taille en bits
-	//m_data->setSize(taille); // taille ici
+    // 1. Calculer la taille en bits
+    //m_data->setSize(taille); // taille ici
 
-	// 2. Faire des m_data->setNextBit(true / false) selon.
+    // 2. Faire des m_data->setNextBit(true / false) selon.
 
-	m_data->setSize(7);
-	m_data->setNextBit(true);
-	m_data->setNextBit(false);
-	m_data->setNextBit(true);
-	m_data->setNextBit(true);
-	m_data->setNextBit(false);
-	m_data->setNextBit(false);
-	m_data->setNextBit(true);
+    m_data->setSize(7);
+    m_data->setNextBit(true);
+    m_data->setNextBit(false);
+    m_data->setNextBit(true);
+    m_data->setNextBit(true);
+    m_data->setNextBit(false);
+    m_data->setNextBit(false);
+    m_data->setNextBit(true);
 }
 
 /**
@@ -262,31 +323,36 @@ void LibWrapper::encode()
     if(!m_inputName.isEmpty() && defineSavedFile())
     {
 
+        // Translate watermark text datas to binary datas
         dataToBits();
 
         switch(m_gui->selectingMethodTab->currentIndex())
         {
-        case 0:
+        case 0: // LSB encode algorithm case
         {
+            //
+            //TODO: get configuration parameters from the config tab!
+            //
+
             Parameters<short> conf;
             auto alg = Watermark_p<short>(new LSBEncode<short>(conf));
             sub_exec<short>(conf, alg);
             m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
             break;
         }
-        //case 1:
-        //{
+            //case 1: // SSW encode algorithm case
+            //{
             /*Parameters<double> conf;
             auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
             sub_exec<double>(conf, alg);
             break;*/
-        //}
+            //}
             //case 2:
             // Rien pour l'instant
             //break;
 
         default:
-            m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
+            m_gui->informationHostWatermark->setText("Warning: method not implemented");
             QMessageBox::information(this,"Warning - method",
                                      "This method is not yet implemented!");
             break;
@@ -294,7 +360,7 @@ void LibWrapper::encode()
     }
     else
     {
-        m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+        m_gui->informationHostWatermark->setText("Error: no Watermark host file defined");
         QMessageBox::information(this,"Warning - missing file",
                                  "Please, load a Watermark host file!");
     }
@@ -331,4 +397,39 @@ bool LibWrapper::defineSavedFile()
     }
     else
         return false;
+}
+
+/**
+ * @brief LibWrapper::setLsbDefaultConfigurationValue
+ * Function triggered by the set default config value
+ * button (for LSB tab): resets configuration at default
+ * values
+ */
+void LibWrapper::setLsbDefaultConfigurationValue()
+{
+    m_gui->sampleSizeSpinBox->setValue(512);
+    m_gui->NumberLsbSpinBox->setValue(1);
+
+}
+
+/**
+ * @brief LibWrapper::setSswDefaultConfigurationValue
+ * Function triggered by the set default config value
+ * button (for SSW tab): resets configuration at default
+ * values
+ */
+void LibWrapper::setSswDefaultConfigurationValue()
+{
+
+}
+
+/**
+ * @brief LibWrapper::setCompExpDefaultConfigurationValue
+ * Function triggered by the set default config value
+ * button (for Compression-Expansion tab): resets
+ * configuration at default values
+ */
+void LibWrapper::setCompExpDefaultConfigurationValue()
+{
+
 }

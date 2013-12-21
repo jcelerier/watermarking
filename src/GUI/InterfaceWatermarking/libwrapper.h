@@ -29,12 +29,22 @@ public slots:
     void decode();
 	void loadHostWatermarkFile();
 	void updateMethodConfigurationTab(int i);
+
     void loadConfigurationScriptMethodLsb();
     void loadConfigurationScriptMethodSsw();
     void loadConfigurationScriptMethodCompExp();
+
+    void saveConfigurationScriptMethodLsb();
+    void saveConfigurationScriptMethodSsw();
+    void saveConfigurationScriptMethodCompExp();
+
     void selectLsbMethodActionSlot();
     void selectSswMethodActionSlot();
     void selectCompExpMethodActionSlot();
+
+    void setLsbDefaultConfigurationValue();
+    void setSswDefaultConfigurationValue();
+    void setCompExpDefaultConfigurationValue();
 
 private:
 	template<typename T>

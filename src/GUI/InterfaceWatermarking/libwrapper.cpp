@@ -319,7 +319,7 @@ void LibWrapper::bitsToData()
  */
 void LibWrapper::encode()
 {
-    if(!defineSavedFile() || m_inputName.isEmpty())
+    if(m_inputName.isEmpty() || !defineSavedFile())
     {
         m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
         QMessageBox::information(this,"Warning - missing file",

@@ -39,45 +39,6 @@
           </property>
           <item row="0" column="1">
            <layout class="QGridLayout" name="hostWatermarkLayout">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="watermarkSelectionButton">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="toolTip">
-               <string>Load host audio file </string>
-              </property>
-              <property name="text">
-               <string>Select Watermark Host Audio file ...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="icons/qstyle.qrc">
-                <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-              <property name="autoDefault">
-               <bool>false</bool>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" rowspan="2">
-             <widget class="Line" name="line_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QTextEdit" name="informationHostWatermark">
               <property name="sizePolicy">
@@ -159,6 +120,52 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#ffffff;&quot;&gt;Here will be printed information about the loaded host file and/or some logs about computational part of the program.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="watermarkSelectionButton">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="toolTip">
+               <string>Load host audio file </string>
+              </property>
+              <property name="text">
+               <string>Select Watermark Host Audio file ...</string>
+              </property>
+              <property name="icon">
+               <iconset resource="icons/qstyle.qrc">
+                <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" rowspan="2">
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QCustomPlot" name="waveformWidget" native="true">
+              <property name="enabled">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -540,10 +547,28 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="0">
            <layout class="QGridLayout" name="watermarkLayout">
             <item row="4" column="1">
-             <widget class="QTimeEdit" name="watermarkEndingTime"/>
+             <widget class="QTimeEdit" name="watermarkEndingTime">
+              <property name="displayFormat">
+               <string>hh::mm::ss</string>
+              </property>
+              <property name="calendarPopup">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QTimeEdit" name="watermarkBeginningTime"/>
+             <widget class="QTimeEdit" name="watermarkBeginningTime">
+              <property name="displayFormat">
+               <string>hh::mm::ss</string>
+              </property>
+              <property name="time">
+               <time>
+                <hour>0</hour>
+                <minute>0</minute>
+                <second>0</second>
+               </time>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0" colspan="2">
              <widget class="QTextEdit" name="textToWatermark">
@@ -559,7 +584,7 @@ p, li { white-space: pre-wrap; }
             <item row="3" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>Watermark beginning time</string>
+               <string>Watermark beginning time (h::m::s format)</string>
               </property>
              </widget>
             </item>
@@ -576,7 +601,7 @@ p, li { white-space: pre-wrap; }
             <item row="4" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Watermark end time</string>
+               <string>Watermark end time (h::m::s format)</string>
               </property>
              </widget>
             </item>
@@ -994,6 +1019,14 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons/qstyle.qrc"/>
  </resources>

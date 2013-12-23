@@ -6,7 +6,9 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+
+
 
 TARGET = InterfaceWatermarking
 TEMPLATE = app
@@ -15,10 +17,12 @@ QMAKE_CXXFLAGS += -std=c++11 -fopenmp
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    libwrapper.cpp
+    libwrapper.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
-    libwrapper.h
+    libwrapper.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui
 

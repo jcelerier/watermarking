@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include<QTime>
+
 #include "libwrapper.h"
 #include "libwatermark/mathutils/math_util.h"
 
@@ -36,6 +38,8 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
     LibWrapper()
 {
     m_gui = gui;
+
+    m_gui->waveformWidget->setVisible(false);
 
 	//Connecting signals between GUI and watermark library
 	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
@@ -117,7 +121,7 @@ void LibWrapper::selectCompExpMethodActionSlot()
 void LibWrapper::loadHostWatermarkFile()
 {
 
-    m_inputName = QFileDialog::getOpenFileName(this, tr("Open Audio File (.wav)"),
+    m_inputName = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open Audio File (.wav)"),
                                                "",
                                                tr("Audio File (*.wav)"));
 
@@ -127,6 +131,35 @@ void LibWrapper::loadHostWatermarkFile()
         m_gui->watermarkBeginningTime->setEnabled(true);
         m_gui->watermarkEndingTime->setEnabled(true);
         m_gui->usedWatermarkCapacity->setEnabled(true);
+
+        m_gui->waveformWidget->setVisible(true);
+
+        Parameters<short> conf;
+        WatermarkManager<short> manager(conf);
+        auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+
+
+        /* Computing audio input time length for initializing editing
+        watermark position part */
+        int inputLengthInSec = input->frames()/conf.samplingRate;
+
+        //qDebug() << inputLengthInSec;
+
+        QTime inputLength(0,0,0);
+        inputLength = inputLength.addSecs(inputLengthInSec);
+
+        //qDebug() << inputLength;
+
+        m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
+        m_gui->watermarkEndingTime->setMaximumTime(inputLength);
+        m_gui->watermarkEndingTime->setTime(inputLength);
+
+        /* Plotting waveform using QCustomPlot module */
+
+        //
+        // TODO: plotting waveform using m_gui->waveformWidget
+        //
+
         m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
     }
 }
@@ -178,7 +211,7 @@ void LibWrapper::loadConfigurationScriptMethodLsb()
 {
     //TODO: loading a configuration script for LSB method
 
-	QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
+    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
 													"",
 													tr("LSB Script File (*.txt)"));
 
@@ -198,7 +231,7 @@ void LibWrapper::loadConfigurationScriptMethodSsw()
 {
 	//TODO: loading a configuration script for SSW method
 
-	QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
+    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
 													"",
 													tr("SSW Script file(*.txt)"));
 
@@ -219,7 +252,7 @@ void LibWrapper::loadConfigurationScriptMethodCompExp()
 {
     //TODO: loading a configuration script for Compression-Expansion method
 
-	QString tempFile = QFileDialog::getOpenFileName(this, tr("Open script file (.txt)"),
+    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
 													"",
 													tr("Compression-Expansion Script File (*.txt)"));
 
@@ -322,7 +355,7 @@ void LibWrapper::encode()
     if(m_inputName.isEmpty() || !defineSavedFile())
     {
         m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
-        QMessageBox::information(this,"Warning - missing file",
+        QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
                                  "Please, load a Watermark host file!");
 
         return;
@@ -338,7 +371,7 @@ void LibWrapper::encode()
             Parameters<short> conf;
             WatermarkManager<short> manager(conf);
 
-            auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+            //auto input = new FileInput<short>(m_inputName.toStdString(), conf);
             auto output = new FileOutput<short>(conf);
 
             //manager.data = m_data;
@@ -348,7 +381,7 @@ void LibWrapper::encode()
 
             //manager.execute();
 
-            output->writeFile(m_outputName.toStdString().c_str());
+            //output->writeFile(m_outputName.toStdString().c_str());
             m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
 
             break;
@@ -365,7 +398,7 @@ void LibWrapper::encode()
             //break;
         default:
             m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
-            QMessageBox::information(this,"Warning - method",
+            QMessageBox::information(m_gui->centralwidget,"Warning - method",
                                      "This method is not yet implemented!");
             break;
         }
@@ -384,7 +417,7 @@ void LibWrapper::decode()
 	if(m_inputName.isEmpty())
 	{
 		m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
-		QMessageBox::information(this,"Warning - missing file",
+        QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
 								 "Please, load a Watermark host file!");
 
 		return;
@@ -423,7 +456,7 @@ void LibWrapper::decode()
 			//break;
 		default:
 			m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
-			QMessageBox::information(this,"Warning - method",
+            QMessageBox::information(m_gui->centralwidget,"Warning - method",
 									 "This method is not yet implemented!");
 			break;
 	}

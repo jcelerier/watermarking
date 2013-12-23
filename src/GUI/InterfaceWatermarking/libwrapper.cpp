@@ -329,14 +329,22 @@ void LibWrapper::dataToBits()
 
 	for (auto i = 0U; i < str.size(); ++i)
 	{
-		auto b = std::bitset<8>(str[i]);
+		// Ce hack est affreux
+		auto a = std::bitset<8>(str[i]);
+		auto b = a.to_string();
+		std::reverse(std::begin(b), std::end(b));
+		auto c = std::bitset<8>(b);
+
 		for(auto i = 0U; i < 8; ++i)
-			m_data->setNextBit(b[i]);
+		{
+			m_data->setNextBit(c[i]);
+		}
 	}
 }
 
 void LibWrapper::bitsToData()
 {
+	m_data->readSizeFromBits();
 	std::string str = m_data->printBits();
 	std::string out;
 
@@ -345,7 +353,6 @@ void LibWrapper::bitsToData()
 		auto b = std::bitset<8>(str.substr(i, 8));
 		out.push_back(static_cast<unsigned char>(b.to_ulong()));
 	}
-	std::cerr << out;
 
 	m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
 }

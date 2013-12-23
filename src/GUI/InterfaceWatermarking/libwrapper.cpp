@@ -2,6 +2,9 @@
 #include <vector>
 
 #include<QTime>
+#include<QFileDialog>
+#include<QMessageBox>
+
 #include <bitset>
 #include "libwrapper.h"
 #include "libwatermark/mathutils/math_util.h"

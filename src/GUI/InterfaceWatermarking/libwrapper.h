@@ -1,7 +1,7 @@
 #ifndef LIBWRAPPER_H
 #define LIBWRAPPER_H
 
-#include <QtWidgets>
+#include <QWidget>
 
 #include "ui_mainwindow.h"
 #include "libwatermark/WatermarkManager.h"

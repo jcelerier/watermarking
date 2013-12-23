@@ -15,7 +15,7 @@
 #include "benchmark/Smooth.h"
 #include "benchmark/ZeroCross.h"
 #include "benchmark/Stat1.h"
-
+#include "benchmark/FFTNoise.h"
 #include "fft/FFTWManager.h"
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
@@ -32,6 +32,7 @@ void TestOLA()
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
+
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
@@ -45,6 +46,34 @@ void TestOLA()
 
 	output->writeFile("out_test_ola.wav");
 }
+
+void fftNoise()
+{
+	Parameters<double> conf;
+	BenchmarkManager<double> manager(conf);
+
+	//auto input = new SilenceInput<double>(new InputOLA<double>(conf), conf);
+	//input->silence(512 * 16, 1, 0.5);
+	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto output = new FileOutput<double>(conf);
+
+	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
+	fft_m->setChannels((unsigned int) input->channels()); // important.
+	auto window = new RectWindow<double>(conf);
+	auto fft_i = new FFTInputProxy<double>(window, input, fft_m, conf);
+	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
+
+	auto algorithm = new FFTNoise<double>(conf);
+
+	manager.input.reset(fft_i);
+	manager.output.reset(fft_o);
+	manager.algorithm.reset(algorithm);
+
+	manager.execute();
+
+	output->writeFile("out_test_fftnoise.wav");
+}
+
 
 void addBrumm()
 {
@@ -209,5 +238,7 @@ void TestBenchmark()
 //	invert();
 //	zerocross();
 //  stat1();
-	TestOLA();
+//	TestOLA();
+
+	fftNoise();
 }

@@ -37,6 +37,16 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		{
 		}
 
+		FFTInputProxy(WindowBase<data_type>* wnd,
+					  InputManagerBase<data_type>* input,
+					  FFT_p<data_type> fftmanager,
+					  Parameters<data_type>& cfg):
+			FFTProxy<data_type>(fftmanager, cfg),
+			InputManagerBase<data_type>(nullptr, cfg),
+			inputImpl(input),
+			window(wnd)
+		{
+		}
 		virtual ~FFTInputProxy() = default;
 
 		virtual Audio_p getNextBuffer() final override

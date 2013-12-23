@@ -48,24 +48,6 @@ public slots:
     void setCompExpDefaultConfigurationValue();
 
 private:
-	template<typename T>
-	void sub_exec(Parameters<T>& conf, Watermark_p<T> algorithm)
-	{
-		WatermarkManager<T> manager(conf);
-
-		auto input = new FileInput<T>(m_inputName.toStdString(), conf);
-		auto output = new FileOutput<T>(conf);
-
-		manager.data.reset(m_data);
-		manager.input.reset(input);
-		manager.output.reset(output);
-		manager.algorithm = algorithm;
-
-		manager.execute();
-
-		output->writeFile(m_outputName.toStdString().c_str());
-	}
-
 	void dataToBits();
 	void bitsToData();
 

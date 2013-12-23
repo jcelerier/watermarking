@@ -68,4 +68,5 @@ HEADERS += \
     io/copystyle/OutputFilter.h \
     benchmark/Convolution.h \
     benchmark/Stat1.h \
-    io/IOInterface.h
+    io/IOInterface.h \
+    benchmark/FFTNoise.h

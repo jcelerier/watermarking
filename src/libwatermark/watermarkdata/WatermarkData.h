@@ -4,7 +4,7 @@
 #include <bitset>
 #include <algorithm>
 #include <iostream>
-
+#include <sstream>
 /**
  * @brief The WatermarkData class
  *
@@ -68,17 +68,18 @@ class WatermarkData
 		 * TODO : surchrage qui prend un flux personnalisé à la place.
 		 * (ou opérateur de flux pour la classe)
 		 */
-		void printBits()
+		std::string printBits()
 		{
-			std::cerr << "Affichage des données :" << std::endl;
+			std::stringstream s;
 			const auto size_bits = sizeof(_size) * 8U;
 
 			for(auto i = size_bits; i < size_bits + _size; ++i)
 			{
-				std::cerr << bits[i];
+				s << bits[i];
 			}
 
-			std::cerr << std::endl;
+			std::cerr << s.str() << std::endl;
+			return s.str();
 		}
 
 		/**

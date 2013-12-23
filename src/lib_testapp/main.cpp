@@ -10,8 +10,8 @@ void TestBenchmark();
 
 int main()
 {
-	TestLSB();
-	TestSSW();
+	//TestLSB();
+	//TestSSW();
 	TestBenchmark();
 	return 0;
 }

@@ -4,6 +4,7 @@
 #include "copystyle/CopyStyle.h"
 #include "../Parameters.h"
 #include "../Data.h"
+#include "IOInterface.h"
 
 template <typename data_type>
 class FFTInputProxy;
@@ -20,7 +21,7 @@ template <typename data_type>
  *
  * Réalise un découpage buffer par buffer des données dans vec.
  */
-class IOManagerBase
+class IOManagerBase : public IOInterface
 {
 		using size_type = typename Parameters<data_type>::size_type;
 		std::vector<std::vector<data_type>> _baseData = {};

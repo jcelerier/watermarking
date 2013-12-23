@@ -7,8 +7,9 @@
 #include "libwatermark/WatermarkManager.h"
 #include "libwatermark/io/FileInput.h"
 #include "libwatermark/io/FileOutput.h"
-
+#include "libwatermark/io/DummyOutput.h"
 #include "libwatermark/watermark/LSBEncode.h"
+#include "libwatermark/watermark/LSBDecode.h"
 #include "libwatermark/watermark/SSWEncode.h"
 #include "libwatermark/watermarkdata/SimpleWatermarkData.h"
 
@@ -50,7 +51,6 @@ private:
 	template<typename T>
 	void sub_exec(Parameters<T>& conf, Watermark_p<T> algorithm)
 	{
-
 		WatermarkManager<T> manager(conf);
 
 		auto input = new FileInput<T>(m_inputName.toStdString(), conf);
@@ -67,14 +67,16 @@ private:
 	}
 
 	void dataToBits();
-    bool defineSavedFile();
+	void bitsToData();
+
+	bool defineSavedFile();
 
 	Ui::MainWindow* m_gui;
 
 	QString m_inputName;
 	QString m_outputName;
 
-	WatermarkData* m_data;
+	WatermarkData_p m_data;
 
 };
 

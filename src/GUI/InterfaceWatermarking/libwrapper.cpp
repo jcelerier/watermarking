@@ -42,8 +42,20 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 {
     m_gui = gui;
 
-    m_gui->waveformInputWidget->setVisible(false);
-    m_gui->waveformOutputWidget->setVisible(false);
+    m_gui->waveformInputWidget->xAxis->setTickLabels(false);
+    m_gui->waveformInputWidget->yAxis->setTickLabels(false);
+    m_gui->waveformInputWidget->xAxis->setLabel("Input waveform - visible when you load an input audio file");
+
+    m_gui->waveformInputWidget->replot();
+
+    m_gui->waveformOutputWidget->xAxis->setTickLabels(false);
+    m_gui->waveformOutputWidget->yAxis->setTickLabels(false);
+    m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform - visible when you encode a watermark");
+
+    m_gui->waveformOutputWidget->replot();
+
+    //m_gui->waveformInputWidget->setVisible(false);
+    //m_gui->waveformOutputWidget->setVisible(false);
 
     //Connecting signals between GUI and watermark library
     connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
@@ -203,18 +215,13 @@ void LibWrapper::loadHostWatermarkFile()
         connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
         connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
 
-        //m_gui->waveformInputWidget->plotLayout()->insertRow(0);
-        //m_gui->waveformInputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformInputWidget, "Input audio file Waveform"));
-
         m_gui->waveformInputWidget->graph(0)->setData(x,y);
         m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
 
         m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
-        m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
         m_gui->waveformInputWidget->yAxis->setRange(min,max);
 
-        m_gui->waveformInputWidget->xAxis->setTickLabels(false);
-        m_gui->waveformInputWidget->yAxis->setTickLabels(false);
+        m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
 
         m_gui->waveformInputWidget->replot();
 
@@ -451,10 +458,12 @@ void LibWrapper::encode()
     // host file loaded ? output name correctly defined ?
     if(m_inputName.isEmpty() || !defineSavedFile())
     {
-        m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
-        QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
-                                 "Please, load a Watermark host file!");
-
+        if(m_inputName.isEmpty())
+        {
+            m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+            QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
+                                    "Please, load a Watermark host file!");
+        }
         return;
     }
 
@@ -516,8 +525,6 @@ void LibWrapper::encode()
             if(y[i] > max) max = y[i];
         }
 
-         m_gui->waveformOutputWidget->setVisible(true);
-
         m_gui->waveformOutputWidget->addGraph();
         m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 
@@ -535,10 +542,7 @@ void LibWrapper::encode()
         m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
         m_gui->waveformOutputWidget->yAxis->setRange(min,max);
 
-        m_gui->waveformOutputWidget->xAxis->setLabel("Output waveform");
-
-        m_gui->waveformOutputWidget->xAxis->setTickLabels(false);
-        m_gui->waveformOutputWidget->yAxis->setTickLabels(false);
+        m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
 
         m_gui->waveformOutputWidget->replot();
 

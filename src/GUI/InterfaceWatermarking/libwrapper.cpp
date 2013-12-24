@@ -42,7 +42,8 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 {
     m_gui = gui;
 
-    m_gui->waveformWidget->setVisible(false);
+    m_gui->waveformInputWidget->setVisible(false);
+    m_gui->waveformOutputWidget->setVisible(false);
 
     //Connecting signals between GUI and watermark library
     connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
@@ -140,7 +141,7 @@ void LibWrapper::loadHostWatermarkFile()
         m_gui->watermarkEndingTime->setEnabled(true);
         m_gui->usedWatermarkCapacityBar->setEnabled(true);
 
-        m_gui->waveformWidget->setVisible(true);
+        m_gui->waveformInputWidget->setVisible(true);
 
         Parameters<short> conf;
         WatermarkManager<short> manager(conf);
@@ -174,10 +175,48 @@ void LibWrapper::loadHostWatermarkFile()
         /* Plotting waveform using QCustomPlot module */
 
         //
-        // TODO: plotting waveform using m_gui->waveformWidget
+        // TODO: plotting waveform using m_gui->waveformInputWidget
         //
 
+        QVector<double> x,y;
 
+        short min,max;
+
+        x.push_back(0);
+        y.push_back(input->getBaseData()[0][0]);
+
+        min = y[0];
+        max = y[0];
+
+        for(unsigned int i = 1; i < input->frames(); i++)
+        {
+            x.push_back(i);
+            y.push_back(input->getBaseData()[0][i]);
+
+            if(y[i] < min) min = y[i];
+            if(y[i] > max) max = y[i];
+        }
+
+        m_gui->waveformInputWidget->addGraph();
+        m_gui->waveformInputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+        connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
+        connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
+
+        //m_gui->waveformInputWidget->plotLayout()->insertRow(0);
+        //m_gui->waveformInputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformInputWidget, "Input audio file Waveform"));
+
+        m_gui->waveformInputWidget->graph(0)->setData(x,y);
+        m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
+
+        m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
+        m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
+        m_gui->waveformInputWidget->yAxis->setRange(min,max);
+
+        m_gui->waveformInputWidget->xAxis->setTickLabels(false);
+        m_gui->waveformInputWidget->yAxis->setTickLabels(false);
+
+        m_gui->waveformInputWidget->replot();
 
         m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
     }
@@ -454,6 +493,54 @@ void LibWrapper::encode()
 
         output->writeFile(m_outputName.toStdString().c_str());
         m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
+
+        /* Computing and plotting output waveform */
+        m_gui->waveformInputWidget->setVisible(true);
+
+        QVector<double> x,y;
+
+        short min,max;
+
+        x.push_back(0);
+        y.push_back(output->getBaseData()[0][0]);
+
+        min = y[0];
+        max = y[0];
+
+        for(unsigned int i = 1; i < output->getFrames(); i++)
+        {
+            x.push_back(i);
+            y.push_back(output->getBaseData()[0][i]);
+
+            if(y[i] < min) min = y[i];
+            if(y[i] > max) max = y[i];
+        }
+
+         m_gui->waveformOutputWidget->setVisible(true);
+
+        m_gui->waveformOutputWidget->addGraph();
+        m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+        connect(m_gui->waveformOutputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->xAxis2, SLOT(setRange(QCPRange)));
+        connect(m_gui->waveformOutputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->yAxis2, SLOT(setRange(QCPRange)));
+
+        //m_gui->waveformOutputWidget->plotLayout()->insertRow(0);
+        //m_gui->waveformOutputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformOutputWidget, "Output audio file Waveform"));
+
+        m_gui->waveformOutputWidget->graph(0)->setPen(QPen(Qt::red));
+
+        m_gui->waveformOutputWidget->graph(0)->setData(x,y);
+        m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
+
+        m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
+        m_gui->waveformOutputWidget->yAxis->setRange(min,max);
+
+        m_gui->waveformOutputWidget->xAxis->setLabel("Output waveform");
+
+        m_gui->waveformOutputWidget->xAxis->setTickLabels(false);
+        m_gui->waveformOutputWidget->yAxis->setTickLabels(false);
+
+        m_gui->waveformOutputWidget->replot();
 
         break;
     }

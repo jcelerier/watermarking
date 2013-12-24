@@ -42,7 +42,10 @@
             <item row="0" column="2">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;- Method selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Method selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -109,6 +112,9 @@
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to load a configuration script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
                    </widget>
                   </item>
                   <item row="2" column="2">
@@ -117,7 +123,10 @@
                      <string>Defines the number of Least Significant Bits per sample used to crypt the watermark</string>
                     </property>
                     <property name="text">
-                     <string>LSB used (default: 1) -&gt;</string>
+                     <string>LSB used (default: 1) </string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -149,6 +158,9 @@
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to save current configuration as a script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
                    </widget>
                   </item>
                   <item row="2" column="0">
@@ -157,7 +169,10 @@
                      <string>Defines the size (bits) of each sample used to perform LSB algorithm</string>
                     </property>
                     <property name="text">
-                     <string>Sample size (default: 512) -&gt;</string>
+                     <string>Sample size (default: 512)</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -399,28 +414,11 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout" name="watermarkLayout">
-            <item row="5" column="0" colspan="2">
-             <widget class="QProgressBar" name="usedWatermarkCapacityBar">
-              <property name="value">
-               <number>0</number>
-              </property>
-              <property name="format">
-               <string>Available capacity: %p%</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QTimeEdit" name="watermarkEndingTime">
-              <property name="displayFormat">
-               <string>hh::mm::ss</string>
-              </property>
-              <property name="calendarPopup">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="1">
              <widget class="QTimeEdit" name="watermarkBeginningTime">
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
               <property name="displayFormat">
                <string>hh::mm::ss</string>
               </property>
@@ -433,21 +431,26 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0" colspan="2">
-             <widget class="QTextEdit" name="textToWatermark">
-              <property name="html">
-               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2';&quot;&gt;Here is the editable text that will be watermarked in the host file. The progress bar shows the available amount of data that you can put on the loaded host file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
                <string>Watermark beginning time (h::m::s format)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QTimeEdit" name="watermarkEndingTime">
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="displayFormat">
+               <string>hh::mm::ss</string>
+              </property>
+              <property name="calendarPopup">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -455,6 +458,9 @@ p, li { white-space: pre-wrap; }
              <widget class="QLabel" name="label_12">
               <property name="text">
                <string>Watermark end time (h::m::s format)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -475,6 +481,44 @@ p, li { white-space: pre-wrap; }
                 <width>16</width>
                 <height>16</height>
                </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="CodeEditor" name="textToWatermark">
+              <property name="plainText">
+               <string>Here is the editable text that will be watermarked in the host file. 
+  The progress bar shows the available amount of data that you can put on the loaded host file.</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0" colspan="2">
+             <widget class="QProgressBar" name="usedWatermarkCapacityBar">
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="format">
+               <string>Available capacity: %p%</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="availableCapacityLabel">
+              <property name="text">
+               <string>Available capacity</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLabel" name="availableCapacityLabel2">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -795,7 +839,10 @@ p, li { white-space: pre-wrap; }
               <item row="3" column="2">
                <widget class="QLabel" name="label_18">
                 <property name="text">
-                 <string>LSB used (default: 1) -&gt;</string>
+                 <string>LSB used (default: 1)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -813,7 +860,10 @@ p, li { white-space: pre-wrap; }
               <item row="3" column="0">
                <widget class="QLabel" name="label_13">
                 <property name="text">
-                 <string>Sample size (default: 512) -&gt;</string>
+                 <string>Sample size (default: 512)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -856,6 +906,9 @@ p, li { white-space: pre-wrap; }
                 <property name="text">
                  <string>Allows you to load a configuration script </string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
               <item row="4" column="1" colspan="2">
@@ -886,6 +939,9 @@ p, li { white-space: pre-wrap; }
                <widget class="QLabel" name="label_20">
                 <property name="text">
                  <string>Allows you to save current configuration as a script </string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -1024,6 +1080,11 @@ p, li { white-space: pre-wrap; }
    <extends>QWidget</extends>
    <header>qcustomplot.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CodeEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header>codeeditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>

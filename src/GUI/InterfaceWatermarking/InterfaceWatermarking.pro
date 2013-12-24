@@ -19,11 +19,13 @@ QMAKE_CXXFLAGS += -fopenmp -std=c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     libwrapper.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    codeeditor.cpp
 
 HEADERS  += mainwindow.h \
     libwrapper.h \
-    qcustomplot.h
+    qcustomplot.h \
+    codeeditor.h
 
 FORMS    += mainwindow.ui
 

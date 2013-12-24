@@ -40,6 +40,9 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 {
     m_gui = gui;
 
+    m_gui->availableCapacityLabel->setVisible(false);
+    m_gui->availableCapacityLabel2->setVisible(false);
+
     m_gui->waveformInputWidget->xAxis->setTickLabels(false);
     m_gui->waveformInputWidget->yAxis->setTickLabels(false);
     m_gui->waveformInputWidget->xAxis->setLabel("Input waveform - visible when you load an input audio file");
@@ -181,6 +184,14 @@ void LibWrapper::loadHostWatermarkFile()
         m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
         m_gui->watermarkEndingTime->setMaximumTime(inputLength);
         m_gui->watermarkEndingTime->setTime(inputLength);
+
+        /* Printing capacity information labels */
+
+        m_gui->availableCapacityLabel->setVisible(true);
+        m_gui->availableCapacityLabel2->setVisible(true);
+
+        m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
+                                                + '/' + QString::number(input->frames()) + " bits");
 
         /* Plotting waveform using QCustomPlot module */
 
@@ -391,6 +402,10 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
     if(!m_inputName.isEmpty())
     {
         int i = m_gui->textToWatermark->toPlainText().size();
+
+        m_gui->availableCapacityLabel2->setText(QString::number(i*8)
+                                                + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()*8) + " bits");
+
         if(i < m_gui->usedWatermarkCapacityBar->maximum())
         {
             m_gui->usedWatermarkCapacityBar->setValue(i);

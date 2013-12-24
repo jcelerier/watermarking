@@ -31,7 +31,6 @@ class WatermarkManager
 			conf(parameters),
 			timeAdapter(new AtTime)
 		{
-
 		}
 
 		WatermarkManager(const WatermarkManager<data_type>& sm) = delete;

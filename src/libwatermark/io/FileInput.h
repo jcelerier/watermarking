@@ -15,7 +15,7 @@ template <typename data_type>
  */
 class FileInput : public InputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::v;
+//		using IOManagerBase<data_type>::v;
 
 	public:
 		FileInput(Parameters<data_type>& cfg):
@@ -52,6 +52,6 @@ class FileInput : public InputManagerBase<data_type>
 			for(auto i = 0U; i < myf.channels(); ++i)
 				myf.read(vec.data() + i * (myf.frames() - 1),  myf.frames() - 1);
 
-			v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
+			this->v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
 		}
 };

@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT     += core gui
+CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
@@ -13,7 +14,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = InterfaceWatermarking
 TEMPLATE = app
 DESTDIR = $$PWD/../../../output
-QMAKE_CXXFLAGS += -std=c++11 -fopenmp
+QMAKE_CXXFLAGS += -fopenmp
 
 SOURCES += main.cpp\
         mainwindow.cpp \

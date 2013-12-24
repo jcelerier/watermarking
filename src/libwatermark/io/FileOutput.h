@@ -12,9 +12,7 @@ template <typename data_type>
  */
 class FileOutput : public OutputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
-		using IOManagerBase<data_type>::frames;
 	public:
 		FileOutput(Parameters<data_type>& cfg):
 			OutputManagerBase<data_type>(cfg)
@@ -28,7 +26,7 @@ class FileOutput : public OutputManagerBase<data_type>
 
 		void writeFile(const char * str)
 		{
-			auto tmp = MathUtil::interleave(v());
+			auto tmp = MathUtil::interleave(this->v());
 
 			SndfileHandle outfile(str, SFM_WRITE, SF_FORMAT_WAV | SF_FORMAT_PCM_16, (int) channels(), (int) this->conf.samplingRate);
 

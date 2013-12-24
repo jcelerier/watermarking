@@ -1,14 +1,15 @@
 #include <iostream>
 #include <vector>
-
+#include <numeric>
+#include <algorithm>
 #include<QTime>
 #include<QFileDialog>
 #include<QMessageBox>
-
+#include <QTime>
 #include <bitset>
 #include "libwrapper.h"
 #include "libwatermark/mathutils/math_util.h"
-
+#include <memory>
 
 /**
  * @brief LibWrapper::LibWrapper
@@ -17,9 +18,6 @@
 LibWrapper::LibWrapper():
     m_data(new SimpleWatermarkData)
 {
-
-
-
 }
 
 /**
@@ -195,7 +193,7 @@ void LibWrapper::loadHostWatermarkFile()
         short min,max;
 
         x.push_back(0);
-        y.push_back(input->getBaseData()[0][0]);
+		y.push_back(input->v()[0][0]);
 
         min = y[0];
         max = y[0];
@@ -203,7 +201,7 @@ void LibWrapper::loadHostWatermarkFile()
         for(unsigned int i = 1; i < input->frames(); i++)
         {
             x.push_back(i);
-            y.push_back(input->getBaseData()[0][i]);
+			y.push_back(input->v()[0][i]);
 
             if(y[i] < min) min = y[i];
             if(y[i] > max) max = y[i];
@@ -506,24 +504,13 @@ void LibWrapper::encode()
         /* Computing and plotting output waveform */
         m_gui->waveformInputWidget->setVisible(true);
 
-        QVector<double> x,y;
+		QVector<double> x(output->frames()), y(output->frames());
+		QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
 
-        short min,max;
+		std::transform(y0.begin(), y0.end(), y.begin(),
+					   [&] (short x) { return double(x) / conf.normFactor(); });
+		std::iota(x.begin(), x.end(), 0);
 
-        x.push_back(0);
-        y.push_back(output->getBaseData()[0][0]);
-
-        min = y[0];
-        max = y[0];
-
-        for(unsigned int i = 1; i < output->getFrames(); i++)
-        {
-            x.push_back(i);
-            y.push_back(output->getBaseData()[0][i]);
-
-            if(y[i] < min) min = y[i];
-            if(y[i] > max) max = y[i];
-        }
 
         m_gui->waveformOutputWidget->addGraph();
         m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -540,7 +527,7 @@ void LibWrapper::encode()
         m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
 
         m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
-        m_gui->waveformOutputWidget->yAxis->setRange(min,max);
+		m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
 
         m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
 

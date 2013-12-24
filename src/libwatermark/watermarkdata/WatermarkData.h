@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <memory>
 /**
  * @brief The WatermarkData class
  *

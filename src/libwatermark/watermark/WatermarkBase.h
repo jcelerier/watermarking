@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #include "../Parameters.h"
 #include "../Data.h"
 #include "../watermarkdata/WatermarkData.h"

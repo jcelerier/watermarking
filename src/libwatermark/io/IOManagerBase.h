@@ -11,7 +11,6 @@ class FFTInputProxy;
 template <typename data_type>
 class FFTOutputProxy;
 
-template <typename data_type>
 /**
  * @brief The IOManagerBase class
  *
@@ -21,6 +20,7 @@ template <typename data_type>
  *
  * Réalise un découpage buffer par buffer des données dans vec.
  */
+template <typename data_type>
 class IOManagerBase : public IOInterface
 {
 		using size_type = typename Parameters<data_type>::size_type;
@@ -34,15 +34,6 @@ class IOManagerBase : public IOInterface
 		friend class FFTInputProxy<data_type>;
 		friend class FFTOutputProxy<data_type>;
 
-        std::vector<std::vector<data_type>> getBaseData()
-        {
-            return _baseData;
-        }
-
-        size_type getFrames()
-        {
-            return v()[0].size();
-        }
 
 		IOManagerBase(Parameters<data_type>& cfg):
 			conf(cfg)
@@ -59,6 +50,12 @@ class IOManagerBase : public IOInterface
 		{
 			return _baseData;
 		}
+
+		virtual std::vector<data_type>& v(size_type i)
+		{
+			return _baseData.at(i);
+		}
+
 
 		/**
 		 * @brief channels

@@ -14,7 +14,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = InterfaceWatermarking
 TEMPLATE = app
 DESTDIR = $$PWD/../../../output
-QMAKE_CXXFLAGS += -fopenmp
+QMAKE_CXXFLAGS += -fopenmp -std=c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \

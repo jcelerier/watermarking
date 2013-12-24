@@ -160,16 +160,6 @@ void LibWrapper::loadHostWatermarkFile()
         WatermarkManager<short> manager(conf);
         auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
-
-        /* Editing watermark max length progress bar */
-
-        m_gui->usedWatermarkCapacityBar->setMinimum(0);
-        m_gui->usedWatermarkCapacityBar->setMaximum(input->frames()/8);
-
-        //m_gui->usedWatermarkCapacityBar->setValue(m_gui->textToWatermark->toPlainText().size());
-
-        updateWatermarkCapacityProgressBar();
-
         /* Computing audio input time length for initializing editing
         watermark position part */
         int inputLengthInSec = input->frames()/conf.samplingRate;
@@ -185,14 +175,6 @@ void LibWrapper::loadHostWatermarkFile()
         m_gui->watermarkEndingTime->setMaximumTime(inputLength);
         m_gui->watermarkEndingTime->setTime(inputLength);
 
-        /* Printing capacity information labels */
-
-        m_gui->availableCapacityLabel->setVisible(true);
-        m_gui->availableCapacityLabel2->setVisible(true);
-
-        m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
-                                                + '/' + QString::number(input->frames()) + " bits");
-
         /* Plotting waveform using QCustomPlot module */
 
         //
@@ -204,7 +186,7 @@ void LibWrapper::loadHostWatermarkFile()
         short min,max;
 
         x.push_back(0);
-		y.push_back(input->v()[0][0]);
+        y.push_back(input->v()[0][0]);
 
         min = y[0];
         max = y[0];
@@ -212,7 +194,7 @@ void LibWrapper::loadHostWatermarkFile()
         for(unsigned int i = 1; i < input->frames(); i++)
         {
             x.push_back(i);
-			y.push_back(input->v()[0][i]);
+            y.push_back(input->v()[0][i]);
 
             if(y[i] < min) min = y[i];
             if(y[i] > max) max = y[i];
@@ -234,6 +216,36 @@ void LibWrapper::loadHostWatermarkFile()
 
         m_gui->waveformInputWidget->replot();
 
+
+        switch(m_gui->selectingMethodTab->currentIndex())
+        {
+
+        case 0: //LSB Method
+            /* Editing watermark max length progress bar */
+
+            m_gui->usedWatermarkCapacityBar->setMinimum(0);
+            m_gui->usedWatermarkCapacityBar->setMaximum(input->frames()/8);
+
+            //m_gui->usedWatermarkCapacityBar->setValue(m_gui->textToWatermark->toPlainText().size());
+
+            updateWatermarkCapacityProgressBar();
+
+
+            /* Printing capacity information labels */
+
+            m_gui->availableCapacityLabel->setVisible(true);
+            m_gui->availableCapacityLabel2->setVisible(true);
+
+            m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
+                                                    + '/' + QString::number(input->frames()) + " bits");
+
+            break;
+
+        default:
+            break;
+
+        }
+
         m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
     }
 }
@@ -245,6 +257,11 @@ void LibWrapper::loadHostWatermarkFile()
  */
 void LibWrapper::updateMethodConfigurationTab(int i)
 {
+    if(!m_inputName.isEmpty())
+    {
+        updateWatermarkCapacityProgressBar();
+    }
+
     switch(i)
     {
     case 0: // lsb method selected
@@ -401,20 +418,38 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 {
     if(!m_inputName.isEmpty())
     {
-        int i = m_gui->textToWatermark->toPlainText().size();
 
-        m_gui->availableCapacityLabel2->setText(QString::number(i*8)
-                                                + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()*8) + " bits");
+        int i;
 
-        if(i < m_gui->usedWatermarkCapacityBar->maximum())
+        switch(m_gui->selectingMethodComboBox->currentIndex())
         {
-            m_gui->usedWatermarkCapacityBar->setValue(i);
-            m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
-        }
-        else
-        {
+
+        case 0: //LSB Method
+
+            i = m_gui->textToWatermark->toPlainText().size();
+            m_gui->availableCapacityLabel2->setText(QString::number(i*8)
+                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()*8) + " bits");
+
+            if(i < m_gui->usedWatermarkCapacityBar->maximum())
+            {
+                m_gui->usedWatermarkCapacityBar->setValue(i);
+                m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+            }
+            else
+            {
+                m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
+                m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+            }
+
+            break;
+
+        default:
+
+            m_gui->availableCapacityLabel2->setText("Not implemented yet");
             m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
-            m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+
+            break;
+
         }
     }
 }
@@ -475,7 +510,7 @@ void LibWrapper::encode()
         {
             m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
             QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
-                                    "Please, load a Watermark host file!");
+                                     "Please, load a Watermark host file!");
         }
         return;
     }
@@ -519,12 +554,12 @@ void LibWrapper::encode()
         /* Computing and plotting output waveform */
         m_gui->waveformInputWidget->setVisible(true);
 
-		QVector<double> x(output->frames()), y(output->frames());
-		QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
+        QVector<double> x(output->frames()), y(output->frames());
+        QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
 
-		std::transform(y0.begin(), y0.end(), y.begin(),
-					   [&] (short x) { return double(x) / conf.normFactor(); });
-		std::iota(x.begin(), x.end(), 0);
+        std::transform(y0.begin(), y0.end(), y.begin(),
+                       [&] (short x) { return double(x) / conf.normFactor(); });
+        std::iota(x.begin(), x.end(), 0);
 
 
         m_gui->waveformOutputWidget->addGraph();
@@ -542,7 +577,7 @@ void LibWrapper::encode()
         m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
 
         m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
-		m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
+        m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
 
         m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
 

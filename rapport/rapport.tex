@@ -1,0 +1,152 @@
+\documentclass[a4paper,11pt,oneside]{report}
+
+%\date{September the 15th, 2013}
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{relsize}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\usepackage{listings}
+\usepackage{float}
+\usepackage{kpfonts}
+\usepackage{verbatimbox}
+\usepackage{datetime}
+% more figures per page
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}   
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+\usepackage{graphicx}
+%% \newcommand{\foofoo}{\hspace{-2.3pt}$\bullet$ \hspace{5pt}}
+
+
+\lstset{ %
+language=C++,                % choose the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+
+\lstset{
+  literate={ù}{{\`u}}1
+           {é}{{\'e}}1
+           {è}{{\'e}}1
+           {à}{{\`a}}1
+}
+
+
+\geometry{margin=2cm}
+\geometry{headheight=15pt}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{glossaries}
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{algorithm2e}
+\usepackage{CJKutf8}
+\usepackage[footnote,smaller]{acronym}
+\usepackage[perpage]{footmisc}
+\usepackage[]{titlesec}
+\makeatletter
+\def\ttl@mkchap@i#1#2#3#4#5#6#7{%
+    \ttl@assign\@tempskipa#3\relax\beforetitleunit
+    \vspace{\@tempskipa}%<<<<<< REMOVE THE * AFTER \vspace
+    \global\@afterindenttrue
+    \ifcase#5 \global\@afterindentfalse\fi
+    \ttl@assign\@tempskipb#4\relax\aftertitleunit
+    \ttl@topmode{\@tempskipb}{%
+        \ttl@select{#6}{#1}{#2}{#7}}%
+    \ttl@finmarks  % Outside the box!
+    \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}}
+\makeatother
+
+\renewcommand*{\acsfont}[1]{\brand{#1}}
+
+\makeglossaries
+
+\pagestyle{fancy}
+
+
+\newcommand{\brand}[1]{\textsc{\textbf{#1}}}
+\let\oldpar\paragraph
+\renewcommand{\paragraph}[1]{\oldpar{#1}\mbox{}\\}
+
+
+\DeclareMathOperator{\power}{power}
+\DeclareMathOperator{\phase}{phase}
+\DeclareMathOperator{\recompute}{recompute}
+
+\rhead{Audio watermarking}
+\begin{document}
+\selectlanguage{english}
+\begin{titlepage}
+  \begin{center}
+
+    \textsc{\LARGE Audio Watermarking}\\[1cm]
+    
+  \end{center}
+  
+  \vspace*{\stretch{2}}
+  \begin{flushbottom}
+   \begin{flushleft}
+    \underline{Students} : Jean-Michaël \textsc{Celerier}, Abdelhamid \textsc{Cherif}, Alban \textsc{De Martin}, Quentin \textsc{Midy}, Marc \textsc{Queiros Soares}, Valentin \textsc{Sarthou} - \today \\
+   \end{flushleft}
+  \end{flushbottom}
+\end{titlepage}
+\clearpage
+\tableofcontents
+
+\chapter*{Introduction}
+\chapter{Watermarking}
+\section{Presentation}
+\section{Existing work}
+\section{Techniques}
+\subsection{Least Significant Bit}
+\subsection{Spread-spectrum Watermarking}
+\subsection{Compression-Expansion}
+
+\chapter{Evaluation}
+\section{Main evaluation idea}
+\section{Existing work}
+\section{Evaluation methods}
+
+\chapter{Organization and project management}
+\section{Technologies used}
+\section{Schedule}
+\section{Work repartition}
+
+\chapter{Implementation}
+\section{Framework}
+\section{Algorithms}
+\section{Tests}
+\section{Interface}
+\section{Evaluation}
+
+\chapter{Results}
+\section{Evaluation results}
+\section{Auditory results}
+\chapter*{Conclusion}
+
+\end{document}

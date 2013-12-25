@@ -61,7 +61,8 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \geometry{headheight=15pt}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
-\usepackage{glossaries}
+\usepackage[xindy,toc]{glossaries}
+\usepackage{natbib}
 \usepackage{fancyvrb}
 \usepackage{float}
 \usepackage{algorithm2e}
@@ -117,36 +118,17 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \end{titlepage}
 \clearpage
 \tableofcontents
+\include{glossary}
 
-\chapter*{Introduction}
-\chapter{Watermarking}
-\section{Presentation}
-\section{Existing work}
-\section{Techniques}
-\subsection{Least Significant Bit}
-\subsection{Spread-spectrum Watermarking}
-\subsection{Compression-Expansion}
+\include{introduction}
+\include{watermarking}
+\include{evaluation}
+\include{management}
+\include{implementation}
+\include{results}
+\include{conclusion}
 
-\chapter{Evaluation}
-\section{Main evaluation idea}
-\section{Existing work}
-\section{Evaluation methods}
-
-\chapter{Organization and project management}
-\section{Technologies used}
-\section{Schedule}
-\section{Work repartition}
-
-\chapter{Implementation}
-\section{Framework}
-\section{Algorithms}
-\section{Tests}
-\section{Interface}
-\section{Evaluation}
-
-\chapter{Results}
-\section{Evaluation results}
-\section{Auditory results}
-\chapter*{Conclusion}
-
+\printglossaries
+\bibliographystyle{apalike}
+\bibliography{watermarking}
 \end{document}

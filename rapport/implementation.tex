@@ -1,12 +1,12 @@
 \chapter{Implementation}
 The following chapter will describe the choices and the inner workings of the project.
-The implementation is divided in multiple parts : 
+The implementation is divided in multiple parts (the text in fixed width font refers to the corresponding source code folder) : 
 
 \begin{itemize}
 \item An audio manipulation framework.
 \item The implementation of many audio and watermarking algorithms, in this framework : the whole makes the library that we call \texttt{libwatermark}.
-\item A test application to ensure correctness of the library.
-\item A graphical interface that uses the library.
+\item A test application to ensure correctness of the library : \texttt{lib\_testapp}.
+\item A graphical interface that uses the library : \texttt{InterfaceWatermarking}.
 \end{itemize}
 
 All of these parts will be reviewed in the following sections.
@@ -58,6 +58,8 @@ So in future project, the framework might be modified to take instead a list of 
 
 GetNextBuffer $\rightarrow$ FFT $\rightarrow$ FFT plotting $\rightarrow$ Algorithm $\rightarrow$ IFFT $\rightarrow$ Waveform Plotting $\rightarrow$ WriteNextBuffer.
 
+\newpage
+
 \subsection{Capabilities}
 Since an heavy emphasis has been put into having very generic interfaces, we have been able to implement many useful features and algorithms.
 
@@ -75,10 +77,9 @@ There are interfaces for :
 \item Copying, overlapping and windowing.
 \end{itemize}
 
-You can see on figure \ref{frameworkclass} tables that repertories all the implementations of these interfaces.
+You can see on figures \ref{frameworkclass1} to \ref{frameworkclass4} tables that repertories all the implementations of these interfaces.
 
-\begin{figure}[ht!]
-\label{frameworkclass}
+\begin{figure}[h!]
 \centering
 \begin{tabular}{|c|c|l|}
 \hline
@@ -126,9 +127,10 @@ Hamming & Hamming window \\
 \end{tabular}
 
 \caption{Objects related to input-output}
+\label{frameworkclass1}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{|c|c|l|}
 \hline
@@ -160,9 +162,10 @@ ZeroCross & Strict noisegate\\
 \hline
 \end{tabular} 
 \caption{Audio algorithms}
+\label{frameworkclass2}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{|c|l|}
 \hline
@@ -176,9 +179,10 @@ Every\_For & Every $k$ buffers, starts the algorithm and stops it after $n$ buff
 \hline
 \end{tabular}
 \caption{Algorithm triggering}
+\label{frameworkclass3}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{|c|l|}
 \hline
@@ -190,6 +194,7 @@ LoopingWatermarkData & Puts the watermark repeatedly \\
 \hline
 \end{tabular}
 \caption{Watermarked data-related objects}
+\label{frameworkclass4}
 \end{figure}
 
 \newpage
@@ -200,13 +205,14 @@ The class diagram only shows child classes when it is relevant; else it would ca
 
 Some important things to note are that :
 \begin{itemize}
-\item The class diagram shown here is for an instantiation with a watermark algorithm (it is very similar for an evaluation algorithm). 
-\item Due to the complexity of the library, we will only show relevant public members : detailed documentation is available thanks to the \brand{Doxygen} documentation.
+\item The class diagram shown here is for a generic instantiation with a watermark algorithm (it is very similar for an evaluation algorithm). 
+\item Due to the complexity of the library, we will only show relevant public members and interfaces : detailed documentation is available thanks to \brand{Doxygen}.
 \item All the classes do reference a \texttt{Parameters} class which holds some common parameters and types used across the library.
+\item Most of the classes are templates with a \texttt{data\_type} parameter.
 \end{itemize}
 
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \label{parametersclass}
 \begin{tikzpicture}
@@ -229,10 +235,10 @@ Some important things to note are that :
 \caption{The Parameters class}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[h!]
 \centering
 \label{fwclassdiagram}
-\scalebox{0.5}{
+
 \begin{tikzpicture}
 % % % CLASS DIAGRAM HERE % % %
 % Base Manager
@@ -259,17 +265,17 @@ Some important things to note are that :
 	frames() : size\_type \\
 	v() : vector<vector<data\_type>> \\
 }
-\umlinterface[x=-8,y=2]{InputManagerBase}{}
+\umlinterface[x=-6,y=2]{InputManagerBase}{}
 {
 	getNextBuffer() : Buffer \\
 }
-\umlinterface[x=-8,y=-1]{OutputManagerBase}{}
+\umlinterface[x=-6,y=-1]{OutputManagerBase}{}
 {
 	writeNextBuffer(Buffer) : void \\
 }
 
 % WM data
-\umlinterface[x=4,y=2]{WatermarkData}{}
+\umlinterface[x=5,y=7]{WatermarkData}{}
 {
 	setSize() : void\\
 	nextBit() : bool\\
@@ -278,7 +284,7 @@ Some important things to note are that :
 }
 
 % TA
-\umlinterface[x=10,y=2]{TimeAdapter}{}
+\umlinterface[x=6,y=2]{TimeAdapter}{}
 {
 addStartHandler(Function) : void\\
 addStopHandler(Function) : void\\
@@ -296,11 +302,35 @@ perform() : void \\
 \umlaggreg{TimeAdapter}{WatermarkManager}
 
 \end{tikzpicture}
-}
-\caption{Class diagram for the framework}
+
+\caption{Class diagram for the main usage of the framework}
 \end{figure}
 
 \subsection{Example of usage}
+We will here have a look at an example usage of our library which will correspond to the encoding of some bits with the LSB algorithm.
+
+More examples can be seen in the test application.
+
+\begin{figure}[h!]
+\centering
+
+\begin{lstlisting}
+    Parameters<short> conf;
+    
+    WatermarkData* data = new SimpleWatermarkData; // Set the bits afterwards 
+    auto input = new FileInput<short>("input_mono.wav", conf);
+    auto output = new FileOutput<short>(conf);
+
+    auto algorithm = new LSBEncode<short>(conf);
+
+    WatermarkManager<short> manager(input, output, algorithm, data, conf);
+    manager.execute();
+
+    output->writeFile("out_test_lsb_encode.wav");
+\end{lstlisting}
+
+\caption{Example instanciation}
+\end{figure}
 \section{Algorithms}
 \subsection{Watermarking algorithms}
 \subsection{Evaluation algorithms}

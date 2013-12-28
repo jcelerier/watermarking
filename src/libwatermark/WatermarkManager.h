@@ -28,6 +28,33 @@ class WatermarkManager
 
 
 		WatermarkManager(const Parameters<data_type>& parameters):
+			WatermarkManager(nullptr, nullptr, nullptr, nullptr, conf)
+		{
+		}
+
+		WatermarkManager(Input_p<data_type> i,
+						 Output_p<data_type> o,
+						 Watermark_p<data_type> a,
+						 WatermarkData_p d,
+						 const Parameters<data_type> &parameters):
+			input(i),
+			output(o),
+			algorithm(a),
+			data(d),
+			conf(parameters),
+			timeAdapter(new AtTime)
+		{
+		}
+
+		WatermarkManager(InputManagerBase<data_type>* i,
+						 OutputManagerBase<data_type>* o,
+						 WatermarkBase<data_type>* a,
+						 WatermarkData* d,
+						 const Parameters<data_type> &parameters):
+			input(i),
+			output(o),
+			algorithm(a),
+			data(d),
 			conf(parameters),
 			timeAdapter(new AtTime)
 		{

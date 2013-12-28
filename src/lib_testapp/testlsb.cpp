@@ -17,8 +17,7 @@ void TestLSB()
 
 void encode()
 {
-    Parameters<short> conf;
-    WatermarkManager<short> manager(conf);
+	Parameters<short> conf;
 	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(7);
 	data->setNextBit(true);
@@ -29,36 +28,27 @@ void encode()
 	data->setNextBit(false);
 	data->setNextBit(true);
 
-    auto input = new FileInput<short>("input_mono.wav", conf);
-    auto output = new FileOutput<short>(conf);
+	auto input = new FileInput<short>("input_mono.wav", conf);
+	auto output = new FileOutput<short>(conf);
 
-    auto algorithm = new LSBEncode<short>(conf);
+	auto algorithm = new LSBEncode<short>(conf);
 
-    manager.data.reset(data);
-    manager.input.reset(input);
-    manager.output.reset(output);
-    manager.algorithm.reset(algorithm);
-
-    manager.execute();
+	WatermarkManager<short> manager(input, output, algorithm, data, conf);
+	manager.execute();
 
     output->writeFile("out_test_lsb_encode.wav");
 }
 
 void decode()
 {
-    Parameters<short> conf;
-    WatermarkManager<short> manager(conf);
+	Parameters<short> conf;
 	WatermarkData* data = new SimpleWatermarkData;
 
     auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
 	auto output = new DummyOutput<short>(conf);
 
     auto algorithm = new LSBDecode<short>(conf);
-
-    manager.data.reset(data);
-    manager.input.reset(input);
-    manager.output.reset(output);
-    manager.algorithm.reset(algorithm);
+	WatermarkManager<short> manager(input, output, algorithm, data, conf);
 
     manager.execute();
 

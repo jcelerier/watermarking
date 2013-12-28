@@ -22,7 +22,6 @@ class MCLTManager
 
 			// modulate U into V
 			std::transform(c.begin(), c.end(), U.begin(), V.begin(), std::multiplies<complex_type>());
-
 			// compute MCLT coefficients
 			std::fill(in.begin(), in.end(), complex_type(0, 0));
 			std::transform(V.begin(), V.end() - 1, V.begin() + 1, in.begin(), [this] (complex_type a, complex_type b)

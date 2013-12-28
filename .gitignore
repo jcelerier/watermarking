@@ -22,6 +22,8 @@ Makefile
 *.raw
 *.mp3
 
+html
+
 build-*
 */build-*
 rapport/build

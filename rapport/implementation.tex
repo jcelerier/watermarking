@@ -1,13 +1,305 @@
 \chapter{Implementation}
+The following chapter will describe the choices and the inner workings of the project.
+The implementation is divided in multiple parts : 
+
+\begin{itemize}
+\item An audio manipulation framework.
+\item The implementation of many audio and watermarking algorithms, in this framework : the whole makes the library that we call \texttt{libwatermark}.
+\item A test application to ensure correctness of the library.
+\item A graphical interface that uses the library.
+\end{itemize}
+
+All of these parts will be reviewed in the following sections.
+
 \section{Technologies used}
+The choice was made really early to use \brand{C++} as a programming language, mostly because of the speed, but also because it is quite cross-platform. We also used many \brand{C++11} features for the sake of learning, and because it sometimes reduces the amount of code needed. However, on \brand{Microsoft Windows} with \brand{Visual Studio}, all the features might not be supported by the compiler.
+
 \subsection{Dependencies}
+We tried to use as few dependencies as possible, and we tried to choose the most cross-platform ones. In return, our software should work on every common desktop operating system, and could certainly be embedded in smartphones, etc\dots
 \subsubsection{Qt}
+The GUI framework. It is not used in the library, but it allowed us to make a fully working GUI in a really short amount of time; also, most of us already had some prior knowledge of it.
 \subsubsection{FFTW}
+This Fast Fourier Transform library has been used as the main library to perform the Fourier transform needed in some algorithms, because of its efficiency. However, other FFT libraries could be used very easily.
 \subsubsection{libsndfile}
+An audio file library that allows our software to open \brand{WAV} files and other common filetypes very easily. It is lightweight and efficient. Unfortunately, it doesn't support compressed formats like \brand{MP3} or \brand{OGG Vorbis}. 
+
 \section{Framework}
+An audio framework has been designed in order to streamline the audio processing operations and concentrate only on the algorithms.
+
+The other alternatives would have been :
+\begin{itemize}
+\item To code every algorithm in its own function, with some helper functions to load a file, etc\dots which would have resulted in a lot less code but also a less reusable code.
+\item To work in \brand{MATLAB}, which reduces the overhead needed since loading and saving files, as well as transforms, are already implemented.
+\end{itemize}
+
+A lot of effort went into making it very generic, fast, and reliable for any kind of audio operations.
+
+
 \subsection{Operation}
+The main idea is : 
+\begin{enumerate}
+\item To load some audio data.
+\item To apply an algorithm to chunks (e.g. 512 samples for instance) of this data.
+\item To save the result if needed.
+\end{enumerate}
+
+For instance, on a 2048 samples audio file, with a buffer size of 512, there would be four buffers that would each see the algorithm applied to them.
+
+In the current design, there is an input and an output, input and output filters, and the algorithm. For instance, here would be the call order of a generic example.
+
+\begin{enumerate}
+\item FFT plotting \textit{calls} FFT \textit{calls} GetNextBuffer
+\item Algorithm
+\item IFFT \textit{calls} Waveform plotting \textit{calls} WriteNextBuffer
+\end{enumerate}
+
+However, this is somewhat clumsy to setup : one must first instantiate the original audio loader I0, then the FFT filter I1 which has to reference I0, then the plotter I2 which has to reference I1, and finally the manager class which has to reference I2, and the same for the output, which leads to bloated code and a logical dissimetry.
+So in future project, the framework might be modified to take instead a list of classes which would make our example:
+
+GetNextBuffer $\rightarrow$ FFT $\rightarrow$ FFT plotting $\rightarrow$ Algorithm $\rightarrow$ IFFT $\rightarrow$ Waveform Plotting $\rightarrow$ WriteNextBuffer.
+
 \subsection{Capabilities}
+Since an heavy emphasis has been put into having very generic interfaces, we have been able to implement many useful features and algorithms.
+
+The library is entirely templated, which means that most of the classes can be used with fixed or floating point numbers. However, it does not always make sense : for instance, \brand{FFTW} only works in floating point, so using \texttt{short int} as a base sample type would not work.
+
+Multiple channels are supported in a seamless way, and can be interweaved or deinterweaved.
+
+There are interfaces for : 
+\begin{itemize}
+\item Inputs and outputs \& filters.
+\item Transforms.
+\item Watermarking \& degradation algorithms.
+\item Time management.
+\item Watermark embedding.
+\item Copying, overlapping and windowing.
+\end{itemize}
+
+You can see on figure \ref{frameworkclass} tables that repertories all the implementations of these interfaces.
+
+\begin{figure}[ht!]
+\label{frameworkclass}
+\centering
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{Inputs} & \textbf{Outputs} & \textbf{Explanation} \\
+\texttt{InputManagerBase} & \texttt{InputManagerBase}  & \\
+\hline
+FileInput & FileOutput & Wrapper around \brand{libsndfile} \\
+BufferInput & BufferOutput & Read and write from a buffer \\
+SilenceInput & DummyOutput & Generates silence and writes to nothing \\
+\hline
+FFTInputProxy & FFTOutputProxy & FFT transform \\
+MCLTInputProxy & MCLTOutputProxy & MCLT transform \\
+\hline
+& GnuplotOutput & Displays sample data in \brand{GNUPlot} \\
+& GnuplotFFTOutput & Displays a spectrum in \brand{GNUPlot} \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{Input copy handlers} & \textbf{Output copy handlers} &  \textbf{Explanation} \\
+\texttt{InputCopy} & \texttt{OutputCopy} & \\
+\hline
+InputSimple & OutputSimple & Copies and increment by a buffer size \\
+InputOLA & OuputOLA & Copies in an overlap-add fashion \\
+InputFilter & OutputFilter & Copies in order to perform convolution \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Window} & \textbf{Explanation} \\
+\texttt{WindowBase} & \\
+\hline
+RectWindow & Rectangular window : does nothing \\
+BartlettWindow & Bartlett window \\
+BlackmanWindow & Blackman window \\
+Hann & Hann window \\
+Hamming & Hamming window \\ 
+\hline
+\end{tabular}
+
+\caption{Objects related to input-output}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{Watermark encoding} & \textbf{Watermark decoding} & \textbf{Explanation} \\
+\texttt{WatermarkBase} & \texttt{WatermarkBase} & \\
+\hline
+LSBEncode & LSBDecode & LSB algorithm \\
+SSWEncode & SSWDecode & SSW algorithm \\
+\hline
+\end{tabular}
+
+\vspace{1em}
+
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Audio degradations} & \textbf{Explanation} \\
+\texttt{BenchmarkBase} & \\
+\hline
+AddBrumm & Adds mains-like noise \\
+AddWhiteNoise & Adds white noise \\
+Amplify & A simple gain \\
+Convolution & Performs linear convolution for filtering (e.g. LPF / HPF)\\
+Exchange & Exchanges pairs of samples \\
+FFTNoise & Adds white noise using a spectral method \\
+Invert & Inverts the phase of the audio \\
+Smooth & Smoothes the samples \\ 
+Stat1 & Also smoothes the samples \\
+ZeroCross & Strict noisegate\\
+\hline
+\end{tabular} 
+\caption{Audio algorithms}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Time management} & \textbf{Explanation} \\
+\texttt{TimeAdapter} & \\
+\hline
+AtTime & Starts the algorithm at a certain buffer \\
+Every & Starts the algorithm every $k$ buffer \\
+For & Starts the algorithm for $n$ buffers \\
+Every\_For & Every $k$ buffers, starts the algorithm and stops it after $n$ buffers\\
+\hline
+\end{tabular}
+\caption{Algorithm triggering}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Watermark embedding} & \textbf{Explanation} \\
+\texttt{WatermarkData} & \\
+\hline
+SimpleWatermarkData & Puts the watermark a single time \\   
+LoopingWatermarkData & Puts the watermark repeatedly \\
+\hline
+\end{tabular}
+\caption{Watermarked data-related objects}
+\end{figure}
+
+\newpage
+
 \subsection{Class diagram}
+
+The class diagram only shows child classes when it is relevant; else it would cause too much bloat.
+
+Some important things to note are that :
+\begin{itemize}
+\item The class diagram shown here is for an instantiation with a watermark algorithm (it is very similar for an evaluation algorithm). 
+\item Due to the complexity of the library, we will only show relevant public members : detailed documentation is available thanks to the \brand{Doxygen} documentation.
+\item All the classes do reference a \texttt{Parameters} class which holds some common parameters and types used across the library.
+\end{itemize}
+
+
+\begin{figure}[ht!]
+\centering
+\label{parametersclass}
+\begin{tikzpicture}
+% % % CLASS DIAGRAM HERE % % %
+% Base Manager
+\umlclass[template=data\_type]
+{Parameters}
+{
+	size\_type = unsigned long int \\
+	complex\_type = complex<data\_type> \\
+	samplingRate : size\_type \\
+	bufferSize : size\_type \\
+	
+}
+{
+	normFactor() : data\_type \\
+}
+\end{tikzpicture}
+
+\caption{The Parameters class}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\label{fwclassdiagram}
+\scalebox{0.5}{
+\begin{tikzpicture}
+% % % CLASS DIAGRAM HERE % % %
+% Base Manager
+\umlclass[x=0,y=5]
+{WatermarkManager}
+{}
+{
+	prepare() : void \\
+	execute() : void \\
+}
+
+% WatermarkBase
+\umlinterface[x=0,y=2]{WatermarkBase}{}
+{
+	\umlvirt{operator()() : void} \\
+}
+
+\umlinterface[x=0, y=-1]{SpectralWatermarkBase}{}{}
+
+% IO
+\umlinterface[x=-6,y=6]{IOManagerBase}{}
+{
+	channels() : size\_type \\
+	frames() : size\_type \\
+	v() : vector<vector<data\_type>> \\
+}
+\umlinterface[x=-8,y=2]{InputManagerBase}{}
+{
+	getNextBuffer() : Buffer \\
+}
+\umlinterface[x=-8,y=-1]{OutputManagerBase}{}
+{
+	writeNextBuffer(Buffer) : void \\
+}
+
+% WM data
+\umlinterface[x=4,y=2]{WatermarkData}{}
+{
+	setSize() : void\\
+	nextBit() : bool\\
+	setNextBit(Bool) : void \\
+	isComplete() : bool \\
+}
+
+% TA
+\umlinterface[x=10,y=2]{TimeAdapter}{}
+{
+addStartHandler(Function) : void\\
+addStopHandler(Function) : void\\
+perform() : void \\
+}
+% Links
+\umlinherit{InputManagerBase}{IOManagerBase}
+\umlinherit{OutputManagerBase}{IOManagerBase}
+\umlinherit{SpectralWatermarkBase}{WatermarkBase}
+
+\umlaggreg{InputManagerBase}{WatermarkManager}
+\umlaggreg{OutputManagerBase}{WatermarkManager}
+\umlaggreg{WatermarkBase}{WatermarkManager}
+\umlaggreg{WatermarkData}{WatermarkManager}
+\umlaggreg{TimeAdapter}{WatermarkManager}
+
+\end{tikzpicture}
+}
+\caption{Class diagram for the framework}
+\end{figure}
+
 \subsection{Example of usage}
 \section{Algorithms}
 \subsection{Watermarking algorithms}

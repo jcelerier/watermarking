@@ -7,8 +7,8 @@ class HammingWindow: public WindowBase<data_type>
 {
 		using size_type = typename Parameters<data_type>::size_type;
 	public:
-		HammingWindow(const Parameters<data_type>& cfg):
-			WindowBase<data_type>(cfg)
+		HammingWindow():
+			WindowBase<data_type>({4, 2, 1})
 		{
 		}
 

@@ -43,7 +43,7 @@ void FFTTestBase(Benchmark_p b, Parameters<double> conf)
 	FFT_p<double> fft_m(new FFTWManager<double>(conf));
 	fft_m->setChannels((unsigned int) input->channels());
 
-	auto fft_i = new FFTInputProxy<double>(new RectWindow<double>(conf),
+	auto fft_i = new FFTInputProxy<double>(new RectWindow<double>,
 										   input,
 										   fft_m,
 										   conf);

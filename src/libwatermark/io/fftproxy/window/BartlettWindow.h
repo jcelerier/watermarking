@@ -8,8 +8,8 @@ class BartlettWindow: public WindowBase<data_type>
 {
 		using size_type = typename Parameters<data_type>::size_type;
 	public:
-		BartlettWindow(const Parameters<data_type>& cfg):
-			WindowBase<data_type>(cfg)
+		BartlettWindow():
+			WindowBase<data_type>({2, 1})
 		{
 		}
 

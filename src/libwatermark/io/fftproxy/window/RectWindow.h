@@ -8,8 +8,8 @@ class RectWindow: public WindowBase<data_type>
 {
 		using size_type = typename Parameters<data_type>::size_type;
 	public:
-		RectWindow(const Parameters<data_type>& cfg):
-			WindowBase<data_type>(cfg)
+		RectWindow():
+			WindowBase<data_type>({1, 2})
 		{
 		}
 

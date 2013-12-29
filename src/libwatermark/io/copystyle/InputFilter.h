@@ -8,7 +8,10 @@ template <typename data_type>
  * @brief The InputFilter class
  *
  * Gère la copie depuis le buffer d'entrée.
- * Copie adaptée pour un filtrage avec k coefficients
+ * Copie adaptée pour un filtrage par convolution avec un noyau à k coefficients.
+ *
+ * Explications :
+ * http://www.songho.ca/dsp/convolution/convolution.html
  */
 class InputFilter: public InputSimple<data_type>
 {

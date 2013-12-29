@@ -3,18 +3,27 @@
 
 #include "InputCopy.h"
 
+//TODO si OLA, il faut rajouter un buffer au début pour éviter
+// que ça se fasse trop normaliser
 template <typename data_type>
+/**
+ * @brief The InputOLA class
+ *
+ * Copie en mode overlap-add. Explications :
+ * http://www-dsp.elet.polimi.it/ispg/images/pdf/audio/materiale/ola.pdf
+ */
 class InputOLA : public InputCopy<data_type>
 {
 	public:
-		InputOLA(const Parameters<data_type>& cfg):
-			InputCopy<data_type>(cfg)
+		InputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2):
+			InputCopy<data_type>(cfg),
+			overlapFactor(ofact)
 		{
 		}
 
 		virtual typename InputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return this->conf.bufferSize / 2;
+			return this->conf.bufferSize / overlapFactor;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
@@ -24,14 +33,20 @@ class InputOLA : public InputCopy<data_type>
 		{
 			if (frameIncrement() <= big_vector_length - pos)
 			{
-				std::copy_n(in + pos, this->conf.bufferSize, out);
+				std::transform(in + pos, in + pos + this->conf.bufferSize, out,
+							   [this] (data_type x)
+				{
+					return x / double(overlapFactor);
+				});
 				//std::fill_n(out + frameIncrement() * 2, frameIncrement() * 2, 0);
 			}
 			else
 			{
 				std::copy_n(in + pos, big_vector_length - pos, out);
-				std::fill_n(out + big_vector_length - pos, frameIncrement() - (big_vector_length - pos), 0);
+				//std::fill_n(out + big_vector_length - pos, frameIncrement() - (big_vector_length - pos), 0);
 			}
 		}
 
+	private:
+		unsigned int overlapFactor = 2;
 };

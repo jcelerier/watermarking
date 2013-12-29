@@ -2,7 +2,7 @@
 
 #include "../Parameters.h"
 #include "../Data.h"
-
+#include "BenchmarkInterface.h"
 
 template <typename data_type>
 /**

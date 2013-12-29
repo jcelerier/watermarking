@@ -5,13 +5,15 @@
 void TestSSW();
 void TestLSB();
 void TestBenchmark();
+void testCopy();
 
 
 int main()
 {
-	TestLSB();
+	testCopy();
+	//TestLSB();
 	//TestSSW();
-	TestBenchmark();
+	//TestBenchmark();
 	return 0;
 }
 

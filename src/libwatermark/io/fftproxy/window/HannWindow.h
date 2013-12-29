@@ -7,8 +7,8 @@ class HannWindow: public WindowBase<data_type>
 {
 		using size_type = typename Parameters<data_type>::size_type;
 	public:
-		HannWindow(const Parameters<data_type>& cfg):
-			WindowBase<data_type>(cfg)
+		HannWindow():
+			WindowBase<data_type>({4, 2, 1})
 		{
 		}
 

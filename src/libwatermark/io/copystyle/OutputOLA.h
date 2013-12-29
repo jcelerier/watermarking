@@ -3,17 +3,24 @@
 #include "OutputCopy.h"
 
 template <typename data_type>
+/**
+ * @brief The OutputOLA class
+ *
+ * Copie en mode overlap-add. Explications :
+ * http://www-dsp.elet.polimi.it/ispg/images/pdf/audio/materiale/ola.pdf
+ */
 class OutputOLA : public OutputCopy<data_type>
 {
 	public:
-		OutputOLA(const Parameters<data_type>& cfg):
-			OutputCopy<data_type>(cfg)
+		OutputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2):
+			OutputCopy<data_type>(cfg),
+			overlapFactor(ofact)
 		{
 		}
 
-		virtual typename OutputCopy<data_type>::size_type frameIncrement() final override
+		virtual typename OutputCopy<data_type>::size_type frameIncrement() override
 		{
-			return this->conf.bufferSize / 2;
+			return this->conf.bufferSize / overlapFactor;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
@@ -26,4 +33,8 @@ class OutputOLA : public OutputCopy<data_type>
 				out[pos + j] += in[j];
 			}
 		}
+
+
+	private:
+		unsigned int overlapFactor = 2;
 };

@@ -33,7 +33,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input),
-			window(new RectWindow<data_type>(cfg))
+			window(new RectWindow<data_type>())
 		{
 		}
 

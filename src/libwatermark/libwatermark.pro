@@ -71,4 +71,5 @@ HEADERS += \
     benchmark/FFTAmplify.h \
     manager/ManagerBase.h \
     watermark/WatermarkInterface.h \
-    benchmark/BenchmarkInterface.h
+    benchmark/BenchmarkInterface.h \
+    benchmark/Dummy.h

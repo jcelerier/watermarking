@@ -6,7 +6,9 @@ CONFIG -= qt
 SOURCES += main.cpp \
     testlsb.cpp \
     testssw.cpp \
-    testBenchmark.cpp
+    testBenchmark.cpp \
+    testCopy.cpp \
+    testWindow.cpp
 DESTDIR = $$PWD/../../output
 
 contains(QMAKE_TARGET.arch, 64):{

@@ -1,4 +1,4 @@
-#include "WatermarkManager.h"
+#include "manager/WatermarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
 #include "io/DummyOutput.h"
@@ -13,6 +13,8 @@ void TestLSB()
     encode();
     decode();
 }
+
+
 
 
 void encode()
@@ -31,9 +33,11 @@ void encode()
 	auto input = new FileInput<short>("input_mono.wav", conf);
 	auto output = new FileOutput<short>(conf);
 
-	auto algorithm = new LSBEncode<short>(conf);
+	WatermarkManager manager(Input_p(input),
+									Output_p(output),
+									Watermark_p(new LSBEncode<short>(conf)),
+									WatermarkData_p(data));
 
-	WatermarkManager<short> manager(input, output, algorithm, data, conf);
 	manager.execute();
 
     output->writeFile("out_test_lsb_encode.wav");
@@ -47,9 +51,10 @@ void decode()
     auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
 	auto output = new DummyOutput<short>(conf);
 
-    auto algorithm = new LSBDecode<short>(conf);
-	WatermarkManager<short> manager(input, output, algorithm, data, conf);
-
+	WatermarkManager manager(Input_p(input),
+									Output_p(output),
+									Watermark_p(new LSBDecode<short>(conf)),
+									WatermarkData_p(data));
     manager.execute();
 
 	// LIRE LA TAILLE

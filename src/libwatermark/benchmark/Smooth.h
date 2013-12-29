@@ -15,6 +15,7 @@ class Smooth : public BenchmarkBase<data_type>
 		Smooth(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
+			this->_name = "Smooth";
 		}
 
 		virtual void operator()(Audio_p& data) override

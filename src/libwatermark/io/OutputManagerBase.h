@@ -10,7 +10,7 @@ template <typename data_type>
  *
  * Classe de base pour les sorties
  */
-class OutputManagerBase :  public IOManagerBase<data_type>
+class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManagerInterface
 {
 	protected:
 		OutputCopy_p<data_type> copyHandler = nullptr;
@@ -38,7 +38,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
-		virtual void writeNextBuffer(Audio_p& abstract_buffer)
+		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
 		{
 			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
 			// On met le bon nombre de canaux
@@ -64,5 +64,3 @@ class OutputManagerBase :  public IOManagerBase<data_type>
 		}
 };
 
-template<typename T>
-using Output_p = std::shared_ptr<OutputManagerBase<T>>;

@@ -1,9 +1,9 @@
-#include "WatermarkManager.h"
+#include "manager/WatermarkManager.h"
 #include "io/FileInput.h"
 #include "io/FileOutput.h"
 #include "io/fftproxy/FFTInputProxy.h"
 #include "io/fftproxy/FFTOutputProxy.h"
-#include "fft/FFTWManager.h"
+#include "transform/FFTWManager.h"
 #include "watermark/SSWEncode.h"
 #include "watermark/SSWDecode.h"
 #include "io/BufferInput.h"
@@ -13,12 +13,12 @@
 #include "watermarkdata/SimpleWatermarkData.h"
 #include "timeadapter/Every.h"
 
-#include "watermark/SpectralGain.h"
-
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
 
 #include "mathutils/ssw_utils.h"
+
+
 
 void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude);
 void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double threshold);
@@ -43,9 +43,6 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 	// Instanciation des paramètres
 	Parameters<double> conf;
 
-	// Instanciation de la classe qui gère tout
-	WatermarkManager<double> manager(conf);
-
 	// Données du watermark détecté
 	WatermarkData* data = new SimpleWatermarkData;
 
@@ -61,13 +58,14 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
 
-	auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude, threshold);
+	auto algorithm = Watermark_p(
+		new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude, threshold));
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
-	manager.data.reset(data);
-	manager.input.reset(fft_i);
-	manager.output.reset(fft_o);
-	manager.algorithm.reset(algorithm);
+	WatermarkManager manager(Input_p(fft_i),
+							 Output_p(fft_o),
+							 algorithm,
+							 WatermarkData_p(data));
 
 	// On fait tourner l'algo
 	manager.execute();
@@ -85,9 +83,6 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 
 	// Instanciation des paramètres
 	Parameters<double> conf;
-
-	// Instanciation de la classe qui gère tout
-	WatermarkManager<double> manager(conf);
 
 	//manager.timeAdapter = (TimeAdapter_p) new Every;
 
@@ -114,13 +109,14 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	//auto algorithm = new SpectralGain<double>(conf);
 
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
-	auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude);
+	auto algorithm = Watermark_p(
+			new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude));
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
-	manager.data.reset(data);
-	manager.input.reset(fft_i);
-	manager.output.reset(fft_o);
-	manager.algorithm.reset(algorithm);
+	WatermarkManager manager(Input_p(fft_i),
+									 Output_p(fft_o),
+									 algorithm,
+									 WatermarkData_p(data));
 
 	// On fait tourner l'algo
 	manager.execute();
@@ -134,6 +130,7 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 /***** Test du fonctionnement de la MCLT *****/
 void TestMCLT()
 {
+	/*
 	Parameters<double> conf;
 	WatermarkManager<double> manager(conf);
 
@@ -157,4 +154,4 @@ void TestMCLT()
 	manager.execute();
 
 	output->writeFile("out_test_mclt_mono.wav");
-}
+*/}

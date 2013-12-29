@@ -13,10 +13,10 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Output_p<data_type> outputImpl = nullptr;
+		Output_p outputImpl = nullptr;
 
 	public:
-		MCLTOutputProxy(Output_p<data_type> output,
+		MCLTOutputProxy(Output_p output,
 					  Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			OutputManagerBase<data_type>(nullptr, cfg),

@@ -13,6 +13,7 @@ class AddBrumm : public BenchmarkBase<data_type>
         AddBrumm(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
+			this->_name = "AddBrumm";
 		}
 
 		virtual void operator()(Audio_p& data) override

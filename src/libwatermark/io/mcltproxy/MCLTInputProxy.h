@@ -13,10 +13,10 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Input_p<data_type> inputImpl = nullptr;
+		Input_p inputImpl = nullptr;
 
 	public:
-		MCLTInputProxy(Input_p<data_type> input,
+		MCLTInputProxy(Input_p input,
 					  Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			InputManagerBase<data_type>(nullptr, cfg),

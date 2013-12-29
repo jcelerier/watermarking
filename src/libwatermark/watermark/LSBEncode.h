@@ -20,7 +20,7 @@ class LSBEncode : public WatermarkBase<data_type>
 
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 			short bit16 = 0x0001;
 			short nonbit16 = (short) ~bit16;
 

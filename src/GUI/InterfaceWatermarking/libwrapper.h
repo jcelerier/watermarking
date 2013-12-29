@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "ui_mainwindow.h"
-#include "libwatermark/WatermarkManager.h"
+#include "libwatermark/manager/WatermarkManager.h"
 #include "libwatermark/io/FileInput.h"
 #include "libwatermark/io/FileOutput.h"
 #include "libwatermark/io/DummyOutput.h"

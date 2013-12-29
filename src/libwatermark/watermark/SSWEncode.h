@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "SpectralWatermarkBase.h"
+#include "WatermarkBase.h"
 
 template <typename data_type>
 /**
@@ -9,14 +9,14 @@ template <typename data_type>
  *
  * Encodage SSW.
  */
-class SSWEncode : public SpectralWatermarkBase<data_type>
+class SSWEncode : public WatermarkBase<data_type>
 {
 	public:
 		SSWEncode(const Parameters<data_type>& configuration,
 				  std::vector<int> & PNSequence,
 				  std::vector<unsigned int> & freqWinIndexes,
 				  double watermarkAmp):
-			SpectralWatermarkBase<data_type>(configuration),
+			WatermarkBase<data_type>(configuration),
 			_PNSequence(PNSequence),
 			_freqWinIndexes(freqWinIndexes),
 			_watermarkAmp(watermarkAmp)
@@ -28,7 +28,7 @@ class SSWEncode : public SpectralWatermarkBase<data_type>
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			// Recopier cette ligne
-			auto& channelsSpectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
+			auto& channelsSpectrum = getSpectrum<data_type>(data);
 
 			if(!watermark.isComplete()) {
 

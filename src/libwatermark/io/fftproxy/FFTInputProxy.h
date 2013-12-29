@@ -23,7 +23,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Input_p<data_type> inputImpl = nullptr;
+		Input_p inputImpl = nullptr;
 		Window_p<data_type> window = nullptr;
 
 	public:
@@ -33,7 +33,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input),
-			window(new HannWindow<data_type>(cfg))
+			window(new RectWindow<data_type>(cfg))
 		{
 		}
 

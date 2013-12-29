@@ -61,7 +61,7 @@ class IOManagerBase : public IOInterface
 		 * @brief channels
 		 * @return Nombre de canaux
 		 */
-		size_type channels()
+		virtual size_type channels() override
 		{
 			return v().size();
 		}
@@ -70,7 +70,7 @@ class IOManagerBase : public IOInterface
 		 * @brief frames
 		 * @return Nombre de samples
 		 */
-		size_type frames()
+		virtual size_type frames() override
 		{
 			return v()[0].size();
 		}

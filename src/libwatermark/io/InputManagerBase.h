@@ -11,7 +11,7 @@ template <typename data_type>
  *
  * Classe de base pour les entrées.
  */
-class InputManagerBase : public IOManagerBase<data_type>
+class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInterface
 {
 	public:
 		using IOManagerBase<data_type>::pos;
@@ -35,7 +35,7 @@ class InputManagerBase : public IOManagerBase<data_type>
 
 		virtual ~InputManagerBase() = default;
 
-		virtual Audio_p getNextBuffer()
+		virtual Audio_p getNextBuffer() override
 		{
 			if(pos() < frames())
 			{
@@ -62,8 +62,5 @@ class InputManagerBase : public IOManagerBase<data_type>
 		}
 
 		InputCopy_p<data_type> copyHandler = nullptr;
-
 };
 
-template<typename T>
-using Input_p = std::shared_ptr<InputManagerBase<T>>;

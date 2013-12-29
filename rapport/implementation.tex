@@ -9,7 +9,7 @@ The implementation is divided in multiple parts (the text in fixed width font re
 \item A graphical interface that uses the library : \texttt{InterfaceWatermarking}.
 \end{itemize}
 
-All of these parts will be reviewed in the following sections.
+All of these parts will be reviewed in the following sections. Theye are all thoroughly documented with \brand{Doxygen}, and the complete documentation can be found in the \texttt{doc} folder.
 
 \section{Technologies used}
 The choice was made really early to use \brand{C++} as a programming language, mostly because of the speed, but also because it is quite cross-platform. We also used many \brand{C++11} features for the sake of learning, and because it sometimes reduces the amount of code needed. However, on \brand{Microsoft Windows} with \brand{Visual Studio}, all the features might not be supported by the compiler.
@@ -155,6 +155,7 @@ Amplify & A simple gain \\
 Convolution & Performs linear convolution for filtering (e.g. LPF / HPF)\\
 Exchange & Exchanges pairs of samples \\
 FFTNoise & Adds white noise using a spectral method \\
+FFTAmplify & Gain using a spectral method \\
 Invert & Inverts the phase of the audio \\
 Smooth & Smoothes the samples \\ 
 Stat1 & Also smoothes the samples \\
@@ -201,31 +202,27 @@ LoopingWatermarkData & Puts the watermark repeatedly \\
 
 \subsection{Class diagram}
 
-The class diagram only shows child classes when it is relevant; else it would cause too much bloat.
+The class diagram (figure \ref{classdiagram}) only shows child classes when it is relevant; else it would cause too much bloat.
 
 Some important things to note are that :
 \begin{itemize}
 \item The class diagram shown here is for a generic instantiation with a watermark algorithm (it is very similar for an evaluation algorithm). 
 \item Due to the complexity of the library, we will only show relevant public members and interfaces : detailed documentation is available thanks to \brand{Doxygen}.
-\item All the classes do reference a \texttt{Parameters} class which holds some common parameters and types used across the library.
+\item All the classes do reference a \texttt{Parameters} class (figure \ref{parametersclass}) which holds some common parameters and types used across the library.
 \item Most of the classes are templates with a \texttt{data\_type} parameter.
 \end{itemize}
 
 
 \begin{figure}[h!]
 \centering
-\label{parametersclass}
 \begin{tikzpicture}
-% % % CLASS DIAGRAM HERE % % %
-% Base Manager
 \umlclass[template=data\_type]
 {Parameters}
 {
 	size\_type = unsigned long int \\
 	complex\_type = complex<data\_type> \\
 	samplingRate : size\_type \\
-	bufferSize : size\_type \\
-	
+	bufferSize : size\_type \\	
 }
 {
 	normFactor() : data\_type \\
@@ -233,11 +230,11 @@ Some important things to note are that :
 \end{tikzpicture}
 
 \caption{The Parameters class}
+\label{parametersclass}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\label{fwclassdiagram}
 
 \begin{tikzpicture}
 % % % CLASS DIAGRAM HERE % % %
@@ -256,8 +253,6 @@ Some important things to note are that :
 	\umlvirt{operator()() : void} \\
 }
 
-\umlinterface[x=0, y=-1]{SpectralWatermarkBase}{}{}
-
 % IO
 \umlinterface[x=-6,y=6]{IOManagerBase}{}
 {
@@ -269,7 +264,7 @@ Some important things to note are that :
 {
 	getNextBuffer() : Buffer \\
 }
-\umlinterface[x=-6,y=-1]{OutputManagerBase}{}
+\umlinterface[x=-5,y=-1]{OutputManagerBase}{}
 {
 	writeNextBuffer(Buffer) : void \\
 }
@@ -293,7 +288,6 @@ perform() : void \\
 % Links
 \umlinherit{InputManagerBase}{IOManagerBase}
 \umlinherit{OutputManagerBase}{IOManagerBase}
-\umlinherit{SpectralWatermarkBase}{WatermarkBase}
 
 \umlaggreg{InputManagerBase}{WatermarkManager}
 \umlaggreg{OutputManagerBase}{WatermarkManager}
@@ -304,7 +298,10 @@ perform() : void \\
 \end{tikzpicture}
 
 \caption{Class diagram for the main usage of the framework}
+\label{classdiagram}
 \end{figure}
+
+\newpage
 
 \subsection{Example of usage}
 We will here have a look at an example usage of our library which will correspond to the encoding of some bits with the LSB algorithm.
@@ -331,15 +328,49 @@ More examples can be seen in the test application.
 
 \caption{Example instanciation}
 \end{figure}
+
+\newpage
+
 \section{Algorithms}
-\subsection{Watermarking algorithms}
-\subsection{Evaluation algorithms}
+\subsection{Watermarking and evaluation algorithms}
+We tried very hard to use the \brand{C++11} features efficiently in our code.
+
+Here is for instance the code that performs the \texttt{Amplify} operation : 
+
+\begin{figure}[ht!]
+\centering
+\begin{lstlisting}
+			for(auto& sampleData : channelsData)
+			{
+				MathUtil::apply(sampleData,
+					  [&] (data_type x)
+				{
+					return x * _gain;
+				});
+			}
+\end{lstlisting}
+\caption{Amplify algorithm}
+\end{figure}
+
+It reads very easily : "For each channel, multiply the whole channel by the gain", thanks to lamda-expressions and range-based for-loop.
+
 \subsection{Transforms}
+The main problem with transforms is that they might be transforming from and to different domains.
+Hence, instead of forcing the use of an interface directly on the object making the transform, which would cause awkward inheritance and overloading problems, we force the interface on the input and output proxies : they have to follow the interface of \texttt{InputManagerBase} and \texttt{OutputManagerBase}.
+
 \subsubsection{Fourier transform}
 \subsubsection{Modulated complex lapped transform}
 \section{Tests}
 \section{GUI}
 \subsection{Capabilities}
-
+Here is a non-exhaustive list of the capabilities of our graphical interface.
+\begin{itemize}
+\item Loading and saving audio files.
+\item Watermark inputting, embedding and reading.
+\item Waveform display.
+\item Application of degradations.
+\item Display of the capacity available in the file in real time.
+\item Multiple configuration options, that can be saved and loaded.
+\end{itemize}
 \subsection{Screenshots}
 \section{Evaluation}

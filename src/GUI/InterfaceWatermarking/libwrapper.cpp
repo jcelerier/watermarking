@@ -156,8 +156,7 @@ void LibWrapper::loadHostWatermarkFile()
 
         m_gui->waveformInputWidget->setVisible(true);
 
-        Parameters<short> conf;
-        WatermarkManager<short> manager(conf);
+		Parameters<short> conf;
         auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
         /* Computing audio input time length for initializing editing
@@ -536,15 +535,14 @@ void LibWrapper::encode()
     case 0:
     {
         Parameters<short> conf;
-        WatermarkManager<short> manager(conf);
 
-        auto input = new FileInput<short>(m_inputName.toStdString(), conf);
-        auto output = new FileOutput<short>(conf);
+		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+		auto output = new FileOutput<short>(conf);
 
-        manager.data = m_data;
-        manager.input.reset(input);
-        manager.output.reset(output);
-        manager.algorithm.reset(new LSBEncode<short>(conf));
+		WatermarkManager manager(Input_p(input),
+								 Output_p(output),
+								 Watermark_p(new LSBEncode<short>(conf)),
+								 m_data);
 
         manager.execute();
 
@@ -626,16 +624,15 @@ void LibWrapper::decode()
     {
     case 0:
     {
-        Parameters<short> conf;
-        WatermarkManager<short> manager(conf);
+		Parameters<short> conf;
 
         auto input = new FileInput<short>(m_inputName.toStdString(), conf);
         auto output = new DummyOutput<short>(conf);
 
-        manager.data = m_data;
-        manager.input.reset(input);
-        manager.output.reset(output);
-        manager.algorithm.reset(new LSBDecode<short>(conf));
+		WatermarkManager manager(Input_p(input),
+								 Output_p(output),
+								 Watermark_p(new LSBDecode<short>(conf)),
+								 m_data);
 
         manager.execute();
 

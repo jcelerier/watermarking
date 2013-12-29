@@ -18,14 +18,12 @@ HEADERS += \
     io/fftproxy/FFTInputProxy.h \
     io/fftproxy/FFTProxy.h \
     io/fftproxy/FFTOutputProxy.h \
-    WatermarkManager.h \
-    watermark/SpectralGain.h \
+    manager/WatermarkManager.h \
     watermark/WatermarkBase.h \
-    watermark/SpectralWatermarkBase.h \
     io/copystyle/InputCopy.h \
     io/copystyle/OutputCopy.h \
-    fft/FFTManager.h \
-    fft/FFTWManager.h \
+    transform/FFTManager.h \
+    transform/FFTWManager.h \
     io/fftproxy/window/WindowBase.h \
     io/fftproxy/window/HannWindow.h \
     io/fftproxy/window/RectWindow.h \
@@ -40,11 +38,11 @@ HEADERS += \
     watermark/LSBDecode.h \
     WatermarkData.h \
     watermark/SSWEncode.h \
-    mathutils/MCLT.h \
+    transform/MCLT.h \
     io/mcltproxy/MCLTInputProxy.h \
     io/mcltproxy/MCLTProxy.h \
     io/mcltproxy/MCLTOutputProxy.h \
-    BenchmarkManager.h \
+    manager/BenchmarkManager.h \
     benchmark/BenchmarkBase.h \
     mathutils/ssw_utils.h \
     watermark/SSWDecode.h \
@@ -69,4 +67,8 @@ HEADERS += \
     benchmark/Convolution.h \
     benchmark/Stat1.h \
     io/IOInterface.h \
-    benchmark/FFTNoise.h
+    benchmark/FFTNoise.h \
+    benchmark/FFTAmplify.h \
+    manager/ManagerBase.h \
+    watermark/WatermarkInterface.h \
+    benchmark/BenchmarkInterface.h

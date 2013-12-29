@@ -14,6 +14,7 @@ class Stat1 : public BenchmarkBase<data_type>
         Stat1(const Parameters<data_type>& configuration):
             BenchmarkBase<data_type>(configuration)
         {
+			this->_name = "Stat1";
         }
 
         virtual void operator()(Audio_p& data) override

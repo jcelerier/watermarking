@@ -1,4 +1,4 @@
-#include "mathutils/MCLT.h"
+#include "transform/MCLT.h"
 #include "mathutils/math_util.h"
 #include <iostream>
 #include <vector>
@@ -7,12 +7,11 @@ void TestLSB();
 void TestBenchmark();
 
 
-
 int main()
 {
 	TestLSB();
 	//TestSSW();
-	//TestBenchmark();
+	TestBenchmark();
 	return 0;
 }
 

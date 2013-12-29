@@ -19,7 +19,7 @@ class LSBDecode : public WatermarkBase<data_type>
 
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
 			for(int j = 0; j < channelsData.size(); j++)
 			{

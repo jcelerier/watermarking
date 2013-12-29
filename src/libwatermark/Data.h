@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 
+#include "Parameters.h"
 /**
  * @brief The IData struct
  *
@@ -38,3 +39,25 @@ struct CData : public IData
 {
 	std::vector<std::vector<T>> _data = {};
 };
+
+/**
+ * @brief getAudio Extracts the sample vectors from the encapsulated pointer.
+ * @param data Pointer
+ * @return Vector reference
+ */
+template<typename data_type>
+std::vector<std::vector<data_type> >& getAudio(Audio_p& data)
+{
+	return static_cast<CData<data_type>*>(data.get())->_data;
+}
+
+/**
+ * @brief getSpectrum Extracts the complex vectors from the encapsulated pointer.
+ * @param data Pointer
+ * @return Complex vextors
+ */
+template<typename data_type>
+std::vector<std::vector<typename Parameters<data_type>::complex_type> >& getSpectrum(Audio_p& data)
+{
+	return static_cast<CData<typename Parameters<data_type>::complex_type>*>(data.get())->_data;
+}

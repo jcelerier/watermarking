@@ -6,14 +6,15 @@ void TestSSW();
 void TestLSB();
 void TestBenchmark();
 void testCopy();
-
+void testWindow();
 
 int main()
 {
+	testWindow();
 	testCopy();
-	//TestLSB();
+	TestBenchmark();
+	TestLSB();
 	//TestSSW();
-	//TestBenchmark();
 	return 0;
 }
 

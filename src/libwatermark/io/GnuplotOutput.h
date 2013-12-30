@@ -37,9 +37,10 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 
 		GnuplotOutput(const GnuplotOutput&) = delete;
 		GnuplotOutput& operator=(const GnuplotOutput&) = delete;
-		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
+
+		virtual void writeNextBuffer(Audio_p& data) override
 		{
-			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
+			auto& buffer = getAudio<data_type>(data);
 
 			for(auto& channel : buffer)
 			{
@@ -48,6 +49,6 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 				sleep(3);
 			}
 
-			outputImpl->writeNextBuffer(abstract_buffer);
+			outputImpl->writeNextBuffer(data);
 		}
 };

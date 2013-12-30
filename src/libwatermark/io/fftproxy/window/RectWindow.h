@@ -13,7 +13,11 @@ class RectWindow: public WindowBase<data_type>
 		{
 		}
 
-		virtual void apply(std::vector<data_type>&, const size_type) final override
+		virtual void apply(std::vector<data_type>&) final override
+		{
+		}
+
+		virtual void generate(const size_type) final override
 		{
 		}
 };

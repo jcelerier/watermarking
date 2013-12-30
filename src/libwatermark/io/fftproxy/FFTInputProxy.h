@@ -54,11 +54,12 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			// 1. On get le buffer.
 			Audio_p tmp = inputImpl->getNextBuffer();
 			if(tmp == nullptr) return tmp;
-			auto& inbuff = static_cast<CData<data_type>*>(tmp.get())->_data;
+			auto& inbuff = getAudio<double>(tmp);
 
 			// 2. On fenêtre
+			// channel.size() : on prend tout. Rajouter la possibilité de faire du 0-fill
 			for(auto& channel : inbuff)
-				window->apply(channel, channel.size());
+				window->apply(channel);
 
 			// 3. On copie dans le buffer de la fft
 			std::copy(inbuff.begin(), inbuff.end(), fft->input().begin());

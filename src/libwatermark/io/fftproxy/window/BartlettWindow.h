@@ -9,18 +9,19 @@ class BartlettWindow: public WindowBase<data_type>
 		using size_type = typename Parameters<data_type>::size_type;
 	public:
 		BartlettWindow():
-			WindowBase<data_type>({2, 1})
+			WindowBase<data_type>({2})
 		{
 		}
 
-		virtual void apply(std::vector<data_type>& v, const size_type increment) final override
+		virtual void generate(const size_type windowSize)
 		{
-			const double f = 2.0 * M_PI / increment;
-			for(auto i = 0U; i < increment; ++i)
+			this->windowCoeffs.resize(windowSize);
+
+			for(auto i = 0U; i < windowSize; ++i)
 			{
-				v[i] *= (i < increment / 2) ?
-							2.0 * (double)i / increment :
-							2.0 * (double)(increment - i) / increment;
+				this->windowCoeffs[i] = (i < windowSize / 2) ?
+							2.0 * (double)i / windowSize :
+							2.0 * (double)(windowSize - i) / windowSize;
 			}
 		}
 };

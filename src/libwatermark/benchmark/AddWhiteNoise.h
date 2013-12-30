@@ -21,7 +21,7 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 
 		virtual void operator()(Audio_p& data) override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
 			for(auto& sampleData : channelsData)
 			{

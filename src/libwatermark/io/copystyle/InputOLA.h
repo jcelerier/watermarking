@@ -15,15 +15,21 @@ template <typename data_type>
 class InputOLA : public InputCopy<data_type>
 {
 	public:
-		InputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2):
+		InputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2, unsigned int zeropad = 0):
 			InputCopy<data_type>(cfg),
-			overlapFactor(ofact)
+			overlapFactor(ofact),
+			zeroPaddedSamples(zeropad)
 		{
 		}
 
 		virtual typename InputCopy<data_type>::size_type frameIncrement() final override
 		{
-			return this->conf.bufferSize / overlapFactor;
+			return copiedSamples() / overlapFactor;
+		}
+
+		typename InputCopy<data_type>::size_type copiedSamples()
+		{
+			return this->conf.bufferSize - zeroPaddedSamples;
 		}
 
 		virtual void copy(typename std::vector<data_type>::const_iterator in,
@@ -33,11 +39,7 @@ class InputOLA : public InputCopy<data_type>
 		{
 			if (frameIncrement() <= big_vector_length - pos)
 			{
-				std::transform(in + pos, in + pos + this->conf.bufferSize, out,
-							   [this] (data_type x)
-				{
-					return x / double(overlapFactor);
-				});
+				std::copy_n(in + pos, copiedSamples(), out);
 				//std::fill_n(out + frameIncrement() * 2, frameIncrement() * 2, 0);
 			}
 			else
@@ -49,4 +51,5 @@ class InputOLA : public InputCopy<data_type>
 
 	private:
 		unsigned int overlapFactor = 2;
+		unsigned int zeroPaddedSamples = 0;
 };

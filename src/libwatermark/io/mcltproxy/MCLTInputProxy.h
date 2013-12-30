@@ -31,7 +31,7 @@ class MCLTInputProxy : public MCLTProxy<data_type>, public InputManagerBase<data
 			// 1. On get le buffer.
 			Audio_p tmp = inputImpl->getNextBuffer();
 			if(tmp == nullptr) return tmp;
-			auto& buffer = static_cast<CData<complex_type>*>(tmp.get())->_data;
+			auto& buffer = getSpectrum<data_type>(tmp);
 
 			for(auto& channel : buffer)
 				mclt.forward(channel);

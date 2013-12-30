@@ -35,9 +35,9 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 		GnuplotFFTOutput& operator=(const GnuplotFFTOutput&) = delete;
 
 
-		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
+		virtual void writeNextBuffer(Audio_p& data) override
 		{
-			auto& buffer = static_cast<CData<typename Parameters<data_type>::complex_type>*>(abstract_buffer.get())->_data;
+			auto& buffer = getSpectrum<data_type>(data);
 
 			for(auto& channel : buffer)
 			{
@@ -48,6 +48,6 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 				gnuplot_plot_x(h, power.data(), power.size(), "Plot");
 				sleep(3);
 			}
-			outputImpl->writeNextBuffer(abstract_buffer);
+			outputImpl->writeNextBuffer(data);
 		}
 };

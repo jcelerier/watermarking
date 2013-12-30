@@ -38,9 +38,9 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManager
 		virtual ~OutputManagerBase() = default;
 
 		// Copie de buffer vers notre buffer interne
-		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
+		virtual void writeNextBuffer(Audio_p& data) override
 		{
-			auto& buffer = static_cast<CData<data_type>*>(abstract_buffer.get())->_data;
+			auto& buffer = getAudio<data_type>(data);
 			// On met le bon nombre de canaux
 			if(channels() != buffer.size())
 			{

@@ -19,7 +19,7 @@ class FFTAmplify : public BenchmarkBase<data_type>
 		virtual void operator()(Audio_p& data) override
 		{
 			// Recopier cette ligne
-			auto& spectrum = static_cast<CData<typename Parameters<data_type>::complex_type>*>(data.get())->_data;
+			auto& spectrum = getSpectrum<data_type>(data);
 
 			for(auto& channel : spectrum)
 			{

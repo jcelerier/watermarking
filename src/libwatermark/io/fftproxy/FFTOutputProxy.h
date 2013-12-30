@@ -31,9 +31,9 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		virtual ~FFTOutputProxy() = default;
 
-		virtual void writeNextBuffer(Audio_p& buf) final override
+		virtual void writeNextBuffer(Audio_p& data) final override
 		{
-			auto& buffer = static_cast<CData<typename FFTProxy<data_type>::complex_type>*>(buf.get())->_data;
+			auto& buffer = getSpectrum<data_type>(data);
 
 			// 0. We put our buffer back in the FFT.
 			fft->spectrum() = std::move(buffer);
@@ -55,8 +55,8 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 				{ return x * fft->normalizationFactor(); });
 			}
 
-			buf.reset(outbuff);
-			outputImpl->writeNextBuffer(buf);
+			data.reset(outbuff);
+			outputImpl->writeNextBuffer(data);
 		}
 };
 

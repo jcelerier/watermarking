@@ -3,9 +3,7 @@
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
 #include "../copystyle/InputOLA.h"
-#include "window/HannWindow.h"
 #include "window/BartlettWindow.h"
-#include "window/BlackmanWindow.h"
 #include "window/RectWindow.h"
 
 template <typename data_type>

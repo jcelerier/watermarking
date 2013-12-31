@@ -25,11 +25,8 @@ HEADERS += \
     transform/FFTManager.h \
     transform/FFTWManager.h \
     io/fftproxy/window/WindowBase.h \
-    io/fftproxy/window/HannWindow.h \
     io/fftproxy/window/RectWindow.h \
-    io/fftproxy/window/HammingWindow.h \
     io/SilenceInput.h \
-    io/fftproxy/window/BlackmanWindow.h \
     io/fftproxy/window/BartlettWindow.h \
     io/gnuplot/gnuplot_i.h \
     io/GnuplotOutput.h \
@@ -72,4 +69,6 @@ HEADERS += \
     manager/ManagerBase.h \
     watermark/WatermarkInterface.h \
     benchmark/BenchmarkInterface.h \
-    benchmark/Dummy.h
+    benchmark/Dummy.h \
+    mathutils/WindowMath.h \
+    io/fftproxy/window/HighOrderCosineWindow.h

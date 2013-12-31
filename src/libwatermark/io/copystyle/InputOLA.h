@@ -15,7 +15,7 @@ template <typename data_type>
 class InputOLA : public InputCopy<data_type>
 {
 	public:
-		InputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2, unsigned int zeropad = 0):
+		InputOLA(const Parameters<data_type>& cfg, double ofact = 2, unsigned int zeropad = 0):
 			InputCopy<data_type>(cfg),
 			overlapFactor(ofact),
 			zeroPaddedSamples(zeropad)
@@ -50,6 +50,6 @@ class InputOLA : public InputCopy<data_type>
 		}
 
 	private:
-		unsigned int overlapFactor = 2;
+		double overlapFactor = 2;
 		unsigned int zeroPaddedSamples = 0;
 };

@@ -9,10 +9,9 @@
 #include "transform/FFTWManager.h"
 
 #include "io/fftproxy/window/RectWindow.h"
-#include "io/fftproxy/window/HannWindow.h"
-#include "io/fftproxy/window/HammingWindow.h"
 #include "io/fftproxy/window/BartlettWindow.h"
-#include "io/fftproxy/window/BlackmanWindow.h"
+
+#include "io/fftproxy/window/HighOrderCosineWindow.h"
 
 void windFFT(std::string name, WindowBase<double>* window, Parameters<double> conf)
 {
@@ -47,8 +46,13 @@ void testWindow()
 {
 	Parameters<double> conf;
 	windFFT("Rect", new RectWindow<double>, conf);
-	windFFT("Hann", new HannWindow<double>, conf);
-	windFFT("Hamming", new HammingWindow<double>, conf);
 	windFFT("Bartlett", new BartlettWindow<double>, conf);
-	windFFT("Blackman", new BlackmanWindow<double>, conf);
+	windFFT("Hann", CosineWindows::Hann<double>(), conf);
+	windFFT("Hamming", CosineWindows::Hamming<double>(), conf);
+
+	// Bof pour resynthèse
+	windFFT("Blackman", CosineWindows::Blackman<double>(), conf);
+	windFFT("BlackmanHarris", CosineWindows::BlackmanHarris<double>(), conf);
+	windFFT("Nuttal3", CosineWindows::Nuttal3<double>(), conf);
+	windFFT("SFT3F", CosineWindows::SFT3F<double>(), conf);
 }

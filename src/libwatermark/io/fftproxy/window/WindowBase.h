@@ -10,6 +10,7 @@ template <typename data_type>
  *
  * Classe pour les fonctions de fenêtrage.
  * choix des facteurs d'overlap : https://ccrma.stanford.edu/~jos/parshl/Choice_Hop_Size.html
+ * Et : Spectrum and spectral density estimation by the Discrete Fourier transform (DFT), including a comprehensive list of window functions and some new flat-top windows.
  * fenêtres : wikipedia.
  *
  * Facteur d'overlap :
@@ -31,7 +32,7 @@ class WindowBase
 	using size_type = typename Parameters<data_type>::size_type;
 
 	public:
-		WindowBase(std::initializer_list<unsigned int> v):
+		WindowBase(const std::initializer_list<double> v):
 			factors(v)
 		{
 		}
@@ -47,13 +48,13 @@ class WindowBase
 			}
 		}
 
-		std::vector<unsigned int>& acceptableFactors()
+		const std::vector<double>& acceptableFactors()
 		{
 			return factors;
 		}
 
 	protected:
-		std::vector<unsigned int> factors = {};
+		const std::vector<double> factors = {};
 		std::vector<double> windowCoeffs = {};
 };
 

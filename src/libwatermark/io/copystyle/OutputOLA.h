@@ -12,7 +12,7 @@ template <typename data_type>
 class OutputOLA : public OutputCopy<data_type>
 {
 	public:
-		OutputOLA(const Parameters<data_type>& cfg, unsigned int ofact = 2, unsigned int zeropad = 0):
+		OutputOLA(const Parameters<data_type>& cfg, double ofact = 2, unsigned int zeropad = 0):
 			OutputCopy<data_type>(cfg),
 			overlapFactor(ofact),
 			zeroPaddedSamples(zeropad)
@@ -42,6 +42,6 @@ class OutputOLA : public OutputCopy<data_type>
 
 
 	private:
-		unsigned int overlapFactor = 2;
+		double overlapFactor = 2;
 		unsigned int zeroPaddedSamples = 0;
 };

@@ -1,7 +1,6 @@
 TEMPLATE = app
-CONFIG += console c++11
-#CONFIG -= app_bundle
-QT += testlib
+CONFIG  += console c++11
+QT      = core testlib
 
 SOURCES += main.cpp \
     testlsb.cpp \

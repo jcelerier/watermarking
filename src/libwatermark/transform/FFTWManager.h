@@ -13,7 +13,6 @@ class FFTWManager : public FFTManager<data_type>
 		FFTWManager(const Parameters<data_type>& cfg):
 			FFTManager<data_type>(cfg)
 		{
-//			num_instances++;
 		}
 
 		FFTWManager(const FFTWManager<data_type>& orig) = delete;
@@ -32,8 +31,7 @@ class FFTWManager : public FFTManager<data_type>
 				plan = nullptr;
 			}
 
-	//		if(!num_instances--)
-				fftw_cleanup();
+			fftw_cleanup();
 		}
 
 		virtual void setChannels(unsigned int n) override
@@ -85,9 +83,4 @@ class FFTWManager : public FFTManager<data_type>
 		std::vector<fftw_plan> fw = {};
 		std::vector<fftw_plan> bw = {};
 
-	//	static unsigned int num_instances;
 };
-
-//template<>
-//unsigned int FFTWManager<double>::num_instances = 0;
-//TODO autres types

@@ -16,6 +16,8 @@
 
 #include "io/fftproxy/window/HighOrderCosineWindow.h"
 
+#include "TestHeader.h"
+
 void windFFT(std::string name, WindowBase<double>* window, Parameters<double> conf)
 {
 	auto iola = new InputOLA<double>(conf, window->acceptableFactors()[0]);
@@ -90,6 +92,7 @@ void windFFTCompare(std::string name, WindowBase<double>* window, Parameters<dou
 
 	double rms = balgo->rms / (input->frames() / double(conf.bufferSize));
 	std::cerr << name << " RMS Difference : " << rms << std::endl;
+	QVERIFY(rms < 1);
 }
 
 void testWindow()

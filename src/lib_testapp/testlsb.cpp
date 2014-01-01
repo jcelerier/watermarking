@@ -6,16 +6,7 @@
 #include "watermark/LSBDecode.h"
 #include "watermarkdata/SimpleWatermarkData.h"
 
-void encode();
-void decode();
-void TestLSB()
-{
-    encode();
-    decode();
-}
-
-
-
+#include "TestHeader.h"
 
 void encode()
 {
@@ -34,13 +25,13 @@ void encode()
 	auto output = new FileOutput<short>(conf);
 
 	WatermarkManager manager(Input_p(input),
-									Output_p(output),
-									Watermark_p(new LSBEncode<short>(conf)),
-									WatermarkData_p(data));
+							 Output_p(output),
+							 Watermark_p(new LSBEncode<short>(conf)),
+							 WatermarkData_p(data));
 
 	manager.execute();
 
-    output->writeFile("out_test_lsb_encode.wav");
+	output->writeFile("out_test_lsb_encode.wav");
 }
 
 void decode()
@@ -48,16 +39,24 @@ void decode()
 	Parameters<short> conf;
 	WatermarkData* data = new SimpleWatermarkData;
 
-    auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
+	auto input = new FileInput<short>("out_test_lsb_encode.wav", conf);
 	auto output = new DummyOutput<short>(conf);
 
 	WatermarkManager manager(Input_p(input),
-									Output_p(output),
-									Watermark_p(new LSBDecode<short>(conf)),
-									WatermarkData_p(data));
-    manager.execute();
+							 Output_p(output),
+							 Watermark_p(new LSBDecode<short>(conf)),
+							 WatermarkData_p(data));
+	manager.execute();
 
 	// LIRE LA TAILLE
 	data->readSizeFromBits();
-	data->printBits();
+	QVERIFY(data->printBits() == "1011001");
 }
+
+void TestLSB()
+{
+	encode();
+	decode();
+}
+
+

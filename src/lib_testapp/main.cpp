@@ -18,5 +18,14 @@ private slots:
 	void cleanupTestCase() { }
 };
 
-QTEST_MAIN(WatermarkingTests)
+//QTEST_MAIN(WatermarkingTests)
+
+int main(int argc, char** argv)
+{
+	QCoreApplication app(argc, argv);
+	QTest::qExec(new WatermarkingTests);
+
+	return app.exec();
+}
+
 #include "main.moc"

@@ -359,8 +359,19 @@ The main problem with transforms is that they might be transforming from and to 
 Hence, instead of forcing the use of an interface directly on the object making the transform, which would cause awkward inheritance and overloading problems, we force the interface on the input and output proxies : they have to follow the interface of \texttt{InputManagerBase} and \texttt{OutputManagerBase}.
 
 \subsubsection{Fourier transform}
+The Fourier transform uses \brand{FFTW} but can easily be adapted to use any other library or custom code.
+The functions used are \texttt{fftw\_plan\_dft\_r2c\_1d} and \texttt{fftw\_plan\_dft\_c2r\_1d} : hence the resulting output array 
+only holds the $\frac{N}{2} + 1$ relevant coefficients, and not the symmetrical ones.
+
 \subsubsection{Modulated complex lapped transform}
+This transform was referred to in \cite{malvar1999modulated}. It seems that it can provide better results with the spread-spectrum technique.
+
 \section{Tests}
+The tests referred here are only there to check that the algorithms are properly implemented and that for instance a watermark can be retrieved without problems..
+
+Every object is tested and produces an audio file which is then either manually (for benchmarks for instance) or automatically (for watermark embedding and reading) checked. The \brand{QtTest} framework is used.
+
+The testing of core features (e.g. transforms, overlap, windowing, etc...) is achieved by null-testing to the reference audio.
 \section{GUI}
 \subsection{Capabilities}
 Here is a non-exhaustive list of the capabilities of our graphical interface.

@@ -83,4 +83,9 @@ class IOManagerBase : public IOInterface
 		{
 			return _pos;
 		}
+
+		void reset()
+		{
+			_pos = 0;
+		}
 };

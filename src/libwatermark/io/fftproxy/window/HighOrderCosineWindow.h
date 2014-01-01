@@ -21,7 +21,7 @@ namespace CosineWindows
 			virtual void generate(const size_type windowSize)
 			{
 				this->windowCoeffs.resize(windowSize);
-				MathUtils::generalizedCosine(this->windowCoeffs, _coeffs, 1);
+				MathUtils::generalizedCosine(this->windowCoeffs, _coeffs);
 			}
 
 		private:

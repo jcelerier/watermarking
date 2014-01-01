@@ -71,4 +71,8 @@ HEADERS += \
     benchmark/BenchmarkInterface.h \
     benchmark/Dummy.h \
     mathutils/WindowMath.h \
-    io/fftproxy/window/HighOrderCosineWindow.h
+    io/fftproxy/window/HighOrderCosineWindow.h \
+    io/InputMultiplexer.h \
+    benchmark/ComputeRMS.h
+
+SOURCES +=

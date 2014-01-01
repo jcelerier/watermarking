@@ -15,8 +15,6 @@ template <typename data_type>
  */
 class FileInput : public InputManagerBase<data_type>
 {
-//		using IOManagerBase<data_type>::v;
-
 	public:
 		FileInput(Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)

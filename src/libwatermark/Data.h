@@ -41,6 +41,16 @@ struct CData : public IData
 };
 
 /**
+ * @brief The MultiData struct
+ *
+ * Pour multiplexage
+ */
+struct MultiData : public IData
+{
+	std::vector<Audio_p> _data = {};
+};
+
+/**
  * @brief getAudio Extracts the sample vectors from the encapsulated pointer.
  * @param data Pointer
  * @return Vector reference
@@ -60,4 +70,9 @@ template<typename data_type>
 std::vector<std::vector<typename Parameters<data_type>::complex_type> >& getSpectrum(Audio_p& data)
 {
 	return static_cast<CData<typename Parameters<data_type>::complex_type>*>(data.get())->_data;
+}
+
+inline std::vector<Audio_p>& getMulti(Audio_p& data)
+{
+	return static_cast<MultiData*>(data.get())->_data;
 }

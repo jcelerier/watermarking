@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	QCoreApplication app(argc, argv);
 	QTest::qExec(new WatermarkingTests);
 
-	return app.exec();
+	return 0;
 }
 
 #include "main.moc"

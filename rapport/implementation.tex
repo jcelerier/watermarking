@@ -239,12 +239,21 @@ Some important things to note are that :
 \begin{tikzpicture}
 % % % CLASS DIAGRAM HERE % % %
 % Base Manager
+
+\umlinterface[x=0,y=8]
+{ManagerBase}
+{}
+{
+	\umlvirt{prepare() : void} \\
+	\umlvirt{execute() : void} \\
+}
+
 \umlclass[x=0,y=5]
 {WatermarkManager}
 {}
 {
-	prepare() : void \\
-	execute() : void \\
+	\umlvirt{prepare() : void} \\
+	\umlvirt{execute() : void} \\
 }
 
 % WatermarkBase
@@ -286,6 +295,7 @@ addStopHandler(Function) : void\\
 perform() : void \\
 }
 % Links
+\umlinherit{WatermarkManager}{ManagerBase}
 \umlinherit{InputManagerBase}{IOManagerBase}
 \umlinherit{OutputManagerBase}{IOManagerBase}
 
@@ -320,10 +330,13 @@ More examples can be seen in the test application.
 
     auto algorithm = new LSBEncode<short>(conf);
 
-    WatermarkManager<short> manager(input, output, algorithm, data, conf);
+    WatermarkManager manager(Input_p(input),
+    						 Output_p(output),
+    						 Watermark_p(new LSBEncode<short>(conf)),
+    						 WatermarkData_p(data));
     manager.execute();
 
-    output->writeFile("out_test_lsb_encode.wav");
+    output->writeFile("lsb_encode.wav");
 \end{lstlisting}
 
 \caption{Example instanciation}
@@ -333,6 +346,8 @@ More examples can be seen in the test application.
 
 \section{Algorithms}
 \subsection{Watermarking and evaluation algorithms}
+They are separated in two folders : \texttt{benchmark} and \texttt{watermark}.
+
 We tried very hard to use the \brand{C++11} features efficiently in our code.
 
 Here is for instance the code that performs the \texttt{Amplify} operation : 
@@ -343,17 +358,21 @@ Here is for instance the code that performs the \texttt{Amplify} operation :
 			for(auto& sampleData : channelsData)
 			{
 				MathUtil::apply(sampleData,
-					  [&] (data_type x)
+				[&] (data_type x)
 				{
 					return x * _gain;
 				});
 			}
 \end{lstlisting}
 \caption{Amplify algorithm}
+\label{amplify}
 \end{figure}
 
 It reads very easily : "For each channel, multiply the whole channel by the gain", thanks to lamda-expressions and range-based for-loop.
 
+We also made our system so that the user of our framework can choose when does the effect starts, how long it should last, and if it repeats. The granularity is the buffer size.
+
+For instance, in order to make some benchmarks, it is possible to make a volume modification using the algorithm on fig. \ref{amplify} every 80 buffers, for 5 buffers, starting at 200 buffers.
 \subsection{Transforms}
 The main problem with transforms is that they might be transforming from and to different domains.
 Hence, instead of forcing the use of an interface directly on the object making the transform, which would cause awkward inheritance and overloading problems, we force the interface on the input and output proxies : they have to follow the interface of \texttt{InputManagerBase} and \texttt{OutputManagerBase}.
@@ -361,17 +380,17 @@ Hence, instead of forcing the use of an interface directly on the object making 
 \subsubsection{Fourier transform}
 The Fourier transform uses \brand{FFTW} but can easily be adapted to use any other library or custom code.
 The functions used are \texttt{fftw\_plan\_dft\_r2c\_1d} and \texttt{fftw\_plan\_dft\_c2r\_1d} : hence the resulting output array 
-only holds the $\frac{N}{2} + 1$ relevant coefficients, and not the symmetrical ones.
+only holds the $\frac{N}{2} + 1$ relevant coefficients ($N$ being the number of input samples), and not the symmetrical ones.
 
 \subsubsection{Modulated complex lapped transform}
-This transform was referred to in \cite{malvar1999modulated}. It seems that it can provide better results with the spread-spectrum technique.
+This transform was referred to in \cite{malvar1999modulated}. It seems that it can provide better results with the spread-spectrum technique. However our implementation assumes that the Fourier transform has already been applied to the buffer.
 
 \section{Tests}
 The tests referred here are only there to check that the algorithms are properly implemented and that for instance a watermark can be retrieved without problems..
 
 Every object is tested and produces an audio file which is then either manually (for benchmarks for instance) or automatically (for watermark embedding and reading) checked. The \brand{QtTest} framework is used.
 
-The testing of core features (e.g. transforms, overlap, windowing, etc...) is achieved by null-testing to the reference audio.
+The testing of core features (e.g. transforms, overlap, windowing, etc...) is achieved by null-testing to the reference audio and checking that the RMS value of the difference is not too high.
 \section{GUI}
 \subsection{Capabilities}
 Here is a non-exhaustive list of the capabilities of our graphical interface.

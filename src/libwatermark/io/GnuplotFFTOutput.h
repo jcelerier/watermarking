@@ -46,12 +46,12 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 				std::vector<data_type> power(channel.size());
 				std::vector<data_type> phase(channel.size());
 
-				std::transform(channel.begin(), channel.end(), power.begin(), [] (std::complex<double> x) {return std::abs(x); });
+				std::transform(channel.begin(), channel.end(), power.begin(), [] (std::complex<double> x) {return 20 * std::log10(std::abs(x)); });
 				std::transform(channel.begin(), channel.end(), phase.begin(), [] (std::complex<double> x) {return std::arg(x); });
 				gnuplot_resetplot(h);
 
-				gnuplot_plot_x(h, power.data(), power.size(), "Plot");
-				sleep(3);
+				//gnuplot_plot_x(h, power.data(), power.size(), "Plot");
+				//sleep(1);
 			}
 			outputImpl->writeNextBuffer(data);
 		}

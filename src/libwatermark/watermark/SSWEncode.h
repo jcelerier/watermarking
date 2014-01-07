@@ -41,12 +41,14 @@ class SSWEncode : public WatermarkBase<data_type>
 
 					for (int i = 0; i < _PNSequence.size(); i++)
 					{
-						double phase, power, magnitude;
+						double phase, power, magnitudeDB, magnitude;
 
 						power = std::norm(spectrumData[_freqWinIndexes[i]]);
 						phase = std::arg(spectrumData[_freqWinIndexes[i]]);
 
-						magnitude = std::sqrt(power) + bit * _watermarkAmp * (double) _PNSequence[i];
+						magnitudeDB = 20.0 * std::log10(std::sqrt(power)) + bit * _watermarkAmp * (double) _PNSequence[i];
+
+						magnitude = std::pow(10.0, (magnitudeDB / 20.0));
 
 						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
@@ -60,7 +62,7 @@ class SSWEncode : public WatermarkBase<data_type>
 					// Coefficients du spectre à modifier (sous forme de vecteur des normes des complexes)
 					std::vector<double> coefs_power;
 					for (int i = 0; i < _PNSequence.size(); i++) {
-						double power = std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]]));
+						double power = 20.0 * std::log10(std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]])));
 						coefs_power.push_back(power);
 					}
 
@@ -75,6 +77,7 @@ class SSWEncode : public WatermarkBase<data_type>
 					double correlation = (MathUtil::dotProduct_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), coefs_power.begin(), amplifiedPN.size()))/(PNnorm * coefsNorm);
 
 					std::cout << "Corr : " << correlation << std::endl;
+
 				}
 			}
 		}

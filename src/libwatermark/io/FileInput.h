@@ -29,16 +29,16 @@ class FileInput : public InputManagerBase<data_type>
 		FileInput(std::string filename, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
 		{
-			readFile(filename.c_str());
+			readFile(filename);
 		}
 
 		FileInput(std::string filename, InputCopy<data_type>* icp, Parameters<data_type>& cfg):
 					InputManagerBase<data_type>(icp, cfg)
 		{
-			readFile(filename.c_str());
+			readFile(filename);
 		}
 
-		void readFile(const char * str)
+		void readFile(std::string& str)
 		{
 			auto myf = SndfileHandle(str);
 
@@ -47,8 +47,10 @@ class FileInput : public InputManagerBase<data_type>
 			std::vector<data_type> vec;
 			vec.resize(myf.frames() * myf.channels());
 
+			int parity = (myf.frames() % 2 != 0) ? -1 : 0;
 			for(auto i = 0U; i < myf.channels(); ++i)
-				myf.read(vec.data() + i * (myf.frames() - 1),  myf.frames() - 1);
+				myf.read(vec.data() + i * (myf.frames() + parity),  myf.frames() + parity);
+
 
 			this->v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
 		}

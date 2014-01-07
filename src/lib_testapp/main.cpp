@@ -10,21 +10,18 @@ class WatermarkingTests: public QObject
 		Q_OBJECT
 private slots:
 	void initTestCase()	{ }
-	void window() { testWindow(); }
-	void copy() { testCopy(); }
-	void benchmark() { TestBenchmark(); }
-	void lsb() { TestLSB(); }
+	//void window() { testWindow(); }
+	//void copy() { testCopy(); }
+	//void benchmark() { TestBenchmark(); }
+	//void lsb() { TestLSB(); }
 	void ssw() { TestSSW(); }
 	void cleanupTestCase() { }
 };
 
-//QTEST_MAIN(WatermarkingTests)
-
 int main(int argc, char** argv)
 {
-	//QCoreApplication app(argc, argv);
-	//QTest::qExec(new WatermarkingTests);
-	TestSSW();
+	QCoreApplication app(argc, argv);
+	QTest::qExec(new WatermarkingTests);
 	return 0;
 }
 

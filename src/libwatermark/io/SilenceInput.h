@@ -61,7 +61,7 @@ class SilenceInput : public InputManagerBase<data_type>
 //			}
 		}
 
-		int taille = 44100 / 9000;
-		int _frequence = 9000;
-		int pos = 0;
+//		int taille = 44100 / 9000;
+//		int _frequence = 9000;
+//		int pos = 0;
 };

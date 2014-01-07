@@ -19,7 +19,7 @@ class GnuplotOutput:public OutputManagerBase<data_type>
 
 	private:
 		gnuplot_ctrl *h = nullptr;
-		Output_p<data_type> outputImpl = nullptr;
+		Output_p outputImpl = nullptr;
 
 	public:
 		GnuplotOutput(OutputManagerBase<data_type>* output, Parameters<data_type>& cfg):

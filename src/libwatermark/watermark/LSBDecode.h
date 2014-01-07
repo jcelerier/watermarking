@@ -17,6 +17,22 @@ class LSBDecode : public WatermarkBase<data_type>
 		{
 		}
 
+       /* virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
+        {
+            auto& channelsData = getAudio<data_type>(data);
+
+            for(int j = 0; j < channelsData.size(); j++)
+            {
+                auto& sampleData = channelsData[j];
+                for(int i = 0; i < sampleData.size(); ++i)
+                {
+                        short testBit = 0x0001 & sampleData[i];
+                        bool bit = (testBit != 0);
+                        watermark.setNextBit(bit);
+                }
+            }
+        }/**/
+
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			auto& channelsData = getAudio<data_type>(data);
@@ -26,10 +42,18 @@ class LSBDecode : public WatermarkBase<data_type>
 				auto& sampleData = channelsData[j];
 				for(int i = 0; i < sampleData.size(); ++i)
 				{
-					short testBit = 0x0001 & sampleData[i];
-					bool bit = (testBit != 0);
-					watermark.setNextBit(bit);
+                    short bit16 = 1;
+                    for(int nb = 0; nb < nbBits; ++nb)
+                    {
+                        bit16 = bit16 << nb;
+                        short testBit = bit16 & sampleData[i];
+                        bool bit = (testBit != 0);
+                        watermark.setNextBit(bit);
+                    }
 				}
 			}
 		}
+
+        int nbBits = 3;
 };
+

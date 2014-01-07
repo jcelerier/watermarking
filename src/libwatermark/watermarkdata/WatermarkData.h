@@ -42,7 +42,12 @@ class WatermarkData
 			std::bitset<size_bits> num(_size);
 
 			for(auto i = 0U; i < size_bits; ++i)
+			{
+				std::cerr << num[i] << " ";
 				bits[i] = num[i];
+			}
+
+
 		}
 
 		/**

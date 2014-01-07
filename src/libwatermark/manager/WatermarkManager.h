@@ -18,6 +18,7 @@ class WatermarkManager: public ManagerBase
 			algorithm(a),
 			data(d)
 		{
+
 		}
 
 		WatermarkManager(const WatermarkManager& sm) = delete;

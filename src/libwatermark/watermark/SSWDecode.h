@@ -41,14 +41,14 @@ class SSWDecode : public WatermarkBase<data_type>
 				// Séquence PN multipliée par l'amplitude du watermark
 				std::vector<double> amplifiedPN;
 				for (int i = 0; i < _PNSequence.size(); i++) {
-					amplifiedPN.push_back(_watermarkAmp * _PNSequence[i]);
+					amplifiedPN.push_back(_watermarkAmp * (double) _PNSequence[i]);
 				}
 
 				// Coefficients du spectre à modifier (sous forme de vecteur des normes des complexes)
 				std::vector<double> coefs_power;
 				for (int i = 0; i < _PNSequence.size(); i++) {
-					double power = std::norm(spectrumData[_freqWinIndexes[i]]);
-					coefs_power.push_back(std::sqrt(power));
+					double power = std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]]));
+					coefs_power.push_back(power);
 				}
 
 				// Calcul de la corrélation
@@ -56,10 +56,12 @@ class SSWDecode : public WatermarkBase<data_type>
 				double PNnorm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
 				double coefsNorm = MathUtil::norm_n<std::vector<double>::iterator, double>(coefs_power.begin(), coefs_power.size());
 
-				// Changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
+				std::cout << "Coefs Norm : " << coefsNorm << " ";
+
+				// A changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
 				double correlation = (MathUtil::dotProduct_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), coefs_power.begin(), amplifiedPN.size()))/(PNnorm * coefsNorm);
 
-				std::cout << correlation << std::endl;
+				std::cout << "Corr : " << correlation << std::endl;
 
 				// Mémorisation de l'estimation du bit pour le canal j
 				if (correlation > _threshold) {

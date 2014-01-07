@@ -1,4 +1,7 @@
-#pragma once
+//#pragma once
+#ifndef SSW_UTILS_H
+#define SSW_UTILS_H
+
 #include <random>
 #include <vector>
 #include <algorithm>
@@ -38,14 +41,20 @@ namespace SSWUtil
 			l'intervalle [1,sampleRate] (pourquoi pas sampleRate / 2 ?) */
 		std::vector<unsigned int> generateFrequencyRange(unsigned int size, unsigned int sampleRate)
         {
+			/*
 			std::default_random_engine rng(std::random_device{}());
 			std::uniform_int_distribution<int> dist(1, sampleRate);
-
-			std::vector<unsigned int> range(size);
+			*/
+			std::vector<unsigned int> range;
+			for (unsigned int i = 0; i < size; i++) {
+				range.push_back(i+50);
+			}
+			/*
 			std::generate_n(range.begin(), size, [&] ()
 			{
 				return dist(rng);
 			});
+			*/
 
 			return range;
 
@@ -65,3 +74,5 @@ namespace SSWUtil
 			*/
         }
 }
+
+#endif

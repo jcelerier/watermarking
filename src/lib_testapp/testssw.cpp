@@ -12,31 +12,47 @@
 #include "io/DummyOutput.h"
 #include "watermarkdata/SimpleWatermarkData.h"
 #include "timeadapter/Every.h"
+#include "io/GnuplotFFTOutput.h"
 
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
 
 #include "mathutils/ssw_utils.h"
 
-
-
-void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude);
-void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double threshold);
+void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude);
+void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude, double threshold);
 void TestMCLT();
 
 void TestSSW()
 {
-	int SeqSize = 100;
-	double watermarkAmplitude = 5.0;
-	double threshold = 0.9;
+	int SeqSize = 40;
+	double watermarkAmplitude = 10;
+	double threshold = 0.8;
 
+	std::cout << std::endl;
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
+	for (int i = 0; i < PNSequence.size(); i++) {
+		std::cout << PNSequence[i] << " ";
+	}
+	std::cout << std::endl;
 
-	sswencode(PNSequence, watermarkAmplitude);
-	sswdecode(PNSequence, watermarkAmplitude, threshold);
+	std::vector<double> amplifiedPN;
+	for (int i = 0; i < PNSequence.size(); i++) {
+		amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);
+	}
+
+	double norm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
+
+	std::cout << "Norme de PN : " << norm << std::endl;
+
+	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), SeqSize);
+
+	for(int i = 0; i < FreqRange.size(); i++) std::cerr << FreqRange[i] << " ";
+	sswencode(PNSequence, FreqRange, watermarkAmplitude);
+	sswdecode(PNSequence, FreqRange, watermarkAmplitude, threshold);
 }
 
-void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double threshold)
+void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude, double threshold)
 {
 	std::cout << "Décodage..." << std::endl;
 
@@ -55,8 +71,6 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
-
-	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
 
 	auto algorithm = Watermark_p(
 		new SSWDecode<double>(conf, PNSequence, FreqRange, watermarkAmplitude, threshold));
@@ -77,9 +91,9 @@ void sswdecode(std::vector<int> & PNSequence, double watermarkAmplitude, double 
 	//data->printBits();
 }
 
-void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
+void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude)
 {
-	std::cout << "Encodage..." << std::endl;
+	std::cout << std::endl << "Encodage..." << std::endl;
 
 	// Instanciation des paramètres
 	Parameters<double> conf;
@@ -95,7 +109,11 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	data->setNextBit(true);
 
 	// Instanciation du mode d'entrée et de sortie
-	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
+	//auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
+	auto input = new FileInput<double>("solo.wav", new InputSimple<double>(conf), conf);
+//	auto input = new SilenceInput<double>(conf);
+//	input->silence(2048, 1);
+
 	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
 
 	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
@@ -103,12 +121,11 @@ void sswencode(std::vector<int> & PNSequence, double watermarkAmplitude)
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
-	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
+	auto fft_o = new GnuplotFFTOutput<double>(new FFTOutputProxy<double>(output, fft_m, conf), conf);
 
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
 	//auto algorithm = new SpectralGain<double>(conf);
 
-	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf.bufferSize / 2 + 1);
 	auto algorithm = Watermark_p(
 			new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude));
 

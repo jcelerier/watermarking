@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <stdio.h>
 
 #include "WatermarkBase.h"
 
@@ -27,9 +28,9 @@ class SSWEncode : public WatermarkBase<data_type>
 		// data : les données audio. Ici ce sera un spectre.
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
+
 			// Recopier cette ligne
 			auto& channelsSpectrum = getSpectrum<data_type>(data);
-
 			if(!watermark.isComplete()) {
 
 				double bit = (watermark.nextBit()) ? (1.0): (-1.0);
@@ -50,6 +51,30 @@ class SSWEncode : public WatermarkBase<data_type>
 						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}
+
+					std::vector<double> amplifiedPN;
+					for (int i = 0; i < _PNSequence.size(); i++) {
+						amplifiedPN.push_back(_watermarkAmp * (double) _PNSequence[i]);
+					}
+
+					// Coefficients du spectre à modifier (sous forme de vecteur des normes des complexes)
+					std::vector<double> coefs_power;
+					for (int i = 0; i < _PNSequence.size(); i++) {
+						double power = std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]]));
+						coefs_power.push_back(power);
+					}
+
+					// Calcul de la corrélation
+
+					double PNnorm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
+					double coefsNorm = MathUtil::norm_n<std::vector<double>::iterator, double>(coefs_power.begin(), coefs_power.size());
+
+					std::cout << "Coefs Norm : " << coefsNorm << " ";
+
+					// A changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
+					double correlation = (MathUtil::dotProduct_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), coefs_power.begin(), amplifiedPN.size()))/(PNnorm * coefsNorm);
+
+					std::cout << "Corr : " << correlation << std::endl;
 				}
 			}
 		}

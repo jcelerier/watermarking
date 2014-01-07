@@ -14,7 +14,7 @@ private slots:
 	void copy() { testCopy(); }
 	void benchmark() { TestBenchmark(); }
 	void lsb() { TestLSB(); }
-	void ssw() {/* TestSSW(); */}
+	void ssw() { TestSSW(); }
 	void cleanupTestCase() { }
 };
 
@@ -22,9 +22,9 @@ private slots:
 
 int main(int argc, char** argv)
 {
-	QCoreApplication app(argc, argv);
-	QTest::qExec(new WatermarkingTests);
-
+	//QCoreApplication app(argc, argv);
+	//QTest::qExec(new WatermarkingTests);
+	TestSSW();
 	return 0;
 }
 

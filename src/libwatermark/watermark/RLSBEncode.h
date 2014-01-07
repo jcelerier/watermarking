@@ -13,7 +13,7 @@ class RLSBEncode : public WatermarkBase<data_type>
 {
 
 	public:
-		LSBEncode(const Parameters<data_type>& configuration):
+        RLSBEncode(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
 		}
@@ -47,12 +47,14 @@ class RLSBEncode : public WatermarkBase<data_type>
                 auto& sampleData = channelsData[j];
                 for(int i = 0; i < sampleData.size(); ++i)
                 {
-                    short bit16 = 1;
-                    short bitWater = (short)watermark.nextBit();
-                    for(int nb = 0; nb < nbBits; ++nb)
+                    short bitWater;
+                    if(!watermark.isComplete())
                     {
-                        if(!watermark.isComplete())
+                        bitWater = (short)watermark.nextBit();
+
+                        for(int nb = 0; nb < nbBits; ++nb)
                         {
+                            short bit16 = 1;
                             bit16 = bit16 << nb;
                             short nonbit16 = (short) ~bit16;
                             short testBit = bit16 & ( bitWater << nb);
@@ -63,5 +65,5 @@ class RLSBEncode : public WatermarkBase<data_type>
             }
         }
 
-        int nbBits = 3;
+        int nbBits = 2;
 };

@@ -4,6 +4,7 @@ void TestLSB();
 void TestBenchmark();
 void testCopy();
 void testWindow();
+void TestRLSB();
 
 class WatermarkingTests: public QObject
 {
@@ -13,7 +14,8 @@ private slots:
     //void window() { testWindow(); }
     //void copy() { testCopy(); }
     //void benchmark() { TestBenchmark(); }
-	void lsb() { TestLSB(); }
+    void lsb() { TestLSB(); }
+    void rlsb() {TestRLSB(); } // passer voir le RLSBDecode.h pour utilisation
     //void ssw() { TestSSW(); }
     //void cleanupTestCase() { }
 };

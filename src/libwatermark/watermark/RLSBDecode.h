@@ -12,7 +12,7 @@ template <typename data_type>
 class RLSBDecode : public WatermarkBase<data_type>
 {
 	public:
-        LSBDecode(const Parameters<data_type>& configuration):
+        RLSBDecode(const Parameters<data_type>& configuration):
 			WatermarkBase<data_type>(configuration)
 		{
 		}
@@ -40,11 +40,11 @@ class RLSBDecode : public WatermarkBase<data_type>
 			for(int j = 0; j < channelsData.size(); j++)
 			{
 				auto& sampleData = channelsData[j];
-				for(int i = 0; i < sampleData.size(); ++i)
+                for(int i = 1; i < sampleData.size(); ++i)
 				{
-                    short bit16 = 1;
                     for(int nb = 0; nb < nbBits; ++nb)
                     {
+                        short bit16 = 1;
                         bit16 = bit16 << nb;
                         short testBit = bit16 & sampleData[i];
                         bool bit = (testBit != 0);
@@ -54,6 +54,7 @@ class RLSBDecode : public WatermarkBase<data_type>
 			}
 		}
 
-        int nbBits = 3;
+        int nbBits = 1; // pour tester le décodage, il faut tester uniquement la ligne de bits désirée (nbBits = 1 et
+                        // nb du for = 0, nbBits = 2 et nb du for = 1 ... )
 };
 

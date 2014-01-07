@@ -9,7 +9,7 @@
  * Implémente le décodage sur bit de poids faible.
  */
 template <typename data_type>
-class LSBDecode : public WatermarkBase<data_type>
+class RLSBDecode : public WatermarkBase<data_type>
 {
 	public:
         LSBDecode(const Parameters<data_type>& configuration):
@@ -42,9 +42,9 @@ class LSBDecode : public WatermarkBase<data_type>
 				auto& sampleData = channelsData[j];
 				for(int i = 0; i < sampleData.size(); ++i)
 				{
+                    short bit16 = 1;
                     for(int nb = 0; nb < nbBits; ++nb)
                     {
-                        short bit16 = 1;
                         bit16 = bit16 << nb;
                         short testBit = bit16 & sampleData[i];
                         bool bit = (testBit != 0);
@@ -54,6 +54,6 @@ class LSBDecode : public WatermarkBase<data_type>
 			}
 		}
 
-        int nbBits = 10;
+        int nbBits = 3;
 };
 

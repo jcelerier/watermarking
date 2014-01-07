@@ -12,7 +12,7 @@
 #include "io/DummyOutput.h"
 #include "watermarkdata/SimpleWatermarkData.h"
 #include "timeadapter/Every.h"
-#include "io/GnuplotFFTOutput.h"
+//#include "io/GnuplotFFTOutput.h"
 
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
@@ -121,7 +121,7 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
-	auto fft_o = new GnuplotFFTOutput<double>(new FFTOutputProxy<double>(output, fft_m, conf), conf);
+    auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
 	//auto algorithm = new SpectralGain<double>(conf);

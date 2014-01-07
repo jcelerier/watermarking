@@ -73,6 +73,8 @@ HEADERS += \
     mathutils/WindowMath.h \
     io/fftproxy/window/HighOrderCosineWindow.h \
     io/InputMultiplexer.h \
-    benchmark/ComputeRMS.h
+    benchmark/ComputeRMS.h \
+    watermark/RLSBEncode.h \
+    watermark/RLSBDecode.h
 
 SOURCES +=

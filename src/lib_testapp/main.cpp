@@ -1,5 +1,5 @@
 #include "TestHeader.h"
-void TestSSW();
+//void TestSSW();
 void TestLSB();
 void TestBenchmark();
 void testCopy();
@@ -9,22 +9,23 @@ class WatermarkingTests: public QObject
 {
 		Q_OBJECT
 private slots:
-	void initTestCase()	{ }
-	void window() { testWindow(); }
-	void copy() { testCopy(); }
-	void benchmark() { TestBenchmark(); }
+    //void initTestCase()	{ }
+    //void window() { testWindow(); }
+    //void copy() { testCopy(); }
+    //void benchmark() { TestBenchmark(); }
 	void lsb() { TestLSB(); }
-	void ssw() { TestSSW(); }
-	void cleanupTestCase() { }
+    //void ssw() { TestSSW(); }
+    //void cleanupTestCase() { }
 };
 
 //QTEST_MAIN(WatermarkingTests)
 
 int main(int argc, char** argv)
 {
-	//QCoreApplication app(argc, argv);
-	//QTest::qExec(new WatermarkingTests);
-	TestSSW();
+    QCoreApplication app(argc, argv);
+    QTest::qExec(new WatermarkingTests);
+    //TestSSW();
+    //TestLSB();
 	return 0;
 }
 

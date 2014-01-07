@@ -9,7 +9,7 @@
  * Implémente l'encodage sur bit de poids faible.
  */
 template <typename data_type>
-class LSBEncode : public WatermarkBase<data_type>
+class RLSBEncode : public WatermarkBase<data_type>
 {
 
 	public:
@@ -47,21 +47,21 @@ class LSBEncode : public WatermarkBase<data_type>
                 auto& sampleData = channelsData[j];
                 for(int i = 0; i < sampleData.size(); ++i)
                 {
+                    short bit16 = 1;
+                    short bitWater = (short)watermark.nextBit();
                     for(int nb = 0; nb < nbBits; ++nb)
                     {
-                        short bit16 = 1;
                         if(!watermark.isComplete())
                         {
                             bit16 = bit16 << nb;
                             short nonbit16 = (short) ~bit16;
-                            short testBit = bit16 & ( (short)watermark.nextBit() << nb);
+                            short testBit = bit16 & ( bitWater << nb);
                             sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);
                         }
-
                     }
                 }
             }
         }
 
-        int nbBits = 10;
+        int nbBits = 3;
 };

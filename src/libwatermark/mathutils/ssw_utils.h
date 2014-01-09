@@ -47,7 +47,7 @@ namespace SSWUtil
 			*/
 			std::vector<unsigned int> range;
 			for (unsigned int i = 0; i < size; i++) {
-				range.push_back(i+50);
+				range.push_back(i+30);
 			}
 			/*
 			std::generate_n(range.begin(), size, [&] ()

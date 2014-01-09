@@ -54,6 +54,8 @@ class SSWEncode : public WatermarkBase<data_type>
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}
 
+					/*
+
 					std::vector<double> amplifiedPN;
 					for (int i = 0; i < _PNSequence.size(); i++) {
 						amplifiedPN.push_back(_watermarkAmp * (double) _PNSequence[i]);
@@ -78,6 +80,7 @@ class SSWEncode : public WatermarkBase<data_type>
 
 					std::cout << "Corr : " << correlation << std::endl;
 
+					*/
 				}
 			}
 		}

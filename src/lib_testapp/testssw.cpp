@@ -27,23 +27,25 @@ void TestSSW()
 {
 	int SeqSize = 40;
 	double watermarkAmplitude = 10;
-	double threshold = 0.7;
+	double threshold = 0.50;
 
 	std::cout << std::endl;
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
+	/*
 	for (int i = 0; i < PNSequence.size(); i++) {
 		std::cout << PNSequence[i] << " ";
 	}
 	std::cout << std::endl;
+	*/
 
 	std::vector<double> amplifiedPN;
 	for (int i = 0; i < PNSequence.size(); i++) {
 		amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);
 	}
 
-	double norm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
+	//double norm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
 
-	std::cout << "Norme de PN : " << norm << std::endl;
+	//std::cout << "Norme de PN : " << norm << std::endl;
 
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), SeqSize);
 
@@ -59,7 +61,7 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	Parameters<double> conf;
 	WatermarkData* data = new SimpleWatermarkData();
 
-	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto input = new FileInput<double>("out_test_ssw_mono.wav", conf);
 	auto output = new DummyOutput<double>(conf);
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf));
@@ -76,8 +78,8 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 
 	manager.execute();
 
-//	data->readSizeFromBits();
-//	data->printBits();
+	data->readSizeFromBits();
+	data->printBits();
 }
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude)
@@ -120,9 +122,9 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
 	WatermarkManager manager(Input_p(fft_i),
-									 Output_p(fft_o),
-									 algorithm,
-									 WatermarkData_p(data));
+				 Output_p(fft_o),
+				 algorithm,
+				 WatermarkData_p(data));
 
 	// On fait tourner l'algo
 	manager.execute();

@@ -60,6 +60,9 @@ private:
 	QString m_inputName;
 	QString m_outputName;
 
+    int m_nbFramesBase;
+    int m_sampleRateBase;
+
 	WatermarkData_p m_data;
 
     QString m_ProgressBarDanger = "QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #FF0350,stop: 0.4999 #FF0020,stop: 0.5 #FF0019,stop: 1 #FF0000 );border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;border: .px solid black;}";

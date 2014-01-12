@@ -86,6 +86,9 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
     m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
     m_gui->usedWatermarkCapacityBar->setAlignment(Qt::AlignCenter);
 
+    connect(m_gui->NumberLsbSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
+    connect(m_gui->sampleSizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
+
     //Initializing selection method tab
     m_gui->selectingMethodComboBox->setCurrentIndex(0);
     m_gui->selectingMethodTab->setTabEnabled(0,true);
@@ -159,6 +162,9 @@ void LibWrapper::loadHostWatermarkFile()
 		Parameters<short> conf;
         auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
+        m_nbFramesBase = input->frames();
+        m_sampleRateBase = conf.samplingRate;
+
         /* Computing audio input time length for initializing editing
         watermark position part */
         int inputLengthInSec = input->frames()/conf.samplingRate;
@@ -215,6 +221,7 @@ void LibWrapper::loadHostWatermarkFile()
 
         m_gui->waveformInputWidget->replot();
 
+        int computedNbFrames;
 
         switch(m_gui->selectingMethodTab->currentIndex())
         {
@@ -223,9 +230,7 @@ void LibWrapper::loadHostWatermarkFile()
             /* Editing watermark max length progress bar */
 
             m_gui->usedWatermarkCapacityBar->setMinimum(0);
-            m_gui->usedWatermarkCapacityBar->setMaximum(input->frames()/8);
-
-            //m_gui->usedWatermarkCapacityBar->setValue(m_gui->textToWatermark->toPlainText().size());
+            m_gui->usedWatermarkCapacityBar->setMaximum(input->frames()*m_gui->NumberLsbSpinBox->value());
 
             updateWatermarkCapacityProgressBar();
 
@@ -236,7 +241,7 @@ void LibWrapper::loadHostWatermarkFile()
             m_gui->availableCapacityLabel2->setVisible(true);
 
             m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
-                                                    + '/' + QString::number(input->frames()) + " bits");
+                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()) + " bits");
 
             break;
 
@@ -425,13 +430,17 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 
         case 0: //LSB Method
 
+            m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFramesBase*m_gui->NumberLsbSpinBox->value());
+
             i = m_gui->textToWatermark->toPlainText().size();
+
             m_gui->availableCapacityLabel2->setText(QString::number(i*8)
-                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()*8) + " bits");
+                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
+                                                                            ) + " bits");
 
             if(i < m_gui->usedWatermarkCapacityBar->maximum())
             {
-                m_gui->usedWatermarkCapacityBar->setValue(i);
+                m_gui->usedWatermarkCapacityBar->setValue(i*8);
                 m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
             }
             else
@@ -538,6 +547,8 @@ void LibWrapper::encode()
 
 		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 		auto output = new FileOutput<short>(conf);
+
+
 
 		WatermarkManager manager(Input_p(input),
 								 Output_p(output),

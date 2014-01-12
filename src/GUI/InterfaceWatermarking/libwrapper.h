@@ -49,6 +49,8 @@ public slots:
 
     void updateWatermarkCapacityProgressBar();
 
+    void loadTextWatermarkFile();
+
 private:
 	void dataToBits();
 	void bitsToData();

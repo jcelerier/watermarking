@@ -89,6 +89,8 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
     connect(m_gui->NumberLsbSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
     connect(m_gui->sampleSizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
 
+    connect(m_gui->loadWatermarkTextButton,SIGNAL(clicked()),this,SLOT(loadTextWatermarkFile()));
+
     //Initializing selection method tab
     m_gui->selectingMethodComboBox->setCurrentIndex(0);
     m_gui->selectingMethodTab->setTabEnabled(0,true);
@@ -546,10 +548,10 @@ void LibWrapper::encode()
     {
         Parameters<short> conf;
 
+        conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
+
 		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 		auto output = new FileOutput<short>(conf);
-
-
 
 		WatermarkManager manager(Input_p(input),
 								 Output_p(output),
@@ -727,4 +729,26 @@ void LibWrapper::setSswDefaultConfigurationValue()
 void LibWrapper::setCompExpDefaultConfigurationValue()
 {
 
+}
+
+void LibWrapper::loadTextWatermarkFile()
+{
+    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open text watermark file (.txt)"),
+                                                    "",
+                                                    tr("Text Watermark File (*.txt)"));
+
+    if(!tempFile.isEmpty())
+    {
+        QFile file(tempFile);
+
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+
+        QTextStream in(&file);
+
+        m_gui->textToWatermark->clear();
+        m_gui->textToWatermark->appendPlainText(in.readAll());
+
+        m_gui->informationHostWatermark->setText("Opened Text Watermark File:" + tempFile);
+    }
 }

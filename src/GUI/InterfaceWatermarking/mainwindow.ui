@@ -470,7 +470,7 @@
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
               <property name="text">
-               <string>Load Watermark file ...</string>
+               <string>Load Text Watermark file ...</string>
               </property>
               <property name="icon">
                <iconset resource="icons/qstyle.qrc">

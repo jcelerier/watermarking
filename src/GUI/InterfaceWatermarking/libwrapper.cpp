@@ -162,9 +162,6 @@ void LibWrapper::loadHostWatermarkFile()
 		Parameters<short> conf;
         auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
-        m_nbFramesBase = input->frames();
-        m_sampleRateBase = conf.samplingRate;
-
         /* Computing audio input time length for initializing editing
         watermark position part */
         int inputLengthInSec = input->frames()/conf.samplingRate;
@@ -221,7 +218,8 @@ void LibWrapper::loadHostWatermarkFile()
 
         m_gui->waveformInputWidget->replot();
 
-        int computedNbFrames;
+        m_nbFramesBase = input->frames();
+        m_sampleSizeBase =conf.bufferSize;
 
         switch(m_gui->selectingMethodTab->currentIndex())
         {
@@ -229,8 +227,10 @@ void LibWrapper::loadHostWatermarkFile()
         case 0: //LSB Method
             /* Editing watermark max length progress bar */
 
+            m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
+
             m_gui->usedWatermarkCapacityBar->setMinimum(0);
-            m_gui->usedWatermarkCapacityBar->setMaximum(input->frames()*m_gui->NumberLsbSpinBox->value());
+            m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
 
             updateWatermarkCapacityProgressBar();
 
@@ -430,7 +430,8 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 
         case 0: //LSB Method
 
-            m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFramesBase*m_gui->NumberLsbSpinBox->value());
+            m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
+            m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
 
             i = m_gui->textToWatermark->toPlainText().size();
 

@@ -61,7 +61,8 @@ private:
 	QString m_outputName;
 
     int m_nbFramesBase;
-    int m_sampleRateBase;
+    int m_sampleSizeBase;
+    int m_computedNbFrames;
 
 	WatermarkData_p m_data;
 

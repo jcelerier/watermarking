@@ -80,9 +80,8 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	manager.execute();
 
 	data->readSizeFromBits();
-	std::string stroutput = data->printBits();
 
-	QVERIFY(stroutput == "1011");
+	QCOMPARE(data->printBits(), std::string("1011"));
 }
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude)

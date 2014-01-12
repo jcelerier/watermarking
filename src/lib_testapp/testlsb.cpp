@@ -50,7 +50,7 @@ void decode()
 
 	// LIRE LA TAILLE
 	data->readSizeFromBits();
-	QVERIFY(data->printBits() == "1011001");
+	QCOMPARE(data->printBits(), std::string("1011001"));
 }
 
 void TestLSB()

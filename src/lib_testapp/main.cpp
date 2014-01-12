@@ -11,19 +11,19 @@ class WatermarkingTests: public QObject
 		Q_OBJECT
 private slots:
 	void window() { testWindow(); }
-	/*void copy() { testCopy(); }
+	void copy() { testCopy(); }
 	void benchmark() { TestBenchmark(); }
 	void lsb() { TestLSB(); }
+	void ssw() { TestSSW(); }
 	void rlsb() {TestRLSB(); } // passer voir le RLSBDecode.h pour utilisation
-	void ssw() { TestSSW(); }*/
 };
 
 int main(int argc, char** argv)
 {
-	testWindow();
-	//QCoreApplication app(argc, argv);
-	//QTest::qExec(new WatermarkingTests);
-
+	QCoreApplication app(argc, argv);
+	auto tests = new WatermarkingTests;
+	QTest::qExec(tests);
+	delete tests;
 	return 0;
 }
 

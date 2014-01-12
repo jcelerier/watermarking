@@ -23,9 +23,9 @@ class Stat1 : public BenchmarkBase<data_type>
 
             for(auto& sampleData : channelsData)
             {
-                for(auto i = 1U; i < sampleData.size(); i ++)
+				for(auto i = 1U; i < sampleData.size() - 1; i ++)
                 {
-                    sampleData[i]=(sampleData[i-1]+sampleData[i]+sampleData[i+1])/3;
+					sampleData[i] = (sampleData[i-1] +sampleData[i]+sampleData[i+1])/3;
                 }
             }
         }

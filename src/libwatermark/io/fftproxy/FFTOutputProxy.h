@@ -33,31 +33,38 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 
 		virtual void writeNextBuffer(Audio_p& data) final override
 		{
-			auto& buffer = getSpectrum<data_type>(data);
-
 			// 0. We put our buffer back in the FFT.
-			fft->spectrum() = std::move(buffer);
+			fft->spectrum() = std::move(getSpectrum<data_type>(data));
 
 			// 1. Perform reverse FFT
 			fft->backward();
 
 			// 2. Normalize
-			auto outbuff = new CData<data_type>;
-			outbuff->_data.resize(fft->output().size());
+			if(dynamic_cast<IOManagerBase<data_type>*>(outputImpl.get())->pos() == 0) // Premier buffer
+			{
+				auto d = new CData<data_type>;
+
+				d->_data.resize(fft->output().size());
+				for(auto& channel : d->_data)
+					channel.resize(fft->output()[0].size());
+
+				outbuff.reset(d);
+			}
 
 			for(auto i = 0U; i < fft->output().size(); ++i)
 			{
-				outbuff->_data[i].resize(fft->output()[i].size());
 				std::transform(fft->output()[i].begin(),
 							   fft->output()[i].end(),
-							   outbuff->_data[i].begin(),
+							   static_cast<CData<data_type>*>(outbuff.get())->_data[i].begin(),
 							   [this] (const data_type& x)
 				{ return x * fft->normalizationFactor(); });
 			}
 
-			data.reset(outbuff);
-			outputImpl->writeNextBuffer(data);
+			outputImpl->writeNextBuffer(outbuff);
 		}
+
+	private:
+		Audio_p outbuff;
 };
 
 

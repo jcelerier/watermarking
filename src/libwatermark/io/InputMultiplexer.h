@@ -28,10 +28,17 @@ class InputMultiplexer : public InputManagerBase<data_type>
 		{
 			auto out = new MultiData;
 			out->_data.push_back(input1->getNextBuffer());
-			if(!out->_data[0]) return Audio_p(nullptr);
+			if(!out->_data[0])
+			{
+				delete out;
+				return Audio_p(nullptr);
+			}
 			out->_data.push_back(input2->getNextBuffer());
-			if(!out->_data[1]) return Audio_p(nullptr);
-
+			if(!out->_data[1])
+			{
+				delete out;
+				return Audio_p(nullptr);
+			}
 			return Audio_p(out);
 		}
 

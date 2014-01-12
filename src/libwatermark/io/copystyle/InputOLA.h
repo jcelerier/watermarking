@@ -37,15 +37,15 @@ class InputOLA : public InputCopy<data_type>
 						  typename CopyStyle<data_type>::size_type pos,
 						  typename CopyStyle<data_type>::size_type big_vector_length) final override
 		{
-			if (frameIncrement() <= big_vector_length - pos)
+			if (copiedSamples() <= big_vector_length - pos)
 			{
 				std::copy_n(in + pos, copiedSamples(), out);
-				//std::fill_n(out + frameIncrement() * 2, frameIncrement() * 2, 0);
+				std::fill_n(out + copiedSamples(), zeroPaddedSamples, 0);
 			}
 			else
 			{
 				std::copy_n(in + pos, big_vector_length - pos, out);
-				//std::fill_n(out + big_vector_length - pos, frameIncrement() - (big_vector_length - pos), 0);
+				std::fill_n(out + big_vector_length - pos, copiedSamples() - (big_vector_length - pos), 0);
 			}
 		}
 

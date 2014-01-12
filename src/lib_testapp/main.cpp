@@ -20,8 +20,9 @@ private slots:
 
 int main(int argc, char** argv)
 {
-	QCoreApplication app(argc, argv);
-	QTest::qExec(new WatermarkingTests);
+	testWindow();
+	//QCoreApplication app(argc, argv);
+	//QTest::qExec(new WatermarkingTests);
 
 	return 0;
 }

@@ -31,7 +31,7 @@ class LSBDecode : public WatermarkBase<data_type>
                         watermark.setNextBit(bit);
                 }
             }
-        }/**/
+		}*/
 
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{

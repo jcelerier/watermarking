@@ -10,13 +10,19 @@
 class WatermarkManager: public ManagerBase
 {
 	public:
+		WatermarkManager(WatermarkData_p d):
+			m_data(d)
+		{
+
+		}
+
 		WatermarkManager(Input_p i,
 						 Output_p o,
 						 Watermark_p a,
 						 WatermarkData_p d):
 			ManagerBase(i, o),
-			algorithm(a),
-			data(d)
+			m_algorithm(a),
+			m_data(d)
 		{
 
 		}
@@ -31,7 +37,7 @@ class WatermarkManager: public ManagerBase
 		 */
 		void prepare()
 		{
-			timeAdapter->addStartHandler(std::bind(&WatermarkData::resetPosition, data));
+			m_timeAdapter->addStartHandler(std::bind(&WatermarkData::resetPosition, m_data));
 		}
 
 		/**
@@ -41,17 +47,22 @@ class WatermarkManager: public ManagerBase
 		 */
 		virtual void execute() override
 		{
-			while(Audio_p buf = input->getNextBuffer())
+			while(Audio_p buf = m_input->getNextBuffer())
 			{
-				timeAdapter->perform();
+				m_timeAdapter->perform();
 
-				if(timeAdapter->isRunning()) (*algorithm)(buf, *data.get());
+				if(m_timeAdapter->isRunning()) (*m_algorithm)(buf, *m_data.get());
 
-				output->writeNextBuffer(buf);
+				m_output->writeNextBuffer(buf);
 			}
 		}
 
+		Watermark_p& algorithm()
+		{
+			return m_algorithm;
+		}
+
 	private:
-		Watermark_p algorithm = nullptr;
-		WatermarkData_p data = nullptr;
+		Watermark_p m_algorithm = nullptr;
+		WatermarkData_p m_data = nullptr;
 };

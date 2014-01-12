@@ -24,13 +24,13 @@ class BenchmarkManager: public ManagerBase
 		// Algorithme principal (oui, toute cette complexité sert à avoir ce truc magnifiquement simple ici)
 		virtual void execute() override
 		{
-			while(Audio_p buf = input->getNextBuffer())
+			while(Audio_p buf = m_input->getNextBuffer())
 			{
-				timeAdapter->perform();
+				m_timeAdapter->perform();
 
-				if(timeAdapter->isRunning()) (*algorithm)(buf);
+				if(m_timeAdapter->isRunning()) (*algorithm)(buf);
 
-				output->writeNextBuffer(buf);
+				m_output->writeNextBuffer(buf);
 			}
 		}
 

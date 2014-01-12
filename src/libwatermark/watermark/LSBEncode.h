@@ -36,7 +36,7 @@ class LSBEncode : public WatermarkBase<data_type>
 					}
 				}
 			}
-        }/**/
+		}*/
 
         virtual void operator()(Audio_p& data, WatermarkData& watermark) override
         {

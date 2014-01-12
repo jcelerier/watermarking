@@ -118,7 +118,7 @@ typedef struct _GNUPLOT_CTRL_ {
   - boxeserrorbars
  */
 /*--------------------------------------------------------------------------*/
-void gnuplot_setstyle(gnuplot_ctrl * h, char * plot_style)
+void gnuplot_setstyle(gnuplot_ctrl * h, const char * plot_style)
 {
 	if (strcmp(plot_style, "lines") &&
 			strcmp(plot_style, "points") &&
@@ -167,7 +167,7 @@ void gnuplot_setstyle(gnuplot_ctrl * h, char * plot_style)
   
  */
 /*-------------------------------------------------------------------------*/
-char * gnuplot_get_program_path(char * pname)
+char * gnuplot_get_program_path(const char * pname)
 {
 	int         i, j, lg;
 	char    *   path;
@@ -334,7 +334,7 @@ void gnuplot_cmd(gnuplot_ctrl *  handle, char *  cmd, ...)
   Sets the x label for a gnuplot session.
  */
 /*--------------------------------------------------------------------------*/
-void gnuplot_set_xlabel(gnuplot_ctrl * h, char * label)
+void gnuplot_set_xlabel(gnuplot_ctrl * h, const char * label)
 {
 	char    cmd[GP_CMD_SIZE] ;
 
@@ -354,7 +354,7 @@ void gnuplot_set_xlabel(gnuplot_ctrl * h, char * label)
   Sets the y label for a gnuplot session.
  */
 /*--------------------------------------------------------------------------*/
-void gnuplot_set_ylabel(gnuplot_ctrl * h, char * label)
+void gnuplot_set_ylabel(gnuplot_ctrl * h, const char * label)
 {
 	char    cmd[GP_CMD_SIZE] ;
 

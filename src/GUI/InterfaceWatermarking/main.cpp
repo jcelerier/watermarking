@@ -7,8 +7,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	MainWindow w;
-	LibWrapper* libWrapper = new LibWrapper(w.getUi());
-
+	LibWrapper libWrapper(w.getUi());
 
 	w.show();
 

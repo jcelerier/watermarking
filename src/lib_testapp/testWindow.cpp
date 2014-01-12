@@ -99,7 +99,7 @@ void testWindow()
 {
 	Parameters<double> conf;
 	windFFTCompare("Rect", new RectWindow<double>, conf);
-	windFFTCompare("Bartlett", new BartlettWindow<double>, conf);
+	/*windFFTCompare("Bartlett", new BartlettWindow<double>, conf);
 	windFFTCompare("Hann", CosineWindows::Hann<double>(), conf);
 	windFFTCompare("Hamming", CosineWindows::Hamming<double>(), conf);
 
@@ -107,5 +107,5 @@ void testWindow()
 	windFFTCompare("Blackman", CosineWindows::Blackman<double>(), conf);
 	windFFTCompare("BlackmanHarris", CosineWindows::BlackmanHarris<double>(), conf);
 	windFFTCompare("Nuttal3", CosineWindows::Nuttal3<double>(), conf);
-	windFFTCompare("SFT3F", CosineWindows::SFT3F<double>(), conf);
+	windFFTCompare("SFT3F", CosineWindows::SFT3F<double>(), conf);*/
 }

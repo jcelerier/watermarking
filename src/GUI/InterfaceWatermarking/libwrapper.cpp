@@ -16,7 +16,8 @@
  * Default constructor.
  */
 LibWrapper::LibWrapper():
-    m_data(new SimpleWatermarkData)
+	m_data(new SimpleWatermarkData),
+	m_manager(m_data)
 {
 }
 
@@ -36,71 +37,71 @@ LibWrapper::~LibWrapper()
  * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
  */
 LibWrapper::LibWrapper(Ui::MainWindow* gui):
-    LibWrapper()
+	LibWrapper()
 {
-    m_gui = gui;
+	m_gui = gui;
 
-    m_gui->availableCapacityLabel->setVisible(false);
-    m_gui->availableCapacityLabel2->setVisible(false);
+	m_gui->availableCapacityLabel->setVisible(false);
+	m_gui->availableCapacityLabel2->setVisible(false);
 
-    m_gui->waveformInputWidget->xAxis->setTickLabels(false);
-    m_gui->waveformInputWidget->yAxis->setTickLabels(false);
-    m_gui->waveformInputWidget->xAxis->setLabel("Input waveform - visible when you load an input audio file");
+	m_gui->waveformInputWidget->xAxis->setTickLabels(false);
+	m_gui->waveformInputWidget->yAxis->setTickLabels(false);
+	m_gui->waveformInputWidget->xAxis->setLabel("Input waveform - visible when you load an input audio file");
 
-    m_gui->waveformInputWidget->replot();
+	m_gui->waveformInputWidget->replot();
 
-    m_gui->waveformOutputWidget->xAxis->setTickLabels(false);
-    m_gui->waveformOutputWidget->yAxis->setTickLabels(false);
-    m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform - visible when you encode a watermark");
+	m_gui->waveformOutputWidget->xAxis->setTickLabels(false);
+	m_gui->waveformOutputWidget->yAxis->setTickLabels(false);
+	m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform - visible when you encode a watermark");
 
-    m_gui->waveformOutputWidget->replot();
+	m_gui->waveformOutputWidget->replot();
 
-    //m_gui->waveformInputWidget->setVisible(false);
-    //m_gui->waveformOutputWidget->setVisible(false);
+	//m_gui->waveformInputWidget->setVisible(false);
+	//m_gui->waveformOutputWidget->setVisible(false);
 
-    //Connecting signals between GUI and watermark library
-    connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
-    connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
-    connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
-    connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
+	//Connecting signals between GUI and watermark library
+	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
+	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
+	connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
 
-    connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
-    connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
-    connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
+	connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
+	connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
+	connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
 
-    connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
+	connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
 
-    m_gui->actionQuit->setShortcut(tr("CTRL+Q"));
-    connect(m_gui->actionQuit,SIGNAL(triggered()),qApp, SLOT(closeAllWindows()));
+	m_gui->actionQuit->setShortcut(tr("CTRL+Q"));
+	connect(m_gui->actionQuit,SIGNAL(triggered()),qApp, SLOT(closeAllWindows()));
 
-    connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
 
-    connect(m_gui->selectLsbMethodAction,SIGNAL(triggered()),this,SLOT(selectLsbMethodActionSlot()));
-    connect(m_gui->selectSswMethodAction,SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
-    connect(m_gui->selectCompExpMethodAction,SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
+	connect(m_gui->selectLsbMethodAction,SIGNAL(triggered()),this,SLOT(selectLsbMethodActionSlot()));
+	connect(m_gui->selectSswMethodAction,SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
+	connect(m_gui->selectCompExpMethodAction,SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
 
-    connect(m_gui->watermarkedSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->watermarkedSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 
-    connect(m_gui->textToWatermark,SIGNAL(textChanged()),this,SLOT(updateWatermarkCapacityProgressBar()));
+	connect(m_gui->textToWatermark,SIGNAL(textChanged()),this,SLOT(updateWatermarkCapacityProgressBar()));
 
-    m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
-    m_gui->usedWatermarkCapacityBar->setAlignment(Qt::AlignCenter);
+	m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+	m_gui->usedWatermarkCapacityBar->setAlignment(Qt::AlignCenter);
 
-    connect(m_gui->NumberLsbSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
-    connect(m_gui->sampleSizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
+	connect(m_gui->NumberLsbSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
+	connect(m_gui->sampleSizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
 
-    connect(m_gui->loadWatermarkTextButton,SIGNAL(clicked()),this,SLOT(loadTextWatermarkFile()));
+	connect(m_gui->loadWatermarkTextButton,SIGNAL(clicked()),this,SLOT(loadTextWatermarkFile()));
 
-    //Initializing selection method tab
-    m_gui->selectingMethodComboBox->setCurrentIndex(0);
-    m_gui->selectingMethodTab->setTabEnabled(0,true);
-    m_gui->selectingMethodTab->setTabEnabled(1,false);
-    m_gui->selectingMethodTab->setTabEnabled(2,false);
+	//Initializing selection method tab
+	m_gui->selectingMethodComboBox->setCurrentIndex(0);
+	m_gui->selectingMethodTab->setTabEnabled(0,true);
+	m_gui->selectingMethodTab->setTabEnabled(1,false);
+	m_gui->selectingMethodTab->setTabEnabled(2,false);
 
-    //Initializing watermark module
-    m_gui->watermarkBeginningTime->setEnabled(false);
-    m_gui->watermarkEndingTime->setEnabled(false);
-    m_gui->usedWatermarkCapacityBar->setEnabled(false);
+	//Initializing watermark module
+	m_gui->watermarkBeginningTime->setEnabled(false);
+	m_gui->watermarkEndingTime->setEnabled(false);
+	m_gui->usedWatermarkCapacityBar->setEnabled(false);
 
 }
 
@@ -111,9 +112,9 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
  */
 void LibWrapper::selectLsbMethodActionSlot()
 {
-    m_gui->selectingMethodComboBox->setCurrentIndex(0);
-    m_gui->selectingDecodingMethodTab->setCurrentIndex(0);
-    updateMethodConfigurationTab(0);
+	m_gui->selectingMethodComboBox->setCurrentIndex(0);
+	m_gui->selectingDecodingMethodTab->setCurrentIndex(0);
+	updateMethodConfigurationTab(0);
 }
 
 /**
@@ -123,9 +124,9 @@ void LibWrapper::selectLsbMethodActionSlot()
  */
 void LibWrapper::selectSswMethodActionSlot()
 {
-    m_gui->selectingMethodComboBox->setCurrentIndex(1);
-    m_gui->selectingDecodingMethodTab->setCurrentIndex(1);
-    updateMethodConfigurationTab(1);
+	m_gui->selectingMethodComboBox->setCurrentIndex(1);
+	m_gui->selectingDecodingMethodTab->setCurrentIndex(1);
+	updateMethodConfigurationTab(1);
 }
 
 /**
@@ -135,9 +136,9 @@ void LibWrapper::selectSswMethodActionSlot()
  */
 void LibWrapper::selectCompExpMethodActionSlot()
 {
-    m_gui->selectingMethodComboBox->setCurrentIndex(2);
-    m_gui->selectingDecodingMethodTab->setCurrentIndex(2);
-    updateMethodConfigurationTab(2);
+	m_gui->selectingMethodComboBox->setCurrentIndex(2);
+	m_gui->selectingDecodingMethodTab->setCurrentIndex(2);
+	updateMethodConfigurationTab(2);
 }
 
 /**
@@ -148,112 +149,112 @@ void LibWrapper::selectCompExpMethodActionSlot()
 void LibWrapper::loadHostWatermarkFile()
 {
 
-    m_inputName = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open Audio File (.wav)"),
-                                               "",
-                                               tr("Audio File (*.wav)"));
+	m_inputName = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open Audio File (.wav)"),
+											   "",
+											   tr("Audio File (*.wav)"));
 
-    if(!m_inputName.isEmpty())
-    {
-        //Enabling / Updating watermark module
-        m_gui->watermarkBeginningTime->setEnabled(true);
-        m_gui->watermarkEndingTime->setEnabled(true);
-        m_gui->usedWatermarkCapacityBar->setEnabled(true);
+	if(!m_inputName.isEmpty())
+	{
+		//Enabling / Updating watermark module
+		m_gui->watermarkBeginningTime->setEnabled(true);
+		m_gui->watermarkEndingTime->setEnabled(true);
+		m_gui->usedWatermarkCapacityBar->setEnabled(true);
 
-        m_gui->waveformInputWidget->setVisible(true);
+		m_gui->waveformInputWidget->setVisible(true);
 
 		Parameters<short> conf;
-        auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
-        /* Computing audio input time length for initializing editing
-        watermark position part */
-        int inputLengthInSec = input->frames()/conf.samplingRate;
+		/* Computing audio input time length for initializing editing
+		watermark position part */
+		int inputLengthInSec = input->frames()/conf.samplingRate;
 
-        //qDebug() << inputLengthInSec;
+		//qDebug() << inputLengthInSec;
 
-        QTime inputLength(0,0,0);
-        inputLength = inputLength.addSecs(inputLengthInSec);
+		QTime inputLength(0,0,0);
+		inputLength = inputLength.addSecs(inputLengthInSec);
 
-        //qDebug() << inputLength;
+		//qDebug() << inputLength;
 
-        m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
-        m_gui->watermarkEndingTime->setMaximumTime(inputLength);
-        m_gui->watermarkEndingTime->setTime(inputLength);
+		m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
+		m_gui->watermarkEndingTime->setMaximumTime(inputLength);
+		m_gui->watermarkEndingTime->setTime(inputLength);
 
-        /* Plotting waveform using QCustomPlot module */
+		/* Plotting waveform using QCustomPlot module */
 
-        //
-        // TODO: plotting waveform using m_gui->waveformInputWidget
-        //
+		//
+		// TODO: plotting waveform using m_gui->waveformInputWidget
+		//
 
-        QVector<double> x,y;
+		QVector<double> x,y;
 
-        short min,max;
+		short min,max;
 
-        x.push_back(0);
-        y.push_back(input->v()[0][0]);
+		x.push_back(0);
+		y.push_back(input->v()[0][0]);
 
-        min = y[0];
-        max = y[0];
+		min = y[0];
+		max = y[0];
 
-        for(unsigned int i = 1; i < input->frames(); i++)
-        {
-            x.push_back(i);
-            y.push_back(input->v()[0][i]);
+		for(unsigned int i = 1; i < input->frames(); i++)
+		{
+			x.push_back(i);
+			y.push_back(input->v()[0][i]);
 
-            if(y[i] < min) min = y[i];
-            if(y[i] > max) max = y[i];
-        }
+			if(y[i] < min) min = y[i];
+			if(y[i] > max) max = y[i];
+		}
 
-        m_gui->waveformInputWidget->addGraph();
-        m_gui->waveformInputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+		m_gui->waveformInputWidget->addGraph();
+		m_gui->waveformInputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 
-        connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
-        connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
+		connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
+		connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
 
-        m_gui->waveformInputWidget->graph(0)->setData(x,y);
-        m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
+		m_gui->waveformInputWidget->graph(0)->setData(x,y);
+		m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
 
-        m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
-        m_gui->waveformInputWidget->yAxis->setRange(min,max);
+		m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
+		m_gui->waveformInputWidget->yAxis->setRange(min,max);
 
-        m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
+		m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
 
-        m_gui->waveformInputWidget->replot();
+		m_gui->waveformInputWidget->replot();
 
-        m_nbFramesBase = input->frames();
-        m_sampleSizeBase =conf.bufferSize;
+		m_nbFramesBase = input->frames();
+		m_sampleSizeBase =conf.bufferSize;
 
-        switch(m_gui->selectingMethodTab->currentIndex())
-        {
+		switch(m_gui->selectingMethodTab->currentIndex())
+		{
 
-        case 0: //LSB Method
-            /* Editing watermark max length progress bar */
+			case 0: //LSB Method
+				/* Editing watermark max length progress bar */
 
-            m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
+				m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
 
-            m_gui->usedWatermarkCapacityBar->setMinimum(0);
-            m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
+				m_gui->usedWatermarkCapacityBar->setMinimum(0);
+				m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
 
-            updateWatermarkCapacityProgressBar();
+				updateWatermarkCapacityProgressBar();
 
 
-            /* Printing capacity information labels */
+				/* Printing capacity information labels */
 
-            m_gui->availableCapacityLabel->setVisible(true);
-            m_gui->availableCapacityLabel2->setVisible(true);
+				m_gui->availableCapacityLabel->setVisible(true);
+				m_gui->availableCapacityLabel2->setVisible(true);
 
-            m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
-                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()) + " bits");
+				m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
+														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()) + " bits");
 
-            break;
+				break;
 
-        default:
-            break;
+			default:
+				break;
 
-        }
+		}
 
-        m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
-    }
+		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
+	}
 }
 
 /**
@@ -263,39 +264,39 @@ void LibWrapper::loadHostWatermarkFile()
  */
 void LibWrapper::updateMethodConfigurationTab(int i)
 {
-    if(!m_inputName.isEmpty())
-    {
-        updateWatermarkCapacityProgressBar();
-    }
+	if(!m_inputName.isEmpty())
+	{
+		updateWatermarkCapacityProgressBar();
+	}
 
-    switch(i)
-    {
-    case 0: // lsb method selected
-        m_gui->selectingMethodTab->setTabEnabled(0,true);
-        m_gui->selectingMethodTab->setTabEnabled(1,false);
-        m_gui->selectingMethodTab->setTabEnabled(2,false);
-        m_gui->selectingMethodTab->setCurrentIndex(0);
+	switch(i)
+	{
+		case 0: // lsb method selected
+			m_gui->selectingMethodTab->setTabEnabled(0,true);
+			m_gui->selectingMethodTab->setTabEnabled(1,false);
+			m_gui->selectingMethodTab->setTabEnabled(2,false);
+			m_gui->selectingMethodTab->setCurrentIndex(0);
 
-        break;
+			break;
 
-    case 1: // ssw method selected
-        m_gui->selectingMethodTab->setTabEnabled(0,false);
-        m_gui->selectingMethodTab->setTabEnabled(1,true);
-        m_gui->selectingMethodTab->setTabEnabled(2,false);
-        m_gui->selectingMethodTab->setCurrentIndex(1);
-        break;
+		case 1: // ssw method selected
+			m_gui->selectingMethodTab->setTabEnabled(0,false);
+			m_gui->selectingMethodTab->setTabEnabled(1,true);
+			m_gui->selectingMethodTab->setTabEnabled(2,false);
+			m_gui->selectingMethodTab->setCurrentIndex(1);
+			break;
 
-    case 2: // compression-expansion method selected
-        m_gui->selectingMethodTab->setTabEnabled(0,false);
-        m_gui->selectingMethodTab->setTabEnabled(1,false);
-        m_gui->selectingMethodTab->setTabEnabled(2,true);
-        m_gui->selectingMethodTab->setCurrentIndex(2);
-        break;
+		case 2: // compression-expansion method selected
+			m_gui->selectingMethodTab->setTabEnabled(0,false);
+			m_gui->selectingMethodTab->setTabEnabled(1,false);
+			m_gui->selectingMethodTab->setTabEnabled(2,true);
+			m_gui->selectingMethodTab->setCurrentIndex(2);
+			break;
 
-    default:
-        break;
+		default:
+			break;
 
-    }
+	}
 }
 
 /**
@@ -306,16 +307,16 @@ void LibWrapper::updateMethodConfigurationTab(int i)
  */
 void LibWrapper::loadConfigurationScriptMethodLsb()
 {
-    //TODO: loading a configuration script for LSB method
+	//TODO: loading a configuration script for LSB method
 
-    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-                                                    "",
-                                                    tr("LSB Script File (*.txt)"));
+	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
+													"",
+													tr("LSB Script File (*.txt)"));
 
-    if(!tempFile.isEmpty())
-    {
-        m_gui->informationHostWatermark->setText("Opened config script for LSB method:" + tempFile);
-    }
+	if(!tempFile.isEmpty())
+	{
+		m_gui->informationHostWatermark->setText("Opened config script for LSB method:" + tempFile);
+	}
 }
 
 /**
@@ -326,16 +327,16 @@ void LibWrapper::loadConfigurationScriptMethodLsb()
  */
 void LibWrapper::loadConfigurationScriptMethodSsw()
 {
-    //TODO: loading a configuration script for SSW method
+	//TODO: loading a configuration script for SSW method
 
-    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-                                                    "",
-                                                    tr("SSW Script file(*.txt)"));
+	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
+													"",
+													tr("SSW Script file(*.txt)"));
 
-    if(!tempFile.isEmpty())
-    {
-        m_gui->informationHostWatermark->setText("Opened config script for SSW method:" + tempFile);
-    }
+	if(!tempFile.isEmpty())
+	{
+		m_gui->informationHostWatermark->setText("Opened config script for SSW method:" + tempFile);
+	}
 
 }
 
@@ -347,16 +348,16 @@ void LibWrapper::loadConfigurationScriptMethodSsw()
  */
 void LibWrapper::loadConfigurationScriptMethodCompExp()
 {
-    //TODO: loading a configuration script for Compression-Expansion method
+	//TODO: loading a configuration script for Compression-Expansion method
 
-    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-                                                    "",
-                                                    tr("Compression-Expansion Script File (*.txt)"));
+	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
+													"",
+													tr("Compression-Expansion Script File (*.txt)"));
 
-    if(!tempFile.isEmpty())
-    {
-        m_gui->informationHostWatermark->setText("Opened config script for Compression-Expansion method:" + tempFile);
-    }
+	if(!tempFile.isEmpty())
+	{
+		m_gui->informationHostWatermark->setText("Opened config script for Compression-Expansion method:" + tempFile);
+	}
 }
 
 /**
@@ -368,13 +369,13 @@ void LibWrapper::loadConfigurationScriptMethodCompExp()
 void LibWrapper::saveConfigurationScriptMethodLsb()
 {
 
-    m_gui->informationHostWatermark->setText("Saving configuration script query for LSB method");
+	m_gui->informationHostWatermark->setText("Saving configuration script query for LSB method");
 
-    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-                                                      "./",
-                                                      tr("Configuration Script File (*.wconf)"));
+	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+													  "./",
+													  tr("Configuration Script File (*.wconf)"));
 
-    //TODO
+	//TODO
 
 }
 
@@ -387,13 +388,13 @@ void LibWrapper::saveConfigurationScriptMethodLsb()
 void LibWrapper::saveConfigurationScriptMethodSsw()
 {
 
-    m_gui->informationHostWatermark->setText("Saving configuration script query for SSW method");
+	m_gui->informationHostWatermark->setText("Saving configuration script query for SSW method");
 
-    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-                                                      "./",
-                                                      tr("Configuration Script File (*.wconf)"));
+	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+													  "./",
+													  tr("Configuration Script File (*.wconf)"));
 
-    //TODO
+	//TODO
 }
 
 /**
@@ -405,13 +406,13 @@ void LibWrapper::saveConfigurationScriptMethodSsw()
 void LibWrapper::saveConfigurationScriptMethodCompExp()
 {
 
-    m_gui->informationHostWatermark->setText("Saving configuration script query for Compression-Expansion method");
+	m_gui->informationHostWatermark->setText("Saving configuration script query for Compression-Expansion method");
 
-    QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-                                                      "./",
-                                                      tr("Configuration Script File (*.wconf)"));
+	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
+													  "./",
+													  tr("Configuration Script File (*.wconf)"));
 
-    //TODO
+	//TODO
 }
 
 /**
@@ -422,47 +423,47 @@ void LibWrapper::saveConfigurationScriptMethodCompExp()
 
 void LibWrapper::updateWatermarkCapacityProgressBar()
 {
-    if(!m_inputName.isEmpty())
-    {
+	if(!m_inputName.isEmpty())
+	{
 
-        int i;
+		int i;
 
-        switch(m_gui->selectingMethodComboBox->currentIndex())
-        {
+		switch(m_gui->selectingMethodComboBox->currentIndex())
+		{
 
-        case 0: //LSB Method
+			case 0: //LSB Method
 
-            m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
-            m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
+				m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
+				m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
 
-            i = m_gui->textToWatermark->toPlainText().size();
+				i = m_gui->textToWatermark->toPlainText().size();
 
-            m_gui->availableCapacityLabel2->setText(QString::number(i*8)
-                                                    + '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
-                                                                            ) + " bits");
+				m_gui->availableCapacityLabel2->setText(QString::number(i*8)
+														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
+																				) + " bits");
 
-            if(i < m_gui->usedWatermarkCapacityBar->maximum())
-            {
-                m_gui->usedWatermarkCapacityBar->setValue(i*8);
-                m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
-            }
-            else
-            {
-                m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
-                m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
-            }
+				if(i < m_gui->usedWatermarkCapacityBar->maximum())
+				{
+					m_gui->usedWatermarkCapacityBar->setValue(i*8);
+					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+				}
+				else
+				{
+					m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
+					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+				}
 
-            break;
+				break;
 
-        default:
+			default:
 
-            m_gui->availableCapacityLabel2->setText("Not implemented yet");
-            m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
+				m_gui->availableCapacityLabel2->setText("Not implemented yet");
+				m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
 
-            break;
+				break;
 
-        }
-    }
+		}
+	}
 }
 
 /**
@@ -471,38 +472,38 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
  */
 void LibWrapper::dataToBits()
 {
-    auto str = m_gui->textToWatermark->document()->toPlainText().toStdString();
+	auto str = m_gui->textToWatermark->document()->toPlainText().toStdString();
 
-    m_data->setSize(str.size() * 8U); // taille ici
+	m_data->setSize(str.size() * 8U); // taille ici
 
-    for (auto i = 0U; i < str.size(); ++i)
-    {
-        // Ce hack est affreux
-        auto a = std::bitset<8>(str[i]);
-        auto b = a.to_string();
-        std::reverse(std::begin(b), std::end(b));
-        auto c = std::bitset<8>(b);
+	for (auto i = 0U; i < str.size(); ++i)
+	{
+		// Ce hack est affreux
+		auto a = std::bitset<8>(str[i]);
+		auto b = a.to_string();
+		std::reverse(std::begin(b), std::end(b));
+		auto c = std::bitset<8>(b);
 
-        for(auto i = 0U; i < 8; ++i)
-        {
-            m_data->setNextBit(c[i]);
-        }
-    }
+		for(auto i = 0U; i < 8; ++i)
+		{
+			m_data->setNextBit(c[i]);
+		}
+	}
 }
 
 void LibWrapper::bitsToData()
 {
-    m_data->readSizeFromBits();
-    std::string str = m_data->printBits();
-    std::string out;
+	m_data->readSizeFromBits();
+	std::string str = m_data->printBits();
+	std::string out;
 
-    for (auto i = 0U; i < str.size(); i += 8)
-    {
-        auto b = std::bitset<8>(str.substr(i, 8));
-        out.push_back(static_cast<unsigned char>(b.to_ulong()));
-    }
+	for (auto i = 0U; i < str.size(); i += 8)
+	{
+		auto b = std::bitset<8>(str.substr(i, 8));
+		out.push_back(static_cast<unsigned char>(b.to_ulong()));
+	}
 
-    m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
+	m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
 }
 
 /**
@@ -514,105 +515,126 @@ void LibWrapper::bitsToData()
 void LibWrapper::encode()
 {
 
-    // host file loaded ? output name correctly defined ?
-    if(m_inputName.isEmpty() || !defineSavedFile())
-    {
-        if(m_inputName.isEmpty())
-        {
-            m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
-            QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
-                                     "Please, load a Watermark host file!");
-        }
-        return;
-    }
+	// host file loaded ? output name correctly defined ?
+	if(m_inputName.isEmpty() || !defineSavedFile())
+	{
+		if(m_inputName.isEmpty())
+		{
+			m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+			QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
+									 "Please, load a Watermark host file!");
+		}
+		return;
+	}
 
-    // Displaying if watermark is too heavy for the host file
-    if(m_gui->usedWatermarkCapacityBar->value() == m_gui->usedWatermarkCapacityBar->maximum())
-    {
+	// Displaying if watermark is too heavy for the host file
+	if(m_gui->usedWatermarkCapacityBar->value() == m_gui->usedWatermarkCapacityBar->maximum())
+	{
 
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(m_gui->centralwidget, "Warning - Watermark maybe too big",
-                                      "Warning: the watermark length is too big to be correctly watermarked into your selected audio file. Do you really want to encode it ?",
-                                      QMessageBox::Yes|QMessageBox::No);
-        if (reply == QMessageBox::No)
-        {
-            return;
-        }
-    }
+		QMessageBox::StandardButton reply;
+		reply = QMessageBox::question(m_gui->centralwidget, "Warning - Watermark maybe too big",
+									  "Warning: the watermark length is too big to be correctly watermarked into your selected audio file. Do you really want to encode it ?",
+									  QMessageBox::Yes|QMessageBox::No);
+		if (reply == QMessageBox::No)
+		{
+			return;
+		}
+	}
 
-    dataToBits();
+	dataToBits();
 
-    switch(m_gui->selectingMethodTab->currentIndex())
-    {
-    case 0:
-    {
-        Parameters<short> conf;
+	switch(m_gui->selectingMethodTab->currentIndex())
+	{
+		case 0:
+		{
+			Parameters<short> conf;
 
-        conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
+			conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
 
-		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
-		auto output = new FileOutput<short>(conf);
+			// Peuvent difficilement être abstraits à cause du <short> (sinon faudrait faire un static_cast et c'est moins propre imho)
+			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+			auto output = new FileOutput<short>(conf);
 
-		WatermarkManager manager(Input_p(input),
-								 Output_p(output),
-								 Watermark_p(new LSBEncode<short>(conf)),
-								 m_data);
+			// Faire un switch dans le GUI pour choisir entre LSB et RLSB, et ici instancier correctement
+			auto algorithm = /* (m_gui->rlsbSwitch)?
+								new RLSBEncode<short>(conf) : */
+								new LSBEncode<short>(conf);
+			//ALBAN: ici faire algorithm->nbBits = 42;
 
-        manager.execute();
+			m_manager.input() = Input_p(input);
+			m_manager.output() = Output_p(output);
+			m_manager.algorithm() = Watermark_p(algorithm);
 
-        output->writeFile(m_outputName.toStdString().c_str());
-        m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
+			m_manager.execute();
 
-        /* Computing and plotting output waveform */
-        m_gui->waveformInputWidget->setVisible(true);
+			output->writeFile(m_outputName.toStdString().c_str());
+			m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
 
-        QVector<double> x(output->frames()), y(output->frames());
-        QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
+			/* Computing and plotting output waveform */
+			// Alban: ça serait bien de mettre ça dans une méthode générique qui prend un IOInterface* en paramètre
+			// Ou alors vu qu'il y a des shorts, le mettre en template sur un OutputManagerBase<T>.
+			m_gui->waveformInputWidget->setVisible(true);
 
-        std::transform(y0.begin(), y0.end(), y.begin(),
-                       [&] (short x) { return double(x) / conf.normFactor(); });
-        std::iota(x.begin(), x.end(), 0);
+			QVector<double> x(output->frames()), y(output->frames());
+			QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
+
+			std::transform(y0.begin(), y0.end(), y.begin(),
+						   [&] (short x) { return double(x) / conf.normFactor(); });
+			std::iota(x.begin(), x.end(), 0);
 
 
-        m_gui->waveformOutputWidget->addGraph();
-        m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+			m_gui->waveformOutputWidget->addGraph();
+			m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 
-        connect(m_gui->waveformOutputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->xAxis2, SLOT(setRange(QCPRange)));
-        connect(m_gui->waveformOutputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->yAxis2, SLOT(setRange(QCPRange)));
+			connect(m_gui->waveformOutputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->xAxis2, SLOT(setRange(QCPRange)));
+			connect(m_gui->waveformOutputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->yAxis2, SLOT(setRange(QCPRange)));
 
-        //m_gui->waveformOutputWidget->plotLayout()->insertRow(0);
-        //m_gui->waveformOutputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformOutputWidget, "Output audio file Waveform"));
+			//m_gui->waveformOutputWidget->plotLayout()->insertRow(0);
+			//m_gui->waveformOutputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformOutputWidget, "Output audio file Waveform"));
 
-        m_gui->waveformOutputWidget->graph(0)->setPen(QPen(Qt::red));
+			m_gui->waveformOutputWidget->graph(0)->setPen(QPen(Qt::red));
 
-        m_gui->waveformOutputWidget->graph(0)->setData(x,y);
-        m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
+			m_gui->waveformOutputWidget->graph(0)->setData(x,y);
+			m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
 
-        m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
-        m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
+			m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
+			m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
 
-        m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
+			m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
 
-        m_gui->waveformOutputWidget->replot();
+			m_gui->waveformOutputWidget->replot();
 
-        break;
-    }
-    case 1:
-    {
-        /*Parameters<double> conf;
-                        auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
-                        sub_exec<double>(conf, alg);
-                        break;*/
-    }
-        //case 2:
-        // Rien pour l'instant
-        //break;
-    default:
-        m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
-        QMessageBox::information(m_gui->centralwidget,"Warning - method",
-                                 "This method is not yet implemented!");
-        break;
-    }
+			break;
+		}
+		case 1:
+		{
+			Parameters<double> conf;
+
+			conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
+
+			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
+			auto output = new FileOutput<double>(conf);
+		/*
+			auto algorithm = new SSWEncode<double>(conf);
+
+			m_manager.input() = Input_p(input);
+			m_manager.output() = Output_p(output);
+			m_manager.algorithm() = Watermark_p(algorithm);
+
+			m_manager.execute();
+		*/
+			output->writeFile(m_outputName.toStdString().c_str());
+			m_gui->informationHostWatermark->setText("SSW Method: File " + m_outputName +" successfully saved!");
+		}
+			//case 2:
+			// Rien pour l'instant
+			//break;
+		default:
+			m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
+			QMessageBox::information(m_gui->centralwidget,"Warning - method",
+									 "This method is not yet implemented!");
+			break;
+	}
 
 }
 
@@ -625,53 +647,56 @@ void LibWrapper::encode()
  */
 void LibWrapper::decode()
 {
-    if(m_inputName.isEmpty())
-    {
-        m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
-        QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
-                                 "Please, load a Watermark host file!");
+	if(m_inputName.isEmpty())
+	{
+		m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
+		QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
+								 "Please, load a Watermark host file!");
 
-        return;
-    }
+		return;
+	}
 
-    switch(m_gui->selectingMethodTab->currentIndex())
-    {
-    case 0:
-    {
-		Parameters<short> conf;
+	switch(m_gui->selectingMethodTab->currentIndex())
+	{
+		case 0:
+		{
+			Parameters<short> conf;
 
-        auto input = new FileInput<short>(m_inputName.toStdString(), conf);
-        auto output = new DummyOutput<short>(conf);
+			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
+			auto output = new DummyOutput<short>(conf);
 
-		WatermarkManager manager(Input_p(input),
-								 Output_p(output),
-								 Watermark_p(new LSBDecode<short>(conf)),
-								 m_data);
+			auto algorithm = /* (m_gui->rlsbSwitch)?
+								new RLSBDecode<short>(conf) : */
+								new LSBDecode<short>(conf);
 
-        manager.execute();
+			m_manager.input() = Input_p(input);
+			m_manager.output() = Output_p(output);
+			m_manager.algorithm() = Watermark_p(algorithm);
 
-        m_gui->informationHostWatermark->setText("LSB Method: File " + m_inputName +" successfully read!");
+			m_manager.execute();
 
-        break;
-    }
-    case 1:
-    {
-        /*Parameters<double> conf;
-            auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
-            sub_exec<double>(conf, alg);
-            break;*/
-    }
-        //case 2:
-        // Rien pour l'instant
-        //break;
-    default:
-        m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
-        QMessageBox::information(m_gui->centralwidget,"Warning - method",
-                                 "This method is not yet implemented!");
-        break;
-    }
+			m_gui->informationHostWatermark->setText("LSB Method: File " + m_inputName +" successfully read!");
 
-    bitsToData();
+			break;
+		}
+		case 1:
+		{
+			/*Parameters<double> conf;
+			auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
+			sub_exec<double>(conf, alg);
+			break;*/
+		}
+			//case 2:
+			// Rien pour l'instant
+			//break;
+		default:
+			m_gui->informationHostWatermark->setText("Warning: method not implemented yet");
+			QMessageBox::information(m_gui->centralwidget,"Warning - method",
+									 "This method is not yet implemented!");
+			break;
+	}
+
+	bitsToData();
 }
 
 /**
@@ -681,19 +706,19 @@ void LibWrapper::decode()
  */
 bool LibWrapper::defineSavedFile()
 {
-    m_outputName = QFileDialog::getSaveFileName(this, tr("Save Watermarked Output File (.wav)"),
-                                                "./",
-                                                tr("Audio File (*.wav)"));
+	m_outputName = QFileDialog::getSaveFileName(this, tr("Save Watermarked Output File (.wav)"),
+												"./",
+												tr("Audio File (*.wav)"));
 
-    if(!m_outputName.isEmpty())
-    {
+	if(!m_outputName.isEmpty())
+	{
 
-        if(!m_outputName.endsWith(".wav"))
-            m_outputName.append(".wav");
-        return true;
-    }
-    else
-        return false;
+		if(!m_outputName.endsWith(".wav"))
+			m_outputName.append(".wav");
+		return true;
+	}
+	else
+		return false;
 }
 
 /**
@@ -704,8 +729,8 @@ bool LibWrapper::defineSavedFile()
  */
 void LibWrapper::setLsbDefaultConfigurationValue()
 {
-    m_gui->sampleSizeSpinBox->setValue(512);
-    m_gui->NumberLsbSpinBox->setValue(1);
+	m_gui->sampleSizeSpinBox->setValue(512);
+	m_gui->NumberLsbSpinBox->setValue(1);
 
 }
 
@@ -733,22 +758,22 @@ void LibWrapper::setCompExpDefaultConfigurationValue()
 
 void LibWrapper::loadTextWatermarkFile()
 {
-    QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open text watermark file (.txt)"),
-                                                    "",
-                                                    tr("Text Watermark File (*.txt)"));
+	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open text watermark file (.txt)"),
+													"",
+													tr("Text Watermark File (*.txt)"));
 
-    if(!tempFile.isEmpty())
-    {
-        QFile file(tempFile);
+	if(!tempFile.isEmpty())
+	{
+		QFile file(tempFile);
 
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            return;
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+			return;
 
-        QTextStream in(&file);
+		QTextStream in(&file);
 
-        m_gui->textToWatermark->clear();
-        m_gui->textToWatermark->appendPlainText(in.readAll());
+		m_gui->textToWatermark->clear();
+		m_gui->textToWatermark->appendPlainText(in.readAll());
 
-        m_gui->informationHostWatermark->setText("Opened Text Watermark File:" + tempFile);
-    }
+		m_gui->informationHostWatermark->setText("Opened Text Watermark File:" + tempFile);
+	}
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../Parameters.h"
 #include "../watermark/WatermarkBase.h"
@@ -14,20 +14,21 @@
 class ManagerBase
 {
 	public:
+		ManagerBase() = default;
+
 		ManagerBase(Input_p i,
 					Output_p o):
-			input(i),
-			output(o),
-			timeAdapter(new AtTime)
+			m_input(i),
+			m_output(o)
 		{
 		}
 
 		ManagerBase(Input_p i,
 					Output_p o,
 					TimeAdapter_p t):
-			input(i),
-			output(o),
-			timeAdapter(t)
+			m_input(i),
+			m_output(o),
+			m_timeAdapter(t)
 		{
 		}
 
@@ -50,8 +51,24 @@ class ManagerBase
 		 */
 		virtual void execute() = 0;
 
+
+		Input_p& input()
+		{
+			return m_input;
+		}
+
+		Output_p& output()
+		{
+			return m_output;
+		}
+
+		TimeAdapter_p& timeAdapter()
+		{
+			return m_timeAdapter;
+		}
+
 	protected:
-		Input_p input = nullptr;
-		Output_p output = nullptr;
-		TimeAdapter_p timeAdapter = nullptr;
+		Input_p m_input = nullptr;
+		Output_p m_output = nullptr;
+		TimeAdapter_p m_timeAdapter = TimeAdapter_p(new AtTime);
 };

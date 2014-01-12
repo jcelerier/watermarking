@@ -18,6 +18,7 @@
 #include "io/mcltproxy/MCLTOutputProxy.h"
 
 #include "mathutils/ssw_utils.h"
+#include "TestHeader.h"
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude);
 void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude, double threshold);
@@ -39,7 +40,7 @@ void TestSSW()
 	*/
 
 	std::vector<double> amplifiedPN;
-	for (int i = 0; i < PNSequence.size(); i++) {
+	for (auto i = 0U; i < PNSequence.size(); i++) {
 		amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);
 	}
 
@@ -49,7 +50,7 @@ void TestSSW()
 
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), SeqSize);
 
-	for(int i = 0; i < FreqRange.size(); i++) std::cerr << FreqRange[i] << " ";
+	for(auto i = 0U; i < FreqRange.size(); i++) std::cerr << FreqRange[i] << " ";
 	sswencode(PNSequence, FreqRange, watermarkAmplitude);
 	sswdecode(PNSequence, FreqRange, watermarkAmplitude, threshold);
 }
@@ -79,7 +80,9 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	manager.execute();
 
 	data->readSizeFromBits();
-	data->printBits();
+	std::string stroutput = data->printBits();
+
+	QVERIFY(stroutput == "1011");
 }
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, double watermarkAmplitude)

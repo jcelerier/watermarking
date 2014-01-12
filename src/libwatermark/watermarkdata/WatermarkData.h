@@ -118,6 +118,11 @@ class WatermarkData
 		 */
 		virtual bool isComplete() = 0;
 
+		std::vector<bool>& getBaseBits()
+		{
+			return bits;
+		}
+
 	protected:
 		std::vector<bool> bits = { }; /**< Les données. */
 		uint64_t _size = 0; /**< Le nombre de bits de donnée. i.e. NE CONTIENT PAS LE NOMBRE DE BITS DU HEADER. */

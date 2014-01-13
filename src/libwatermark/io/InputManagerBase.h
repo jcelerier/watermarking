@@ -37,30 +37,38 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 
 		virtual Audio_p getNextBuffer() override
 		{
+			if(pos() == 0) // Premier buffer
+			{
+				auto d = new CData<data_type>;
+
+				d->_data.resize(channels());
+				for(auto& channel : d->_data)
+					channel.resize(this->conf.bufferSize);
+
+				buffer.reset(d);
+			}
+
 			if(pos() < frames())
 			{
-				auto buffer = new CData<data_type>;
-				// Création d'un wrapper qui va contenir les data
-				buffer->_data.resize(channels());
-
 				// Remplissage pour chaque canal
 				for(auto i = 0U; i < channels(); ++i)
 				{
-					buffer->_data[i].resize(this->conf.bufferSize);
-
 					copyHandler->copy(v()[i].begin(),
-									  buffer->_data[i].begin(),
+									  static_cast<CData<data_type>*>(buffer.get())->_data[i].begin(),
 									  pos(),
 									  frames());
 				}
 
 				pos() += copyHandler->frameIncrement();
-				return Audio_p(buffer);
+				return buffer;
 			}
 
 			return Audio_p(nullptr);
 		}
 
 		InputCopy_p<data_type> copyHandler = nullptr;
+
+	private:
+		Audio_p buffer;
 };
 

@@ -23,7 +23,7 @@ struct IData
 		virtual ~IData() = default;
 };
 
-using Audio_p = std::unique_ptr<IData>;
+using Audio_p = std::shared_ptr<IData>;
 
 
 template<typename T>

@@ -84,7 +84,7 @@ class WatermarkData
 			std::stringstream s;
 			const auto size_bits = sizeof(_size) * 8U;
 
-			if(bits.size() == _size + size_bits)
+			if(bits.size() >= _size + size_bits)
 			{
 				for(auto i = size_bits; i < size_bits + _size; ++i)
 				{

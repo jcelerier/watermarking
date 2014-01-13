@@ -4,13 +4,13 @@
 #include "copystyle/CopyStyle.h"
 #include "../Parameters.h"
 #include "../Data.h"
+#include "IOInterface.h"
 
 template <typename data_type>
 class FFTInputProxy;
 template <typename data_type>
 class FFTOutputProxy;
 
-template <typename data_type>
 /**
  * @brief The IOManagerBase class
  *
@@ -20,7 +20,8 @@ template <typename data_type>
  *
  * Réalise un découpage buffer par buffer des données dans vec.
  */
-class IOManagerBase
+template <typename data_type>
+class IOManagerBase : public IOInterface
 {
 		using size_type = typename Parameters<data_type>::size_type;
 		std::vector<std::vector<data_type>> _baseData = {};
@@ -33,6 +34,7 @@ class IOManagerBase
 		friend class FFTInputProxy<data_type>;
 		friend class FFTOutputProxy<data_type>;
 
+
 		IOManagerBase(Parameters<data_type>& cfg):
 			conf(cfg)
 		{
@@ -44,16 +46,22 @@ class IOManagerBase
 		 * @brief v Accès au vecteur sous-jacent
 		 * @return  Vecteur sous-j	xznr
 		 */
-		virtual std::vector<std::vector<data_type> >& v()
+        virtual std::vector<std::vector<data_type> >& v()
 		{
 			return _baseData;
 		}
+
+		virtual std::vector<data_type>& v(size_type i)
+		{
+			return _baseData.at(i);
+		}
+
 
 		/**
 		 * @brief channels
 		 * @return Nombre de canaux
 		 */
-		size_type channels()
+		virtual size_type channels() override
 		{
 			return v().size();
 		}
@@ -62,7 +70,7 @@ class IOManagerBase
 		 * @brief frames
 		 * @return Nombre de samples
 		 */
-		size_type frames()
+		virtual size_type frames() override
 		{
 			return v()[0].size();
 		}
@@ -74,5 +82,10 @@ class IOManagerBase
 		size_type& pos()
 		{
 			return _pos;
+		}
+
+		void reset()
+		{
+			_pos = 0;
 		}
 };

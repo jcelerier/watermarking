@@ -4,7 +4,8 @@
 #include <bitset>
 #include <algorithm>
 #include <iostream>
-
+#include <sstream>
+#include <memory>
 /**
  * @brief The WatermarkData class
  *
@@ -41,7 +42,12 @@ class WatermarkData
 			std::bitset<size_bits> num(_size);
 
 			for(auto i = 0U; i < size_bits; ++i)
+			{
+				std::cerr << num[i] << " ";
 				bits[i] = num[i];
+			}
+
+
 		}
 
 		/**
@@ -68,17 +74,18 @@ class WatermarkData
 		 * TODO : surchrage qui prend un flux personnalisé à la place.
 		 * (ou opérateur de flux pour la classe)
 		 */
-		void printBits()
+		std::string printBits()
 		{
-			std::cerr << "Affichage des données :" << std::endl;
+			std::stringstream s;
 			const auto size_bits = sizeof(_size) * 8U;
 
 			for(auto i = size_bits; i < size_bits + _size; ++i)
 			{
-				std::cerr << bits[i];
+				s << bits[i];
 			}
 
-			std::cerr << std::endl;
+			std::cerr << s.str() << std::endl;
+			return s.str();
 		}
 
 		/**
@@ -111,6 +118,11 @@ class WatermarkData
 		 */
 		virtual bool isComplete() = 0;
 
+		std::vector<bool>& getBaseBits()
+		{
+			return bits;
+		}
+
 	protected:
 		std::vector<bool> bits = { }; /**< Les données. */
 		uint64_t _size = 0; /**< Le nombre de bits de donnée. i.e. NE CONTIENT PAS LE NOMBRE DE BITS DU HEADER. */
@@ -118,4 +130,4 @@ class WatermarkData
 };
 
 
-using WatermarkData_p = std::unique_ptr<WatermarkData>;
+using WatermarkData_p = std::shared_ptr<WatermarkData>;

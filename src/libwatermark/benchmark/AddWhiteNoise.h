@@ -16,11 +16,12 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 		AddWhiteNoise(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
+			this->_name = "AddWhiteNoise";
 		}
 
 		virtual void operator()(Audio_p& data) override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
 			for(auto& sampleData : channelsData)
 			{

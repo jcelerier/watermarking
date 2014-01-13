@@ -18,8 +18,8 @@ namespace MathUtil
 	template <typename data_type>
 	void computePowerAndPhaseSpectrum(const std::complex<data_type> * const in, data_type * const powoutput, data_type * const phaseoutput, const unsigned int size)
 	{
-		std::transform(in, in + size, powoutput, std::norm<data_type>);
-		std::transform(in, in + size, phaseoutput, std::arg<data_type>);
+		std::transform(in, in + size, powoutput, std::norm<data_type>());
+		std::transform(in, in + size, phaseoutput, std::arg<data_type>());
 	}
 
 	/**
@@ -98,7 +98,6 @@ namespace MathUtil
 #pragma omp for nowait
 			for (auto i = 0U; i < size; ++i)
 			{
-				std::cerr << "Val1: " << (*in + i) << "\tVal2: " << *(in2 + i) << std::endl;
 				map_val = reduce(map_val, map(*(in + i), *(in2 + i)));
 			}
 

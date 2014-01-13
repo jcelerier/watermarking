@@ -15,11 +15,12 @@ class Convolution : public BenchmarkBase<data_type>
 		Convolution(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
+			this->_name = "Convolution";
 		}
 
 		virtual void operator()(Audio_p& data) override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
 			for(auto& sampleData : channelsData)
 			{

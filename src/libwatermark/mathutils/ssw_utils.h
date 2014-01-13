@@ -1,7 +1,11 @@
-#pragma once
+//#pragma once
+#ifndef SSW_UTILS_H
+#define SSW_UTILS_H
+
 #include <random>
 #include <vector>
 #include <algorithm>
+#include "Parameters.h"
 namespace SSWUtil
 {
 	/* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}
@@ -36,32 +40,51 @@ namespace SSWUtil
 
         /* Génère une plage de fréquence aléatoire de taille size et comprise dans
 			l'intervalle [1,sampleRate] (pourquoi pas sampleRate / 2 ?) */
-		std::vector<unsigned int> generateFrequencyRange(unsigned int size, unsigned int sampleRate)
+	std::vector<unsigned int> generateFrequencyRange(unsigned int size, Parameters<double> &conf)
         {
-			std::default_random_engine rng(std::random_device{}());
-			std::uniform_int_distribution<int> dist(1, sampleRate);
+		/*
+		  std::default_random_engine rng(std::random_device{}());
+		  std::uniform_int_distribution<int> dist(1, sampleRate);
+		*/
+		int freqMin = 200;
+		int freqMax = 4000;
+		int mid_freq = (freqMax + freqMin) / 2;
+		int mid_ind = (mid_freq * conf.bufferSize) / conf.samplingRate;
+		
+		int start = mid_ind - (size / 2);
 
-			std::vector<unsigned int> range(size);
-			std::generate_n(range.begin(), size, [&] ()
-			{
-				return dist(rng);
-			});
+		if (start < 0) {
+			start = (2000 * conf.bufferSize) / conf.samplingRate;
+		}
 
-			return range;
-
-			/*
-			srand(time(0));
-			std::vector<int> frequencyRange;
-
-            int j = (rand()%(sampleRate-size))+1;
-            frequencyRange.push_back(j);
-
-            for(int i = 1; i < size; i++)
-			{
-				frequencyRange.push_back(i+j);
-            }
-
-            return frequencyRange;
-			*/
+		std::vector<unsigned int> range;
+		for (unsigned int i = 0; i < size; i++) {
+			range.push_back(start + i);
+		}
+		/*
+		  std::generate_n(range.begin(), size, [&] ()
+		  {
+		  return dist(rng);
+		  });
+		*/
+		
+		return range;
+		
+		/*
+		  srand(time(0));
+		  std::vector<int> frequencyRange;
+		  
+		  int j = (rand()%(sampleRate-size))+1;
+		  frequencyRange.push_back(j);
+		  
+		  for(int i = 1; i < size; i++)
+		  {
+		  frequencyRange.push_back(i+j);
+		  }
+		  
+		  return frequencyRange;
+		*/
         }
 }
+
+#endif

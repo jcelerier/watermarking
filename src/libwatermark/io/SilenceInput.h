@@ -46,5 +46,22 @@ class SilenceInput : public InputManagerBase<data_type>
 
 			for(auto& channel : v())
 				std::fill(channel.begin(), channel.end(), val);
+
+//			double const cst = 2.0 * M_PI * _frequence / 44100;
+
+//			// Pour chaque canal (gauche - droite)
+//			for(auto& sampleData : v())
+//			{
+//				// Pour chaque échantillon (dans l'ordre)
+//				for(auto& sample : sampleData)
+//				{
+//					sample =  sample + 0.8 * sin(cst * pos);
+//					pos = (pos == taille - 1) ? 0 : pos + 1;
+//				}
+//			}
 		}
+
+//		int taille = 44100 / 9000;
+//		int _frequence = 9000;
+//		int pos = 0;
 };

@@ -3,9 +3,7 @@
 #include "FFTProxy.h"
 #include "../InputManagerBase.h"
 #include "../copystyle/InputOLA.h"
-#include "window/HannWindow.h"
 #include "window/BartlettWindow.h"
-#include "window/BlackmanWindow.h"
 #include "window/RectWindow.h"
 
 template <typename data_type>
@@ -23,7 +21,7 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Input_p<data_type> inputImpl = nullptr;
+		Input_p inputImpl = nullptr;
 		Window_p<data_type> window = nullptr;
 
 	public:
@@ -33,10 +31,20 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			FFTProxy<data_type>(fftmanager, cfg),
 			InputManagerBase<data_type>(nullptr, cfg),
 			inputImpl(input),
-			window(new HannWindow<data_type>(cfg))
+			window(new RectWindow<data_type>())
 		{
 		}
 
+		FFTInputProxy(WindowBase<data_type>* wnd,
+					  InputManagerBase<data_type>* input,
+					  FFT_p<data_type> fftmanager,
+					  Parameters<data_type>& cfg):
+			FFTProxy<data_type>(fftmanager, cfg),
+			InputManagerBase<data_type>(nullptr, cfg),
+			inputImpl(input),
+			window(wnd)
+		{
+		}
 		virtual ~FFTInputProxy() = default;
 
 		virtual Audio_p getNextBuffer() final override
@@ -44,13 +52,12 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 			// 1. On get le buffer.
 			Audio_p tmp = inputImpl->getNextBuffer();
 			if(tmp == nullptr) return tmp;
-			auto& inbuff = static_cast<CData<data_type>*>(tmp.get())->_data;
+			auto& inbuff = getAudio<double>(tmp);
 
 			// 2. On fenêtre
-			/*
+			// channel.size() : on prend tout. Rajouter la possibilité de faire du 0-fill
 			for(auto& channel : inbuff)
-				window->apply(channel, inputImpl->copyHandler->frameIncrement() * 2);
-			*/
+				window->apply(channel);
 
 			// 3. On copie dans le buffer de la fft
 			std::copy(inbuff.begin(), inbuff.end(), fft->input().begin());

@@ -15,20 +15,12 @@
  */
 class TimeAdapter
 {
-	public:
-		virtual ~TimeAdapter() = default;
+	protected:
 		virtual bool startCheck() = 0;
 		virtual bool stopCheck() = 0;
 
-		/**
-		 * @brief increment
-		 *
-		 * Est utilisé pour gérer le nombre de buffers écoulés
-		 */
-		void increment()
-		{
-			++count;
-		}
+	public:
+		virtual ~TimeAdapter() = default;
 
 		/**
 		 * @brief callHandlers Appelle les handlers
@@ -85,7 +77,7 @@ class TimeAdapter
 				callHandlers(stopHandlers);
 			}
 
-			increment();
+			++count;
 		}
 
 		/**

@@ -2,7 +2,7 @@
 
 #include "../Parameters.h"
 #include "../Data.h"
-
+#include "BenchmarkInterface.h"
 
 template <typename data_type>
 /**
@@ -10,7 +10,7 @@ template <typename data_type>
  *
  * Classe de base pour des benchmarks / effets audio.
  */
-class BenchmarkBase
+class BenchmarkBase : public BenchmarkInterface
 {
 	public:
 		using size_type = typename Parameters<data_type>::size_type;
@@ -19,12 +19,9 @@ class BenchmarkBase
 		{
 		}
 
-		virtual void operator()(Audio_p& data) = 0;
 		virtual ~BenchmarkBase() = default;
 
 	protected:
 		const Parameters<data_type>& conf;
 };
 
-template<typename T>
-using Benchmark_p = std::shared_ptr<BenchmarkBase<T>>;

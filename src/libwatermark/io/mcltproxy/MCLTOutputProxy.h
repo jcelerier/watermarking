@@ -13,10 +13,10 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 		using complex_type = typename Parameters<data_type>::complex_type;
 
 	private:
-		Output_p<data_type> outputImpl = nullptr;
+		Output_p outputImpl = nullptr;
 
 	public:
-		MCLTOutputProxy(Output_p<data_type> output,
+		MCLTOutputProxy(Output_p output,
 					  Parameters<data_type>& cfg):
 			MCLTProxy<data_type>(cfg),
 			OutputManagerBase<data_type>(nullptr, cfg),
@@ -25,13 +25,13 @@ class MCLTOutputProxy : public MCLTProxy<data_type>, public OutputManagerBase<da
 		}
 
 		virtual ~MCLTOutputProxy() = default;
-		virtual void writeNextBuffer(Audio_p& buf) final override
+		virtual void writeNextBuffer(Audio_p& data) final override
 		{
-			auto& buffer = static_cast<CData<complex_type>*>(buf.get())->_data;
+			auto& buffer = getSpectrum<data_type>(data);
 			for(auto& channel : buffer)
 				mclt.backward(channel);
 
-			outputImpl->writeNextBuffer(buf);
+			outputImpl->writeNextBuffer(data);
 		}
 
 };

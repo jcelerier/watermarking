@@ -15,11 +15,12 @@ class Amplify : public BenchmarkBase<data_type>
 		Amplify(const Parameters<data_type>& configuration):
 			BenchmarkBase<data_type>(configuration)
 		{
+			this->_name = "Amplify";
 		}
 
 		virtual void operator()(Audio_p& data) override
 		{
-			auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
 			for(auto& sampleData : channelsData)
 			{
@@ -37,5 +38,5 @@ class Amplify : public BenchmarkBase<data_type>
 		}
 
 	private:
-		double _gain = 1;
+		double _gain = 0.5;
 };

@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 
-#include "SpectralWatermarkBase.h"
+#include "WatermarkBase.h"
 #include "mathutils/math_util.h"
 
 /**
@@ -11,14 +11,14 @@
  * Décodage SSW.
  */
 template <typename data_type>
-class SSWDecode : public SpectralWatermarkBase<data_type>
+class SSWDecode : public WatermarkBase<data_type>
 {
 	public:
 		SSWDecode(const Parameters<data_type>& configuration,
 				  std::vector<int> & PNSequence,
 				  std::vector<unsigned int> & freqWinIndexes,
 				  double watermarkAmp, double threshold):
-			SpectralWatermarkBase<data_type>(configuration),
+			WatermarkBase<data_type>(configuration),
 			_PNSequence(PNSequence),
 			_freqWinIndexes(freqWinIndexes),
 			_watermarkAmp(watermarkAmp),
@@ -28,7 +28,7 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
-			auto& channelsSpectrum = static_cast<CData<typename SpectralWatermarkBase<data_type>::complex_type>*>(data.get())->_data;
+			auto& channelsSpectrum = getSpectrum<data_type>(data);
 
 			std::vector<int> result;
 
@@ -41,25 +41,47 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 				// Séquence PN multipliée par l'amplitude du watermark
 				std::vector<double> amplifiedPN;
 				for (int i = 0; i < _PNSequence.size(); i++) {
-					amplifiedPN.push_back(_watermarkAmp * _PNSequence[i]);
+					amplifiedPN.push_back(_watermarkAmp * (double) _PNSequence[i]);
 				}
 
 				// Coefficients du spectre à modifier (sous forme de vecteur des normes des complexes)
 				std::vector<double> coefs_power;
 				for (int i = 0; i < _PNSequence.size(); i++) {
-					double power = std::norm(spectrumData[_freqWinIndexes[i]]);
-					coefs_power.push_back(std::sqrt(power));
+					//std::cout << spectrumData[_freqWinIndexes[i]] << " ";
+					double power = 20.0 * std::log10(std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]])));
+					coefs_power.push_back(power);
 				}
+				//std::cout << std::endl;
 
 				// Calcul de la corrélation
 
 				double PNnorm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
 				double coefsNorm = MathUtil::norm_n<std::vector<double>::iterator, double>(coefs_power.begin(), coefs_power.size());
 
-				// Changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
+				//std::cout << "PN Norm : " << PNnorm << std::endl;
+				//std::cout << "Coefs Norm : " << coefsNorm << " ";
+
+				// A changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
 				double correlation = (MathUtil::dotProduct_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), coefs_power.begin(), amplifiedPN.size()))/(PNnorm * coefsNorm);
 
-				std::cout << correlation << std::endl;
+				//std::cout << "Corr : " << correlation << std::endl;
+
+				char filename[64];
+				sprintf(filename, "corr_channel%d", j);
+
+				if (_cpt == 0) {
+					FILE *file = fopen(filename, "w");
+					
+					fprintf(file, "#Win Corr\n");
+
+					fclose(file);
+				}
+
+				FILE *file = fopen(filename, "a");
+				
+				fprintf(file, "%d %f\n", _cpt, correlation);
+				
+				fclose(file);
 
 				// Mémorisation de l'estimation du bit pour le canal j
 				if (correlation > _threshold) {
@@ -73,6 +95,8 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 				}
 			}
 
+			_cpt++;
+
 			int detectedBit = result[0];
 
 			// Comparaison des résultats sur tous les canaux
@@ -83,10 +107,13 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 			}
 
 			// Si watermark détecté, insérer le bit dans le tableau en output
-			if (detectedBit == 1)
+			if (detectedBit == 1) {
 				watermark.setNextBit(true);
-			else if (detectedBit == -1)
+				//std::cout << "true" << "\n";
+			} else if (detectedBit == -1) {
 				watermark.setNextBit(false);
+				//std::cout << "false" << "\n";
+			}
 		}
 
 	private :
@@ -94,4 +121,5 @@ class SSWDecode : public SpectralWatermarkBase<data_type>
 		std::vector<unsigned int> _freqWinIndexes = {};
 		double _watermarkAmp;
 		double _threshold;
+		int _cpt = 0;
 };

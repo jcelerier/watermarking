@@ -1,0 +1,138 @@
+\documentclass[a4paper,11pt,oneside]{report}
+
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{relsize}
+\usepackage{color}
+
+\usepackage{hyperref}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\usepackage{listings}
+\usepackage{float}
+\usepackage{kpfonts}
+\usepackage{verbatimbox}
+\usepackage{datetime}
+
+% more figures per page
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}   
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+\usepackage{graphicx}
+%% \newcommand{\foofoo}{\hspace{-2.3pt}$\bullet$ \hspace{5pt}}
+
+
+\lstset{
+language=C++,
+basicstyle=\footnotesize,
+numbers=left,
+numberstyle=\footnotesize,
+stepnumber=1,
+numbersep=5pt,
+backgroundcolor=\color{white},
+showspaces=false,
+showstringspaces=false,
+showtabs=false,
+frame=single,
+tabsize=2,
+captionpos=b,
+breaklines=true,
+breakatwhitespace=false,
+escapeinside={\%*}{*)}
+}
+
+
+\lstset{
+  literate={ù}{{\`u}}1
+           {é}{{\'e}}1
+           {è}{{\'e}}1
+           {à}{{\`a}}1
+}
+
+
+\geometry{margin=2cm}
+\geometry{headheight=15pt}
+\usepackage{fancyhdr}
+\usepackage[xindy,toc]{glossaries}
+\usepackage{natbib}
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{algorithm2e}
+\usepackage{CJKutf8}
+\usepackage{tikz-uml}
+\usepackage{caption}
+\usepackage[footnote,smaller]{acronym}
+\usepackage[perpage]{footmisc}
+\usepackage[]{titlesec}
+\makeatletter
+\def\ttl@mkchap@i#1#2#3#4#5#6#7{%
+    \ttl@assign\@tempskipa#3\relax\beforetitleunit
+    \vspace{\@tempskipa}
+    \global\@afterindenttrue
+    \ifcase#5 \global\@afterindentfalse\fi
+    \ttl@assign\@tempskipb#4\relax\aftertitleunit
+    \ttl@topmode{\@tempskipb}{%
+        \ttl@select{#6}{#1}{#2}{#7}}%
+    \ttl@finmarks  % Outside the box!
+    \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}}
+\makeatother
+
+\makeglossaries
+
+\pagestyle{fancy}
+
+\renewcommand*{\acsfont}[1]{\brand{#1}}
+\newcommand{\brand}[1]{\textsc{\textbf{#1}}}
+
+\let\oldpar\paragraph
+\renewcommand{\paragraph}[1]{\oldpar{#1}\mbox{}\\}
+
+\DeclareMathOperator{\power}{power}
+\DeclareMathOperator{\phase}{phase}
+\DeclareMathOperator{\recompute}{recompute}
+
+\rhead{Audio watermarking}
+
+\begin{document}
+\selectlanguage{english}
+\begin{titlepage}
+  \begin{center}
+
+    \textsc{\LARGE Audio Watermarking}\\[1cm]
+    
+  \end{center}
+  
+  \vspace*{\stretch{2}}
+  \begin{flushbottom}
+   \begin{flushleft}
+    \underline{Students} : Jean-Michaël \textsc{Celerier}, Abdelhamid \textsc{Cherif}, Alban \textsc{De Martin}, Quentin \textsc{Midy}, Marc \textsc{Queiros Soares}, Valentin \textsc{Sarthou} - \today \\
+   \end{flushleft}
+  \end{flushbottom}
+\end{titlepage}
+\clearpage
+\tableofcontents
+\listoffigures
+\include{glossary}
+
+\include{introduction}
+\include{watermarking}
+\include{evaluation}
+\include{management}
+\include{implementation}
+\include{results}
+\include{conclusion}
+
+\printglossaries
+\bibliographystyle{apalike}
+\bibliography{watermarking}
+\end{document}

@@ -2,7 +2,9 @@
 
 #include "OutputManagerBase.h"
 #include "gnuplot/gnuplot_i.h"
-
+#include <numeric>
+#include <algorithm>
+#include <complex>
 
 template <typename data_type>
 /**
@@ -15,7 +17,7 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 {
 	private:
 		gnuplot_ctrl *h = nullptr;
-		Output_p<data_type> outputImpl = nullptr;
+		Output_p outputImpl = nullptr;
 
 	public:
 		GnuplotFFTOutput(OutputManagerBase<data_type>* output, Parameters<data_type>& cfg):
@@ -32,22 +34,25 @@ class GnuplotFFTOutput:public OutputManagerBase<data_type>
 		}
 
 		GnuplotFFTOutput(const GnuplotFFTOutput&) = delete;
-		const GnuplotFFTOutput& operator=(const GnuplotFFTOutput&) = delete;
+		GnuplotFFTOutput& operator=(const GnuplotFFTOutput&) = delete;
 
 
-		virtual void writeNextBuffer(Audio_p& abstract_buffer) override
+		virtual void writeNextBuffer(Audio_p& data) override
 		{
-			auto& buffer = static_cast<CData<typename Parameters<data_type>::complex_type>*>(abstract_buffer.get())->_data;
+			auto& buffer = getSpectrum<data_type>(data);
 
 			for(auto& channel : buffer)
 			{
 				std::vector<data_type> power(channel.size());
 				std::vector<data_type> phase(channel.size());
-				MathUtil::computePowerAndPhaseSpectrum(channel.data(), power.data(), phase.data(), channel.size());
+
+				std::transform(channel.begin(), channel.end(), power.begin(), [] (std::complex<double> x) {return 20 * std::log10(std::abs(x)); });
+				std::transform(channel.begin(), channel.end(), phase.begin(), [] (std::complex<double> x) {return std::arg(x); });
 				gnuplot_resetplot(h);
-				gnuplot_plot_x(h, power.data(), power.size(), "Plot");
-				sleep(3);
+
+				//gnuplot_plot_x(h, power.data(), power.size(), "Plot");
+				//sleep(1);
 			}
-			outputImpl->writeNextBuffer(abstract_buffer);
+			outputImpl->writeNextBuffer(data);
 		}
 };

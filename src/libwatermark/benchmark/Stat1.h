@@ -14,17 +14,18 @@ class Stat1 : public BenchmarkBase<data_type>
         Stat1(const Parameters<data_type>& configuration):
             BenchmarkBase<data_type>(configuration)
         {
+			this->_name = "Stat1";
         }
 
         virtual void operator()(Audio_p& data) override
         {
-            auto& channelsData = static_cast<CData<data_type>*>(data.get())->_data;
+			auto& channelsData = getAudio<data_type>(data);
 
             for(auto& sampleData : channelsData)
             {
-                for(auto i = 1U; i < sampleData.size(); i ++)
+				for(auto i = 1U; i < sampleData.size() - 1; i ++)
                 {
-                    sampleData[i]=(sampleData[i-1]+sampleData[i]+sampleData[i+1])/3;
+					sampleData[i] = (sampleData[i-1] +sampleData[i]+sampleData[i+1])/3;
                 }
             }
         }

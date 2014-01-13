@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 
+#include "Parameters.h"
 /**
  * @brief The IData struct
  *
@@ -22,7 +23,7 @@ struct IData
 		virtual ~IData() = default;
 };
 
-using Audio_p = std::unique_ptr<IData>;
+using Audio_p = std::shared_ptr<IData>;
 
 
 template<typename T>
@@ -38,3 +39,40 @@ struct CData : public IData
 {
 	std::vector<std::vector<T>> _data = {};
 };
+
+/**
+ * @brief The MultiData struct
+ *
+ * Pour multiplexage
+ */
+struct MultiData : public IData
+{
+	std::vector<Audio_p> _data = {};
+};
+
+/**
+ * @brief getAudio Extracts the sample vectors from the encapsulated pointer.
+ * @param data Pointer
+ * @return Vector reference
+ */
+template<typename data_type>
+std::vector<std::vector<data_type> >& getAudio(Audio_p& data)
+{
+	return static_cast<CData<data_type>*>(data.get())->_data;
+}
+
+/**
+ * @brief getSpectrum Extracts the complex vectors from the encapsulated pointer.
+ * @param data Pointer
+ * @return Complex vextors
+ */
+template<typename data_type>
+std::vector<std::vector<typename Parameters<data_type>::complex_type> >& getSpectrum(Audio_p& data)
+{
+	return static_cast<CData<typename Parameters<data_type>::complex_type>*>(data.get())->_data;
+}
+
+inline std::vector<Audio_p>& getMulti(Audio_p& data)
+{
+	return static_cast<MultiData*>(data.get())->_data;
+}

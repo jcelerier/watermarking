@@ -16,10 +16,7 @@ class BufferInput : public InputManagerBase<data_type>
 		using size_type = typename Parameters<data_type>::size_type;
 
 	public:
-		BufferInput(Parameters<data_type>& cfg):
-			InputManagerBase<data_type>(cfg)
-		{
-		}
+		using InputManagerBase<data_type>::InputManagerBase;
 
 		template<typename external_type>
 		void readBuffer(external_type * buf, const size_type n_frames, const size_type chans)

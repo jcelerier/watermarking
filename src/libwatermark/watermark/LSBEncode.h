@@ -12,12 +12,8 @@
 template <typename data_type>
 class LSBEncode : public LSBBase<data_type>
 {
-
 	public:
-		LSBEncode(const Parameters<data_type>& configuration):
-			LSBBase<data_type>(configuration)
-		{
-		}
+		using LSBBase<data_type>::LSBBase;
 
         virtual void operator()(Audio_p& data, WatermarkData& watermark) override
         {

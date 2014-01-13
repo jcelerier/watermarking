@@ -13,9 +13,8 @@ class Convolution : public BenchmarkBase<data_type>
 
 	public:
 		Convolution(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("Convolution", configuration)
 		{
-			this->_name = "Convolution";
 		}
 
 		virtual void operator()(Audio_p& data) override

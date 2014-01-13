@@ -14,10 +14,7 @@ template <typename data_type>
 class RLSBDecode : public LSBBase<data_type>
 {
 	public:
-        RLSBDecode(const Parameters<data_type>& configuration):
-			LSBBase<data_type>(configuration)
-		{
-		}
+		using LSBBase<data_type>::LSBBase;
 
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{

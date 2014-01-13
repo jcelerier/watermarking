@@ -14,10 +14,7 @@ class FFTWManager : public FFTManager<data_type>
 		using FFTManager<data_type>::_out;
 		using FFTManager<data_type>::_spectrum;
 	public:
-		FFTWManager(const Parameters<data_type>& cfg):
-			FFTManager<data_type>(cfg)
-		{
-		}
+		using FFTManager<data_type>::FFTManager;
 
 		FFTWManager(const FFTWManager<data_type>& orig) = delete;
 		const FFTWManager<data_type>& operator=(const FFTWManager<data_type>& orig) = delete;

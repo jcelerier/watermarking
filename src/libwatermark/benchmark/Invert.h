@@ -11,9 +11,8 @@ class Invert : public BenchmarkBase<data_type>
 
 	public:
 		Invert(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("FFTInvert", configuration)
 		{
-			this->_name = "Invert";
 		}
 
 		virtual void operator()(Audio_p& data) override

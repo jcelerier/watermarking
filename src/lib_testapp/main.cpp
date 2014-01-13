@@ -17,7 +17,7 @@ class WatermarkingTests: public QObject
 		void benchmark() { TestBenchmark(); }
 		void lsb() { TestLSB(); }
 		void ssw() { TestSSW(); }
-		void rlsb() {TestRLSB(); } // passer voir le RLSBDecode.h pour utilisation
+		void rlsb() { TestRLSB(); } // passer voir le RLSBDecode.h pour utilisation
 };
 
 int main(int argc, char** argv)

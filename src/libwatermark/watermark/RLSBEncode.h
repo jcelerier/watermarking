@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-#include "WatermarkBase.h"
+#include "LSB/LSBBase.h"
 
 /**
  * @brief The LSBEncode class
@@ -9,12 +9,12 @@
  * Implémente l'encodage sur bit de poids faible.
  */
 template <typename data_type>
-class RLSBEncode : public WatermarkBase<data_type>
+class RLSBEncode : public LSBBase<data_type>
 {
 
 	public:
         RLSBEncode(const Parameters<data_type>& configuration):
-			WatermarkBase<data_type>(configuration)
+			LSBBase<data_type>(configuration)
 		{
 		}
 
@@ -31,7 +31,7 @@ class RLSBEncode : public WatermarkBase<data_type>
                     {
                         short bitWater = (short)watermark.nextBit();
 
-                        for(int nb = 0; nb < nbBits; ++nb)
+						for(int nb = 0; nb < this->nbBits; ++nb)
                         {
                             short bit16 = 1;
                             bit16 = bit16 << nb;
@@ -45,6 +45,4 @@ class RLSBEncode : public WatermarkBase<data_type>
                 }
             }
         }
-
-        int nbBits = 6;
 };

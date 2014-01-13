@@ -59,10 +59,17 @@ class WatermarkData
 			const auto size_bits = sizeof(_size) * 8U;
 			std::bitset<size_bits> num;
 
-			for(auto i = 0U; i < size_bits; ++i)
-				num[i] = bits[i];
+			if(bits.size() >= 64)
+			{
+				for(auto i = 0U; i < size_bits; ++i)
+					num[i] = bits[i];
 
-			return _size = num.to_ullong();
+				return _size = num.to_ullong();
+			}
+			else
+			{
+				return _size = 0;
+			}
 		}
 
 		/**
@@ -77,9 +84,16 @@ class WatermarkData
 			std::stringstream s;
 			const auto size_bits = sizeof(_size) * 8U;
 
-			for(auto i = size_bits; i < size_bits + _size; ++i)
+			if(bits.size() == _size + size_bits)
 			{
-				s << bits[i];
+				for(auto i = size_bits; i < size_bits + _size; ++i)
+				{
+					s << bits[i];
+				}
+			}
+			else
+			{
+				std::cerr << "Erreur: impossible de lire les données" << std::endl;
 			}
 
 			//std::cerr << s.str() << std::endl;

@@ -63,6 +63,7 @@ HEADERS += \
     io/copystyle/OutputFilter.h \
     benchmark/Convolution.h \
     benchmark/Stat1.h \
+    watermark/mask.h \
     io/IOInterface.h \
     benchmark/FFTNoise.h \
     benchmark/FFTAmplify.h \
@@ -75,6 +76,5 @@ HEADERS += \
     io/InputMultiplexer.h \
     benchmark/ComputeRMS.h \
     watermark/RLSBEncode.h \
-    watermark/RLSBDecode.h
-
-SOURCES +=
+    watermark/RLSBDecode.h \
+    watermark/LSB/LSBBase.h

@@ -1,5 +1,9 @@
 #pragma once
-#include <fftw3.h>
+#ifdef __APPLE__
+#include "/usr/local/Cellar/fftw/3.3.3/include/fftw3.h"
+#else
+#include "fftw3.h"
+#endif
 
 #include "FFTManager.h"
 

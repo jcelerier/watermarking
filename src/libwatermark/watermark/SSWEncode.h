@@ -46,11 +46,11 @@ class SSWEncode : public WatermarkBase<data_type>
 						power = std::norm(spectrumData[_freqWinIndexes[i]]);
 						phase = std::arg(spectrumData[_freqWinIndexes[i]]);
 
+						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
 						magnitudeDB = 20.0 * std::log10(std::sqrt(power)) + bit * _watermarkAmp * (double) _PNSequence[i];
 
 						magnitude = std::pow(10.0, (magnitudeDB / 20.0));
 
-						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}
 

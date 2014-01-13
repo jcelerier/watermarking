@@ -67,16 +67,6 @@
                <layout class="QGridLayout" name="gridLayout_6">
                 <item row="0" column="0" colspan="2">
                  <layout class="QGridLayout" name="gridLayout_5">
-                  <item row="2" column="3">
-                   <widget class="QSpinBox" name="NumberLsbSpinBox">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>5</number>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="1" column="0" colspan="2">
                    <widget class="QPushButton" name="lsbSaveConfigurationButton">
                     <property name="cursor">
@@ -94,36 +84,10 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="1">
-                   <widget class="QSpinBox" name="sampleSizeSpinBox">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>2048</number>
-                    </property>
-                    <property name="value">
-                     <number>512</number>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="0" column="2" colspan="2">
                    <widget class="QLabel" name="label">
                     <property name="text">
                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to load a configuration script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="2">
-                   <widget class="QLabel" name="label_17">
-                    <property name="toolTip">
-                     <string>Defines the number of Least Significant Bits per sample used to crypt the watermark</string>
-                    </property>
-                    <property name="text">
-                     <string>LSB used (default: 1) </string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -163,19 +127,6 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0">
-                   <widget class="QLabel" name="label_16">
-                    <property name="toolTip">
-                     <string>Defines the size (bits) of each sample used to perform LSB algorithm</string>
-                    </property>
-                    <property name="text">
-                     <string>Sample size (default: 512)</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="3" column="1" colspan="2">
                    <widget class="QPushButton" name="setDefaultValueLsbPushButton">
                     <property name="text">
@@ -185,6 +136,50 @@
                      <iconset resource="icons/qstyle.qrc">
                       <normaloff>:/trolltech/styles/commonstyle/images/refresh-24.png</normaloff>:/trolltech/styles/commonstyle/images/refresh-24.png</iconset>
                     </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_17">
+                    <property name="toolTip">
+                     <string>Defines the number of Least Significant Bits per sample used to crypt the watermark</string>
+                    </property>
+                    <property name="text">
+                     <string>LSB used (default: 1) </string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QSpinBox" name="NumberLsbSpinBox">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>5</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="2">
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>LSB Method used (default: LSB)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="3">
+                   <widget class="QComboBox" name="lsbMethodUsedComboBox">
+                    <item>
+                     <property name="text">
+                      <string>LSB (Simple method)</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>RLSB (Resistive LSB method)</string>
+                     </property>
+                    </item>
                    </widget>
                   </item>
                  </layout>
@@ -836,16 +831,6 @@ p, li { white-space: pre-wrap; }
               <string>LSB Method</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_11">
-              <item row="3" column="2">
-               <widget class="QLabel" name="label_18">
-                <property name="text">
-                 <string>LSB used (default: 1)</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0" colspan="2">
                <widget class="QPushButton" name="lsbSaveConfigurationButton2">
                 <property name="text">
@@ -857,29 +842,6 @@ p, li { white-space: pre-wrap; }
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_13">
-                <property name="text">
-                 <string>Sample size (default: 512)</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QSpinBox" name="sampleSizeSpinBox2">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>2048</number>
-                </property>
-                <property name="value">
-                 <number>512</number>
-                </property>
-               </widget>
-              </item>
               <item row="1" column="0" colspan="2">
                <widget class="QPushButton" name="lsbLoadConfigurationButton2">
                 <property name="text">
@@ -888,16 +850,6 @@ p, li { white-space: pre-wrap; }
                 <property name="icon">
                  <iconset resource="icons/qstyle.qrc">
                   <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="3">
-               <widget class="QSpinBox" name="numberLsbSpinBox2">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>10</number>
                 </property>
                </widget>
               </item>
@@ -943,6 +895,47 @@ p, li { white-space: pre-wrap; }
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
                 </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_18">
+                <property name="text">
+                 <string>LSB used (default: 1)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QSpinBox" name="numberLsbSpinBox2">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QLabel" name="label_13">
+                <property name="text">
+                 <string>LSB Method used (default: LSB)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QComboBox" name="lsbMethodUsedComboBox2">
+                <item>
+                 <property name="text">
+                  <string>LSB (Simple method)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>RLSB (Resistive LSB method)</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>

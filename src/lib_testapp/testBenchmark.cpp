@@ -16,6 +16,7 @@
 #include "benchmark/Smooth.h"
 #include "benchmark/ZeroCross.h"
 #include "benchmark/Stat1.h"
+#include "../libwatermark/watermark/mask.h"
 #include "benchmark/FFTNoise.h"
 #include "transform/FFTWManager.h"
 #include "io/fftproxy/FFTInputProxy.h"
@@ -116,5 +117,7 @@ void TestBenchmark()
 	FFTTestBase(Benchmark_p(new FFTNoise<double>(conf)), conf);
 
 	convolution();
-//	TestOLA();
+
+    Mask::calcul();
+
 }

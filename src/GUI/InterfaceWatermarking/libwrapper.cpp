@@ -9,7 +9,11 @@
 #include <bitset>
 #include "libwrapper.h"
 #include "libwatermark/mathutils/math_util.h"
+#include "libwatermark/watermark/RLSBEncode.h"
+#include "libwatermark/watermark/RLSBDecode.h"
 #include <memory>
+
+#include <QDebug>
 
 /**
  * @brief LibWrapper::LibWrapper
@@ -88,7 +92,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	m_gui->usedWatermarkCapacityBar->setAlignment(Qt::AlignCenter);
 
 	connect(m_gui->NumberLsbSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
-	connect(m_gui->sampleSizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
+	connect(m_gui->lsbMethodUsedComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateWatermarkCapacityProgressBar()));
 
 	connect(m_gui->loadWatermarkTextButton,SIGNAL(clicked()),this,SLOT(loadTextWatermarkFile()));
 
@@ -169,8 +173,6 @@ void LibWrapper::loadHostWatermarkFile()
 		watermark position part */
 		int inputLengthInSec = input->frames()/conf.samplingRate;
 
-		//qDebug() << inputLengthInSec;
-
 		QTime inputLength(0,0,0);
 		inputLength = inputLength.addSecs(inputLengthInSec);
 
@@ -221,8 +223,6 @@ void LibWrapper::loadHostWatermarkFile()
 
 		m_gui->waveformInputWidget->replot();
 
-		m_nbFramesBase = input->frames();
-		m_sampleSizeBase =conf.bufferSize;
 
 		switch(m_gui->selectingMethodTab->currentIndex())
 		{
@@ -230,22 +230,15 @@ void LibWrapper::loadHostWatermarkFile()
 			case 0: //LSB Method
 				/* Editing watermark max length progress bar */
 
-				m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
-
+				//m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
 				m_gui->usedWatermarkCapacityBar->setMinimum(0);
-				m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
 
-				updateWatermarkCapacityProgressBar();
+				m_nbChannels = input->channels();
+				m_nbFrames = input->frames();
 
-
-				/* Printing capacity information labels */
-
-				m_gui->availableCapacityLabel->setVisible(true);
 				m_gui->availableCapacityLabel2->setVisible(true);
 
-				m_gui->availableCapacityLabel2->setText(QString::number(m_gui->textToWatermark->toPlainText().size()*8)
-														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()) + " bits");
-
+				updateWatermarkCapacityProgressBar();
 				break;
 
 			default:
@@ -430,11 +423,21 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 
 		switch(m_gui->selectingMethodComboBox->currentIndex())
 		{
-
 			case 0: //LSB Method
 
-				m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
-				m_gui->usedWatermarkCapacityBar->setMaximum(m_computedNbFrames*m_gui->NumberLsbSpinBox->value());
+				switch(m_gui->lsbMethodUsedComboBox->currentIndex())
+				{
+					case 0: //Simple LSB method
+						m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFrames*m_nbChannels*m_gui->NumberLsbSpinBox->value());
+						break;
+
+					case 1: //Resistive LSB method
+						m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFrames*m_nbChannels);
+						break;
+
+					default:
+						break;
+				}
 
 				i = m_gui->textToWatermark->toPlainText().size();
 
@@ -442,15 +445,15 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
 																				) + " bits");
 
-				if(i < m_gui->usedWatermarkCapacityBar->maximum())
+				if(i*8 < m_gui->usedWatermarkCapacityBar->maximum())
 				{
-					m_gui->usedWatermarkCapacityBar->setValue(i*8);
 					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+					m_gui->usedWatermarkCapacityBar->setValue(i*8);
 				}
 				else
 				{
-					m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
 					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+					m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
 				}
 
 				break;
@@ -549,17 +552,28 @@ void LibWrapper::encode()
 		{
 			Parameters<short> conf;
 
-			conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
-
 			// Peuvent difficilement être abstraits à cause du <short> (sinon faudrait faire un static_cast et c'est moins propre imho)
 			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 			auto output = new FileOutput<short>(conf);
 
-			// Faire un switch dans le GUI pour choisir entre LSB et RLSB, et ici instancier correctement
-			auto algorithm = /* (m_gui->rlsbSwitch)?
-								new RLSBEncode<short>(conf) : */
-								new LSBEncode<short>(conf);
-			//ALBAN: ici faire algorithm->nbBits = 42;
+			LSBBase<short>* algorithm = nullptr;
+			switch(m_gui->lsbMethodUsedComboBox->currentIndex())
+			{
+
+				case 0: //LSB Method
+					algorithm = new LSBEncode<short>(conf);
+					break;
+
+				case 1: //RLSB Method
+					algorithm = new RLSBEncode<short>(conf);
+					break;
+
+				default: //Default: LSB
+					algorithm = new LSBEncode<short>(conf);
+					break;
+			}
+
+			algorithm->nbBits = m_gui->NumberLsbSpinBox->value();
 
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
@@ -610,11 +624,9 @@ void LibWrapper::encode()
 		{
 			Parameters<double> conf;
 
-			conf.bufferSize = m_gui->sampleSizeSpinBox->value(); // Editing sample size thanks to the GUI
-
 			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
 			auto output = new FileOutput<double>(conf);
-		/*
+			/*
 			auto algorithm = new SSWEncode<double>(conf);
 
 			m_manager.input() = Input_p(input);
@@ -665,9 +677,24 @@ void LibWrapper::decode()
 			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 			auto output = new DummyOutput<short>(conf);
 
-			auto algorithm = /* (m_gui->rlsbSwitch)?
-								new RLSBDecode<short>(conf) : */
-								new LSBDecode<short>(conf);
+			LSBBase<short>* algorithm = nullptr;
+			switch(m_gui->lsbMethodUsedComboBox2->currentIndex())
+			{
+
+				case 0: //LSB Method
+					algorithm = new LSBDecode<short>(conf);
+					break;
+
+				case 1: //RLSB Method
+					algorithm = new RLSBDecode<short>(conf);
+					break;
+
+				default: //Default: LSB
+					algorithm = new LSBDecode<short>(conf);
+					break;
+			}
+
+			algorithm->nbBits = m_gui->numberLsbSpinBox2->value();
 
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
@@ -729,9 +756,7 @@ bool LibWrapper::defineSavedFile()
  */
 void LibWrapper::setLsbDefaultConfigurationValue()
 {
-	m_gui->sampleSizeSpinBox->setValue(512);
 	m_gui->NumberLsbSpinBox->setValue(1);
-
 }
 
 /**

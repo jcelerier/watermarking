@@ -66,6 +66,23 @@ class SSWDecode : public WatermarkBase<data_type>
 
 				//std::cout << "Corr : " << correlation << std::endl;
 
+				char filename[64];
+				sprintf(filename, "corr_channel%d", j);
+
+				if (_cpt == 0) {
+					FILE *file = fopen(filename, "w");
+					
+					fprintf(file, "#Win Corr\n");
+
+					fclose(file);
+				}
+
+				FILE *file = fopen(filename, "a");
+				
+				fprintf(file, "%d %f\n", _cpt, correlation);
+				
+				fclose(file);
+
 				// Mémorisation de l'estimation du bit pour le canal j
 				if (correlation > _threshold) {
 					// Corrélation proche de 1
@@ -77,6 +94,8 @@ class SSWDecode : public WatermarkBase<data_type>
 					result.push_back(0);
 				}
 			}
+
+			_cpt++;
 
 			int detectedBit = result[0];
 
@@ -102,4 +121,5 @@ class SSWDecode : public WatermarkBase<data_type>
 		std::vector<unsigned int> _freqWinIndexes = {};
 		double _watermarkAmp;
 		double _threshold;
+		int _cpt = 0;
 };

@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	auto tests = new WatermarkingTests;
 	QTest::qExec(tests);
 	delete tests;
-	return 0;
+    return 0;
 }
 
 #include "main.moc"

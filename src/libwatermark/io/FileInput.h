@@ -2,8 +2,11 @@
 #include <istream>
 #include <fstream>
 
+#ifdef __APPLE__
+#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
+#else
 #include "sndfile.hh"
-
+#endif
 #include "InputManagerBase.h"
 #include "../mathutils/math_util.h"
 

@@ -20,12 +20,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     libwrapper.cpp \
     qcustomplot.cpp \
-    codeeditor.cpp
+    codeeditor.cpp \
+    settingsmanager.cpp
 
 HEADERS  += mainwindow.h \
     libwrapper.h \
     qcustomplot.h \
-    codeeditor.h
+    codeeditor.h \
+    settingsmanager.h
 
 FORMS    += mainwindow.ui
 

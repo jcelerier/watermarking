@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "ui_mainwindow.h"
+#include "settingsmanager.h"
 #include "libwatermark/manager/WatermarkManager.h"
 #include "libwatermark/io/FileInput.h"
 #include "libwatermark/io/FileOutput.h"
@@ -18,7 +19,7 @@
 class LibWrapper : public QWidget
 {
 Q_OBJECT
-
+	friend class SettingsManager;
 public:
     LibWrapper();
 	~LibWrapper();
@@ -72,6 +73,8 @@ private:
 	// Trucs de la librairie
 	WatermarkData_p m_data;
 	WatermarkManager m_manager;
+
+	SettingsManager m_settings;
 
 };
 

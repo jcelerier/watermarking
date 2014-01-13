@@ -32,7 +32,7 @@
         <string>Encode methods</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
+        <item row="4" column="0">
          <layout class="QGridLayout" name="mainGridLayout">
           <property name="sizeConstraint">
            <enum>QLayout::SetNoConstraint</enum>
@@ -67,67 +67,7 @@
                <layout class="QGridLayout" name="gridLayout_6">
                 <item row="0" column="0" colspan="2">
                  <layout class="QGridLayout" name="gridLayout_5">
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QPushButton" name="lsbSaveConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>save current onfiguration as a script</string>
-                    </property>
-                    <property name="text">
-                     <string>Save configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2" colspan="2">
-                   <widget class="QLabel" name="label">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to load a configuration script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0" colspan="2">
-                   <widget class="QPushButton" name="lsbLoadConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>load a configuration script</string>
-                    </property>
-                    <property name="statusTip">
-                     <string/>
-                    </property>
-                    <property name="whatsThis">
-                     <string/>
-                    </property>
-                    <property name="text">
-                     <string>Load configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="2" colspan="2">
-                   <widget class="QLabel" name="label_3">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to save current configuration as a script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="1" colspan="2">
+                  <item row="1" column="1" colspan="2">
                    <widget class="QPushButton" name="setDefaultValueLsbPushButton">
                     <property name="text">
                      <string>Reset to default values</string>
@@ -138,7 +78,14 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0">
+                  <item row="0" column="2">
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>LSB Method used (default: LSB)</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
                    <widget class="QLabel" name="label_17">
                     <property name="toolTip">
                      <string>Defines the number of Least Significant Bits per sample used to crypt the watermark</string>
@@ -151,24 +98,7 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="1">
-                   <widget class="QSpinBox" name="NumberLsbSpinBox">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>5</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="2">
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>LSB Method used (default: LSB)</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="3">
+                  <item row="0" column="3">
                    <widget class="QComboBox" name="lsbMethodUsedComboBox">
                     <item>
                      <property name="text">
@@ -180,6 +110,16 @@
                       <string>RLSB (Resistive LSB method)</string>
                      </property>
                     </item>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QSpinBox" name="NumberLsbSpinBox">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>5</number>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -196,55 +136,7 @@
                <layout class="QGridLayout" name="gridLayout_8">
                 <item row="0" column="0">
                  <layout class="QGridLayout" name="gridLayout_7">
-                  <item row="1" column="2">
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to save current configuration as a script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QLabel" name="label_5">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to load a configuration script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="0" column="0" colspan="2">
-                   <widget class="QPushButton" name="sswLoadConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>load a configuration script</string>
-                    </property>
-                    <property name="text">
-                     <string>Load configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QPushButton" name="sswSaveConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>save current onfiguration as a script</string>
-                    </property>
-                    <property name="text">
-                     <string>Save configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0" colspan="3">
                    <widget class="QLabel" name="label_6">
                     <property name="frameShape">
                      <enum>QFrame::StyledPanel</enum>
@@ -268,55 +160,7 @@
                <layout class="QGridLayout" name="gridLayout_10">
                 <item row="0" column="0">
                  <layout class="QGridLayout" name="gridLayout_9">
-                  <item row="1" column="2">
-                   <widget class="QLabel" name="label_7">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to save current configuration as a script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows you to load a configuration script &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="0" column="0" colspan="2">
-                   <widget class="QPushButton" name="compExpLoadConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>load a configuration script</string>
-                    </property>
-                    <property name="text">
-                     <string>Load configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QPushButton" name="compExpSaveConfigurationButton">
-                    <property name="cursor">
-                     <cursorShape>PointingHandCursor</cursorShape>
-                    </property>
-                    <property name="toolTip">
-                     <string>save current onfiguration as a script</string>
-                    </property>
-                    <property name="text">
-                     <string>Save configuration script ...</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="icons/qstyle.qrc">
-                      <normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</normaloff>:/trolltech/styles/commonstyle/images/floppy-16.png</iconset>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0" colspan="3">
                    <widget class="QLabel" name="label_9">
                     <property name="frameShape">
                      <enum>QFrame::StyledPanel</enum>
@@ -635,37 +479,96 @@ p, li { white-space: pre-wrap; }
           </item>
          </layout>
         </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="watermarkSelectionButton">
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="toolTip">
-           <string>Load host audio file </string>
-          </property>
-          <property name="text">
-           <string>Select Watermark Host Audio file ...</string>
-          </property>
-          <property name="icon">
-           <iconset resource="icons/qstyle.qrc">
-            <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="watermarkSelectionButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>Load host audio file </string>
+            </property>
+            <property name="text">
+             <string>Select Watermark Host Audio file ...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/qstyle.qrc">
+              <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="loadConfiguration">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Load Configuration</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/qstyle.qrc">
+              <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-128.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-128.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveConfiguration">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Save Configuration</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/qstyle.qrc">
+              <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-save-128.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-save-128.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -995,7 +898,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>925</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

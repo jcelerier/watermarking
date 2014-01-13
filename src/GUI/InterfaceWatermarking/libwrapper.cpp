@@ -21,7 +21,8 @@
  */
 LibWrapper::LibWrapper():
 	m_data(new SimpleWatermarkData),
-	m_manager(m_data)
+	m_manager(m_data),
+	m_settings(this)
 {
 }
 
@@ -69,9 +70,9 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
 	connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
 
-	connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
-	connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
-	connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
+	connect(m_gui->loadConfiguration,SIGNAL(clicked()), &m_settings, SLOT(load()));
+	connect(m_gui->saveConfiguration,SIGNAL(clicked()), &m_settings, SLOT(save()));
+
 
 	connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
 

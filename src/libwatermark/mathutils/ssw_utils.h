@@ -1,6 +1,4 @@
-//#pragma once
-#ifndef SSW_UTILS_H
-#define SSW_UTILS_H
+#pragma once
 
 #include <random>
 #include <vector>
@@ -86,5 +84,3 @@ namespace SSWUtil
 		*/
         }
 }
-
-#endif

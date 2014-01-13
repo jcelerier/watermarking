@@ -5,12 +5,14 @@
 void TestSSW();
 void TestLSB();
 void TestBenchmark();
+void TestEval();
 
 int main()
 {
 	//TestLSB();
-	TestSSW();
-	//TestBenchmark();
-	return 0;
+    //TestSSW();
+    TestBenchmark();
+    //TestEval();
+    return 0;
 }
 

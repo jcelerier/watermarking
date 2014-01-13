@@ -67,4 +67,6 @@ HEADERS += \
     io/copystyle/InputFilter.h \
     io/copystyle/OutputFilter.h \
     benchmark/Convolution.h \
-    benchmark/Stat1.h
+    benchmark/Stat1.h \
+    watermark/mask.h
+

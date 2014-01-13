@@ -8,7 +8,8 @@ SOURCES += main.cpp \
     testBenchmark.cpp \
     testCopy.cpp \
     testWindow.cpp \
-    testrlsb.cpp
+    testrlsb.cpp \
+    TestTransform.cpp
 DESTDIR = $$PWD/../../output
 
 contains(QMAKE_TARGET.arch, 64):{

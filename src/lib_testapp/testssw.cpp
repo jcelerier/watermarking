@@ -104,8 +104,8 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	// Instanciation du mode d'entrée et de sortie
 	//auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
 	auto input = new FileInput<double>("solo.wav", new InputSimple<double>(conf), conf);
-//	auto input = new SilenceInput<double>(conf);
-//	input->silence(2048, 1);
+	//	auto input = new SilenceInput<double>(conf);
+	//	input->silence(2048, 1);
 
 	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
 
@@ -114,19 +114,19 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
-    auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
+	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
 
 	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
 	//auto algorithm = new SpectralGain<double>(conf);
 
 	auto algorithm = Watermark_p(
-			new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude));
+						 new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude));
 
 	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
 	WatermarkManager manager(Input_p(fft_i),
-				 Output_p(fft_o),
-				 algorithm,
-				 WatermarkData_p(data));
+							 Output_p(fft_o),
+							 algorithm,
+							 WatermarkData_p(data));
 
 	// On fait tourner l'algo
 	manager.execute();
@@ -137,31 +137,3 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	std::cout << "Encodé." << std::endl;
 }
 
-/***** Test du fonctionnement de la MCLT *****/
-void TestMCLT()
-{
-	/*
-	Parameters<double> conf;
-	WatermarkManager<double> manager(conf);
-
-	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
-	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
-
-	FFT_p<double> fft_m(new FFTWManager<double>(conf));
-	fft_m->setChannels((unsigned int) input->channels());
-	auto fft_i = Input_p<double>(new FFTInputProxy<double>(input, fft_m, conf));
-	auto fft_o = Output_p<double>(new FFTOutputProxy<double>(output, fft_m, conf));
-
-	auto mclt_i = Input_p<double>(new MCLTInputProxy<double>(fft_i, conf));
-	auto mclt_o = Output_p<double>(new MCLTOutputProxy<double>(fft_o, conf));
-
-	auto algorithm = new SpectralGain<double>(conf);
-
-	manager.input.swap(mclt_i);
-	manager.output.swap(mclt_o);
-	manager.algorithm.reset(algorithm);
-
-	manager.execute();
-
-	output->writeFile("out_test_mclt_mono.wav");
-*/}

@@ -12,6 +12,13 @@
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
 
+#include "io/InputMultiplexer.h"
+#include "io/copystyle/InputOLA.h"
+#include "io/copystyle/OutputOLA.h"
+#include "benchmark/Dummy.h"
+#include "benchmark/ComputeRMS.h"
+#include "manager/BenchmarkManager.h"
+
 #include "TestHeader.h"
 
 #include "watermark/DummyWatermark.h"
@@ -24,7 +31,8 @@ void TestSimpleMCLT()
 
 	auto input = new BufferInput<double>(conf);
 
-	double tem[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	// Données obtenues par MATLAB
+	double check[10]{0.011, 0.425, 1.487, 3.188, 4.865, 5.866, 5.544, 4.013, 1.842, 0.258};
 	double tab[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 	input->readBuffer<double>(tab, 10, 1);
@@ -48,10 +56,9 @@ void TestSimpleMCLT()
 	manager.execute();
 
 	output->writeOutBuffer(tab);
-	for(int i = 0; i < 10; i++)
-		std::cerr << tab[i] << " ";
 
-	std::cerr << std::endl;
+	for(int i = 0; i < 10; i++)
+		QVERIFY(tab[i]-0.001 <= check[i] && tab[i]+0.001 >=check[i]);
 }
 
 void TestMCLT()
@@ -78,9 +85,28 @@ void TestMCLT()
 	manager.execute();
 
 	output->writeFile("out_test_mclt_mono.wav");
+
+
+	auto binput1 = Input_p(new FileInput<double>("input_mono.wav", conf));
+	auto binput2 = Input_p(new FileInput<double>("out_test_mclt_mono.wav", conf));
+
+	auto binput = Input_p(new InputMultiplexer<double>(binput1, binput2, conf));
+	auto boutput = Output_p(new DummyOutput<double>(conf));
+
+	auto balgo = new ComputeRMS<double>(conf);
+	BenchmarkManager m2(binput,
+						boutput,
+						Benchmark_p(balgo));
+
+	m2.execute();
+
+	double rms = balgo->rms / (input->frames() / double(conf.bufferSize));
+	std::cout << "MCLT RMS Difference : " << rms << std::endl;
+	QVERIFY(rms < 0.0005);
 }
 
 void TestTransform()
 {
+	TestSimpleMCLT();
 	TestMCLT();
 }

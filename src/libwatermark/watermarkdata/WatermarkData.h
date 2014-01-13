@@ -43,11 +43,9 @@ class WatermarkData
 
 			for(auto i = 0U; i < size_bits; ++i)
 			{
-				std::cerr << num[i] << " ";
+				//std::cerr << num[i] << " ";
 				bits[i] = num[i];
 			}
-
-
 		}
 
 		/**
@@ -84,7 +82,7 @@ class WatermarkData
 				s << bits[i];
 			}
 
-			std::cerr << s.str() << std::endl;
+			//std::cerr << s.str() << std::endl;
 			return s.str();
 		}
 

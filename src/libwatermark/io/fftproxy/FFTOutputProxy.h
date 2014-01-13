@@ -64,7 +64,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 		}
 
 	private:
-		Audio_p outbuff;
+		Audio_p outbuff = nullptr;
 };
 
 

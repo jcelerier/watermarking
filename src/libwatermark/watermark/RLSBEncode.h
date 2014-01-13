@@ -18,26 +18,6 @@ class RLSBEncode : public WatermarkBase<data_type>
 		{
 		}
 
-    /*	virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
-		{
-			auto& channelsData = getAudio<data_type>(data);
-			short bit16 = 0x0001;
-			short nonbit16 = (short) ~bit16;
-
-			for(int j = 0; j < channelsData.size(); j++)
-			{
-				auto& sampleData = channelsData[j];
-				for(int i = 0; i < sampleData.size(); ++i)
-				{
-					if(!watermark.isComplete())
-					{
-						short testBit = 0x0001 & (short)watermark.nextBit();
-						sampleData[i] = (sampleData[i] & nonbit16) | (testBit & bit16);
-					}
-				}
-			}
-        }/**/
-
         virtual void operator()(Audio_p& data, WatermarkData& watermark) override
         {
             auto& channelsData = getAudio<data_type>(data);

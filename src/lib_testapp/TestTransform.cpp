@@ -25,8 +25,8 @@ void TestMCLT()
 	data->setNextBit(true);
 
 	Parameters<double> conf;
-	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
-	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
+	auto input = new FileInput<double>("input_mono.wav", conf);
+	auto output = new FileOutput<double>(conf);
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf));
 	fft_m->setChannels((unsigned int) input->channels());

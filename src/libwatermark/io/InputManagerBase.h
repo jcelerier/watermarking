@@ -69,6 +69,6 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 		InputCopy_p<data_type> copyHandler = nullptr;
 
 	private:
-		Audio_p buffer;
+		Audio_p buffer = nullptr;
 };
 

@@ -101,6 +101,18 @@ class WatermarkData
 		}
 
 		/**
+		 * @brief resetData
+		 *
+		 * Remet les données à 0
+		 */
+		void resetData()
+		{
+			resetPosition();
+			bits.clear();
+			_size = 0;
+		}
+
+		/**
 		 * @brief nextBit
 		 * @return Valeur du prochain bit
 		 */

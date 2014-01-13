@@ -506,7 +506,8 @@ void LibWrapper::bitsToData()
 		out.push_back(static_cast<unsigned char>(b.to_ulong()));
 	}
 
-	m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
+	m_gui->getDecodedDataPlainTextEdit->clear();
+	m_gui->getDecodedDataPlainTextEdit->appendPlainText(QString::fromStdString(out));
 }
 
 /**
@@ -659,6 +660,7 @@ void LibWrapper::encode()
  */
 void LibWrapper::decode()
 {
+	m_data->resetData();
 	if(m_inputName.isEmpty())
 	{
 		m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");

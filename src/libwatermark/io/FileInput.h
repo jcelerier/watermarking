@@ -2,7 +2,9 @@
 #include <istream>
 #include <fstream>
 
-#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
+//#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
+
+#include <sndfile.hh>
 
 #include "InputManagerBase.h"
 #include "../mathutils/math_util.h"

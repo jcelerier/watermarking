@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-#include "WatermarkBase.h"
+#include "LSB/LSBBase.h"
 
 /**
  * @brief The LSBDecode class
@@ -9,11 +9,11 @@
  * Implémente le décodage sur bit de poids faible.
  */
 template <typename data_type>
-class LSBDecode : public WatermarkBase<data_type>
+class LSBDecode : public LSBBase<data_type>
 {
 	public:
         LSBDecode(const Parameters<data_type>& configuration):
-			WatermarkBase<data_type>(configuration)
+			LSBBase<data_type>(configuration)
 		{
 		}
 
@@ -42,7 +42,7 @@ class LSBDecode : public WatermarkBase<data_type>
 				auto& sampleData = channelsData[j];
 				for(int i = 0; i < sampleData.size(); ++i)
 				{
-                    for(int nb = 0; nb < nbBits; ++nb)
+					for(int nb = 0; nb < this->nbBits; ++nb)
                     {
                         short bit16 = 1;
                         bit16 = bit16 << nb;
@@ -53,7 +53,5 @@ class LSBDecode : public WatermarkBase<data_type>
 				}
 			}
 		}
-
-        int nbBits = 10;
 };
 

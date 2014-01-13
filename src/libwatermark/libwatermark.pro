@@ -75,6 +75,7 @@ HEADERS += \
     io/InputMultiplexer.h \
     benchmark/ComputeRMS.h \
     watermark/RLSBEncode.h \
-    watermark/RLSBDecode.h
+    watermark/RLSBDecode.h \
+    watermark/LSB/LSBBase.h
 
 SOURCES +=

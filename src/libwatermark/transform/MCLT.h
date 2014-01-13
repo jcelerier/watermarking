@@ -17,8 +17,6 @@ class MCLTManager
 		{
 			initDataFw(in.size());
 
-			// normalization de la fft faite plus tard
-
 			// modulate U into V
 			std::transform(c.begin(), c.end(), in.begin(), V.begin(), std::multiplies<complex_type>());
 			// compute MCLT coefficients

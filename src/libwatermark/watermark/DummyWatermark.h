@@ -16,8 +16,16 @@ class DummyWatermark : public WatermarkBase<data_type>
 		{
 		}
 
-		virtual void operator()(Audio_p& , WatermarkData& )  override
+		virtual void operator()(Audio_p& buf , WatermarkData& )  override
 		{
+			auto truc = getSpectrum<data_type>(buf);
+
+			for(int i = 0; i < 6; i++)
+			{
+				std::cerr << truc[0][i] << std::endl;
+			}
+			std::cerr << std::endl;
+			return;
 		}
 
 };

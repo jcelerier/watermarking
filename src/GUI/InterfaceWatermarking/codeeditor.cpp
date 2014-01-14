@@ -48,7 +48,7 @@
 
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
-    this->setWordWrapMode(QTextOption::NoWrap);
+	this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 
     lineNumberArea = new LineNumberArea(this);
 

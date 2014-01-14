@@ -15,6 +15,13 @@ class SettingsManager : public QObject
 	public slots:
 		void save();
 		void load();
+
+	public:
+//		QList readPNSequence();
+//		QList readFreqRange();
+
+		QList<QVariant> readSSWLine(int line);
+		void writeSSWLine(int line, QList<QVariant> l);
 };
 
 #endif // SETTINGSMANAGER_H

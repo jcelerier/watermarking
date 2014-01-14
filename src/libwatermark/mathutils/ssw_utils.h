@@ -3,7 +3,7 @@
 #include <random>
 #include <vector>
 #include <algorithm>
-#include "Parameters.h"
+#include "../Parameters.h"
 namespace SSWUtil
 {
 	/* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}

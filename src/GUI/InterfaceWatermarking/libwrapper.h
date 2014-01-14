@@ -27,18 +27,16 @@ public:
 
 
 public slots:
+	// Propre a l'interface avec l'api
 	void encode();
     void decode();
+
+	void generateSSWSequences();
+
 	void loadHostWatermarkFile();
+
+	// Trucs de l'interface qui ont rien à faire ici
 	void updateMethodConfigurationTab(int i);
-
-    void loadConfigurationScriptMethodLsb();
-    void loadConfigurationScriptMethodSsw();
-    void loadConfigurationScriptMethodCompExp();
-
-    void saveConfigurationScriptMethodLsb();
-    void saveConfigurationScriptMethodSsw();
-    void saveConfigurationScriptMethodCompExp();
 
     void selectLsbMethodActionSlot();
     void selectSswMethodActionSlot();
@@ -76,6 +74,8 @@ private:
 
 	SettingsManager m_settings;
 
+	// Pour SSW
+	Parameters<double> sswParams;
 };
 
 #endif // LIBWRAPPER_H

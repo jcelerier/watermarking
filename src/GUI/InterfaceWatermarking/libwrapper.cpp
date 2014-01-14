@@ -516,8 +516,8 @@ void LibWrapper::encode()
 
 			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
 			// Récupération des séquences
-			std::vector<int> PNSequence;
-			std::vector<unsigned int> FreqRange;
+			std::vector<int> PNSequence(m_gui->sswSeqSize->value());
+			std::vector<unsigned int> FreqRange(m_gui->sswSeqSize->value());
 			auto v = m_settings.readSSWLine(0);
 			auto w = m_settings.readSSWLine(1);
 			std::transform(v.begin(), v.end(), PNSequence.begin(), VariantToInt);
@@ -535,6 +535,7 @@ void LibWrapper::encode()
 
 			output->writeFile(m_outputName.toStdString().c_str());
 			m_gui->informationHostWatermark->setText("SSW Method: File " + m_outputName +" successfully saved!");
+			break;
 		}
 			//case 2:
 			// Rien pour l'instant
@@ -557,7 +558,6 @@ void LibWrapper::encode()
  */
 void LibWrapper::decode()
 {
-	m_data.reset();
 	if(m_inputName.isEmpty())
 	{
 		m_gui->informationHostWatermark->setText("Error: no Watermark host file defined!");
@@ -614,8 +614,8 @@ void LibWrapper::decode()
 
 			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
 			// Récupération des séquences
-			std::vector<int> PNSequence;
-			std::vector<unsigned int> FreqRange;
+			std::vector<int> PNSequence(m_gui->sswSeqSize->value());
+			std::vector<unsigned int> FreqRange(m_gui->sswSeqSize->value());
 			auto v = m_settings.readSSWLine(0);
 			auto w = m_settings.readSSWLine(1);
 			std::transform(v.begin(), v.end(), PNSequence.begin(), VariantToInt);
@@ -633,6 +633,7 @@ void LibWrapper::decode()
 			m_manager.execute();
 
 			m_gui->informationHostWatermark->setText("SSW Method: File " + m_inputName +" successfully read!");
+			break;
 
 		}
 			//case 2:

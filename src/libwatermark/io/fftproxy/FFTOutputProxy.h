@@ -16,7 +16,6 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 {
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
-		using OutputManagerBase<data_type>::copyHandler;
 		using FFTProxy<data_type>::fft;
 	private:
 		Output_p outputImpl = nullptr;
@@ -64,7 +63,7 @@ class FFTOutputProxy : public FFTProxy<data_type>, public OutputManagerBase<data
 		}
 
 	private:
-		Audio_p outbuff;
+		Audio_p outbuff = nullptr;
 };
 
 

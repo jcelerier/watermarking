@@ -6,6 +6,11 @@
 class BenchmarkInterface
 {
 	public:
+		BenchmarkInterface(const std::string name):
+			_name(name)
+		{
+		}
+
 		virtual ~BenchmarkInterface() = default;
 		virtual void operator()(Audio_p& data) = 0;
 

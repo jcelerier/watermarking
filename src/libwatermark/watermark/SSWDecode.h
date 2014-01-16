@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "WatermarkBase.h"
-#include "mathutils/math_util.h"
+#include "../mathutils/math_util.h"
 
 /**
  * @brief The SSWDecode class

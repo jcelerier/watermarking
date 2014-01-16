@@ -13,9 +13,8 @@ class Amplify : public BenchmarkBase<data_type>
 
 	public:
 		Amplify(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("Amplify", configuration)
 		{
-			this->_name = "Amplify";
 		}
 
 		virtual void operator()(Audio_p& data) override

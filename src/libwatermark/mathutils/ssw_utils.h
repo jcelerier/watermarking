@@ -1,11 +1,9 @@
-//#pragma once
-#ifndef SSW_UTILS_H
-#define SSW_UTILS_H
+#pragma once
 
 #include <random>
 #include <vector>
 #include <algorithm>
-#include "Parameters.h"
+#include "../Parameters.h"
 namespace SSWUtil
 {
 	/* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}
@@ -86,5 +84,3 @@ namespace SSWUtil
 		*/
         }
 }
-
-#endif

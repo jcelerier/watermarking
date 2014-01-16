@@ -19,15 +19,7 @@ class FileOutput : public OutputManagerBase<data_type>
 {
 		using IOManagerBase<data_type>::channels;
 	public:
-		FileOutput(Parameters<data_type>& cfg):
-			OutputManagerBase<data_type>(cfg)
-		{
-		}
-
-		FileOutput(OutputCopy<data_type> * oc, Parameters<data_type>& cfg):
-			OutputManagerBase<data_type>(oc, cfg)
-		{
-		}
+		using OutputManagerBase<data_type>::OutputManagerBase;
 
 		void writeFile(const char * str)
 		{

@@ -19,13 +19,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 
-		InputManagerBase(Parameters<data_type>& cfg):
-			IOManagerBase<data_type>(cfg),
-			copyHandler(new InputSimple<data_type>(cfg))
-		{
-		}
-
-		InputManagerBase(const InputManagerBase<data_type>& orig) = delete;
+		using IOManagerBase<data_type>::IOManagerBase;
 
 		InputManagerBase(InputCopy<data_type>* copy, Parameters<data_type>& cfg):
 			IOManagerBase<data_type>(cfg),
@@ -33,7 +27,9 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 		{
 		}
 
-		virtual ~InputManagerBase() = default;
+		InputManagerBase(const InputManagerBase<data_type>& orig) = delete;
+
+		virtual ~InputManagerBase() {}
 
 		virtual Audio_p getNextBuffer() override
 		{
@@ -66,9 +62,8 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 			return Audio_p(nullptr);
 		}
 
-		InputCopy_p<data_type> copyHandler = nullptr;
-
 	private:
-		Audio_p buffer;
+		InputCopy_p<data_type> copyHandler{InputCopy_p<data_type>(new InputSimple<data_type>(this->conf))};
+		Audio_p buffer{nullptr};
 };
 

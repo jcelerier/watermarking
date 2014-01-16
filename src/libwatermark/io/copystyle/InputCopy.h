@@ -6,11 +6,7 @@ template <typename data_type>
 class InputCopy: public CopyStyle<data_type>
 {
 	public:
-		InputCopy(const Parameters<data_type>& cfg):
-			CopyStyle<data_type>(cfg)
-		{
-		}
-
+		using CopyStyle<data_type>::CopyStyle;
 		virtual ~InputCopy() = default;
 };
 

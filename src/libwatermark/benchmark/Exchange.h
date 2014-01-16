@@ -13,9 +13,8 @@ class Exchange : public BenchmarkBase<data_type>
 
 	public:
 		Exchange(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("Exchange", configuration)
 		{
-			this->_name = "Exchange";
 		}
 
 		virtual void operator()(Audio_p& data) override

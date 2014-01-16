@@ -34,7 +34,6 @@ class IOManagerBase : public IOInterface
 		friend class FFTInputProxy<data_type>;
 		friend class FFTOutputProxy<data_type>;
 
-
 		IOManagerBase(Parameters<data_type>& cfg):
 			conf(cfg)
 		{

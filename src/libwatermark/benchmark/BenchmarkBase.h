@@ -14,7 +14,8 @@ class BenchmarkBase : public BenchmarkInterface
 {
 	public:
 		using size_type = typename Parameters<data_type>::size_type;
-		BenchmarkBase(const Parameters<data_type>& configuration):
+		BenchmarkBase(const std::string name, const Parameters<data_type>& configuration):
+			BenchmarkInterface(name),
 			conf(configuration)
 		{
 		}

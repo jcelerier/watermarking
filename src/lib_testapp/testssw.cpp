@@ -59,16 +59,15 @@ void TestSSW()
 	for(auto i = 0U; i < FreqRange.size(); i++) std::cerr << FreqRange[i] << " ";
 	sswencode(PNSequence, FreqRange, conf, watermarkAmplitude);
 	sswdecode(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);
-	//sswencode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude);
-	//sswdecode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);
+
+	std::cerr << "Test avec MCLT" << std::endl;
+	sswencode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude);
+	sswdecode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);
 }
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude)
 {
 	std::cout << std::endl << "Encodage..." << std::endl;
-
-	//manager.timeAdapter = (TimeAdapter_p) new Every;
-
 	// Données à watermarker
 	WatermarkData* data = new SimpleWatermarkData;
 	data->setSize(4);
@@ -77,37 +76,24 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	data->setNextBit(true);
 	data->setNextBit(true);
 
-	// Instanciation du mode d'entrée et de sortie
-	//auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
 	auto input = new FileInput<double>("solo.wav", new InputSimple<double>(conf), conf);
-//	auto input = new SilenceInput<double>(conf);
-//	input->silence(2048, 1);
-
 	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
 
-	// Comme c'est spectral on fait passer les entrées et sorties par un "filtre" qui va appliquer la FFT
-	// Il est important que les proxy d'entrée et de sortie utilisent la même "implémentation" de FFT.
-	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
-	fft_m->setChannels((unsigned int) input->channels()); // important.
+	FFT_p<double> fft_m(new FFTWManager<double>(conf));
+	fft_m->setChannels((unsigned int) input->channels());
 	auto fft_i = new FFTInputProxy<double>(input, fft_m, conf);
 	auto fft_o = new FFTOutputProxy<double>(output, fft_m, conf);
-
-	// L'algo de watermarking à utiliser (ici c'est juste du gain, pas de watermark)
-	//auto algorithm = new SpectralGain<double>(conf);
 
 	auto algorithm = Watermark_p(
 			new SSWEncode<double>(conf, PNSequence, FreqRange, watermarkAmplitude));
 
-	// On définit tout ce petit monde. Ce sont des smart_ptr d'ou le .reset. Avantage : pas besoin de faire de delete.
 	WatermarkManager manager(Input_p(fft_i),
 				 Output_p(fft_o),
 				 algorithm,
 				 WatermarkData_p(data));
 
-	// On fait tourner l'algo
 	manager.execute();
 
-	// On écrit dans un fichier de sortie.
 	output->writeFile("out_test_ssw_mono.wav");
 
 	std::cout << "Encodé." << std::endl;
@@ -141,6 +127,14 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	QCOMPARE(data->printBits(), std::string("1011"));
 }
 
+
+// Valentin :
+// Normalement la MCLT marche, en tout cas elle donne les mêmes résultats que sur Matlab.
+// Par contre elle applique un fenêtrage aux données, et pour reconstruire le signal
+// il est nécessaire de faire le process en overlap (facteur d'1/2).
+// Donc je pense qu'avant de faire marcher la SSW avec la MCLT, il est nécessaire
+// de s'assurer que ça passe bien avec juste de l'overlap (cf. InputOLA, OutputOLA)
+// dans un autre test.
 void sswencode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude)
 {
 	std::cout << std::endl << "Encodage..." << std::endl;
@@ -152,9 +146,8 @@ void sswencode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & F
 	data->setNextBit(true);
 	data->setNextBit(true);
 
-	auto input = new FileInput<double>("solo.wav", new InputSimple<double>(conf), conf);
-
-	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
+	auto input = new FileInput<double>("solo.wav", new InputOLA<double>(conf), conf);
+	auto output = new FileOutput<double>(new OutputOLA<double>(conf), conf);
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf)); // -> Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.
 	fft_m->setChannels((unsigned int) input->channels()); // important.
@@ -185,8 +178,8 @@ void sswdecode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & F
 
 	WatermarkData* data = new SimpleWatermarkData();
 
-	auto input = new FileInput<double>("out_test_ssw_mclt_mono.wav", conf);
-	auto output = new DummyOutput<double>(conf);
+	auto input = new FileInput<double>("out_test_ssw_mclt_mono.wav", new InputOLA<double>(conf), conf);
+	auto output = new DummyOutput<double>(new OutputOLA<double>(conf), conf);
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf));
 	fft_m->setChannels((unsigned int) input->channels());

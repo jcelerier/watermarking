@@ -29,7 +29,13 @@ class FFTManager
 		{
 		}
 
-        virtual ~FFTManager() { }
+		FFTManager(unsigned int channels, const Parameters<data_type> & config):
+			conf(config)
+		{
+			setChannels(channels);
+		}
+
+		virtual ~FFTManager() = default;
 
 		/**
 		 * @brief setChannels Set number of channels.

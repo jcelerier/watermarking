@@ -12,8 +12,8 @@ template <typename data_type>
  */
 class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManagerInterface
 {
-	protected:
-		OutputCopy_p<data_type> copyHandler = nullptr;
+	private:
+		OutputCopy_p<data_type> copyHandler{OutputCopy_p<data_type>(new OutputSimple<data_type>(this->conf))};
 
 	public:
 		using IOManagerBase<data_type>::pos;
@@ -35,7 +35,7 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManager
 		{
 		}
 
-		virtual ~OutputManagerBase() = default;
+		virtual ~OutputManagerBase() {};
 
 		// Copie de buffer vers notre buffer interne
 		virtual void writeNextBuffer(Audio_p& data) override

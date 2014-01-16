@@ -10,9 +10,8 @@ class ComputeRMS : public BenchmarkBase<data_type>
 {
 	public:
 		ComputeRMS(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("ComputeRMS", configuration)
 		{
-			this->_name = "ComputeRMS";
 		}
 
 		virtual void operator()(Audio_p& in) override

@@ -16,10 +16,7 @@ class BufferOutput : public OutputManagerBase<data_type>
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 	public:
-		BufferOutput(Parameters<data_type>& cfg):
-			OutputManagerBase<data_type>(cfg)
-		{
-		}
+		using OutputManagerBase<data_type>::OutputManagerBase;
 
 		template<typename external_type>
 		void writeOutBuffer(external_type * address)

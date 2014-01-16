@@ -13,10 +13,7 @@ template <typename data_type>
 class InputSimple: public InputCopy<data_type>
 {
 	public:
-		InputSimple(const Parameters<data_type>& cfg):
-			InputCopy<data_type>(cfg)
-		{
-		}
+		using InputCopy<data_type>::InputCopy;
 
 		virtual typename CopyStyle<data_type>::size_type frameIncrement() override
 		{

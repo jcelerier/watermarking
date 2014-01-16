@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "ui_mainwindow.h"
+#include "settingsmanager.h"
 #include "libwatermark/manager/WatermarkManager.h"
 #include "libwatermark/io/FileInput.h"
 #include "libwatermark/io/FileOutput.h"
@@ -18,7 +19,7 @@
 class LibWrapper : public QWidget
 {
 Q_OBJECT
-
+	friend class SettingsManager;
 public:
     LibWrapper();
 	~LibWrapper();
@@ -26,18 +27,16 @@ public:
 
 
 public slots:
+	// Propre a l'interface avec l'api
 	void encode();
     void decode();
+
+	void generateSSWSequences();
+
 	void loadHostWatermarkFile();
+
+	// Trucs de l'interface qui ont rien à faire ici
 	void updateMethodConfigurationTab(int i);
-
-    void loadConfigurationScriptMethodLsb();
-    void loadConfigurationScriptMethodSsw();
-    void loadConfigurationScriptMethodCompExp();
-
-    void saveConfigurationScriptMethodLsb();
-    void saveConfigurationScriptMethodSsw();
-    void saveConfigurationScriptMethodCompExp();
 
     void selectLsbMethodActionSlot();
     void selectSswMethodActionSlot();
@@ -73,6 +72,10 @@ private:
 	WatermarkData_p m_data;
 	WatermarkManager m_manager;
 
+	SettingsManager m_settings;
+
+	// Pour SSW
+	Parameters<double> sswParams;
 };
 
 #endif // LIBWRAPPER_H

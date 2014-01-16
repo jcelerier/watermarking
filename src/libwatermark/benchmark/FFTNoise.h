@@ -13,9 +13,8 @@ class FFTNoise : public BenchmarkBase<data_type>
 
 	public:
 		FFTNoise(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("FFTNoise", configuration)
 		{
-			this->_name = "FFTNoise";
 		}
 
 		virtual void operator()(Audio_p& data) override

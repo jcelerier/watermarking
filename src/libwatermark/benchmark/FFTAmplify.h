@@ -11,9 +11,8 @@ class FFTAmplify : public BenchmarkBase<data_type>
 
 	public:
 		FFTAmplify(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("FFTAmplify", configuration)
 		{
-			this->_name = "FFTAmplify";
 		}
 
 		virtual void operator()(Audio_p& data) override

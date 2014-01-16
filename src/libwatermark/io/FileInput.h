@@ -20,15 +20,7 @@ template <typename data_type>
 class FileInput : public InputManagerBase<data_type>
 {
 	public:
-		FileInput(Parameters<data_type>& cfg):
-			InputManagerBase<data_type>(cfg)
-		{
-		}
-
-		FileInput(InputCopy<data_type>* icp, Parameters<data_type>& cfg):
-					InputManagerBase<data_type>(icp, cfg)
-		{
-		}
+		using InputManagerBase<data_type>::InputManagerBase;
 
 		FileInput(std::string filename, Parameters<data_type>& cfg):
 			InputManagerBase<data_type>(cfg)
@@ -37,7 +29,7 @@ class FileInput : public InputManagerBase<data_type>
 		}
 
 		FileInput(std::string filename, InputCopy<data_type>* icp, Parameters<data_type>& cfg):
-					InputManagerBase<data_type>(icp, cfg)
+			InputManagerBase<data_type>(icp, cfg)
 		{
 			readFile(filename);
 		}
@@ -54,7 +46,6 @@ class FileInput : public InputManagerBase<data_type>
 			int parity = (myf.frames() % 2 != 0) ? -1 : 0;
 			for(auto i = 0U; i < myf.channels(); ++i)
 				myf.read(vec.data() + i * (myf.frames() + parity),  myf.frames() + parity);
-
 
 			this->v() = MathUtil::deinterleave(vec, (unsigned int) myf.channels(), (unsigned int) myf.frames());
 		}

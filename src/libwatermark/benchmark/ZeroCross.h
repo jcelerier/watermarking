@@ -13,9 +13,8 @@ class ZeroCross : public BenchmarkBase<data_type>
 
 	public:
 		ZeroCross(const Parameters<data_type>& configuration):
-			BenchmarkBase<data_type>(configuration)
+			BenchmarkBase<data_type>("ZeroCross", configuration)
 		{
-			this->_name = "ZeroCross";
 		}
 
 		virtual void operator()(Audio_p& data) override

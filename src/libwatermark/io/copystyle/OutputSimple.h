@@ -13,10 +13,7 @@ template <typename data_type>
 class OutputSimple : public OutputCopy<data_type>
 {
 	public:
-		OutputSimple(const Parameters<data_type>& cfg):
-			OutputCopy<data_type>(cfg)
-		{
-		}
+		using OutputCopy<data_type>::OutputCopy;
 
 		virtual typename CopyStyle<data_type>::size_type frameIncrement() override
 		{

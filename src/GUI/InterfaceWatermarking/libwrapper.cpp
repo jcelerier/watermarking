@@ -11,6 +11,9 @@
 #include "libwatermark/mathutils/math_util.h"
 #include "libwatermark/watermark/RLSBEncode.h"
 #include "libwatermark/watermark/RLSBDecode.h"
+#include "libwatermark/mathutils/ssw_utils.h"
+#include "libwatermark/watermark/SSWEncode.h"
+#include "libwatermark/watermark/SSWDecode.h"
 #include <memory>
 
 #include <QDebug>
@@ -21,7 +24,8 @@
  */
 LibWrapper::LibWrapper():
 	m_data(new SimpleWatermarkData),
-	m_manager(m_data)
+	m_manager(m_data),
+	m_settings(this)
 {
 }
 
@@ -69,9 +73,9 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
 	connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
 
-	connect(m_gui->lsbLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodLsb()));
-	connect(m_gui->sswLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodSsw()));
-	connect(m_gui->compExpLoadConfigurationButton,SIGNAL(clicked()),this,SLOT(loadConfigurationScriptMethodCompExp()));
+	connect(m_gui->loadConfiguration,SIGNAL(clicked()), &m_settings, SLOT(load()));
+	connect(m_gui->saveConfiguration,SIGNAL(clicked()), &m_settings, SLOT(save()));
+
 
 	connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
 
@@ -96,6 +100,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 
 	connect(m_gui->loadWatermarkTextButton,SIGNAL(clicked()),this,SLOT(loadTextWatermarkFile()));
 
+	connect(m_gui->sswGenerate, SIGNAL(clicked()), this, SLOT(generateSSWSequences()));
 	//Initializing selection method tab
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
 	m_gui->selectingMethodTab->setTabEnabled(0,true);
@@ -117,7 +122,6 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 void LibWrapper::selectLsbMethodActionSlot()
 {
 	m_gui->selectingMethodComboBox->setCurrentIndex(0);
-	m_gui->selectingDecodingMethodTab->setCurrentIndex(0);
 	updateMethodConfigurationTab(0);
 }
 
@@ -129,7 +133,6 @@ void LibWrapper::selectLsbMethodActionSlot()
 void LibWrapper::selectSswMethodActionSlot()
 {
 	m_gui->selectingMethodComboBox->setCurrentIndex(1);
-	m_gui->selectingDecodingMethodTab->setCurrentIndex(1);
 	updateMethodConfigurationTab(1);
 }
 
@@ -141,7 +144,6 @@ void LibWrapper::selectSswMethodActionSlot()
 void LibWrapper::selectCompExpMethodActionSlot()
 {
 	m_gui->selectingMethodComboBox->setCurrentIndex(2);
-	m_gui->selectingDecodingMethodTab->setCurrentIndex(2);
 	updateMethodConfigurationTab(2);
 }
 
@@ -293,122 +295,6 @@ void LibWrapper::updateMethodConfigurationTab(int i)
 }
 
 /**
- * @brief LibWrapper::loadConfigurationScriptMethodLsb
- * Function triggered by clicking on the Load Configuration Script
- * for LSB method button: allow to load a configuration script
- * to apply pre-defined parameters.
- */
-void LibWrapper::loadConfigurationScriptMethodLsb()
-{
-	//TODO: loading a configuration script for LSB method
-
-	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-													"",
-													tr("LSB Script File (*.txt)"));
-
-	if(!tempFile.isEmpty())
-	{
-		m_gui->informationHostWatermark->setText("Opened config script for LSB method:" + tempFile);
-	}
-}
-
-/**
- * @brief LibWrapper::loadConfigurationScriptMethodSsw
- * Function triggered by clicking on the Load Configuration Script
- * for SSW method button: allow to load a configuration script
- * to apply pre-defined parameters.
- */
-void LibWrapper::loadConfigurationScriptMethodSsw()
-{
-	//TODO: loading a configuration script for SSW method
-
-	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-													"",
-													tr("SSW Script file(*.txt)"));
-
-	if(!tempFile.isEmpty())
-	{
-		m_gui->informationHostWatermark->setText("Opened config script for SSW method:" + tempFile);
-	}
-
-}
-
-/**
- * @brief LibWrapper::loadConfigurationScriptMethodCompExp
- * Function triggered by clicking on the Load Configuration Script
- * for Compression-Expansion method button: allow to load a configuration
- * script to apply pre-defined parameters.
- */
-void LibWrapper::loadConfigurationScriptMethodCompExp()
-{
-	//TODO: loading a configuration script for Compression-Expansion method
-
-	QString tempFile = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open script file (.txt)"),
-													"",
-													tr("Compression-Expansion Script File (*.txt)"));
-
-	if(!tempFile.isEmpty())
-	{
-		m_gui->informationHostWatermark->setText("Opened config script for Compression-Expansion method:" + tempFile);
-	}
-}
-
-/**
- * @brief LibWrapper::saveConfigurationScriptMethodLsb
- * Function triggered by the save configuration script
- * button (LSB tab): allow to export configuration as
- * an XML script
- */
-void LibWrapper::saveConfigurationScriptMethodLsb()
-{
-
-	m_gui->informationHostWatermark->setText("Saving configuration script query for LSB method");
-
-	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-													  "./",
-													  tr("Configuration Script File (*.wconf)"));
-
-	//TODO
-
-}
-
-/**
- * @brief LibWrapper::saveConfigurationScriptMethodSsw
- * Function triggered by the save configuration script
- * button (SSW tab): allow to export configuration as
- * an XML script
- */
-void LibWrapper::saveConfigurationScriptMethodSsw()
-{
-
-	m_gui->informationHostWatermark->setText("Saving configuration script query for SSW method");
-
-	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-													  "./",
-													  tr("Configuration Script File (*.wconf)"));
-
-	//TODO
-}
-
-/**
- * @brief LibWrapper::saveConfigurationScriptMethodLsb
- * Function triggered by the save configuration script
- * button (Compression-Expansion tab): allow to export
- * configuration as an XML script
- */
-void LibWrapper::saveConfigurationScriptMethodCompExp()
-{
-
-	m_gui->informationHostWatermark->setText("Saving configuration script query for Compression-Expansion method");
-
-	QString scriptName = QFileDialog::getSaveFileName(this, tr("Save Configuration as Script File (.wconf)"),
-													  "./",
-													  tr("Configuration Script File (*.wconf)"));
-
-	//TODO
-}
-
-/**
  * @brief LibWrapper::updateWatermarkCapacityProgressBar
  * Function triggered by changing the watermark text to
  * update the capacity progress bar linked
@@ -506,8 +392,7 @@ void LibWrapper::bitsToData()
 		out.push_back(static_cast<unsigned char>(b.to_ulong()));
 	}
 
-	m_gui->getDecodedDataPlainTextEdit->clear();
-	m_gui->getDecodedDataPlainTextEdit->appendPlainText(QString::fromStdString(out));
+	m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
 }
 
 /**
@@ -624,20 +509,33 @@ void LibWrapper::encode()
 		case 1:
 		{
 			Parameters<double> conf;
+			conf.bufferSize = 512;
 
 			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
 			auto output = new FileOutput<double>(conf);
-			/*
-			auto algorithm = new SSWEncode<double>(conf);
+
+			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
+			// Récupération des séquences
+			std::vector<int> PNSequence(m_gui->sswSeqSize->value());
+			std::vector<unsigned int> FreqRange(m_gui->sswSeqSize->value());
+			auto v = m_settings.readSSWLine(0);
+			auto w = m_settings.readSSWLine(1);
+			std::transform(v.begin(), v.end(), PNSequence.begin(), VariantToInt);
+			std::transform(w.begin(), w.end(), FreqRange.begin(), VariantToInt);
+
+			double ampl = m_gui->sswAmpl->value();
+
+			auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, ampl);
 
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
 			m_manager.algorithm() = Watermark_p(algorithm);
 
 			m_manager.execute();
-		*/
+
 			output->writeFile(m_outputName.toStdString().c_str());
 			m_gui->informationHostWatermark->setText("SSW Method: File " + m_outputName +" successfully saved!");
+			break;
 		}
 			//case 2:
 			// Rien pour l'instant
@@ -680,9 +578,8 @@ void LibWrapper::decode()
 			auto output = new DummyOutput<short>(conf);
 
 			LSBBase<short>* algorithm = nullptr;
-			switch(m_gui->lsbMethodUsedComboBox2->currentIndex())
+			switch(m_gui->lsbMethodUsedComboBox->currentIndex())
 			{
-
 				case 0: //LSB Method
 					algorithm = new LSBDecode<short>(conf);
 					break;
@@ -696,7 +593,7 @@ void LibWrapper::decode()
 					break;
 			}
 
-			algorithm->nbBits = m_gui->numberLsbSpinBox2->value();
+			algorithm->nbBits = m_gui->NumberLsbSpinBox->value();
 
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
@@ -710,10 +607,35 @@ void LibWrapper::decode()
 		}
 		case 1:
 		{
-			/*Parameters<double> conf;
-			auto alg = Watermark_p<double>(new SSWEncode<double>(conf));
-			sub_exec<double>(conf, alg);
-			break;*/
+			Parameters<double> conf;
+			conf.bufferSize = 512;
+
+			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
+			auto output = new DummyOutput<double>(conf);
+
+			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
+			// Récupération des séquences
+			std::vector<int> PNSequence(m_gui->sswSeqSize->value());
+			std::vector<unsigned int> FreqRange(m_gui->sswSeqSize->value());
+			auto v = m_settings.readSSWLine(0);
+			auto w = m_settings.readSSWLine(1);
+			std::transform(v.begin(), v.end(), PNSequence.begin(), VariantToInt);
+			std::transform(w.begin(), w.end(), FreqRange.begin(), VariantToInt);
+
+			double ampl = m_gui->sswAmpl->value();
+			double thres = m_gui->sswThres->value();
+
+			auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, ampl, thres);
+
+			m_manager.input() = Input_p(input);
+			m_manager.output() = Output_p(output);
+			m_manager.algorithm() = Watermark_p(algorithm);
+
+			m_manager.execute();
+
+			m_gui->informationHostWatermark->setText("SSW Method: File " + m_inputName +" successfully read!");
+			break;
+
 		}
 			//case 2:
 			// Rien pour l'instant
@@ -726,6 +648,21 @@ void LibWrapper::decode()
 	}
 
 	bitsToData();
+}
+
+void LibWrapper::generateSSWSequences()
+{
+	int size = m_gui->sswSeqSize->value();
+	auto PNSequence = SSWUtil::generatePNSequence(size);
+	auto FrequencyRange = SSWUtil::generateFrequencyRange(size, sswParams);
+
+	for(int i = 0; i < size; i++)
+	{
+		m_gui->sswSequences->removeColumn(i);
+		m_gui->sswSequences->insertColumn(i);
+		m_gui->sswSequences->setItem(0, i, new QTableWidgetItem(QString::number(PNSequence[i])));
+		m_gui->sswSequences->setItem(1, i, new QTableWidgetItem(QString::number(FrequencyRange[i])));
+	}
 }
 
 /**

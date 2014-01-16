@@ -6,11 +6,7 @@ template <typename data_type>
 class OutputCopy: public CopyStyle<data_type>
 {
 	public:
-		OutputCopy(const Parameters<data_type>& cfg):
-			CopyStyle<data_type>(cfg)
-		{
-		}
-
+		using CopyStyle<data_type>::CopyStyle;
 		virtual ~OutputCopy() = default;
 };
 

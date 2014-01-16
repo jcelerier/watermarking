@@ -1,7 +1,10 @@
 #pragma once
-//#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
 
-#include <sndfile.hh>
+#ifdef __APPLE__
+#include "/usr/local/Cellar/libsndfile/1.0.25/include/sndfile.hh"
+#else
+#include "sndfile.hh"
+#endif
 
 #include "OutputManagerBase.h"
 #include "../mathutils/math_util.h"

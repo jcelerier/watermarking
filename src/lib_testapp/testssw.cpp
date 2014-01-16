@@ -24,7 +24,7 @@ void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude, double threshold);
 void sswencode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude);
 void sswdecode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude, double threshold);
-void TestMCLT();
+
 #include "watermark/DummyWatermark.h"
 void TestSSW()
 {
@@ -34,13 +34,13 @@ void TestSSW()
 
 	std::cout << std::endl;
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
-	
+
 	for (int i = 0; i < PNSequence.size(); i++) {
 		std::cout << PNSequence[i] << " ";
 	}
 	std::cout << std::endl;
-	
-	
+
+
 	std::vector<double> amplifiedPN;
 	for (auto i = 0U; i < PNSequence.size(); i++) {
 		amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);
@@ -202,39 +202,10 @@ void sswdecode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & F
 				 Output_p(mclt_o),
 				 algorithm,
 				 WatermarkData_p(data));
-	
+
 	manager.execute();
 
 	data->readSizeFromBits();
 
 	QCOMPARE(data->printBits(), std::string("1011"));
 }
-
-/***** Test du fonctionnement de la MCLT *****/
-void TestMCLT()
-{
-	/*
-	Parameters<double> conf;
-	WatermarkManager<double> manager(conf);
-
-	auto input = new FileInput<double>("input_mono.wav", new InputSimple<double>(conf), conf);
-	auto output = new FileOutput<double>(new OutputSimple<double>(conf), conf);
-
-	FFT_p<double> fft_m(new FFTWManager<double>(conf));
-	fft_m->setChannels((unsigned int) input->channels());
-	auto fft_i = Input_p<double>(new FFTInputProxy<double>(input, fft_m, conf));
-	auto fft_o = Output_p<double>(new FFTOutputProxy<double>(output, fft_m, conf));
-
-	auto mclt_i = Input_p<double>(new MCLTInputProxy<double>(fft_i, conf));
-	auto mclt_o = Output_p<double>(new MCLTOutputProxy<double>(fft_o, conf));
-
-	auto algorithm = new SpectralGain<double>(conf);
-
-	manager.input.swap(mclt_i);
-	manager.output.swap(mclt_o);
-	manager.algorithm.reset(algorithm);
-
-	manager.execute();
-
-	output->writeFile("out_test_mclt_mono.wav");
-*/}

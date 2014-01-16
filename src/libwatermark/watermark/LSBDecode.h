@@ -17,22 +17,6 @@ class LSBDecode : public LSBBase<data_type>
 		{
 		}
 
-       /* virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
-        {
-            auto& channelsData = getAudio<data_type>(data);
-
-            for(int j = 0; j < channelsData.size(); j++)
-            {
-                auto& sampleData = channelsData[j];
-                for(int i = 0; i < sampleData.size(); ++i)
-                {
-                        short testBit = 0x0001 & sampleData[i];
-                        bool bit = (testBit != 0);
-                        watermark.setNextBit(bit);
-                }
-            }
-		}*/
-
 		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
 		{
 			auto& channelsData = getAudio<data_type>(data);

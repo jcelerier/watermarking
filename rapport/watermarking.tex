@@ -5,4 +5,75 @@
 \section{Techniques}
 \subsection{Least Significant Bit}
 \subsection{Spread-spectrum Watermarking}
+
+The purpose of the spread-spectrum watermarking (SSW) method is to embed the hidden data of the watermark in the frequency domain of the host signal. Hence, SSW algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.
+
+~
+
+The core of this method is based on a random sequence of N numbers, whose values are either $1$ or $-1$, with a equal distribution for both. This sequence is the key of decryption and thus must be known by the emitter and the receiver.
+
+~
+
+Therefore, the first step is to generate this sequence.
+
+\subsubsection{Watermark insertion}
+
+In order to embed data with the SSW method, the host signal must firstly be divided into chunks of given size (for example, chunks of $512$ samples). The SSW algorithm can then be applied to each of these chunks in order to embed the hidden data. Only 1 bit of hidden data can be embedded in a chunk.
+
+~
+
+On each chunk, the frequency transform is then applied. The result is an array of half the size of the chunks, each cell of it containing the energy and phase for a certain frequency bin of this chunk.
+
+~
+
+The next step is to select N (the size of the random sequence) frequency bins that are going to be modified. Therefore, N has to be less than half the chunk size. The goal is to avoid inaudible portions of the frequency spectrum because they are more likely to create audible noise when modified. The best is to keep frequency bins in the $200$ Hz - $2$ kHz subband.
+
+~
+
+Let's call $F$ the sequence of the magnitudes (in decibels) of the selected frequency bins and $S$ the random sequence. The following is then performed :
+
+~
+
+$F[i] = F[i] + W[k] \times \delta \times S[i]$, for $i$ varying from 1 to N.
+
+~
+
+\noindent where $W$ is the hidden data to be embedded ($W[k]$ is equal to 1 for bit 1 and -1 for bit 0), $k$ the current bit of hidden data and $\delta$ the amplitude of the watermark (usually between $0.5$ and $2.5$ dB).
+
+~
+
+After the modification on the frequency magnitudes, the time signal is reconstructed using the original phases and the inverse frequency transform.
+
+\subsubsection{Watermark detection}
+
+Just like in the embedding part, the signal must be divided into chunks. They have to be the same size as during embedding.
+
+~
+
+The frequency transform is also applied and the same frequency bins as before are also selected. Magnitudes in decibels are computed as well but instead of modifying them, a correlation is calculated, just as follows :
+
+~
+
+$C = F \cdot \delta S$
+
+~
+
+\noindent where $F$ is the sequence of selected frequencies magnitudes, $S$ the random sequence and $\cdot$ the normalized dot product.
+
+~
+
+When the chunk has not been watermarked, $C$ should be close to $0$ because $F$ would be close to a random sequence, and when the chunk is watermarked, $C$ should be closer to $1$ because $F$ would be equal to $random + \delta S$ and $\delta S \cdot \delta S = 1$. When the bit 0 is embedded, $F$ is equal to $random - \delta S$, so $C$ should be closer to $-1$.
+
+~
+
+Hence, for each chunk, it is possible to determine whether or not there is a watermark (by using a threshold) and if so, which bit of data is embedded. Doing it for each chunk allows for the reconstruction of the entire hidden data.
+
+~
+
+A bigger $N$ would allow better correlation values but also a more audible watermark. The same rule applies to $\delta$.
+
+~
+
+There are several methods that can improve watermark detection, like cepstrum filtering, but these were not implemented in this project.
+
 \subsection{Compression-Expansion}

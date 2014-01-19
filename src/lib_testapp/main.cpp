@@ -6,11 +6,13 @@ void testWindow();
 void TestRLSB();
 void TestSSW();
 void TestTransform();
+void TestEvaluation();
 
 class WatermarkingTests: public QObject
 {
 		Q_OBJECT
 	private slots:
+		void evaluation() { TestEvaluation(); }
 		void transforms() { TestTransform(); }
 		void window() { testWindow(); }
 		void copy() { testCopy(); }

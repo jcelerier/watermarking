@@ -51,6 +51,7 @@ HEADERS += \
     benchmark/Smooth.h \
     benchmark/Amplify.h \
     benchmark/ZeroCross.h \
+    evaluation/BitError.h \
     timeadapter/AtTime.h \
     timeadapter/TimeAdapter.h \
     watermarkdata/WatermarkData.h \
@@ -78,3 +79,4 @@ HEADERS += \
     watermark/RLSBEncode.h \
     watermark/RLSBDecode.h \
     watermark/LSB/LSBBase.h
+

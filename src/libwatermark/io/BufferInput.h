@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "InputManagerBase.h"
+#include "BufferOutput.h"
 #include "../mathutils/math_util.h"
 
 template <typename data_type>
@@ -46,5 +47,49 @@ class BufferInput : public InputManagerBase<data_type>
 
 			// 4. Désentrelacement
 			this->v() = MathUtil::deinterleave(vec, (unsigned int) chans, (unsigned int) n_frames);
+		}
+
+
+		template<typename external_type>
+		void readFromBufferOutput(BufferOutput<external_type>* output)
+		{
+			if(typeid(data_type) == typeid(external_type))
+			{
+				this->v().resize(output->v().size());
+				for(auto i = 0U; i < this->v().size(); ++i)
+				{
+					this->v(i).resize(output->v(i).size());
+					std::copy(output->v(i).begin(),
+								   output->v(i).end(),
+								   this->v(i).begin());
+				}
+
+			}
+			else if(typeid(external_type) == typeid(short) &&
+					typeid(data_type) == typeid(double)) // Double to short
+			{
+				this->v().resize(output->v().size());
+				for(auto i = 0U; i < this->v().size(); ++i)
+				{
+					this->v(i).resize(output->v(i).size());
+					std::transform(output->v(i).begin(),
+								   output->v(i).end(),
+								   this->v(i).begin(),
+								   MathUtil::ToDouble<external_type>);
+				}
+			}
+			else if(typeid(external_type) == typeid(double)) // Short to double
+			{
+				this->v().resize(output->v().size());
+				for(auto i = 0U; i < this->v().size(); ++i)
+				{
+					this->v(i).resize(output->v(i).size());
+					std::transform(output->v(i).begin(),
+								   output->v(i).end(),
+								   this->v(i).begin(),
+								   MathUtil::FromDouble<external_type>);
+				}
+			}
+
 		}
 };

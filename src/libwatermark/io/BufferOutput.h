@@ -12,7 +12,6 @@ template <typename data_type>
  */
 class BufferOutput : public OutputManagerBase<data_type>
 {
-		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 	public:
@@ -22,7 +21,7 @@ class BufferOutput : public OutputManagerBase<data_type>
 		void writeOutBuffer(external_type * address)
 		{
 			// 1. Réentrelacement
-			auto tmp = MathUtil::interleave(v());
+			auto tmp = MathUtil::interleave(this->v());
 
 			// 2. Copie
 			if(typeid(data_type) == typeid(external_type))

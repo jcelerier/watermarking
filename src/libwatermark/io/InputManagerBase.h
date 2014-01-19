@@ -15,7 +15,6 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 {
 	public:
 		using IOManagerBase<data_type>::pos;
-		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 
@@ -49,7 +48,7 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 				// Remplissage pour chaque canal
 				for(auto i = 0U; i < channels(); ++i)
 				{
-					copyHandler->copy(v()[i].begin(),
+					copyHandler->copy(this->v()[i].begin(),
 									  static_cast<CData<data_type>*>(buffer.get())->_data[i].begin(),
 									  pos(),
 									  frames());

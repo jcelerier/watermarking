@@ -17,7 +17,6 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManager
 
 	public:
 		using IOManagerBase<data_type>::pos;
-		using IOManagerBase<data_type>::v;
 		using IOManagerBase<data_type>::channels;
 		using IOManagerBase<data_type>::frames;
 
@@ -44,18 +43,18 @@ class OutputManagerBase :  public IOManagerBase<data_type>, public OutputManager
 			// On met le bon nombre de canaux
 			if(channels() != buffer.size())
 			{
-				v().resize(buffer.size());
+				this->v().resize(buffer.size());
 				if(copyHandler->frameIncrement() != this->conf.bufferSize)
-				for(auto& vec : v())
+				for(auto& vec : this->v())
 					vec.resize(copyHandler->frameIncrement());
 			}
 
 			for(auto i = 0U; i < channels(); ++i)
 			{
-				v()[i].resize(v()[i].size() + copyHandler->frameIncrement());
+				this->v()[i].resize(this->v()[i].size() + copyHandler->frameIncrement());
 
 				copyHandler->copy(buffer[i].begin(),
-								  v()[i].begin(),
+								  this->v()[i].begin(),
 								  pos(),
 								  frames());
 			}

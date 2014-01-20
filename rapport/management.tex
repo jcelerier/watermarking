@@ -31,8 +31,10 @@ It is a static code analysis software which finds bugs unlikely to be found by a
 \paragraph{valgrind}
 A big emphasis was put on the memory cleanliness : as a matter of fact, there is not a single memory leak in the library, thanks to the extensive use of smart pointers (there is not a single free pointer in our classes, they are all embedded in \texttt{std::smart\_ptr} objects).
 
-\paragraph{gcov}
+\paragraph{lcov}
 This software was used to test the code coverage of the library during the unit tests, to ensure maximum efficiency for the other tools that we explained before.
+
+The output is present in the folder \texttt{html-coverage}. The tests cover almost $90\%$ of the code (we could not do more because of lack of time).
 
 \section{Schedule}
 We will see here the repartition of the work on the project.

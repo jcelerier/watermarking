@@ -380,7 +380,18 @@ It reads very easily : "For each channel, multiply the whole channel by the gain
 
 We also made our system so that the user of our framework can choose when does the effect starts, how long it should last, and if it repeats. The granularity is the buffer size.
 
-For instance, in order to make some benchmarks, it is possible to make a volume modification using the algorithm on fig. \ref{amplify} every 80 buffers, for 5 buffers, starting at 200 buffers.
+For instance, in order to make some benchmarks, it is possible to make a volume modification using the algorithm on figure \ref{amplify} every 80 buffers, for 5 buffers, starting at 200 buffers.
+\subsubsection{Details on the watermarking implementation}
+There are some things to note about our implementation : 
+\begin{itemize}
+\item In case of multi-channel operation, the same bits are copied on each channel. But the algorithms are easily tweakable.
+\item In our tests, most of the time, the watermark is only put at the beginning of the file. However, it could be put in a looping mode by a simple class change.
+\item There are a few bugs which could not be settled due to the lack of time : 
+\begin{itemize}
+\item In case of windowing in an overlap-add process, the first window would sometimes need to be normalized.
+\item Since the output doesn't know about the input and only takes fixed-size buffers as input, if reading and writing a file, the output file might be a few bytes longer than the input file.
+\end{itemize}
+\end{itemize}
 \subsection{Transforms}
 The main problem with transforms is that they might be transforming from and to different domains.
 Hence, instead of forcing the use of an interface directly on the object making the transform, which would cause awkward inheritance and overloading problems, we force the interface on the input and output proxies : they have to follow the interface of \texttt{InputManagerBase} and \texttt{OutputManagerBase}.

@@ -3,6 +3,8 @@
 *.lo
 *.o
 
+corr_channel0
+corr_channel1
 # Compiled Dynamic libraries
 *.so
 *.dylib

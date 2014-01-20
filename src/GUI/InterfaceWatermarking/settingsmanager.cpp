@@ -46,7 +46,11 @@ void SettingsManager::load()
 
 	// 1. Demander nom fichier sauvegarde
 	QString fileOut = QFileDialog::getOpenFileName(nullptr, tr("Open configuration file (.ini)"));
+	subLoad(fileOut);
+}
 
+void SettingsManager::subLoad(QString fileOut)
+{
 	LibWrapper* p = dynamic_cast<LibWrapper*>(parent());
 
 	// 2. Lire

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "BenchmarkBase.h"
-#include "mathutils/math_util.h"
+
 template <typename data_type>
 class Invert : public BenchmarkBase<data_type>
 {

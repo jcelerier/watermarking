@@ -25,7 +25,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="encodeTab">
        <attribute name="title">
@@ -646,7 +646,7 @@ p, li { white-space: pre-wrap; }
             <string/>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="lsbMethodTab">
             <property name="sizePolicy">
@@ -902,6 +902,211 @@ p, li { white-space: pre-wrap; }
        <attribute name="title">
         <string>Degradation methods</string>
        </attribute>
+       <widget class="QPushButton" name="degradationSelect">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>875</width>
+          <height>39</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Select a file to apply a degradation on</string>
+        </property>
+        <property name="icon">
+         <iconset resource="icons/qstyle.qrc">
+          <normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</normaloff>:/trolltech/styles/commonstyle/images/standardbutton-open-32.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="degradationMethod">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>100</y>
+          <width>381</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>AddBrumm</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>AddWhiteNoise</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Amplify</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Convolution</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exchange</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>FFTAmplify</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>FFTNoise</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Invert</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smooth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Stat1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZeroCross</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QPushButton" name="degradationWrite">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>610</y>
+          <width>877</width>
+          <height>39</height>
+         </rect>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Write ...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="icons/qstyle.qrc">
+          <normaloff>:/trolltech/styles/commonstyle/images/desktop-32.png</normaloff>:/trolltech/styles/commonstyle/images/desktop-32.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>70</y>
+          <width>63</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Method</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="degradationFrequency">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>170</y>
+          <width>111</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>20</number>
+        </property>
+        <property name="maximum">
+         <number>8000</number>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="degradationAmplitude">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>230</y>
+          <width>111</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>210</y>
+          <width>111</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Amplitude</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>150</y>
+          <width>111</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Frequency</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="degradationThreshold">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>290</y>
+          <width>111</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>270</y>
+          <width>111</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Threshold</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -913,7 +1118,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>925</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

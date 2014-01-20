@@ -16,7 +16,7 @@
 #include "io/GnuplotOutput.h"
 #include "io/mcltproxy/MCLTInputProxy.h"
 #include "io/mcltproxy/MCLTOutputProxy.h"
-
+#include "watermark/DummyWatermark.h"
 #include "mathutils/ssw_utils.h"
 #include "TestHeader.h"
 
@@ -25,7 +25,6 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 void sswencode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude);
 void sswdecode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude, double threshold);
 
-#include "watermark/DummyWatermark.h"
 void TestSSW()
 {
 	int SeqSize = 50;

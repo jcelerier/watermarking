@@ -4,9 +4,9 @@
 
 #include "BenchmarkBase.h"
 #include "../mathutils/math_util.h"
-
+#include "properties/Threshold.h"
 template <typename data_type>
-class ZeroCross : public BenchmarkBase<data_type>
+class ZeroCross : public BenchmarkBase<data_type>, public ThresholdProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;

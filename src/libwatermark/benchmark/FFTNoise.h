@@ -3,9 +3,10 @@
 #include <random>
 
 #include "BenchmarkBase.h"
+#include "properties/FFTProperty.h"
 
 template <typename data_type>
-class FFTNoise : public BenchmarkBase<data_type>
+class FFTNoise : public BenchmarkBase<data_type>, public FFTProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;

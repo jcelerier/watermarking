@@ -5,8 +5,10 @@
 #include "BenchmarkBase.h"
 #include "../mathutils/math_util.h"
 
+#include "properties/Amplitude.h"
+
 template <typename data_type>
-class AddWhiteNoise : public BenchmarkBase<data_type>
+class AddWhiteNoise : public BenchmarkBase<data_type>, public AmplitudeProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
@@ -24,7 +26,7 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 
 			for(auto& sampleData : channelsData)
 			{
-				apply(sampleData,
+				MathUtil::apply(sampleData,
 					  [this] (data_type x)
 				{
 					return x + _amplitude * dist(rng);
@@ -33,14 +35,7 @@ class AddWhiteNoise : public BenchmarkBase<data_type>
 		}
 
 
-		void setAmpli(double amp)
-		{
-			_amplitude = amp;
-		}
-
 	private:
-		unsigned int _frequence = 50;
-		data_type _amplitude = 1.0;
 		std::default_random_engine rng = std::default_random_engine(std::random_device{}());
 		std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(-1, 1);
 };

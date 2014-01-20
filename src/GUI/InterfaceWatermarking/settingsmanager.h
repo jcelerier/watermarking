@@ -17,11 +17,9 @@ class SettingsManager : public QObject
 		void load();
 
 	public:
-//		QList readPNSequence();
-//		QList readFreqRange();
-
 		QList<QVariant> readSSWLine(int line);
 		void writeSSWLine(int line, QList<QVariant> l);
+		void subLoad(QString fileOut);
 };
 
 #endif // SETTINGSMANAGER_H

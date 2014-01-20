@@ -3,10 +3,11 @@
 #include <random>
 
 #include "BenchmarkBase.h"
-#include "mathutils/math_util.h"
+
+#include "properties/Amplitude.h"
 
 template <typename data_type>
-class Amplify : public BenchmarkBase<data_type>
+class Amplify : public BenchmarkBase<data_type>, public AmplitudeProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
@@ -26,16 +27,16 @@ class Amplify : public BenchmarkBase<data_type>
 				MathUtil::apply(sampleData,
 					  [&] (data_type x)
 				{
-					return x * _gain;
+					return x * _amplitude;
 				});
 			}
 		}
 
 		void setGain(double g)
 		{
-			_gain = g;
+			_amplitude = g;
 		}
 
 	private:
-		double _gain = 0.5;
+		double _amplitude = 0.5;
 };

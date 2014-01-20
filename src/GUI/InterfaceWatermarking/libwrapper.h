@@ -14,6 +14,7 @@
 #include "libwatermark/watermark/SSWEncode.h"
 #include "libwatermark/watermarkdata/SimpleWatermarkData.h"
 
+
 #include <memory>
 
 class LibWrapper : public QWidget
@@ -33,9 +34,11 @@ public slots:
 
 	void generateSSWSequences();
 
-	void loadHostWatermarkFile();
+	void applyDegradation();
 
 	// Trucs de l'interface qui ont rien à faire ici
+	void loadHostWatermarkFile();
+
 	void updateMethodConfigurationTab(int i);
 
     void selectLsbMethodActionSlot();

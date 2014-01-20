@@ -2,9 +2,13 @@
 #include <algorithm>
 
 #include "BenchmarkBase.h"
+#include "properties/Amplitude.h"
+#include "properties/Frequency.h"
 
 template <typename data_type>
-class AddBrumm : public BenchmarkBase<data_type>
+class AddBrumm : public BenchmarkBase<data_type>,
+		public AmplitudeProperty,
+		public FrequencyProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
@@ -19,7 +23,7 @@ class AddBrumm : public BenchmarkBase<data_type>
 		{
 			auto& channelsData = getAudio<data_type>(data);
 
-			double const cst = 2.0 * M_PI * _frequence / conf.samplingRate;
+			double const cst = 2.0 * M_PI * _frequency / conf.samplingRate;
 
 			// Pour chaque canal (gauche - droite)
 			for(auto& sampleData : channelsData)
@@ -28,27 +32,13 @@ class AddBrumm : public BenchmarkBase<data_type>
 				for(auto& sample : sampleData)
 				{
 					sample =  sample + _amplitude * sin(cst * pos + dist(rng));
-					pos = (pos == taille - 1) ? 0 : pos + 1;
+					pos = (pos == (conf.samplingRate / _frequency) - 1) ? 0 : pos + 1;
 				}
 			}
 		}
 
-		void setFreq(int freq)
-		{
-			_frequence = freq;
-			taille = conf.samplingRate / freq;
-		}
-
-		void setAmpli(double amp)
-		{
-			_amplitude = amp;
-		}
-
 	private:
-		unsigned int _frequence = 50;
-		data_type _amplitude = 0.5;
 		size_type pos = 0;
-		size_type taille = 44100 / 50;
 
 		std::default_random_engine rng = std::default_random_engine(std::random_device{}());
 		std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(0, 0.1);

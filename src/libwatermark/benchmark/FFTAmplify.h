@@ -2,8 +2,10 @@
 
 #include "BenchmarkBase.h"
 
+#include "properties/Amplitude.h"
+#include "properties/FFTProperty.h"
 template <typename data_type>
-class FFTAmplify : public BenchmarkBase<data_type>
+class FFTAmplify : public BenchmarkBase<data_type>, public AmplitudeProperty, public FFTProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;
@@ -24,7 +26,7 @@ class FFTAmplify : public BenchmarkBase<data_type>
 			{
 				for (auto& cplx : channel) // Dans l'ordre
 				{
-					double magnitude = std::abs(cplx) * _gain;
+					double magnitude = std::abs(cplx) * _amplitude;
 					double phase = std::arg(cplx);
 
 					cplx = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
@@ -32,6 +34,4 @@ class FFTAmplify : public BenchmarkBase<data_type>
 			}
 		}
 
-	private:
-		double _gain = 0.1;
 };

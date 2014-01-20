@@ -14,6 +14,30 @@
 #include "libwatermark/mathutils/ssw_utils.h"
 #include "libwatermark/watermark/SSWEncode.h"
 #include "libwatermark/watermark/SSWDecode.h"
+
+
+// Benchmarks
+#include "libwatermark/io/copystyle/InputFilter.h"
+#include "libwatermark/io/copystyle/OutputFilter.h"
+#include "libwatermark/io/copystyle/InputOLA.h"
+#include "libwatermark/io/copystyle/OutputOLA.h"
+#include "libwatermark/benchmark/Convolution.h"
+#include "libwatermark/benchmark/AddBrumm.h"
+#include "libwatermark/benchmark/AddWhiteNoise.h"
+#include "libwatermark/benchmark/Amplify.h"
+#include "libwatermark/benchmark/Exchange.h"
+#include "libwatermark/benchmark/Invert.h"
+#include "libwatermark/benchmark/FFTAmplify.h"
+#include "libwatermark/benchmark/Smooth.h"
+#include "libwatermark/benchmark/ZeroCross.h"
+#include "libwatermark/benchmark/Stat1.h"
+#include "libwatermark/benchmark/FFTNoise.h"
+
+#include "libwatermark/manager/BenchmarkManager.h"
+
+#include "libwatermark/transform/FFTWManager.h"
+#include "libwatermark/io/fftproxy/FFTInputProxy.h"
+#include "libwatermark/io/fftproxy/FFTOutputProxy.h"
 #include <memory>
 
 #include <QDebug>
@@ -69,9 +93,14 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 
 	//Connecting signals between GUI and watermark library
 	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->watermarkedSelectionButton, SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->degradationSelect, SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
 	connect(m_gui->encodeButton,SIGNAL(clicked()),this,SLOT(encode()));
 	connect(m_gui->decodeButton,SIGNAL(clicked()),this,SLOT(decode()));
+	connect(m_gui->degradationWrite, SIGNAL(clicked()), this, SLOT(applyDegradation()));
 
 	connect(m_gui->loadConfiguration,SIGNAL(clicked()), &m_settings, SLOT(load()));
 	connect(m_gui->saveConfiguration,SIGNAL(clicked()), &m_settings, SLOT(save()));
@@ -82,13 +111,13 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	m_gui->actionQuit->setShortcut(tr("CTRL+Q"));
 	connect(m_gui->actionQuit,SIGNAL(triggered()),qApp, SLOT(closeAllWindows()));
 
-	connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
 
-	connect(m_gui->selectLsbMethodAction,SIGNAL(triggered()),this,SLOT(selectLsbMethodActionSlot()));
-	connect(m_gui->selectSswMethodAction,SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
-	connect(m_gui->selectCompExpMethodAction,SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
 
-	connect(m_gui->watermarkedSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->selectLsbMethodAction, SIGNAL(triggered()),this,SLOT(selectLsbMethodActionSlot()));
+	connect(m_gui->selectSswMethodAction, SIGNAL(triggered()),this,SLOT(selectSswMethodActionSlot()));
+	connect(m_gui->selectCompExpMethodAction, SIGNAL(triggered()),this,SLOT(selectCompExpMethodActionSlot()));
+
+
 
 	connect(m_gui->textToWatermark,SIGNAL(textChanged()),this,SLOT(updateWatermarkCapacityProgressBar()));
 
@@ -546,7 +575,6 @@ void LibWrapper::encode()
 									 "This method is not yet implemented!");
 			break;
 	}
-
 }
 
 
@@ -665,6 +693,111 @@ void LibWrapper::generateSSWSequences()
 	}
 }
 
+void LibWrapper::applyDegradation()
+{
+	if(m_inputName.isEmpty() || !defineSavedFile())
+	{
+		if(m_inputName.isEmpty())
+		{
+			QMessageBox::information(m_gui->centralwidget,"Warning - missing file",
+									 "Please, load an audio file!");
+		}
+		return;
+	}
+
+	Parameters<double> conf;
+
+	BenchmarkBase<double>* algorithm = nullptr;
+	InputCopy<double>* iCp = nullptr;
+	OutputCopy<double>* oCp = nullptr;
+
+	Input_p input;
+	Output_p output;
+	switch(m_gui->degradationMethod->currentIndex())
+	{
+		case 0:
+			algorithm = new AddBrumm<double>(conf);
+			break;
+		case 1:
+			algorithm = new AddWhiteNoise<double>(conf);
+			break;
+		case 2:
+			algorithm = new Amplify<double>(conf);
+			break;
+		case 3:
+			algorithm = new Convolution<double>(conf);
+			break;
+		case 4:
+			algorithm = new Exchange<double>(conf);
+			break;
+		case 5:
+			algorithm = new FFTAmplify<double>(conf);
+			break;
+		case 6:
+			algorithm = new FFTNoise<double>(conf);
+			break;
+		case 7:
+			algorithm = new Invert<double>(conf);
+			break;
+		case 8:
+			algorithm = new Smooth<double>(conf);
+			break;
+		case 9:
+			algorithm = new Stat1<double>(conf);
+			break;
+		case 10:
+			algorithm = new ZeroCross<double>(conf);
+			break;
+	}
+
+	// On set les paramètres
+	if (auto ap = dynamic_cast<AmplitudeProperty*>(algorithm))
+		ap->_amplitude = m_gui->degradationAmplitude->value();
+
+	if (auto fp = dynamic_cast<FrequencyProperty*>(algorithm))
+		fp->_frequency = m_gui->degradationAmplitude->value();
+
+	if (auto tp = dynamic_cast<ThresholdProperty*>(algorithm))
+		tp->_threshold = m_gui->degradationAmplitude->value();
+
+	if(dynamic_cast<FilterProperty*>(algorithm))
+	{
+		iCp = new InputFilter<double>(11, conf);
+		oCp = new OutputFilter<double>(11, conf);
+	}
+	else
+	{
+		iCp = new InputSimple<double>(conf);
+		oCp = new OutputSimple<double>(conf);
+	}
+
+	auto fileInput = new FileInput<double>(m_inputName.toStdString(), iCp, conf);
+	auto fileOutput = new FileOutput<double>(oCp, conf);
+
+
+	if(dynamic_cast<FFTProperty*>(algorithm))
+	{
+		FFT_p<double> fft_m(new FFTWManager<double>(conf));
+		fft_m->setChannels((unsigned int) fileInput->channels());
+		auto fft_i = new FFTInputProxy<double>(fileInput, fft_m, conf);
+		auto fft_o = new FFTOutputProxy<double>(fileOutput, fft_m, conf);
+
+		input.reset(fft_i);
+		output.reset(fft_o);
+	}
+	else
+	{
+		input.reset(fileInput);
+		output.reset(fileOutput);
+	}
+
+	BenchmarkManager b_manager(input, output, Benchmark_p(algorithm));
+
+	b_manager.execute();
+
+	fileOutput->writeFile(m_outputName.toStdString().c_str());
+}
+
 /**
  * @brief LibWrapper::defineSavedFile
  * @return boolean: true if output name is correct
@@ -678,7 +811,6 @@ bool LibWrapper::defineSavedFile()
 
 	if(!m_outputName.isEmpty())
 	{
-
 		if(!m_outputName.endsWith(".wav"))
 			m_outputName.append(".wav");
 		return true;
@@ -706,7 +838,7 @@ void LibWrapper::setLsbDefaultConfigurationValue()
  */
 void LibWrapper::setSswDefaultConfigurationValue()
 {
-
+	m_settings.subLoad("defaultssw.ini");
 }
 
 /**

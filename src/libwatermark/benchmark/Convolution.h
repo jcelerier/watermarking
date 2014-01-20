@@ -3,10 +3,11 @@
 #include <random>
 
 #include "BenchmarkBase.h"
-#include "mathutils/math_util.h"
+#include "properties/Filter.h"
+#include "../mathutils/math_util.h"
 
 template <typename data_type>
-class Convolution : public BenchmarkBase<data_type>
+class Convolution : public BenchmarkBase<data_type>, public FilterProperty
 {
 		using BenchmarkBase<data_type>::conf;
 		using size_type = typename Parameters<data_type>::size_type;

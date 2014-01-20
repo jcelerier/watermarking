@@ -78,5 +78,10 @@ HEADERS += \
     benchmark/ComputeRMS.h \
     watermark/RLSBEncode.h \
     watermark/RLSBDecode.h \
-    watermark/LSB/LSBBase.h
+    watermark/LSB/LSBBase.h \
+    benchmark/properties/Amplitude.h \
+    benchmark/properties/Frequency.h \
+    benchmark/properties/Threshold.h \
+    benchmark/properties/Filter.h \
+    benchmark/properties/FFTProperty.h
 

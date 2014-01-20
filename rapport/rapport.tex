@@ -68,7 +68,7 @@ escapeinside={\%*}{*)}
 \geometry{headheight=15pt}
 \usepackage{fancyhdr}
 \usepackage[xindy,toc]{glossaries}
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 \usepackage{fancyvrb}
 \usepackage{float}
 \usepackage{algorithm2e}
@@ -77,6 +77,7 @@ escapeinside={\%*}{*)}
 \usepackage{caption}
 \usepackage[footnote,smaller]{acronym}
 \usepackage[perpage]{footmisc}
+\usepackage{slashbox}
 \usepackage[]{titlesec}
 \makeatletter
 \def\ttl@mkchap@i#1#2#3#4#5#6#7{%
@@ -111,6 +112,7 @@ escapeinside={\%*}{*)}
 \acrodef{LSB}{Least Significant Bit}
 \acrodef{SSW}{Spread-Spectrum Watermarking}
 \acrodef{FFT}{Fast Fourier Transform}
+\acrodef{GUI}{Graphical User Interface}
 
 \begin{document}
 \selectlanguage{english}
@@ -142,6 +144,6 @@ escapeinside={\%*}{*)}
 \include{conclusion}
 
 \printglossaries
-\bibliographystyle{apalike}
+\bibliographystyle{plainnat}
 \bibliography{watermarking}
 \end{document}

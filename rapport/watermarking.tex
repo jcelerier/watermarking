@@ -3,6 +3,81 @@
 \section{Existing work}
 \section{Techniques}
 \subsection{Least Significant Bit}
+The most common way to store audio data is by using 16 bit signed integers : it is the Red Book standard (example : figure \ref{fig:audio}).
+
+The audio is divided in samples and a common sample rate (the one given in the Red Book) is $44\,100$ Hz. The audio is encoded using pulse-code modulation : each sample roughly equates the average voltage measured by the analog-to-digital converter during one $44\,100$th of a second.
+
+\begin{figure}[h!]
+\centering
+\includegraphics{images/LSB1.jpg}
+\caption{Example : some samples of Red Book audio}
+\label{fig:audio}
+\end{figure}
+
+
+The principle of the \ac{LSB} method \cite{tirkel1993electronic} is to encode the watermark on the $16$th bit of the samples as visible on figure \ref{fig:lsb}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics{images/LSB2.jpg}
+\caption{LSB watermarking : the watermark is put in the $16$th line of bits, inside the red rectangle}
+\label{fig:lsb}
+\end{figure}
+
+This method presents two main advantages. 
+\subsubsection{Advantage: Quantity of embeddable data}
+The quantity of information watermarkable in the signal is quite high : we are able to encode 1 bit per sample. In order to give an order of magnitude, for a music track of a common length of 2 minutes, with a sampling frequency of $44\,100$ Hz, the \ac{LSB} method would allow to encode $5\,292\,000$ bits, which is about 645 kbytes, i.e. about the size of a long text, an image and even short audio signals. 
+\subsubsection{Advantage: Simplicity}
+The method is really simple to implement.
+The algorithm is present on \ref{algo:lsb}.
+
+\begin{algorithm}
+\DontPrintSemicolon
+\KwIn{A finite set $B=\{b_1, b_2, \ldots, b_m\}$ of data bits to hide}
+\KwIn{A finite set $S=\{s_1, s_2, \ldots, s_n\}$ of audio samples}
+\KwOut{A finite set $W=\{w_1, w_2, \ldots, w_n\}$ of watermarked audio samples}
+
+\For{$i \gets 1$ \textbf{to} $m$} {
+
+  $w_i \gets s_i$ \;  
+  $w_i [16] \gets b_i$ \;
+
+}
+
+\Return{$W$}\;
+
+\caption{\ac{LSB} Watermarking. For the sake of simplicity, the audio samples are considered to be arrays of bits, where $s[1]$ is the \ac{MSB} and $s[16]$ the \ac{LSB}.}
+
+\label{algo:lsb}
+
+\end{algorithm}
+
+\subsubsection{Advantage: Lack of audibility}
+The distortion of the signal after encoding the watermark is very weak. Indeed, the least significant bit of a $16$ bits digital signal affects the amplitude of the signal by a value of $\displaystyle\frac{1}{2^{16}} * V_{cc}$\cite{kester2005data}, with $V_{cc}$ the maximum voltage that the sound card is able to create.
+Finally, the LSB method gives a maximum signal-noise ratio of : 
+ 
+\begin{center}
+\begin{math}
+10 \log \displaystyle\frac{V_{cc}}{V_{cc} - \displaystyle\frac{1}{2^{16}} * V_{cc}} \simeq 10^{-4}
+\end{math}
+\end{center}
+
+\subsubsection{Drawback: easy interception}
+Despite these advantages, the LSB method has a main drawback : the watermark is very simple to decode. If someone wants to intercept the hidden signal, he just has to take the $LSB$ of the transmitted signal's samples to know the content of the watermark.  
+
+\subsubsection{Drawback: fragility}
+Another important point is that this does not resist well to audio distorsions, and compression (the 16th bit is generally very close to the noise floor, hence a lossy compression like MP3 will damage the watermark and make it unreadable). 
+
+\subsubsection{Other approaches to LSB method}
+In this project, two further approaches of the LSB are proposed :
+\begin{itemize}
+\item Rather than only encoding the watermark on just one line of bits, it could be encoded on several lines of bits. For example, the three last bits of each samples would serve to encode the watermark. The encodable quantity of information hence increases three-fold.
+\item In order to increase the resistance to the attacks and to the noise, it could be interesting to encode the same watermark on several lines of bits. For example, the same watermark bit would be encoded on the three last bits of each sample.
+\end{itemize} 
+
+To conclude, the \ac{LSB} method is inaudible and it provides a huge watermarking rate in comparison to the other methods. However, the watermark encoded by this algorithm is not really hidden and it does not resist to lossy compression and audio attacks.
+
+We choose to use this algorithm as a base to test our software and provide a working example and a lowest common denominator for benchmarks.
 \subsection{Spread-spectrum Watermarking}
 
 The purpose of the \ac{SSW} method is to embed the hidden data of the watermark in the frequency domain of the host signal. Hence, \ac{SSW} algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.

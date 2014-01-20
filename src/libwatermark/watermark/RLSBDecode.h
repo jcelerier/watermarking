@@ -35,12 +35,25 @@ class RLSBDecode : public LSBBase<data_type>
                         bool bit = (testBit != 0);
 
                         tabBit[nb].push_back(bit);
-                        //watermark.setNextBit(bit);
                    }
 				}
                for(int i = 0; i < sampleData.size(); ++i)
                {
-                    watermark.setNextBit(tabBit[3][i]);
+                   int sommeun = 0;
+                   int sommezero = 0;
+                   for (int nb = 0; nb < this->nbBits; ++nb)
+                   {
+
+                      if(tabBit[nb][i])
+                          sommeun++;
+                      else
+                          sommezero++;
+
+                      if(sommeun>sommezero)
+                        watermark.setNextBit(true);
+                      else
+                        watermark.setNextBit(false);
+                   }
 			   }
 			}
 		}

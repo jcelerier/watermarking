@@ -8,7 +8,7 @@ namespace SSWUtil
 {
 	/* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}
 	   de taille size */
-        std::vector<int> generatePNSequence(int size)
+		inline std::vector<int> generatePNSequence(int size)
         {
 			// Générer séquence de nombres entre 0 et 1
 			// Méthode C++
@@ -38,7 +38,7 @@ namespace SSWUtil
 
         /* Génère une plage de fréquence aléatoire de taille size et comprise dans
 			l'intervalle [1,sampleRate] (pourquoi pas sampleRate / 2 ?) */
-	std::vector<unsigned int> generateFrequencyRange(unsigned int size, Parameters<double> &conf)
+	inline std::vector<unsigned int> generateFrequencyRange(unsigned int size, Parameters<double> &conf)
         {
 		/*
 		  std::default_random_engine rng(std::random_device{}());

@@ -147,6 +147,18 @@ class WatermarkData
 			return bits;
 		}
 
+		int compareBits(std::vector<bool>& otherBits)
+		{
+			int e = 0;
+			for(int i = 0; i < std::min(bits.size(), otherBits.size()); i++)
+				if(bits[i] != otherBits[i])
+					e++;
+
+			if(otherBits.size() < bits.size())
+				e += std::abs(bits.size() - otherBits.size());
+			return e;
+		}
+
 	protected:
 		std::vector<bool> bits = { }; /**< Les données. */
 		uint64_t _size = 0; /**< Le nombre de bits de donnée. i.e. NE CONTIENT PAS LE NOMBRE DE BITS DU HEADER. */

@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
-#include <stdio.h>
+#include <cstdio>
 
+#include "../benchmark/properties/FFTProperty.h"
 #include "WatermarkBase.h"
 
 template <typename data_type>
@@ -10,9 +11,15 @@ template <typename data_type>
  *
  * Encodage SSW.
  */
-class SSWEncode : public WatermarkBase<data_type>
+class SSWEncode : public WatermarkBase<data_type>, public FFTProperty
 {
 	public:
+		SSWEncode(const Parameters<data_type>& configuration):
+			WatermarkBase<data_type>(configuration)
+		{
+
+		}
+
 		SSWEncode(const Parameters<data_type>& configuration,
 				  std::vector<int> & PNSequence,
 				  std::vector<unsigned int> & freqWinIndexes,
@@ -57,37 +64,39 @@ class SSWEncode : public WatermarkBase<data_type>
 
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}
-
-					/*
-
-					std::vector<double> amplifiedPN;
-					for (int i = 0; i < _PNSequence.size(); i++) {
-						amplifiedPN.push_back(_watermarkAmp * (double) _PNSequence[i]);
-					}
-
-					// Coefficients du spectre à modifier (sous forme de vecteur des normes des complexes)
-					std::vector<double> coefs_power;
-					for (int i = 0; i < _PNSequence.size(); i++) {
-						double power = 20.0 * std::log10(std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]])));
-						coefs_power.push_back(power);
-					}
-
-					// Calcul de la corrélation
-
-					double PNnorm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
-					double coefsNorm = MathUtil::norm_n<std::vector<double>::iterator, double>(coefs_power.begin(), coefs_power.size());
-
-					std::cout << "Coefs Norm : " << coefsNorm << " ";
-
-					// A changer pour pouvoir utiliser d'autres correlations en fonction de la méthode d'insertion
-					double correlation = (MathUtil::dotProduct_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), coefs_power.begin(), amplifiedPN.size()))/(PNnorm * coefsNorm);
-
-					std::cout << "Corr : " << correlation << std::endl;
-
-					*/
 				}
 			}
 		}
+
+
+		std::vector<int> PNSequence() const
+		{
+		return _PNSequence;
+		}
+
+		void setPNSequence(const std::vector<int>& PNSequence)
+		{
+		_PNSequence = PNSequence;
+		}
+		std::vector<unsigned int> freqWinIndexes() const
+		{
+		return _freqWinIndexes;
+		}
+
+		void setFreqWinIndexes(const std::vector<unsigned int>& freqWinIndexes)
+		{
+		_freqWinIndexes = freqWinIndexes;
+		}
+		double watermarkAmp() const
+		{
+		return _watermarkAmp;
+		}
+
+		void setWatermarkAmp(double watermarkAmp)
+		{
+		_watermarkAmp = watermarkAmp;
+		}
+
 
 	private :
 		std::vector<int> _PNSequence = {};
@@ -95,3 +104,5 @@ class SSWEncode : public WatermarkBase<data_type>
 		double _watermarkAmp;
 
 };
+
+

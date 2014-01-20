@@ -68,14 +68,14 @@ class FFTWManager : public FFTManager<data_type>
 			{
 				if(fw[i]) fftw_destroy_plan(fw[i]);
 				fw[i] = fftw_plan_dft_r2c_1d((int)this->conf.bufferSize,
-												  _in[i].data(),
+												  (double*)_in[i].data(),
 												  reinterpret_cast<fftw_complex*>(_spectrum[i].data()),
 												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 
 				if(bw[i]) fftw_destroy_plan(bw[i]);
 				bw[i] = fftw_plan_dft_c2r_1d((int)this->conf.bufferSize,
 												  reinterpret_cast<fftw_complex*>(_spectrum[i].data()),
-												  _out[i].data(),
+												  (double*)_out[i].data(),
 												  FFTW_EXHAUSTIVE | FFTW_DESTROY_INPUT);
 			}
 		}

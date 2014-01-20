@@ -22,6 +22,7 @@
 #include "benchmark/Amplify.h"
 #include "benchmark/Convolution.h"
 #include "benchmark/FFTAmplify.h"
+#include "mathutils/ssw_utils.h"
 
 
 #include "Parameters.h"
@@ -59,18 +60,53 @@ void TestEvaluation()
     std::cout << "Dégradation : FFTAmplify ====> False bits = " << rlsbFFTAmplify.getError() << std::endl;
 
     std::cout << "******** Algorithme de watermark : SSW ********" << std::endl;
-    /*BitError<double, Amplify<double>, short, SSWEncode<short>, SSWDecode<short>> sswAmplify;
+	// Données propres à SSW
+	// Setup propre à SSW
+	int size = 50;
+	auto PNSequence = SSWUtil::generatePNSequence(size);
+
+	BitError<double, Amplify<double>, double, SSWEncode<double>, SSWDecode<double>> sswAmplify;
+	auto FrequencyRange = SSWUtil::generateFrequencyRange(size, sswAmplify.wparams);
+	// Setup des algos
+	SSWEncode<double>* e = static_cast<SSWEncode<double>*>(sswAmplify.encodeAlgo.get());
+	SSWDecode<double>* d = static_cast<SSWDecode<double>*>(sswAmplify.decodeAlgo.get());
+	e->setWatermarkAmp(10.0);
+	e->setPNSequence(PNSequence);
+	e->setFreqWinIndexes(FrequencyRange);
+	d->setThreshold(0.5);
+	d->setWatermarkAmp(10.0);
+	d->setPNSequence(PNSequence);
+	d->setFreqWinIndexes(FrequencyRange);
+
     sswAmplify.execute("input_mono.wav");
     std::cout << "Dégradation : Amplify ====> False bits = " << sswAmplify.getError() << std::endl;
 
-    BitError<double, Convolution<double>, short, SSWEncode<short>, SSWDecode<short>> sswConvolution;
+	BitError<double, Convolution<double>, double, SSWEncode<double>, SSWDecode<double>> sswConvolution;
+	e = static_cast<SSWEncode<double>*>(sswConvolution.encodeAlgo.get());
+	d = static_cast<SSWDecode<double>*>(sswConvolution.decodeAlgo.get());
+	e->setWatermarkAmp(10.0);
+	e->setPNSequence(PNSequence);
+	e->setFreqWinIndexes(FrequencyRange);
+	d->setThreshold(0.5);
+	d->setWatermarkAmp(10.0);
+	d->setPNSequence(PNSequence);
+	d->setFreqWinIndexes(FrequencyRange);
+
     sswConvolution.execute("input_mono.wav");
     std::cout << "Dégradation : Convolution ====> False bits = " << sswConvolution.getError() << std::endl;
 
-    BitError<double, FFTAmplify<double>, short, SSWEncode<short>, SSWDecode<short>> sswFFTAmplify;
+	BitError<double, FFTAmplify<double>, double, SSWEncode<double>, SSWDecode<double>> sswFFTAmplify;
+	e = static_cast<SSWEncode<double>*>(sswFFTAmplify.encodeAlgo.get());
+	d = static_cast<SSWDecode<double>*>(sswFFTAmplify.decodeAlgo.get());
+	e->setWatermarkAmp(10.0);
+	e->setPNSequence(PNSequence);
+	e->setFreqWinIndexes(FrequencyRange);
+	d->setThreshold(0.5);
+	d->setWatermarkAmp(10.0);
+	d->setPNSequence(PNSequence);
+	d->setFreqWinIndexes(FrequencyRange);
+
     sswFFTAmplify.execute("input_mono.wav");
     std::cout << "Dégradation : FFTAmplify ====> False bits = " << sswFFTAmplify.getError() << std::endl;
-    */
-
 
 }

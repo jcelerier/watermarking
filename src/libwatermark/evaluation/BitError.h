@@ -67,11 +67,35 @@ public:
 
     void execute(std::string fileName)
     {
+		Parameters<double> doubleparams;
         // Encodage
-        static_cast<FileInput<watermark_type>*>(encodeInput.get())->readFile(fileName);
+		auto ei = static_cast<FileInput<watermark_type>*>(encodeInput.get());
+		ei->readFile(fileName);
 
-        WatermarkManager encodeManager(encodeInput,
-                                       encodeOutput,
+		Input_p e_realinput;
+		Output_p e_realoutput;
+
+
+		if(dynamic_cast<FFTProperty*>(encodeAlgo.get()))
+		{
+			doubleparams.samplingRate = wparams.samplingRate;
+			doubleparams.bufferSize = wparams.bufferSize;
+
+			FFT_p<double> fft_m(new FFTWManager<double>(doubleparams));
+			fft_m->setChannels((unsigned int) ei->channels());
+
+			e_realinput.reset(new FFTInputProxy<double>(encodeInput, fft_m, doubleparams));
+			e_realoutput.reset(new FFTOutputProxy<double>(encodeOutput, fft_m, doubleparams));
+		}
+		else
+		{
+			e_realinput = encodeInput;
+			e_realoutput = encodeOutput;
+		}
+
+
+		WatermarkManager encodeManager(e_realinput,
+									   e_realoutput,
                                        encodeAlgo,
                                        encodeData);
 
@@ -101,8 +125,8 @@ public:
 
 		bi->copyHandler.reset(iCp);
 		bo->copyHandler.reset(oCp);
-		Input_p input;
-		Output_p output;
+		Input_p b_realinput;
+		Output_p b_realoutput;
 
 		if(dynamic_cast<FFTProperty*>(benchAlgo.get()))
 		{
@@ -111,18 +135,18 @@ public:
 			auto fft_i = new FFTInputProxy<double>(binput, fft_m, bparams);
 			auto fft_o = new FFTOutputProxy<double>(boutput, fft_m, bparams);
 
-			input.reset(fft_i);
-			output.reset(fft_o);
+			b_realinput.reset(fft_i);
+			b_realoutput.reset(fft_o);
 		}
 		else
 		{
-			input = binput;
-			output = boutput;
+			b_realinput = binput;
+			b_realoutput = boutput;
 		}
 
         // Application de la dégradation
-		BenchmarkManager benchmarkManager(input,
-										  output,
+		BenchmarkManager benchmarkManager(b_realinput,
+										  b_realoutput,
                                           benchAlgo);
 
         benchmarkManager.execute();
@@ -133,9 +157,32 @@ public:
         auto wi = static_cast<BufferInput<watermark_type>*>(decodeInput.get());
         wi->readFromBufferOutput(bo);
 
+		Input_p d_realinput;
+		Output_p d_realoutput;
+
+		auto di = static_cast<BufferInput<watermark_type>*>(decodeInput.get());
+
+		if(dynamic_cast<FFTProperty*>(encodeAlgo.get()))
+		{
+			doubleparams.samplingRate = wparams.samplingRate;
+			doubleparams.bufferSize = wparams.bufferSize;
+
+			FFT_p<double> fft_m(new FFTWManager<double>(doubleparams));
+			fft_m->setChannels((unsigned int) di->channels());
+
+			d_realinput.reset(new FFTInputProxy<double>(decodeInput, fft_m, doubleparams));
+			d_realoutput.reset(new FFTOutputProxy<double>(decodeOutput, fft_m, doubleparams));
+		}
+		else
+		{
+			d_realinput = decodeInput;
+			d_realoutput = decodeOutput;
+		}
+
+
         // Décodage
-        WatermarkManager decodeManager(decodeInput,
-                                       decodeOutput,
+		WatermarkManager decodeManager(d_realinput,
+									   d_realoutput,
                                        decodeAlgo,
                                        decodeData);
 
@@ -152,16 +199,7 @@ public:
 
     void computeError()
     {
-        double E=0.0;
-        encodeData->resetPosition();
-        decodeData->resetPosition();
-        while((!encodeData->isComplete()) && (!decodeData->isComplete()))
-        {
-            if (decodeData->nextBit() != encodeData->nextBit())
-                E += 1;
-        }
-
-        error=E;
+		error = encodeData->compareBits(decodeData->getBaseBits());
     }
 
     double getError() const
@@ -169,21 +207,19 @@ public:
         return error;
     }
 
-
-private:
     /// Watermark
     Parameters<watermark_type> wparams{};
 
     /// Encodage
     Input_p encodeInput{new FileInput<watermark_type>(wparams)};
     Output_p encodeOutput{new BufferOutput<watermark_type>(wparams)};
-    Watermark_p encodeAlgo{new watermark_encode_algo(wparams)};
+	Watermark_p encodeAlgo{new watermark_encode_algo(wparams)};
     WatermarkData_p encodeData{new SimpleWatermarkData};
 
     /// Décodage
     Input_p decodeInput{new BufferInput<watermark_type>(wparams)};
     Output_p decodeOutput{new DummyOutput<watermark_type>(wparams)};
-    Watermark_p decodeAlgo{new watermark_decode_algo(wparams)};
+	Watermark_p decodeAlgo{new watermark_decode_algo(wparams)};
     WatermarkData_p decodeData{new SimpleWatermarkData};
 
     /// Benchmark

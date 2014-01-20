@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include "../benchmark/properties/FFTProperty.h"
 
 #include "WatermarkBase.h"
 #include "../mathutils/math_util.h"
@@ -11,9 +12,15 @@
  * Décodage SSW.
  */
 template <typename data_type>
-class SSWDecode : public WatermarkBase<data_type>
+class SSWDecode : public WatermarkBase<data_type>, public FFTProperty
 {
 	public:
+		SSWDecode(const Parameters<data_type>& configuration):
+			WatermarkBase<data_type>(configuration)
+		{
+
+		}
+
 		SSWDecode(const Parameters<data_type>& configuration,
 				  std::vector<int> & PNSequence,
 				  std::vector<unsigned int> & freqWinIndexes,
@@ -147,6 +154,45 @@ class SSWDecode : public WatermarkBase<data_type>
 			}
 		}
 
+
+		std::vector<int> PNSequence() const
+		{
+			return _PNSequence;
+		}
+
+		void setPNSequence(const std::vector<int>& PNSequence)
+		{
+			_PNSequence = PNSequence;
+		}
+		std::vector<unsigned int> freqWinIndexes() const
+		{
+			return _freqWinIndexes;
+		}
+
+		void setFreqWinIndexes(const std::vector<unsigned int>& freqWinIndexes)
+		{
+			_freqWinIndexes = freqWinIndexes;
+		}
+		double watermarkAmp() const
+		{
+			return _watermarkAmp;
+		}
+
+		void setWatermarkAmp(double watermarkAmp)
+		{
+			_watermarkAmp = watermarkAmp;
+		}
+
+		double threshold() const
+		{
+		return _threshold;
+		}
+
+		void setThreshold(double threshold)
+		{
+		_threshold = threshold;
+		}
+
 	private :
 		std::vector<int> _PNSequence = {};
 		std::vector<unsigned int> _freqWinIndexes = {};
@@ -159,3 +205,5 @@ class SSWDecode : public WatermarkBase<data_type>
 		unsigned int _channels_nb = 0;
 		std::vector< std::vector<double> > _correlations;
 };
+
+

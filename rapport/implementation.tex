@@ -206,6 +206,8 @@ LoopingWatermarkData & Puts the watermark repeatedly \\
 \label{frameworkclass4}
 \end{figure}
 
+Also, the folder \texttt{src/matlab} contains a \brand{MATLAB} implementation of the compression-expansion algorithm, that we could not port to \brand{C++} due to lack of time.
+
 \newpage
 
 \subsection{Class diagram}
@@ -386,6 +388,7 @@ There are some things to note about our implementation :
 \begin{itemize}
 \item In case of multi-channel operation, the same bits are copied on each channel. But the algorithms are easily tweakable.
 \item In our tests, most of the time, the watermark is only put at the beginning of the file. However, it could be put in a looping mode by a simple class change.
+\item In order to be able to read data, the size of the watermark to read is embedded at the beginning, using the 64 first bits. However, if these bits are damaged, it can become impossible to get access to the other parts of the watermark because the algorithm won't know when to stop reading, which can cause buffer overflows.
 \item There are a few bugs which could not be settled due to the lack of time : 
 \begin{itemize}
 \item In case of windowing in an overlap-add process, the first window would sometimes need to be normalized.

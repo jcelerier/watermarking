@@ -31,6 +31,8 @@ It is a static code analysis software which finds bugs unlikely to be found by a
 \paragraph{valgrind}
 A big emphasis was put on the memory cleanliness : as a matter of fact, there is not a single memory leak in the library, thanks to the extensive use of smart pointers (there is not a single free pointer in our classes, they are all embedded in \texttt{std::smart\_ptr} objects).
 
+We only noted a bug with the \ac{MCLT} that we did not had the time to solve, however it is not used in the main software so it is not really relevant.
+
 \paragraph{lcov}
 This software was used to test the code coverage of the library during the unit tests, to ensure maximum efficiency for the other tools that we explained before.
 

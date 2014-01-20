@@ -69,11 +69,13 @@ Despite these advantages, the LSB method has a main drawback : the watermark is 
 Another important point is that this does not resist well to audio distorsions, and compression (the 16th bit is generally very close to the noise floor, hence a lossy compression like MP3 will damage the watermark and make it unreadable). 
 
 \subsubsection{Other approaches to LSB method}
-In this project, two further approaches of the LSB are proposed :
+In this project, two further approaches of the \ac{LSB} are proposed :
 \begin{itemize}
-\item Rather than only encoding the watermark on just one line of bits, it could be encoded on several lines of bits. For example, the three last bits of each samples would serve to encode the watermark. The encodable quantity of information hence increases three-fold.
-\item In order to increase the resistance to the attacks and to the noise, it could be interesting to encode the same watermark on several lines of bits. For example, the same watermark bit would be encoded on the three last bits of each sample.
+\item Rather than only encoding the watermark on just one line of bits, it could be encoded on several lines of bits. For example, the three last bits of each samples would serve to encode the watermark. The encodable quantity of information hence increases three-fold. We implemented this capability in our \ac{LSB} algorithm.
+\item In order to increase the resistance to the attacks and to the noise, it could be interesting to encode the same watermark on several lines of bits. For example, the same watermark bit would be encoded on the three last bits of each sample. We implemented this method in our software and named it \ac{RLSB}.
 \end{itemize} 
+
+These two methods increase either redundancy or capacity at the cost of an increased noise floor.
 
 To conclude, the \ac{LSB} method is inaudible and it provides a huge watermarking rate in comparison to the other methods. However, the watermark encoded by this algorithm is not really hidden and it does not resist to lossy compression and audio attacks.
 

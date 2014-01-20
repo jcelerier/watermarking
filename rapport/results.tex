@@ -17,5 +17,53 @@ The evaluation has been made for the \ac{LSB} (the reference), the \ac{RLSB} and
 \hline
 \end{tabular}
 \end{figure}
+
+Something important to consider is that what we thought was the most resistant (SSW) is actually the less resistant, certainly because our implementation is not perfect.
+
+More surprisingly, our custom \ac{RLSB} algorithm doesn't work quite well. However, this is certainly because if the bit to encode is $1$, and the encoding is on five bits, the last bits are $11111$. Only doing $11111 + 1$ would ruin the bit.
 \section{Auditory results}
-The auditory evaluation, made on about ten persons, wasn't really relevant. The watermark made on the audio files were audible, all of the persons reported a difference. Added to this, the audio files watermarked with the LSB method showed lot of noise, the original song wasn't audible. The experiment with the SSW technique were more relevant as the song was still audible.
+The auditory evaluation, made on about ten persons, wasn't really conclusive because of the lack of precision of the answers.
+
+The results are shown on figure \ref{fig:auditory}.
+\begin{figure}[h!]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+File & Satisfaction \\
+\hline
+Brassens & \\
+\hline
+LSB1 & ++ \\
+LSB3 & ++ \\
+LSB5 & ++ \\
+RLSB1 & ++ \\
+RLSB3 & ++ \\
+RLSB5 & ++ \\
+SSW10 & -- \\
+SSW20 & -- \\
+SSW100 & -- \\
+\hline
+Solo  & \\
+\hline
+LSB1 & ++ \\
+LSB3 & ++ \\
+LSB5 & ++\\
+RLSB1 & ++\\
+RLSB3 & ++\\
+RSLB5 & ++\\
+SSW10 & -\\
+SSW20 & --\\
+SSW100 & --\\
+\hline
+\end{tabular}
+\caption{Auditory results}
+\label{fig:auditory}
+\end{figure}
+
+A high satisfaction indicates that the noise due to the watermarking couldn't be heard.
+
+For the \ac{LSB} algorithms, the number to the right of the file is the number of bits used.
+
+For the \ac{SSW} algorithm, it is the amplitude used for the SSW.
+
+We could only note that the \ac{SSW} algorithm is more suited to songs with a very rich harmonic content.

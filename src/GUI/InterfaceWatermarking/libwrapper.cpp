@@ -255,27 +255,19 @@ void LibWrapper::loadHostWatermarkFile()
 		m_gui->waveformInputWidget->replot();
 
 
-		switch(m_gui->selectingMethodTab->currentIndex())
-		{
 
-			case 0: //LSB Method
-				/* Editing watermark max length progress bar */
+		/* Editing watermark max length progress bar */
 
-				//m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
-				m_gui->usedWatermarkCapacityBar->setMinimum(0);
+		//m_computedNbFrames = m_nbFramesBase*m_gui->sampleSizeSpinBox->value()/m_sampleSizeBase;
+		m_gui->usedWatermarkCapacityBar->setMinimum(0);
 
-				m_nbChannels = input->channels();
-				m_nbFrames = input->frames();
+		m_nbChannels = input->channels();
+		m_nbFrames = input->frames();
 
-				m_gui->availableCapacityLabel2->setVisible(true);
+		m_gui->availableCapacityLabel2->setVisible(true);
 
-				updateWatermarkCapacityProgressBar();
-				break;
+		updateWatermarkCapacityProgressBar();
 
-			default:
-				break;
-
-		}
 
 		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
 	}
@@ -334,7 +326,7 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 	if(!m_inputName.isEmpty())
 	{
 
-		int i;
+		int i = m_gui->textToWatermark->toPlainText().size();
 
 		switch(m_gui->selectingMethodComboBox->currentIndex())
 		{
@@ -354,8 +346,6 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 						break;
 				}
 
-				i = m_gui->textToWatermark->toPlainText().size();
-
 				m_gui->availableCapacityLabel2->setText(QString::number(i*8)
 														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
 																				) + " bits");
@@ -370,6 +360,26 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
 					m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
 				}
+
+				break;
+
+			case 1: //SSW Method
+
+			m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFrames*m_nbChannels);
+
+			m_gui->availableCapacityLabel2->setText(QString::number(i*8)
+													+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
+																			) + " bits");
+			if(i*8 < m_gui->usedWatermarkCapacityBar->maximum())
+			{
+				m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+				m_gui->usedWatermarkCapacityBar->setValue(i*8);
+			}
+			else
+			{
+				m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+				m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
+			}
 
 				break;
 

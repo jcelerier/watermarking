@@ -490,6 +490,11 @@ void LibWrapper::encode()
 
 			algorithm->nbBits = m_gui->NumberLsbSpinBox->value();
 
+			// Mettre à partir d'un certain temps
+			auto tb = m_gui->watermarkBeginningTime->time();
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
+
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
 			m_manager.algorithm() = Watermark_p(algorithm);
@@ -556,6 +561,10 @@ void LibWrapper::encode()
 
 			auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, ampl);
 
+			// Mettre à partir d'un certain temps
+			auto tb = m_gui->watermarkBeginningTime->time();
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
 			m_manager.algorithm() = Watermark_p(algorithm);
@@ -623,6 +632,10 @@ void LibWrapper::decode()
 
 			algorithm->nbBits = m_gui->NumberLsbSpinBox->value();
 
+			// Mettre à partir d'un certain temps
+			auto tb = m_gui->watermarkBeginningTime->time();
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
 			m_manager.algorithm() = Watermark_p(algorithm);
@@ -655,6 +668,10 @@ void LibWrapper::decode()
 
 			auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, ampl, thres);
 
+			// Mettre à partir d'un certain temps
+			auto tb = m_gui->watermarkBeginningTime->time();
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
 			m_manager.input() = Input_p(input);
 			m_manager.output() = Output_p(output);
 			m_manager.algorithm() = Watermark_p(algorithm);

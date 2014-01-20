@@ -39,6 +39,9 @@ void SettingsManager::save()
 		default:
 			break;
 	}
+
+	s.setValue("Time/Beginning", p->m_gui->watermarkBeginningTime->time());
+	s.setValue("Time/End", p->m_gui->watermarkEndingTime->time());
 }
 
 void SettingsManager::load()
@@ -80,6 +83,8 @@ void SettingsManager::subLoad(QString fileOut)
 			break;
 	}
 
+	p->m_gui->watermarkBeginningTime->setTime(s.value("Time/Beginning").toTime());
+	p->m_gui->watermarkEndingTime->setTime(s.value("Time/End").toTime());
 }
 
 QList<QVariant> SettingsManager::readSSWLine(int line)

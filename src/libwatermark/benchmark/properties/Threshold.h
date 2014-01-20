@@ -3,5 +3,5 @@
 struct ThresholdProperty
 {
 		virtual ~ThresholdProperty() = default;
-		double _threshold;
+		double _threshold = 0.5;
 };

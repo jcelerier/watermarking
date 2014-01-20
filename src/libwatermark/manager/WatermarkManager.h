@@ -27,6 +27,18 @@ class WatermarkManager: public ManagerBase
 
 		}
 
+		WatermarkManager(Input_p i,
+						 Output_p o,
+						 TimeAdapter_p t,
+						 Watermark_p a,
+						 WatermarkData_p d):
+			ManagerBase(i, o, t),
+			m_algorithm(a),
+			m_data(d)
+		{
+
+		}
+
 		WatermarkManager(const WatermarkManager& sm) = delete;
 		WatermarkManager& operator=(const WatermarkManager& sm) = delete;
 

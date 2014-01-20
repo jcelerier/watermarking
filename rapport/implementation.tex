@@ -17,9 +17,9 @@ The choice was made really early to use \brand{C++} as a programming language, m
 \subsection{Dependencies}
 We tried to use as few dependencies as possible, and we tried to choose the most cross-platform ones. In return, our software should work on every common desktop operating system, and could certainly be embedded in smartphones, etc\dots
 \subsubsection{Qt}
-The GUI framework. It is not used in the library, but it allowed us to make a fully working GUI in a really short amount of time; also, most of us already had some prior knowledge of it.
+The GUI framework. It is not used in the library, but it allowed us to make a fully working \ac{GUI} in a really short amount of time; also, most of us already had some prior knowledge of it.
 \subsubsection{FFTW}
-This Fast Fourier Transform library has been used as the main library to perform the Fourier transform needed in some algorithms, because of its efficiency. However, other FFT libraries could be used very easily.
+This Fast Fourier Transform library has been used as the main library to perform the Fourier transform needed in some algorithms, because of its efficiency. However, other \ac{FFT} libraries could be used very easily.
 \subsubsection{libsndfile}
 An audio file library that allows our software to open \brand{WAV} files and other common filetypes very easily. It is lightweight and efficient. Unfortunately, it doesn't support compressed formats like \brand{MP3} or \brand{OGG Vorbis}. 
 
@@ -53,7 +53,7 @@ In the current design, there is an input and an output, input and output filters
 \item IFFT \textit{calls} Waveform plotting \textit{calls} WriteNextBuffer
 \end{enumerate}
 
-However, this is somewhat clumsy to setup : one must first instantiate the original audio loader I0, then the FFT filter I1 which has to reference I0, then the plotter I2 which has to reference I1, and finally the manager class which has to reference I2, and the same for the output, which leads to bloated code and a logical dissimetry.
+However, this is somewhat clumsy to setup : one must first instantiate the original audio loader I0, then the \ac{FFT} filter I1 which has to reference I0, then the plotter I2 which has to reference I1, and finally the manager class which has to reference I2, and the same for the output, which leads to bloated code and a logical dissimetry.
 So in future project, the framework might be modified to take instead a list of classes which would make our example:
 
 GetNextBuffer $\rightarrow$ FFT $\rightarrow$ FFT plotting $\rightarrow$ Algorithm $\rightarrow$ IFFT $\rightarrow$ Waveform Plotting $\rightarrow$ WriteNextBuffer.
@@ -77,6 +77,15 @@ There are interfaces for :
 \item Copying, overlapping and windowing.
 \end{itemize}
 
+\subsubsection{A short word on overlap-add processing}
+This was by far one of the most difficult part of the library to get right, mainly due to the numerous interactions between different parameters and algorithms, and complexity of the subject.
+
+The main process is explained on \cite{overlap}, however, one of the main point to take into account is the necessity of windows functions.
+
+Since we aim for resynthesis, we have to select window functions that would sum to unity on at least one overlap factors as explained on \cite{smith1987parshl}, in the section "Choice of Hop Size". 
+
+Several of these functions are shown in \cite{heinzel2002spectrum}, and some of theme are implemented. Since they are mostly high-order cosine windows, they can be implemented solely by inputting an array of values and an ideal overlap factor as shown on the file \texttt{libwatermark/io/fftproxy/window/HighOrderCosineWindow.h}.
+\subsection{Feature list by class}
 You can see on figures \ref{frameworkclass1} to \ref{frameworkclass4} tables that repertories all the implementations of these interfaces.
 
 \begin{figure}[h!]
@@ -90,8 +99,8 @@ FileInput & FileOutput & Wrapper around \brand{libsndfile} \\
 BufferInput & BufferOutput & Read and write from a buffer \\
 SilenceInput & DummyOutput & Generates silence and writes to nothing \\
 \hline
-FFTInputProxy & FFTOutputProxy & FFT transform \\
-MCLTInputProxy & MCLTOutputProxy & MCLT transform \\
+FFTInputProxy & FFTOutputProxy & \ac{FFT} transform \\
+MCLTInputProxy & MCLTOutputProxy & \ac{MCLT} transform \\
 \hline
 & GnuplotOutput & Displays sample data in \brand{GNUPlot} \\
 & GnuplotFFTOutput & Displays a spectrum in \brand{GNUPlot} \\
@@ -106,7 +115,7 @@ MCLTInputProxy & MCLTOutputProxy & MCLT transform \\
 \texttt{InputCopy} & \texttt{OutputCopy} & \\
 \hline
 InputSimple & OutputSimple & Copies and increment by a buffer size \\
-InputOLA & OuputOLA & Copies in an overlap-add fashion \\
+InputOLA & OuputOLA & Copies in an overlap-add fashion\\
 InputFilter & OutputFilter & Copies in order to perform convolution \\
 \hline
 \end{tabular}
@@ -120,7 +129,7 @@ InputFilter & OutputFilter & Copies in order to perform convolution \\
 \hline
 RectWindow & Rectangular window : does nothing \\
 BartlettWindow & Bartlett window \\
-HighOrderCosineWindow & Allows the conception of cosine windows like \\ & Hann, Hamming, Blackman, Nuttal, STxF \\ 
+HighOrderCosineWindow & Allows the conception of cosine windows like \\ & Hann, Hamming, Blackman, Nuttal, STxF  \\ 
 \hline
 \end{tabular}
 
@@ -135,8 +144,8 @@ HighOrderCosineWindow & Allows the conception of cosine windows like \\ & Hann, 
 \textbf{Watermark encoding} & \textbf{Watermark decoding} & \textbf{Explanation} \\
 \texttt{WatermarkBase} & \texttt{WatermarkBase} & \\
 \hline
-LSBEncode & LSBDecode & LSB algorithm \\
-RLSBEncode & RLSBDecode & Resistant LSB algorithm \\
+LSBEncode & LSBDecode & \ac{LSB} algorithm \\
+RLSBEncode & RLSBDecode & Resistant \ac{LSB} algorithm \\
 SSWEncode & SSWDecode & \ac{SSW} algorithm \\
 \hline
 \end{tabular}
@@ -151,7 +160,7 @@ SSWEncode & SSWDecode & \ac{SSW} algorithm \\
 AddBrumm & Adds mains-like noise \\
 AddWhiteNoise & Adds white noise \\
 Amplify & A simple gain \\
-Convolution & Performs linear convolution for filtering (e.g. LPF / HPF)\\
+Convolution & Performs linear convolution for filtering (e.g. LPF / HPF)\cite{convolution}\\
 Exchange & Exchanges pairs of samples \\
 FFTNoise & Adds white noise using a spectral method \\
 FFTAmplify & Gain using a spectral method \\
@@ -313,7 +322,7 @@ perform() : void \\
 \newpage
 
 \subsection{Example of usage}
-We will here have a look at an example usage of our library which will correspond to the encoding of some bits with the LSB algorithm.
+We will here have a look at an example usage of our library which will correspond to the encoding of some bits with the \ac{LSB} algorithm.
 
 More examples can be seen in the test application.
 

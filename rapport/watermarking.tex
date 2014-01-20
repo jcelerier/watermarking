@@ -210,5 +210,99 @@ This method is very simple and very accurate when no attack is done on the water
 \end{figure}
 The derivative of each slope should be a constant non-zero function. It is experimentally found that the constant values of these function are greater than 1.7 for the left slope and lower than -1.5 for the right slope. These criteria can be used to ensure that the segments considered where used to calculate a diamond or not.\\
 From the experience, this type of searching works well on attacked signals with noise and re-sampling. Nevertheless, the results are less satisfying when the watermarked signal is compressed using a low-pass filter or M.P. 3 algorithm.
-\item \textbf{Cross-correlation with reference triangle} : 
+\item \textbf{Cross-correlation with reference triangle} : Experimental results show that the amplitudes of the diamonds using different types of audio signals are quite similar. Therefore, for a segment of 512 samples, the length of the envelope is the same as the one of the diamond, which is 768 samples ($\frac{3}{2}$ times the segment length). The average amplitude is 0,06 in the middle of the envelope (if the frame size changes, then these values are no more applicable).
+\begin{figure}[H]
+\center{\includegraphics[scale=0.7]{images/Image7.png}}
+\caption{\label{envelope} Envelope for a watermark extraction}
+\end{figure}
+The cross-correlation between this shape and the signal with the diamonds is calculated. If the value is near 1, it means there is a diamond, whereas if it is near 0, there are non-distorted frames.\\
+Experiments indicate that a cross-correlation value over 0,78 is a diamond and under 0,31 represents non-distorted frames. If the value is between 0,78 and 0,31, then another detection method is applied. This method gives higher detection accuracy than the previous one.
 \end{itemize}
+
+\paragraph{Calculation of the mask}
+The signal is segmented into overlapped frames. Then, the short time Fourier transform is applied in order to get a spectral representation. However, another scale is used : the Bark Scale. The concept of the Bark scale is based on a psychoacoustic phenomenon : the basilar membrane in the hearing mechanism analyses the incoming sound through a spatial-spectral analysis. This is done in small regions of the basilar membrane called “critical bands”.\\
+The \textbf{Bark scale} is obtained from the frequency range with the following formula :
+$$z_i = 13\textnormal{tan}^{-1}\frac{0,76f_i}{1000}+3,5\textnormal{tan}^{-1}\left(\frac{f_i}{7500}\right)^2$$
+In the following graph is given the spectral representation of the 7\textsuperscript{th} segment of the file \textbf{\textit{input\_mono.wav}}, given in the folder \textbf{\textit{output}}. This was calculated with \textbf{\textit{MatLab}} :
+\begin{figure}[H]
+\center{\includegraphics[scale=0.5]{images/Image8.png}}
+\caption{Spectral representation of the 7\textsuperscript{th} segment of \textbf{\textit{input\_mono.wav}}}
+\end{figure}
+
+Then, one needs to calculate the power spectra. The formula is given below :
+$$S_p(j\omega) = 	|\mathcal{F}(s(t)w(t))|$$
+where $sw(t) = s(t)w(t)$ is the windowed segment, and $\mathcal{F}$ is the Fourier transform (which explains the transformation from $t$ to $j\omega$).
+
+For each critical band of the basilar membrane, one computes its energy as follows :
+$$S_{pz}(z) = \sum_{\omega = LBZ}^{\omega = HBZ}S_p(j\omega)$$
+where $LBZ$ and $HBZ$ are respectively the lower and higher frequencies of the critical band. z goes from 1 to the total of critical bands, and one does the sum to get the total energy.\\
+In the graph below is represented in red the energy per critical band :
+\begin{figure}[H]
+\center{\includegraphics[scale=0.5]{images/Image9.png}}
+\caption{Energy per critical band and spectral representation}
+\end{figure}
+
+At this step, one needs also to compute the basilar membrane spreading function. This function determines how much of the energy of each 
+critical band is contributed to the neighbouring bands.\\
+This function in dB is :
+$$B_k = 15,91+7,5(k + 0,474) - 17,5\sqrt{1 + (k + 0,474)^2}$$
+k takes its values in $\mathbb{Z}$.
+\begin{figure}[H]
+\center{\includegraphics[scale=0.5]{images/Image10.png}}
+\caption{Representation of $B$ in function of $z$}
+\end{figure}
+The spreading across bands is computed by the convolution of the previous function and the energy per critical band :
+$$S_m(z) = S_pz(z)*B(z)$$
+\begin{figure}[H]
+\center{\includegraphics[scale=0.5]{images/Image11.png}}
+\caption{Representation of $S_m$ as a function of z (red curve)}
+\end{figure}
+
+With the different things computed, one can now calculate the masking threshold.\\
+First, one must get the spectral flatness measure :
+$$SFM = 10\textnormal{log}\left(\frac{\prod_{z = 1}^{z = Z_t} S_{pz}(z)}{\frac{1}{Z_t}\sum_{z = 1}^{z = Z_t} S_{pz}(z)}\right)^\frac{1}{Z_t}$$
+
+One can now have the tonality factor $\alpha$ :
+$$\alpha = \textnormal{min}\left(\frac{SFM}{-60} ; 1\right)$$
+
+The masking threshold is given by :
+$$T_{norm}(z) = \frac{10^{\textnormal{log} S_m(z)-\frac{O(z)}{10}}}{P_z}$$
+where $O(z)$ is the masking energy offset :
+$$O(z) = \alpha(14,5 + z) + 5,5(1 - \alpha)$$
+and $P_z$ is the number of points in each band $z$, $z \in [\![1 ; Z_t]\!]$.
+
+\paragraph{Results of the method}
+Experiments have been made on three types of signals :
+\begin{itemize}
+\item rock music
+\item classical music
+\item male speech
+\end{itemize}
+Rock music have a very high signal energy, unlike classical music. A speech has also a moderate signal energy, but sequences are very energied-low.\\
+All signals are sampled at 44,1 kHz and quantized with 16 b. Files are either mono (segment size : 512), either stereo (segment sizes : 256, 512 or 1024).
+
+The information was a binary $64\times64$ image.
+
+The audio quality of the watermarked signal was measured with several methods. Listeners evaluated the quality through comparing both original and modified signals. And to get more objective results, the signal to noise ratio (S.N.R.) was used. This is given by the formula :
+$$SNR = 10\textnormal{log}\frac{\sum_{n} x(n)^2}{\sum_{n} (x(n) - y(n))^2}$$
+where $x$ is the original signal and $y$ the watermarked one.\\
+This experiment leads to conclude that the watermarked signals are not damaged perceptually. Furthermore, the S.N.R. values obtained for watermarked signals are around 40 dB. Notice that, for stereo signals, the S.N.R. is calculated on each channel.\\
+The requirement of the I.F.P.I. (International Federation of the Phonographic Industry) is 20 dB. Therefore, it can be concluded that the watermarks do not affect the signal perceptually speaking.
+
+To test the robustness, several attacks were made. The robustness is calculated with the bit error rate, which is the number of false bits recovered divided by the total number of bits.\\
+The attacks were :
+\begin{itemize}
+\item Attack free
+\item Noise addition (decrease of the S.N.R. of 20 dB)
+\item Re-sampling (down-sampling to 22,05 kHz and up-sampling to 44,1 kHz then)
+\item Re-quantization (down-quantized to 8 b and up-quantized to 16 b again)
+\item Echo adding (delay : 0,001 s)
+\item Low-pass filtering (cutoff frequency at 6 kHz)
+\item M.P. 3 compression (32 kb/s)
+\item Amplitude variation (increased of 30 \% and decreased then by 20 \%)
+\item Time-scale modification (lengthened by 10 \% and decreased then by 5 \%)
+\item Pitch scaling
+\end{itemize}
+
+From the results obtained, stereo signals are better to enclose a watermark. Mono signals are easier to be attacked, and the information recovered is false. The same observation is made when the segments have too low frames. It is because the maximum amplitude of the diamonds are lower as the segments are smaller.\\
+Compressions, which are generally damaging, are here well supported.

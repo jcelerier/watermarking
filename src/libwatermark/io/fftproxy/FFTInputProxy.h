@@ -35,6 +35,16 @@ class FFTInputProxy : public FFTProxy<data_type>, public InputManagerBase<data_t
 		{
 		}
 
+		FFTInputProxy(Input_p input,
+					  FFT_p<data_type> fftmanager,
+					  Parameters<data_type>& cfg):
+			FFTProxy<data_type>(fftmanager, cfg),
+			InputManagerBase<data_type>(nullptr, cfg),
+			inputImpl(input),
+			window(new RectWindow<data_type>())
+		{
+		}
+
 		FFTInputProxy(WindowBase<data_type>* wnd,
 					  InputManagerBase<data_type>* input,
 					  FFT_p<data_type> fftmanager,

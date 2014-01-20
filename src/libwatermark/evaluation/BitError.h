@@ -13,6 +13,27 @@
 #include "manager/WatermarkManager.h"
 #include "manager/BenchmarkManager.h"
 #include "watermark/LSBEncode.h"
+#include "io/copystyle/InputFilter.h"
+#include "io/copystyle/OutputFilter.h"
+#include "io/copystyle/InputOLA.h"
+#include "io/copystyle/OutputOLA.h"
+#include "benchmark/Convolution.h"
+#include "benchmark/AddBrumm.h"
+#include "benchmark/AddWhiteNoise.h"
+#include "benchmark/Amplify.h"
+#include "benchmark/Exchange.h"
+#include "benchmark/Invert.h"
+#include "benchmark/FFTAmplify.h"
+#include "benchmark/Smooth.h"
+#include "benchmark/ZeroCross.h"
+#include "benchmark/Stat1.h"
+#include "benchmark/FFTNoise.h"
+
+#include "manager/BenchmarkManager.h"
+
+#include "transform/FFTWManager.h"
+#include "io/fftproxy/FFTInputProxy.h"
+#include "io/fftproxy/FFTOutputProxy.h"
 #include <string>
 #include <algorithm>
 #include <random>
@@ -61,17 +82,54 @@ public:
         auto wo = static_cast<BufferOutput<watermark_type>*>(encodeOutput.get());
         auto bi = static_cast<BufferInput<benchmark_type>*>(binput.get());
         bi->readFromBufferOutput(wo);
+		auto bo = static_cast<BufferOutput<benchmark_type>*>(boutput.get());
+
+
+		InputCopy<double>* iCp = nullptr;
+		OutputCopy<double>* oCp = nullptr;
+
+		if(dynamic_cast<FilterProperty*>(benchAlgo.get()))
+		{
+			iCp = new InputFilter<double>(11, bparams);
+			oCp = new OutputFilter<double>(11, bparams);
+		}
+		else
+		{
+			iCp = new InputSimple<double>(bparams);
+			oCp = new OutputSimple<double>(bparams);
+		}
+
+		bi->copyHandler.reset(iCp);
+		bo->copyHandler.reset(oCp);
+		Input_p input;
+		Output_p output;
+
+		if(dynamic_cast<FFTProperty*>(benchAlgo.get()))
+		{
+			FFT_p<double> fft_m(new FFTWManager<double>(bparams));
+			fft_m->setChannels((unsigned int) bi->channels());
+			auto fft_i = new FFTInputProxy<double>(binput, fft_m, bparams);
+			auto fft_o = new FFTOutputProxy<double>(boutput, fft_m, bparams);
+
+			input.reset(fft_i);
+			output.reset(fft_o);
+		}
+		else
+		{
+			input = binput;
+			output = boutput;
+		}
 
         // Application de la dégradation
-        BenchmarkManager benchmarkManager(binput,
-                                          boutput,
+		BenchmarkManager benchmarkManager(input,
+										  output,
                                           benchAlgo);
 
         benchmarkManager.execute();
 
 
         // Copie du buffer (optimiser avec un move ?)
-        auto bo = static_cast<BufferOutput<benchmark_type>*>(boutput.get());
+
         auto wi = static_cast<BufferInput<watermark_type>*>(decodeInput.get());
         wi->readFromBufferOutput(bo);
 

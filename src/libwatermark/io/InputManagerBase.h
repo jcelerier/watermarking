@@ -61,7 +61,6 @@ class InputManagerBase : public IOManagerBase<data_type>, public InputManagerInt
 			return Audio_p(nullptr);
 		}
 
-	private:
 		InputCopy_p<data_type> copyHandler{InputCopy_p<data_type>(new InputSimple<data_type>(this->conf))};
 		Audio_p buffer{nullptr};
 };

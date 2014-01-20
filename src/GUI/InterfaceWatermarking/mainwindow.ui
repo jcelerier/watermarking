@@ -85,34 +85,10 @@
           <item row="0" column="0">
            <layout class="QGridLayout" name="watermarkLayout">
             <item row="3" column="1">
-             <widget class="QTimeEdit" name="watermarkBeginningTime">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="displayFormat">
-               <string>hh::mm::ss</string>
-              </property>
-              <property name="time">
-               <time>
-                <hour>0</hour>
-                <minute>0</minute>
-                <second>0</second>
-               </time>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Watermark beginning time (h::m::s format)</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
              <widget class="QTimeEdit" name="watermarkEndingTime">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
               </property>
@@ -124,10 +100,10 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="3" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Watermark end time (h::m::s format)</string>
+               <string>Duration</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -154,6 +130,16 @@
               </property>
              </widget>
             </item>
+            <item row="5" column="0" colspan="2">
+             <widget class="QProgressBar" name="usedWatermarkCapacityBar">
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="format">
+               <string>Available capacity: %p%</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0" colspan="2">
              <widget class="CodeEditor" name="textToWatermark">
               <property name="sizePolicy">
@@ -171,17 +157,7 @@
               </property>
              </widget>
             </item>
-            <item row="6" column="0" colspan="2">
-             <widget class="QProgressBar" name="usedWatermarkCapacityBar">
-              <property name="value">
-               <number>0</number>
-              </property>
-              <property name="format">
-               <string>Available capacity: %p%</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
+            <item row="4" column="0">
              <widget class="QLabel" name="availableCapacityLabel">
               <property name="text">
                <string>Available capacity</string>
@@ -191,7 +167,7 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="1">
+            <item row="4" column="1">
              <widget class="QLabel" name="availableCapacityLabel2">
               <property name="text">
                <string/>
@@ -578,7 +554,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="lsbMethodTab">
              <property name="sizePolicy">
@@ -800,31 +776,6 @@ p, li { white-space: pre-wrap; }
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="compExpMethodTab">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>890</width>
-               <height>200</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <attribute name="title">
-              <string>Compression-Expansion Method</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_10">
-              <item row="0" column="0">
-               <layout class="QGridLayout" name="gridLayout_9"/>
-              </item>
-             </layout>
-            </widget>
            </widget>
           </item>
          </layout>
@@ -882,7 +833,7 @@ p, li { white-space: pre-wrap; }
           </item>
          </layout>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -890,10 +841,62 @@ p, li { white-space: pre-wrap; }
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>5</height>
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="2" column="0">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Global parameters</string>
+          </property>
+          <widget class="QTimeEdit" name="watermarkBeginningTime">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>60</y>
+             <width>131</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="displayFormat">
+            <string>hh::mm::ss</string>
+           </property>
+           <property name="time">
+            <time>
+             <hour>0</hour>
+             <minute>0</minute>
+             <second>0</second>
+            </time>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_13">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>294</width>
+             <height>27</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Watermark beginning time (h::m::s format)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1089,7 +1092,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>925</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

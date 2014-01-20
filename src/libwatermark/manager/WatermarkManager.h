@@ -67,6 +67,7 @@ class WatermarkManager: public ManagerBase
 
 				m_output->writeNextBuffer(buf);
 			}
+			m_algorithm->finish(*m_data.get());
 		}
 
 		Watermark_p& algorithm()

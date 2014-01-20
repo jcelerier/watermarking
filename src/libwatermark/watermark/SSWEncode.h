@@ -43,13 +43,17 @@ class SSWEncode : public WatermarkBase<data_type>
 					{
 						double phase, power, magnitudeDB, magnitude;
 
-						power = std::norm(spectrumData[_freqWinIndexes[i]]);
+						power = std::sqrt(std::norm(spectrumData[_freqWinIndexes[i]]));
 						phase = std::arg(spectrumData[_freqWinIndexes[i]]);
 
+						power /= (double) std::sqrt(this->conf.bufferSize);
+
 						// Changer pour pouvoir utiliser plusieurs méthodes d'insertion
-						magnitudeDB = 20.0 * std::log10(std::sqrt(power)) + bit * _watermarkAmp * (double) _PNSequence[i];
+						magnitudeDB = 20.0 * std::log10(power) + bit * _watermarkAmp * (double) _PNSequence[i];
 
 						magnitude = std::pow(10.0, (magnitudeDB / 20.0));
+
+						magnitude *= (double) std::sqrt(this->conf.bufferSize);
 
 						spectrumData[_freqWinIndexes[i]] = {magnitude * std::cos(phase), magnitude * std::sin(phase)};
 					}

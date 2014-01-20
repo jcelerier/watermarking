@@ -105,6 +105,7 @@ void sswdecode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRa
 	WatermarkData* data = new SimpleWatermarkData();
 
 	auto input = new FileInput<double>("out_test_ssw_mono.wav", conf);
+	//auto input = new FileInput<double>("music.wav", conf);
 	auto output = new DummyOutput<double>(conf);
 
 	FFT_p<double> fft_m(new FFTWManager<double>(conf));

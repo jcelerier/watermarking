@@ -14,6 +14,8 @@ class WatermarkInterface
 		 * @param watermark Données à watermarker.
 		 */
 		virtual void operator()(Audio_p& data, WatermarkData& watermark) = 0;
+
+		virtual void finish(WatermarkData& watermark) {}
 };
 
 using Watermark_p = std::shared_ptr<WatermarkInterface>;

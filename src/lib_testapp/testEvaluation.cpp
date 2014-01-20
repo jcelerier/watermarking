@@ -22,6 +22,7 @@
 #include "benchmark/Amplify.h"
 #include "benchmark/Convolution.h"
 #include "benchmark/FFTAmplify.h"
+#include "benchmark/Dummy.h"
 #include "mathutils/ssw_utils.h"
 
 
@@ -32,6 +33,9 @@
 
 void TestEvaluation()
 {
+	BitError<double, Dummy<double>, short, LSBEncode<short>, LSBDecode<short>> lsbDummy;
+	lsbDummy.execute("input_mono.wav");
+	std::cout << "Dégradation : Dummy ====> False bits = " << lsbDummy.getError() << std::endl;
 
     std::cout << "******** Algorithme de watermark : LSB ********" << std::endl;
     BitError<double, Amplify<double>, short, LSBEncode<short>, LSBDecode<short>> lsbAmplify;

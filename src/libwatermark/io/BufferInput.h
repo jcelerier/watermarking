@@ -66,7 +66,7 @@ class BufferInput : public InputManagerBase<data_type>
 
 			}
 			else if(typeid(external_type) == typeid(short) &&
-					typeid(data_type) == typeid(double)) // Double to short
+					typeid(data_type) == typeid(double)) // Short to double
 			{
 				this->v().resize(output->v().size());
 				for(auto i = 0U; i < this->v().size(); ++i)
@@ -78,7 +78,7 @@ class BufferInput : public InputManagerBase<data_type>
 								   MathUtil::ToDouble<external_type>);
 				}
 			}
-			else if(typeid(external_type) == typeid(double)) // Short to double
+			else if(typeid(external_type) == typeid(double)) // Double to short
 			{
 				this->v().resize(output->v().size());
 				for(auto i = 0U; i < this->v().size(); ++i)
@@ -87,7 +87,7 @@ class BufferInput : public InputManagerBase<data_type>
 					std::transform(output->v(i).begin(),
 								   output->v(i).end(),
 								   this->v(i).begin(),
-								   MathUtil::FromDouble<external_type>);
+								   MathUtil::FromDouble<data_type>);
 				}
 			}
 

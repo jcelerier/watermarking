@@ -63,12 +63,17 @@ public:
         encodeData->setNextBit(false);
         encodeData->setNextBit(true);
 
+		// En tout on a 7 + 64 bits dans le tableau
+
     }
 
     void execute(std::string fileName)
     {
 		Parameters<double> doubleparams;
-        // Encodage
+
+		/////////////////////////////////////////////////////////////////////
+		///////////////////////////////// Encodage //////////////////////////
+		/////////////////////////////////////////////////////////////////////
 		auto ei = static_cast<FileInput<watermark_type>*>(encodeInput.get());
 		ei->readFile(fileName);
 
@@ -106,6 +111,10 @@ public:
         auto wo = static_cast<BufferOutput<watermark_type>*>(encodeOutput.get());
         auto bi = static_cast<BufferInput<benchmark_type>*>(binput.get());
         bi->readFromBufferOutput(wo);
+
+		/////////////////////////////////////////////////////////////////////
+		///////////////////////////////// Degradat //////////////////////////
+		/////////////////////////////////////////////////////////////////////
 		auto bo = static_cast<BufferOutput<benchmark_type>*>(boutput.get());
 
 
@@ -144,7 +153,7 @@ public:
 			b_realoutput = boutput;
 		}
 
-        // Application de la dégradation
+
 		BenchmarkManager benchmarkManager(b_realinput,
 										  b_realoutput,
                                           benchAlgo);
@@ -160,6 +169,9 @@ public:
 		Input_p d_realinput;
 		Output_p d_realoutput;
 
+		/////////////////////////////////////////////////////////////////////
+		///////////////////////////////// Decodage //////////////////////////
+		/////////////////////////////////////////////////////////////////////
 		auto di = static_cast<BufferInput<watermark_type>*>(decodeInput.get());
 
 		if(dynamic_cast<FFTProperty*>(encodeAlgo.get()))
@@ -180,7 +192,7 @@ public:
 		}
 
 
-        // Décodage
+
 		WatermarkManager decodeManager(d_realinput,
 									   d_realoutput,
                                        decodeAlgo,
@@ -190,6 +202,13 @@ public:
         decodeManager.execute();
 
         decodeData->readSizeFromBits();
+
+		for(int i = 0; i < std::min((long unsigned int)64 + 7, encodeData->getBaseBits().size()); i++)
+			std::cout << encodeData->getBaseBits()[i];
+		std::cout << std::endl;
+		for(int i = 0; i < std::min((long unsigned int)64 + 7, decodeData->getBaseBits().size()); i++)
+			std::cout << decodeData->getBaseBits()[i];
+		std::cout << std::endl << std::endl  << std::flush;
 
         //Calcule le nombre de bits faux
         this->computeError();

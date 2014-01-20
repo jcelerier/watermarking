@@ -50,7 +50,6 @@ void rdecode()
 
 	// LIRE LA TAILLE
 	data->readSizeFromBits();
-	// Todo ça a l'air de chier :p
 	QCOMPARE(data->printBits(), std::string("1011001"));
 }
 

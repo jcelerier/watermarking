@@ -1,4 +1,46 @@
 \chapter{Evaluation}
 \section{Main evaluation idea}
+
+To evaluate the robustness of the watermark techniques that we implemented, we decided to compare the strenght of the techniques against different attacks with the LSB technique. Considering the LSB technique to be the most easy one to implement, this has been decided from the begining. So we compute the score of the other techniques referring to the score of the LSB algorithm. \\
+
+The scores are computed by calculating the number of false bits in a watermarked data after altering it with a degradation. To do so, we implemented different benchmark algorithms that will degrade the signal. \\
 \section{Existing work}
-\section{Evaluation methods}
+
+Many evaluation tools for watermarking techniques exist and they have inspired our work. 
+The first of them, which is the one that inspired most of our evaluations, is the \textbf{Benchmark StirMark}. It's a generic tool for simple robustness testing of image watermarking algorithms. Even if we focused on the audio watermark, it was helpful to learn more about it. It introduces several geometric distortions to de-synchronise watermarking algorithms such as:
+\begin{itemize}
+ \item Add a noise to the signal
+ \item Amplify  the signal
+ \item High pass / Low pass filters
+ \item Delay...
+\end{itemize}
+
+Another existing evaluation tool is the \textbf{Watermark Evaluation TestBed (WET)}.
+
+\section{Evaluation method}
+Our evaluation method, like described delow, consists in comparing the scores of the method implemented with the the LSB ones.
+They are computed by comparing the original watermarked data with the data reovered after decoding the altered signal. 
+To alter the signal, we degrade it using a benchmark algorithm. We implemented several algorithms based on the Benchmark StirMark. They are :
+\begin{itemize}
+ \item Amplify : adds to the signal a gain
+ \item Convolution
+ \item Add to the signal a sinus 
+ \item Add a white noise : a noise uniformly distributed over all frequencies
+ \item Invert the signal
+ \item Add a noise to the frequency spectrum
+ \item Add a gain to the frequency spectrum
+ \item Invert the watermarked data (Exchange)
+\end{itemize}
+Once the algorithm implemented, we use them to alter the watermarked signal so we can evaluate the strenght of the technique. Then we compute a score. The process is the following :
+\begin{itemize}
+ \item We watermark some data into a signal
+ \item We alter it using a benchmark algorithm
+ \item We decode the signal and recover the watermarked data
+ \item We compare the original data with the recovered one : the bits that doesn't match are false bits.
+\end{itemize}
+
+Another evaluation has also been done, it's the auditory evaluation. We made about ten persons listen to watermarked signals. We then took note of their opinion about the audio file they've listened to : if they heard something different, is the quality satisfactory... 
+
+
+
+

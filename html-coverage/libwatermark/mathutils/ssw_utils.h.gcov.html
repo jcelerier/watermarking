@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/mathutils/ssw_utils.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/mathutils</a> - ssw_utils.h<span style="font-size: 80%;"> (source / <a href="ssw_utils.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &lt;random&gt;
+<span class="lineNum">       4 </span>            : #include &lt;vector&gt;
+<span class="lineNum">       5 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">       6 </span>            : #include &quot;../Parameters.h&quot;
+<span class="lineNum">       7 </span>            : namespace SSWUtil
+<span class="lineNum">       8 </span>            : {
+<a name="9"><span class="lineNum">       9 </span>            :         /* Génère une séquence pseudo-aléatoire à valeurs comprises dans {-1,1}</a>
+<span class="lineNum">      10 </span>            :            de taille size */
+<span class="lineNum">      11 </span><span class="lineCov">          2 :                 inline std::vector&lt;int&gt; generatePNSequence(int size)</span>
+<span class="lineNum">      12 </span>            :         {
+<span class="lineNum">      13 </span>            :                         // Générer séquence de nombres entre 0 et 1
+<span class="lineNum">      14 </span>            :                         // Méthode C++
+<span class="lineNum">      15 </span><span class="lineCov">          2 :                         std::default_random_engine rng(std::random_device{}());</span>
+<span class="lineNum">      16 </span><span class="lineCov">          2 :                         std::uniform_int_distribution&lt;int&gt; dist(0, 1);</span>
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<span class="lineNum">      18 </span><span class="lineCov">          2 :                         std::vector&lt;int&gt; pnsequence(size);</span>
+<span class="lineNum">      19 </span><span class="lineCov">        100 :                         std::generate_n(pnsequence.begin(), size, [&amp;] ()</span>
+<span class="lineNum">      20 </span>            :                         {
+<span class="lineNum">      21 </span><span class="lineCov">        100 :                                 return dist(rng) * 2 - 1;</span>
+<span class="lineNum">      22 </span><span class="lineCov">        102 :                         });</span>
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span><span class="lineCov">          2 :                         return pnsequence;</span>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                         /* Méthode C
+<span class="lineNum">      27 </span>            :                         srand(time(0));
+<span class="lineNum">      28 </span>            :             for(int i = 0; i &lt; size; i++)
+<span class="lineNum">      29 </span>            :             {
+<span class="lineNum">      30 </span>            :                 int j = rand()%2;
+<span class="lineNum">      31 </span>            :                 if(j == 0)
+<span class="lineNum">      32 </span>            :                     pnsequence.push_back(-1);
+<span class="lineNum">      33 </span>            :                 else
+<span class="lineNum">      34 </span>            :                     pnsequence.push_back(1);
+<span class="lineNum">      35 </span>            :             }
+<span class="lineNum">      36 </span>            :                         */
+<span class="lineNum">      37 </span>            :         }
+<span class="lineNum">      38 </span>            : 
+<a name="39"><span class="lineNum">      39 </span>            :         /* Génère une plage de fréquence aléatoire de taille size et comprise dans</a>
+<span class="lineNum">      40 </span>            :                         l'intervalle [1,sampleRate] (pourquoi pas sampleRate / 2 ?) */
+<span class="lineNum">      41 </span><span class="lineCov">          2 :         inline std::vector&lt;unsigned int&gt; generateFrequencyRange(unsigned int size, Parameters&lt;double&gt; &amp;conf)</span>
+<span class="lineNum">      42 </span>            :         {
+<span class="lineNum">      43 </span>            :                 /*
+<span class="lineNum">      44 </span>            :                   std::default_random_engine rng(std::random_device{}());
+<span class="lineNum">      45 </span>            :                   std::uniform_int_distribution&lt;int&gt; dist(1, sampleRate);
+<span class="lineNum">      46 </span>            :                 */
+<span class="lineNum">      47 </span><span class="lineCov">          2 :                 int freqMin = 200;</span>
+<span class="lineNum">      48 </span><span class="lineCov">          2 :                 int freqMax = 4000;</span>
+<span class="lineNum">      49 </span><span class="lineCov">          2 :                 int mid_freq = (freqMax + freqMin) / 2;</span>
+<span class="lineNum">      50 </span><span class="lineCov">          2 :                 int mid_ind = (mid_freq * conf.bufferSize) / conf.samplingRate;</span>
+<span class="lineNum">      51 </span>            :                 
+<span class="lineNum">      52 </span><span class="lineCov">          2 :                 int start = mid_ind - (size / 2);</span>
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineCov">          2 :                 if (start &lt; 0) {</span>
+<span class="lineNum">      55 </span><span class="lineCov">          2 :                         start = (2000 * conf.bufferSize) / conf.samplingRate;</span>
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">          2 :                 std::vector&lt;unsigned int&gt; range;</span>
+<span class="lineNum">      59 </span><span class="lineCov">        102 :                 for (unsigned int i = 0; i &lt; size; i++) {</span>
+<span class="lineNum">      60 </span><span class="lineCov">        100 :                         range.push_back(start + i);</span>
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            :                 /*
+<span class="lineNum">      63 </span>            :                   std::generate_n(range.begin(), size, [&amp;] ()
+<span class="lineNum">      64 </span>            :                   {
+<span class="lineNum">      65 </span>            :                   return dist(rng);
+<span class="lineNum">      66 </span>            :                   });
+<span class="lineNum">      67 </span>            :                 */
+<span class="lineNum">      68 </span>            :                 
+<span class="lineNum">      69 </span><span class="lineCov">          2 :                 return range;</span>
+<span class="lineNum">      70 </span>            :                 
+<span class="lineNum">      71 </span>            :                 /*
+<span class="lineNum">      72 </span>            :                   srand(time(0));
+<span class="lineNum">      73 </span>            :                   std::vector&lt;int&gt; frequencyRange;
+<span class="lineNum">      74 </span>            :                   
+<span class="lineNum">      75 </span>            :                   int j = (rand()%(sampleRate-size))+1;
+<span class="lineNum">      76 </span>            :                   frequencyRange.push_back(j);
+<span class="lineNum">      77 </span>            :                   
+<span class="lineNum">      78 </span>            :                   for(int i = 1; i &lt; size; i++)
+<span class="lineNum">      79 </span>            :                   {
+<span class="lineNum">      80 </span>            :                   frequencyRange.push_back(i+j);
+<span class="lineNum">      81 </span>            :                   }
+<span class="lineNum">      82 </span>            :                   
+<span class="lineNum">      83 </span>            :                   return frequencyRange;
+<span class="lineNum">      84 </span>            :                 */
+<span class="lineNum">      85 </span>            :         }
+<span class="lineNum">      86 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/io/copystyle/InputOLA.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">libwatermark/io/copystyle</a> - InputOLA.h<span style="font-size: 80%;"> (source / <a href="InputOLA.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;InputCopy.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : //TODO si OLA, il faut rajouter un buffer au début pour éviter
+<span class="lineNum">       7 </span>            : // que ça se fasse trop normaliser
+<span class="lineNum">       8 </span>            : template &lt;typename data_type&gt;
+<span class="lineNum">       9 </span>            : /**
+<span class="lineNum">      10 </span>            :  * @brief The InputOLA class
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * Copie en mode overlap-add. Explications :
+<a name="13"><span class="lineNum">      13 </span>            :  * http://www-dsp.elet.polimi.it/ispg/images/pdf/audio/materiale/ola.pdf</a>
+<span class="lineNum">      14 </span>            :  */
+<span class="lineNum">      15 </span><span class="lineCov">         26 : class InputOLA : public InputCopy&lt;data_type&gt;</span>
+<a name="16"><span class="lineNum">      16 </span>            : {</a>
+<span class="lineNum">      17 </span>            :         public:
+<span class="lineNum">      18 </span><span class="lineCov">         13 :                 InputOLA(const Parameters&lt;data_type&gt;&amp; cfg, double ofact = 2, unsigned int zeropad = 0):</span>
+<span class="lineNum">      19 </span>            :                         InputCopy&lt;data_type&gt;(cfg),
+<span class="lineNum">      20 </span>            :                         overlapFactor(ofact),
+<span class="lineNum">      21 </span><span class="lineCov">         13 :                         zeroPaddedSamples(zeropad)</span>
+<span class="lineNum">      22 </span>            :                 {
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         13 :                 }</span></a>
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineCov">       7173 :                 virtual typename InputCopy&lt;data_type&gt;::size_type frameIncrement() final override</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span><span class="lineCov">       7173 :                         return copiedSamples() / overlapFactor;</span>
+<a name="28"><span class="lineNum">      28 </span>            :                 }</a>
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span><span class="lineCov">      37397 :                 typename InputCopy&lt;data_type&gt;::size_type copiedSamples()</span>
+<span class="lineNum">      31 </span>            :                 {
+<span class="lineNum">      32 </span><span class="lineCov">      37397 :                         return this-&gt;conf.bufferSize - zeroPaddedSamples;</span>
+<a name="33"><span class="lineNum">      33 </span>            :                 }</a>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineCov">      10082 :                 virtual void copy(typename std::vector&lt;data_type&gt;::const_iterator in,</span>
+<span class="lineNum">      36 </span>            :                                                   typename std::vector&lt;data_type&gt;::iterator out,
+<span class="lineNum">      37 </span>            :                                                   typename CopyStyle&lt;data_type&gt;::size_type pos,
+<span class="lineNum">      38 </span>            :                                                   typename CopyStyle&lt;data_type&gt;::size_type big_vector_length) final override
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span><span class="lineCov">      10082 :                         if (copiedSamples() &lt;= big_vector_length - pos)</span>
+<span class="lineNum">      41 </span>            :                         {
+<span class="lineNum">      42 </span><span class="lineCov">      10052 :                                 std::copy_n(in + pos, copiedSamples(), out);</span>
+<span class="lineNum">      43 </span><span class="lineCov">      10052 :                                 std::fill_n(out + copiedSamples(), zeroPaddedSamples, 0);</span>
+<span class="lineNum">      44 </span>            :                         }
+<span class="lineNum">      45 </span>            :                         else
+<span class="lineNum">      46 </span>            :                         {
+<span class="lineNum">      47 </span><span class="lineCov">         30 :                                 std::copy_n(in + pos, big_vector_length - pos, out);</span>
+<span class="lineNum">      48 </span><span class="lineCov">         30 :                                 std::fill_n(out + big_vector_length - pos, copiedSamples() - (big_vector_length - pos), 0);</span>
+<span class="lineNum">      49 </span>            :                         }
+<span class="lineNum">      50 </span><span class="lineCov">      10082 :                 }</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         private:
+<span class="lineNum">      53 </span>            :                 double overlapFactor = 2;
+<span class="lineNum">      54 </span>            :                 unsigned int zeroPaddedSamples = 0;
+<span class="lineNum">      55 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - lib_testapp/testBenchmark.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib_testapp</a> - testBenchmark.cpp<span style="font-size: 80%;"> (source / <a href="testBenchmark.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">41</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntryMed">77.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryMed">85.7 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;manager/BenchmarkManager.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;io/FileInput.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;io/FileOutput.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;io/SilenceInput.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;io/copystyle/InputFilter.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;io/copystyle/OutputFilter.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;io/copystyle/InputOLA.h&quot;
+<span class="lineNum">       8 </span>            : #include &quot;io/copystyle/OutputOLA.h&quot;
+<span class="lineNum">       9 </span>            : #include &quot;benchmark/Convolution.h&quot;
+<span class="lineNum">      10 </span>            : #include &quot;benchmark/AddBrumm.h&quot;
+<span class="lineNum">      11 </span>            : #include &quot;benchmark/AddWhiteNoise.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;benchmark/Amplify.h&quot;
+<span class="lineNum">      13 </span>            : #include &quot;benchmark/Exchange.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;benchmark/Invert.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;benchmark/FFTAmplify.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;benchmark/Smooth.h&quot;
+<span class="lineNum">      17 </span>            : #include &quot;benchmark/ZeroCross.h&quot;
+<span class="lineNum">      18 </span>            : #include &quot;benchmark/Stat1.h&quot;
+<span class="lineNum">      19 </span>            : #include &quot;benchmark/FFTNoise.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;../libwatermark/watermark/mask.h&quot;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;transform/FFTWManager.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;io/fftproxy/FFTInputProxy.h&quot;
+<a name="24"><span class="lineNum">      24 </span>            : #include &quot;io/fftproxy/FFTOutputProxy.h&quot;</a>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span><span class="lineCov">          7 : void DoubleTestBase(Benchmark_p b, Parameters&lt;double&gt; conf)</span>
+<span class="lineNum">      27 </span>            : {
+<span class="lineNum">      28 </span><span class="lineCov">          7 :         auto input = new FileInput&lt;double&gt;(&quot;input_mono.wav&quot;, conf);</span>
+<span class="lineNum">      29 </span><span class="lineCov">          7 :         auto output = new FileOutput&lt;double&gt;(conf);</span>
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :         BenchmarkManager manager(Input_p(input),
+<span class="lineNum">      32 </span>            :                                                          Output_p(output),
+<span class="lineNum">      33 </span><span class="lineCov">          7 :                                                          b);</span>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineCov">          7 :         manager.execute();</span>
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineCov">          7 :         output-&gt;writeFile(std::string(&quot;out_test_&quot; + b-&gt;_name + &quot;.wav&quot;).c_str());</span>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          7 : }</span></a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          2 : void FFTTestBase(Benchmark_p b, Parameters&lt;double&gt; conf)</span>
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span><span class="lineCov">          2 :         auto input = new FileInput&lt;double&gt;(&quot;input_mono.wav&quot;, conf);</span>
+<span class="lineNum">      43 </span><span class="lineCov">          2 :         auto output = new FileOutput&lt;double&gt;(conf);</span>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineCov">          2 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf));</span>
+<span class="lineNum">      46 </span><span class="lineCov">          2 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels());</span>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span><span class="lineCov">          2 :         auto fft_i = new FFTInputProxy&lt;double&gt;(new RectWindow&lt;double&gt;,</span>
+<span class="lineNum">      49 </span>            :                                                                                    input,
+<span class="lineNum">      50 </span>            :                                                                                    fft_m,
+<span class="lineNum">      51 </span><span class="lineCov">          4 :                                                                                    conf);</span>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">          2 :         auto fft_o = new FFTOutputProxy&lt;double&gt;(output, fft_m, conf);</span>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :         BenchmarkManager manager(Input_p(fft_i),
+<span class="lineNum">      56 </span>            :                                                          Output_p(fft_o),
+<span class="lineNum">      57 </span><span class="lineCov">          4 :                                                          b);</span>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineCov">          2 :         manager.execute();</span>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">          4 :         output-&gt;writeFile(std::string(&quot;out_test_&quot; + b-&gt;_name + &quot;.wav&quot;).c_str());</span>
+<span class="lineNum">      62 </span><span class="lineCov">          2 : }</span>
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : void TestOLA()</span>
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         Parameters&lt;double&gt; conf;</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         auto input = new FileInput&lt;double&gt;(&quot;input_mono.wav&quot;, new InputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         auto output = new FileOutput&lt;double&gt;(new OutputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf)); // -&gt; Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels()); // important.</span>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         auto fft_i = new FFTInputProxy&lt;double&gt;(input, fft_m, conf);</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         auto fft_o = new FFTOutputProxy&lt;double&gt;(output, fft_m, conf);</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :         BenchmarkManager manager(Input_p(fft_i),
+<span class="lineNum">      79 </span>            :                                                          Output_p(fft_o),
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :                                                          Benchmark_p(new Amplify&lt;double&gt;(conf)));</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         manager.execute();</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         output-&gt;writeFile(&quot;out_test_ola.wav&quot;);</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      86 </span>            : 
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">          1 : void convolution()</span>
+<span class="lineNum">      90 </span>            : {
+<span class="lineNum">      91 </span><span class="lineCov">          1 :         Parameters&lt;double&gt; conf;</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span><span class="lineCov">          1 :         auto input = new FileInput&lt;double&gt;(&quot;in_noise_mono.wav&quot;, new InputFilter&lt;double&gt;(11, conf), conf);</span>
+<span class="lineNum">      94 </span><span class="lineCov">          1 :         auto output = new FileOutput&lt;double&gt;(new OutputFilter&lt;double&gt;(11, conf), conf);</span>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :         BenchmarkManager manager(Input_p(input),
+<span class="lineNum">      97 </span>            :                                                          Output_p(output),
+<span class="lineNum">      98 </span><span class="lineCov">          1 :                                                          Benchmark_p(new Convolution&lt;double&gt;(conf)));</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">          1 :         manager.execute();</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineCov">          1 :         output-&gt;writeFile(&quot;out_test_lowpass.wav&quot;);</span>
+<span class="lineNum">     103 </span><span class="lineCov">          1 : }</span>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineCov">          1 : void TestBenchmark()</span>
+<span class="lineNum">     107 </span>            : {
+<span class="lineNum">     108 </span><span class="lineCov">          1 :         Parameters&lt;double&gt; conf;</span>
+<span class="lineNum">     109 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new AddBrumm&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     110 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new Amplify&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     111 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new Exchange&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     112 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new Smooth&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     113 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new Invert&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     114 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new ZeroCross&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     115 </span><span class="lineCov">          1 :         DoubleTestBase(Benchmark_p(new Stat1&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">          1 :         FFTTestBase(Benchmark_p(new FFTAmplify&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     118 </span><span class="lineCov">          1 :         FFTTestBase(Benchmark_p(new FFTNoise&lt;double&gt;(conf)), conf);</span>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineCov">          1 :         convolution();</span>
+<span class="lineNum">     121 </span>            : 
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          1 :     Mask::calcul();</span></a>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineCov">          4 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

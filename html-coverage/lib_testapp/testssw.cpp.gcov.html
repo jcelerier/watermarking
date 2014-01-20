@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - lib_testapp/testssw.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib_testapp</a> - testssw.cpp<span style="font-size: 80%;"> (source / <a href="testssw.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">95</td>
+            <td class="headerCovTableEntry">95</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;manager/WatermarkManager.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;io/FileInput.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;io/FileOutput.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;io/fftproxy/FFTInputProxy.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;io/fftproxy/FFTOutputProxy.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;transform/FFTWManager.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;watermark/SSWEncode.h&quot;
+<span class="lineNum">       8 </span>            : #include &quot;watermark/SSWDecode.h&quot;
+<span class="lineNum">       9 </span>            : #include &quot;io/BufferInput.h&quot;
+<span class="lineNum">      10 </span>            : #include &quot;io/BufferOutput.h&quot;
+<span class="lineNum">      11 </span>            : #include &quot;io/SilenceInput.h&quot;
+<span class="lineNum">      12 </span>            : #include &quot;io/DummyOutput.h&quot;
+<span class="lineNum">      13 </span>            : #include &quot;watermarkdata/SimpleWatermarkData.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;timeadapter/Every.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;io/GnuplotFFTOutput.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;io/GnuplotOutput.h&quot;
+<span class="lineNum">      17 </span>            : #include &quot;io/mcltproxy/MCLTInputProxy.h&quot;
+<span class="lineNum">      18 </span>            : #include &quot;io/mcltproxy/MCLTOutputProxy.h&quot;
+<span class="lineNum">      19 </span>            : #include &quot;watermark/DummyWatermark.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;mathutils/ssw_utils.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;TestHeader.h&quot;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : void sswencode(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude);
+<span class="lineNum">      24 </span>            : void sswdecode(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude, double threshold);
+<span class="lineNum">      25 </span>            : void sswencode_mclt(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude);
+<a name="26"><span class="lineNum">      26 </span>            : void sswdecode_mclt(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude, double threshold);</a>
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span><span class="lineCov">          1 : void TestSSW()</span>
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span><span class="lineCov">          1 :         int SeqSize = 50;</span>
+<span class="lineNum">      31 </span><span class="lineCov">          1 :         double watermarkAmplitude = 10;</span>
+<span class="lineNum">      32 </span><span class="lineCov">          1 :         double threshold = 0.5;</span>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineCov">          1 :         std::cout &lt;&lt; std::endl;</span>
+<span class="lineNum">      35 </span><span class="lineCov">          1 :         std::vector&lt;int&gt; PNSequence = SSWUtil::generatePNSequence(SeqSize);</span>
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineCov">         51 :         for (int i = 0; i &lt; PNSequence.size(); i++) {</span>
+<span class="lineNum">      38 </span><span class="lineCov">         50 :                 std::cout &lt;&lt; PNSequence[i] &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span><span class="lineCov">          1 :         std::cout &lt;&lt; std::endl;</span>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span><span class="lineCov">          2 :         std::vector&lt;double&gt; amplifiedPN;</span>
+<span class="lineNum">      44 </span><span class="lineCov">         51 :         for (auto i = 0U; i &lt; PNSequence.size(); i++) {</span>
+<span class="lineNum">      45 </span><span class="lineCov">         50 :                 amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);</span>
+<span class="lineNum">      46 </span>            :         }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         // Instanciation des paramètres
+<span class="lineNum">      49 </span><span class="lineCov">          1 :         Parameters&lt;double&gt; conf;</span>
+<span class="lineNum">      50 </span><span class="lineCov">          1 :         conf.bufferSize = 512U;</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         //double norm = MathUtil::norm_n&lt;std::vector&lt;double&gt;::iterator, double&gt;(amplifiedPN.begin(), amplifiedPN.size());
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :         //std::cout &lt;&lt; &quot;Norme de PN : &quot; &lt;&lt; norm &lt;&lt; std::endl;
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineCov">          2 :         auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf);</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">          1 :         for(auto i = 0U; i &lt; FreqRange.size(); i++) std::cerr &lt;&lt; FreqRange[i] &lt;&lt; &quot; &quot;;</span>
+<span class="lineNum">      59 </span><span class="lineCov">          1 :         sswencode(PNSequence, FreqRange, conf, watermarkAmplitude);</span>
+<span class="lineNum">      60 </span><span class="lineCov">          1 :         sswdecode(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineCov">          1 :         std::cerr &lt;&lt; &quot;Test avec MCLT&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      63 </span><span class="lineCov">          1 :         sswencode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude);</span>
+<span class="lineNum">      64 </span><span class="lineCov">          2 :         sswdecode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);</span>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          1 : void sswencode(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude)</span>
+<span class="lineNum">      68 </span>            : {
+<span class="lineNum">      69 </span><span class="lineCov">          1 :         std::cout &lt;&lt; std::endl &lt;&lt; &quot;Encodage...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      70 </span>            :         // Données à watermarker
+<span class="lineNum">      71 </span><span class="lineCov">          1 :         WatermarkData* data = new SimpleWatermarkData;</span>
+<span class="lineNum">      72 </span><span class="lineCov">          1 :         data-&gt;setSize(4);</span>
+<span class="lineNum">      73 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">      74 </span><span class="lineCov">          1 :         data-&gt;setNextBit(false);</span>
+<span class="lineNum">      75 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">      76 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineCov">          1 :         auto input = new FileInput&lt;double&gt;(&quot;solo.wav&quot;, new InputSimple&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">      79 </span><span class="lineCov">          1 :         auto output = new FileOutput&lt;double&gt;(new OutputSimple&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineCov">          1 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf));</span>
+<span class="lineNum">      82 </span><span class="lineCov">          1 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels());</span>
+<span class="lineNum">      83 </span><span class="lineCov">          1 :         auto fft_i = new FFTInputProxy&lt;double&gt;(input, fft_m, conf);</span>
+<span class="lineNum">      84 </span><span class="lineCov">          1 :         auto fft_o = new FFTOutputProxy&lt;double&gt;(output, fft_m, conf);</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :         auto algorithm = Watermark_p(
+<span class="lineNum">      87 </span><span class="lineCov">          2 :                         new SSWEncode&lt;double&gt;(conf, PNSequence, FreqRange, watermarkAmplitude));</span>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :         WatermarkManager manager(Input_p(fft_i),
+<span class="lineNum">      90 </span>            :                                  Output_p(fft_o),
+<span class="lineNum">      91 </span>            :                                  algorithm,
+<span class="lineNum">      92 </span><span class="lineCov">          2 :                                  WatermarkData_p(data));</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          1 :         manager.execute();</span>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineCov">          1 :         output-&gt;writeFile(&quot;out_test_ssw_mono.wav&quot;);</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">          2 :         std::cout &lt;&lt; &quot;Encodé.&quot; &lt;&lt; std::endl;</span>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineCov">          1 : void sswdecode(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude, double threshold)</span>
+<span class="lineNum">     102 </span>            : {
+<span class="lineNum">     103 </span><span class="lineCov">          1 :         std::cout &lt;&lt; &quot;Décodage...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineCov">          1 :         WatermarkData* data = new SimpleWatermarkData();</span>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span><span class="lineCov">          1 :         auto input = new FileInput&lt;double&gt;(&quot;out_test_ssw_mono.wav&quot;, conf);</span>
+<span class="lineNum">     108 </span>            :         //auto input = new FileInput&lt;double&gt;(&quot;music.wav&quot;, conf);
+<span class="lineNum">     109 </span><span class="lineCov">          1 :         auto output = new DummyOutput&lt;double&gt;(conf);</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">          1 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf));</span>
+<span class="lineNum">     112 </span><span class="lineCov">          1 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels());</span>
+<span class="lineNum">     113 </span><span class="lineCov">          1 :         auto fft_i = new FFTInputProxy&lt;double&gt;(input, fft_m, conf);</span>
+<span class="lineNum">     114 </span><span class="lineCov">          1 :         auto fft_o = new FFTOutputProxy&lt;double&gt;(output, fft_m, conf);</span>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineCov">          2 :         auto algorithm = Watermark_p(new SSWDecode&lt;double&gt;(conf, PNSequence, FreqRange, watermarkAmplitude, threshold));</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :         WatermarkManager manager(Input_p(fft_i),
+<span class="lineNum">     119 </span>            :                                                          Output_p(fft_o),
+<span class="lineNum">     120 </span>            :                                                          algorithm,
+<span class="lineNum">     121 </span><span class="lineCov">          2 :                                                          WatermarkData_p(data));</span>
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">          1 :         manager.execute();</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineCov">          1 :         data-&gt;readSizeFromBits();</span>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          2 :         QCOMPARE(data-&gt;printBits(), std::string(&quot;1011&quot;));</span>
+<span class="lineNum">     128 </span>            : }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : // Valentin :
+<span class="lineNum">     132 </span>            : // Normalement la MCLT marche, en tout cas elle donne les mêmes résultats que sur Matlab.
+<span class="lineNum">     133 </span>            : // Par contre elle applique un fenêtrage aux données, et pour reconstruire le signal
+<span class="lineNum">     134 </span>            : // il est nécessaire de faire le process en overlap (facteur d'1/2).
+<span class="lineNum">     135 </span>            : // Donc je pense qu'avant de faire marcher la SSW avec la MCLT, il est nécessaire
+<a name="136"><span class="lineNum">     136 </span>            : // de s'assurer que ça passe bien avec juste de l'overlap (cf. InputOLA, OutputOLA)</a>
+<span class="lineNum">     137 </span>            : // dans un autre test.
+<span class="lineNum">     138 </span><span class="lineCov">          1 : void sswencode_mclt(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude)</span>
+<span class="lineNum">     139 </span>            : {
+<span class="lineNum">     140 </span><span class="lineCov">          1 :         std::cout &lt;&lt; std::endl &lt;&lt; &quot;Encodage...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">          1 :         WatermarkData* data = new SimpleWatermarkData;</span>
+<span class="lineNum">     143 </span><span class="lineCov">          1 :         data-&gt;setSize(4);</span>
+<span class="lineNum">     144 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">     145 </span><span class="lineCov">          1 :         data-&gt;setNextBit(false);</span>
+<span class="lineNum">     146 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">     147 </span><span class="lineCov">          1 :         data-&gt;setNextBit(true);</span>
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineCov">          1 :         auto input = new FileInput&lt;double&gt;(&quot;solo.wav&quot;, new InputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">     150 </span><span class="lineCov">          1 :         auto output = new FileOutput&lt;double&gt;(new OutputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span><span class="lineCov">          1 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf)); // -&gt; Utilise FFTW. On peut facilement écrire des wrapper pour d'autres libs de FFT.</span>
+<span class="lineNum">     153 </span><span class="lineCov">          1 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels()); // important.</span>
+<span class="lineNum">     154 </span><span class="lineCov">          2 :         auto fft_i = Input_p(new FFTInputProxy&lt;double&gt;(input, fft_m, conf));</span>
+<span class="lineNum">     155 </span><span class="lineCov">          2 :         auto fft_o = Output_p(new FFTOutputProxy&lt;double&gt;(output, fft_m, conf));</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineCov">          1 :         auto mclt_i = new MCLTInputProxy&lt;double&gt;(fft_i, conf);</span>
+<span class="lineNum">     158 </span><span class="lineCov">          1 :         auto mclt_o = new MCLTOutputProxy&lt;double&gt;(fft_o, conf);</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :         auto algorithm = Watermark_p(
+<span class="lineNum">     161 </span><span class="lineCov">          2 :                         new SSWEncode&lt;double&gt;(conf, PNSequence, FreqRange, watermarkAmplitude));</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :         WatermarkManager manager(Input_p(mclt_i),
+<span class="lineNum">     164 </span>            :                                  Output_p(mclt_o),
+<span class="lineNum">     165 </span>            :                                  algorithm,
+<span class="lineNum">     166 </span><span class="lineCov">          2 :                                  WatermarkData_p(data));</span>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineCov">          1 :         manager.execute();</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">          1 :         output-&gt;writeFile(&quot;out_test_ssw_mclt_mono.wav&quot;);</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineCov">          2 :         std::cout &lt;&lt; &quot;Encodé.&quot; &lt;&lt; std::endl;</span>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineCov">          1 : void sswdecode_mclt(std::vector&lt;int&gt; &amp; PNSequence, std::vector&lt;unsigned int&gt; &amp; FreqRange, Parameters&lt;double&gt; &amp; conf, double watermarkAmplitude, double threshold)</span>
+<span class="lineNum">     176 </span>            : {
+<span class="lineNum">     177 </span><span class="lineCov">          1 :         std::cout &lt;&lt; &quot;Décodage...&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">          1 :         WatermarkData* data = new SimpleWatermarkData();</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">          1 :         auto input = new FileInput&lt;double&gt;(&quot;out_test_ssw_mclt_mono.wav&quot;, new InputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">     182 </span><span class="lineCov">          1 :         auto output = new DummyOutput&lt;double&gt;(new OutputOLA&lt;double&gt;(conf), conf);</span>
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineCov">          1 :         FFT_p&lt;double&gt; fft_m(new FFTWManager&lt;double&gt;(conf));</span>
+<span class="lineNum">     185 </span><span class="lineCov">          1 :         fft_m-&gt;setChannels((unsigned int) input-&gt;channels());</span>
+<span class="lineNum">     186 </span><span class="lineCov">          1 :         auto fft_i = Input_p(new FFTInputProxy&lt;double&gt;(input, fft_m, conf));</span>
+<span class="lineNum">     187 </span><span class="lineCov">          1 :         auto fft_o = Output_p(new FFTOutputProxy&lt;double&gt;(output, fft_m, conf));</span>
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineCov">          1 :         auto mclt_i = new MCLTInputProxy&lt;double&gt;(fft_i, conf);</span>
+<span class="lineNum">     190 </span><span class="lineCov">          1 :         auto mclt_o = new MCLTOutputProxy&lt;double&gt;(fft_o, conf);</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineCov">          1 :         auto algorithm = Watermark_p(new SSWDecode&lt;double&gt;(conf, PNSequence, FreqRange, watermarkAmplitude, threshold));</span>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            :         WatermarkManager manager(Input_p(mclt_i),
+<span class="lineNum">     195 </span>            :                                  Output_p(mclt_o),
+<span class="lineNum">     196 </span>            :                                  algorithm,
+<span class="lineNum">     197 </span><span class="lineCov">          1 :                                  WatermarkData_p(data));</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">          1 :         manager.execute();</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineCov">          1 :         data-&gt;readSizeFromBits();</span>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<span class="lineNum">     203 </span><span class="lineCov">          1 :         QCOMPARE(data-&gt;printBits(), std::string(&quot;1011&quot;));</span>
+<span class="lineNum">     204 </span><span class="lineCov">          3 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

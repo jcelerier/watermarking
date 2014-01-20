@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/manager/WatermarkManager.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/manager</a> - WatermarkManager.h<span style="font-size: 80%;"> (source / <a href="WatermarkManager.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;../watermark/WatermarkInterface.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ManagerBase.h&quot;
+<span class="lineNum">       5 </span>            : /**
+<span class="lineNum">       6 </span>            :  * @brief The WatermarkManager class
+<span class="lineNum">       7 </span>            :  *
+<a name="8"><span class="lineNum">       8 </span>            :  * Classe servant à appliquer une watermark à un signal audio.</a>
+<span class="lineNum">       9 </span>            :  */
+<span class="lineNum">      10 </span><span class="lineCov">         30 : class WatermarkManager: public ManagerBase</span>
+<span class="lineNum">      11 </span>            : {
+<span class="lineNum">      12 </span>            :         public:
+<span class="lineNum">      13 </span>            :                 WatermarkManager(WatermarkData_p d):
+<span class="lineNum">      14 </span>            :                         m_data(d)
+<span class="lineNum">      15 </span>            :                 {
+<span class="lineNum">      16 </span>            : 
+<a name="17"><span class="lineNum">      17 </span>            :                 }</a>
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span><span class="lineCov">         30 :                 WatermarkManager(Input_p i,</span>
+<span class="lineNum">      20 </span>            :                                                  Output_p o,
+<span class="lineNum">      21 </span>            :                                                  Watermark_p a,
+<span class="lineNum">      22 </span>            :                                                  WatermarkData_p d):
+<span class="lineNum">      23 </span>            :                         ManagerBase(i, o),
+<span class="lineNum">      24 </span>            :                         m_algorithm(a),
+<span class="lineNum">      25 </span><span class="lineCov">         30 :                         m_data(d)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span><span class="lineCov">         30 :                 }</span>
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 WatermarkManager(Input_p i,
+<span class="lineNum">      31 </span>            :                                                  Output_p o,
+<span class="lineNum">      32 </span>            :                                                  TimeAdapter_p t,
+<span class="lineNum">      33 </span>            :                                                  Watermark_p a,
+<span class="lineNum">      34 </span>            :                                                  WatermarkData_p d):
+<span class="lineNum">      35 </span>            :                         ManagerBase(i, o, t),
+<span class="lineNum">      36 </span>            :                         m_algorithm(a),
+<span class="lineNum">      37 </span>            :                         m_data(d)
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 WatermarkManager(const WatermarkManager&amp; sm) = delete;
+<span class="lineNum">      43 </span>            :                 WatermarkManager&amp; operator=(const WatermarkManager&amp; sm) = delete;
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /**
+<span class="lineNum">      46 </span>            :                  * @brief prepare Prépare les données nécessaires
+<span class="lineNum">      47 </span>            :                  *
+<a name="48"><span class="lineNum">      48 </span>            :                  * A appeler juste avant execute() de l'algorithme.</a>
+<span class="lineNum">      49 </span>            :                  */
+<span class="lineNum">      50 </span><span class="lineCov">         20 :                 void prepare()</span>
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span><span class="lineCov">         20 :                         m_timeAdapter-&gt;addStartHandler(std::bind(&amp;WatermarkData::resetPosition, m_data));</span>
+<span class="lineNum">      53 </span><span class="lineCov">         20 :                 }</span>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /**
+<span class="lineNum">      56 </span>            :                  * @brief execute
+<span class="lineNum">      57 </span>            :                  *
+<a name="58"><span class="lineNum">      58 </span>            :                  * Méthode principale qui va traiter tout l'audio.</a>
+<span class="lineNum">      59 </span>            :                  */
+<span class="lineNum">      60 </span><span class="lineCov">       8897 :                 virtual void execute() override</span>
+<span class="lineNum">      61 </span>            :                 {
+<span class="lineNum">      62 </span><span class="lineCov">       8897 :                         while(Audio_p buf = m_input-&gt;getNextBuffer())</span>
+<span class="lineNum">      63 </span>            :                         {
+<span class="lineNum">      64 </span><span class="lineCov">       8867 :                                 m_timeAdapter-&gt;perform();</span>
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span><span class="lineCov">       8867 :                                 if(m_timeAdapter-&gt;isRunning()) (*m_algorithm)(buf, *m_data.get());</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineCov">       8867 :                                 m_output-&gt;writeNextBuffer(buf);</span>
+<span class="lineNum">      69 </span><span class="lineCov">       8867 :                         }</span>
+<span class="lineNum">      70 </span><span class="lineCov">       8867 :                         m_algorithm-&gt;finish(*m_data.get());</span>
+<span class="lineNum">      71 </span><span class="lineCov">         30 :                 }</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 Watermark_p&amp; algorithm()
+<span class="lineNum">      74 </span>            :                 {
+<span class="lineNum">      75 </span>            :                         return m_algorithm;
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :         private:
+<span class="lineNum">      79 </span>            :                 Watermark_p m_algorithm = nullptr;
+<span class="lineNum">      80 </span>            :                 WatermarkData_p m_data = nullptr;
+<span class="lineNum">      81 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

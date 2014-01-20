@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/watermarkdata/WatermarkData.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/watermarkdata</a> - WatermarkData.h<span style="font-size: 80%;"> (source / <a href="WatermarkData.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryMed">88.9 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : #include &lt;vector&gt;
+<span class="lineNum">       3 </span>            : #include &lt;stdint.h&gt;
+<span class="lineNum">       4 </span>            : #include &lt;bitset&gt;
+<span class="lineNum">       5 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">       6 </span>            : #include &lt;iostream&gt;
+<span class="lineNum">       7 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">       8 </span>            : #include &lt;memory&gt;
+<span class="lineNum">       9 </span>            : /**
+<span class="lineNum">      10 </span>            :  * @brief The WatermarkData class
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * Cette classe contient les données que l'on veut watermarker.
+<span class="lineNum">      13 </span>            :  * Elle est abstraite et ne peut être instanciée, en effet on peut vouloir différents modes de fonctionnement.
+<span class="lineNum">      14 </span>            :  *
+<span class="lineNum">      15 </span>            :  * Dans cette classe la convention est la suivante : size_bits représente toujours le nombre
+<a name="16"><span class="lineNum">      16 </span>            :  * de bits dans lesquels on lit la taille (en pratique sizeof(_size)).</a>
+<span class="lineNum">      17 </span>            :  */
+<span class="lineNum">      18 </span><span class="lineCov">         28 : class WatermarkData</span>
+<a name="19"><span class="lineNum">      19 </span>            : {</a>
+<span class="lineNum">      20 </span>            :         public:
+<span class="lineNum">      21 </span><span class="lineCov">         28 :                 virtual ~WatermarkData() = default;</span>
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 /**
+<span class="lineNum">      24 </span>            :                  * @brief setSize Utilisé pour dire combien de bits de donnée on va mettre
+<span class="lineNum">      25 </span>            :                  * @param size nombre de bits de donnée attendus.
+<span class="lineNum">      26 </span>            :                  *
+<span class="lineNum">      27 </span>            :                  * Cette méthode :
+<span class="lineNum">      28 </span>            :                  * - VIDE LE TABLEAU DE BITS.
+<span class="lineNum">      29 </span>            :                  * - rajoute au début du tableau de bits un &quot;header&quot; de taille fixée
+<span class="lineNum">      30 </span>            :                  *   à 64 bits contenant la taille du message à lire par la suite.
+<span class="lineNum">      31 </span>            :                  *
+<a name="32"><span class="lineNum">      32 </span>            :                  * Il faut donc l'appeler au début, avant d'avoir ajouté des données.</a>
+<span class="lineNum">      33 </span>            :                  */
+<span class="lineNum">      34 </span><span class="lineCov">         14 :                 void setSize(const uint64_t size)</span>
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span><span class="lineCov">         14 :                         const auto size_bits = sizeof(_size) * 8U;</span>
+<span class="lineNum">      37 </span><span class="lineCov">         14 :                         _size = size;</span>
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineCov">         14 :                         bits.clear();</span>
+<span class="lineNum">      40 </span><span class="lineCov">         14 :                         bits.resize(size_bits);</span>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineCov">         14 :                         std::bitset&lt;size_bits&gt; num(_size);</span>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineCov">        910 :                         for(auto i = 0U; i &lt; size_bits; ++i)</span>
+<span class="lineNum">      45 </span>            :                         {
+<span class="lineNum">      46 </span>            :                                 //std::cerr &lt;&lt; num[i] &lt;&lt; &quot; &quot;;
+<span class="lineNum">      47 </span><span class="lineCov">        896 :                                 bits[i] = num[i];</span>
+<span class="lineNum">      48 </span>            :                         }
+<span class="lineNum">      49 </span><span class="lineCov">         14 :                 }</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /**
+<span class="lineNum">      52 </span>            :                  * @brief readSizeFromBits
+<span class="lineNum">      53 </span>            :                  * @return Le nombre de bits de données.
+<span class="lineNum">      54 </span>            :                  *
+<a name="55"><span class="lineNum">      55 </span>            :                  * Lit les 64 premiers bits, les stocke et les renvoie.</a>
+<span class="lineNum">      56 </span>            :                  */
+<span class="lineNum">      57 </span><span class="lineCov">         14 :                 uint64_t readSizeFromBits()</span>
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span><span class="lineCov">         14 :                         const auto size_bits = sizeof(_size) * 8U;</span>
+<span class="lineNum">      60 </span><span class="lineCov">         14 :                         std::bitset&lt;size_bits&gt; num;</span>
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineCov">         14 :                         if(bits.size() &gt;= 64)</span>
+<span class="lineNum">      63 </span>            :                         {
+<span class="lineNum">      64 </span><span class="lineCov">        650 :                                 for(auto i = 0U; i &lt; size_bits; ++i)</span>
+<span class="lineNum">      65 </span><span class="lineCov">        640 :                                         num[i] = bits[i];</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">         10 :                                 return _size = num.to_ullong();</span>
+<span class="lineNum">      68 </span>            :                         }
+<span class="lineNum">      69 </span>            :                         else
+<span class="lineNum">      70 </span>            :                         {
+<span class="lineNum">      71 </span><span class="lineCov">          4 :                                 return _size = 0;</span>
+<span class="lineNum">      72 </span>            :                         }
+<span class="lineNum">      73 </span>            :                 }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                 /**
+<span class="lineNum">      76 </span>            :                  * @brief printBits
+<span class="lineNum">      77 </span>            :                  *
+<span class="lineNum">      78 </span>            :                  * Affiche les bits de donnée.
+<span class="lineNum">      79 </span>            :                  * TODO : surchrage qui prend un flux personnalisé à la place.
+<a name="80"><span class="lineNum">      80 </span>            :                  * (ou opérateur de flux pour la classe)</a>
+<span class="lineNum">      81 </span>            :                  */
+<span class="lineNum">      82 </span><span class="lineCov">          4 :                 std::string printBits()</span>
+<span class="lineNum">      83 </span>            :                 {
+<span class="lineNum">      84 </span><span class="lineCov">          4 :                         std::stringstream s;</span>
+<span class="lineNum">      85 </span><span class="lineCov">          4 :                         const auto size_bits = sizeof(_size) * 8U;</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineCov">          4 :                         if(bits.size() &gt;= _size + size_bits)</span>
+<span class="lineNum">      88 </span>            :                         {
+<span class="lineNum">      89 </span><span class="lineCov">         13 :                                 for(auto i = size_bits; i &lt; size_bits + _size; ++i)</span>
+<span class="lineNum">      90 </span>            :                                 {
+<span class="lineNum">      91 </span><span class="lineCov">         11 :                                         s &lt;&lt; bits[i];</span>
+<span class="lineNum">      92 </span>            :                                 }
+<span class="lineNum">      93 </span>            :                         }
+<span class="lineNum">      94 </span>            :                         else
+<span class="lineNum">      95 </span>            :                         {
+<span class="lineNum">      96 </span><span class="lineCov">          2 :                                 std::cerr &lt;&lt; &quot;Erreur: impossible de lire les données&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">      97 </span>            :                         }
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :                         //std::cerr &lt;&lt; s.str() &lt;&lt; std::endl;
+<span class="lineNum">     100 </span><span class="lineCov">          4 :                         return s.str();</span>
+<span class="lineNum">     101 </span>            :                 }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            :                 /**
+<span class="lineNum">     104 </span>            :                  * @brief resetPosition Remet le curseur de lecture à 0
+<span class="lineNum">     105 </span>            :                  *
+<span class="lineNum">     106 </span>            :                  * Utilisé lorsqu'on veut écrire plusieurs fois la watermark dans
+<span class="lineNum">     107 </span>            :                  * les données audio.
+<a name="108"><span class="lineNum">     108 </span>            :                  * Note : remet à 0, header inclus. Donc on recopie le header.</a>
+<span class="lineNum">     109 </span>            :                  */
+<span class="lineNum">     110 </span><span class="lineCov">         20 :                 void resetPosition()</span>
+<span class="lineNum">     111 </span>            :                 {
+<span class="lineNum">     112 </span><span class="lineCov">         20 :                         _position = 0;</span>
+<span class="lineNum">     113 </span><span class="lineCov">         20 :                 }</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                 /**
+<span class="lineNum">     116 </span>            :                  * @brief resetData
+<span class="lineNum">     117 </span>            :                  *
+<span class="lineNum">     118 </span>            :                  * Remet les données à 0
+<span class="lineNum">     119 </span>            :                  */
+<span class="lineNum">     120 </span>            :                 void resetData()
+<span class="lineNum">     121 </span>            :                 {
+<span class="lineNum">     122 </span>            :                         resetPosition();
+<span class="lineNum">     123 </span>            :                         bits.clear();
+<span class="lineNum">     124 </span>            :                         _size = 0;
+<span class="lineNum">     125 </span>            :                 }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                 /**
+<span class="lineNum">     128 </span>            :                  * @brief nextBit
+<span class="lineNum">     129 </span>            :                  * @return Valeur du prochain bit
+<span class="lineNum">     130 </span>            :                  */
+<span class="lineNum">     131 </span>            :                 virtual bool nextBit() = 0;
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                 /**
+<span class="lineNum">     134 </span>            :                  * @brief setNextBit
+<span class="lineNum">     135 </span>            :                  * @param b prochain bit
+<span class="lineNum">     136 </span>            :                  */
+<span class="lineNum">     137 </span>            :                 virtual void setNextBit(bool b) = 0;
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                 /**
+<span class="lineNum">     140 </span>            :                  * @brief isComplete
+<span class="lineNum">     141 </span>            :                  * @return vrai si on a fini de lire les bits.
+<span class="lineNum">     142 </span>            :                  */
+<a name="143"><span class="lineNum">     143 </span>            :                 virtual bool isComplete() = 0;</a>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">       2520 :                 std::vector&lt;bool&gt;&amp; getBaseBits()</span>
+<span class="lineNum">     146 </span>            :                 {
+<span class="lineNum">     147 </span><span class="lineCov">       2520 :                         return bits;</span>
+<a name="148"><span class="lineNum">     148 </span>            :                 }</a>
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineCov">         10 :                 int compareBits(std::vector&lt;bool&gt;&amp; otherBits)</span>
+<span class="lineNum">     151 </span>            :                 {
+<span class="lineNum">     152 </span><span class="lineCov">         10 :                         int e = 0;</span>
+<span class="lineNum">     153 </span><span class="lineCov">        545 :                         for(int i = 0; i &lt; std::min(bits.size(), otherBits.size()); i++)</span>
+<span class="lineNum">     154 </span><span class="lineCov">        535 :                                 if(bits[i] != otherBits[i])</span>
+<span class="lineNum">     155 </span><span class="lineCov">         97 :                                         e++;</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineCov">         10 :                         if(otherBits.size() &lt; bits.size())</span>
+<span class="lineNum">     158 </span><span class="lineCov">          3 :                                 e += std::abs(bits.size() - otherBits.size());</span>
+<span class="lineNum">     159 </span><span class="lineCov">         10 :                         return e;</span>
+<span class="lineNum">     160 </span>            :                 }
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :         protected:
+<span class="lineNum">     163 </span>            :                 std::vector&lt;bool&gt; bits = { }; /**&lt; Les données. */
+<span class="lineNum">     164 </span>            :                 uint64_t _size = 0; /**&lt; Le nombre de bits de donnée. i.e. NE CONTIENT PAS LE NOMBRE DE BITS DU HEADER. */
+<span class="lineNum">     165 </span>            :                 unsigned int _position = 0; /**&lt; Curseur utilisé pour savoir ou on en est. */
+<span class="lineNum">     166 </span>            : };
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            : using WatermarkData_p = std::shared_ptr&lt;WatermarkData&gt;;
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

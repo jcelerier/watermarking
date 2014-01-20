@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /usr/include/c++/4.8/ext/type_traits.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/4.8/ext</a> - type_traits.h<span style="font-size: 80%;"> (source / <a href="type_traits.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // -*- C++ -*-</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 2005-2013 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the terms
+<span class="lineNum">       7 </span>            : // of the GNU General Public License as published by the Free Software
+<span class="lineNum">       8 </span>            : // Foundation; either version 3, or (at your option) any later
+<span class="lineNum">       9 </span>            : // version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful, but
+<span class="lineNum">      12 </span>            : // WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      14 </span>            : // General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /** @file ext/type_traits.h
+<span class="lineNum">      26 </span>            :  *  This file is a GNU extension to the Standard C++ Library.
+<span class="lineNum">      27 </span>            :  */
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #ifndef _EXT_TYPE_TRAITS
+<span class="lineNum">      30 </span>            : #define _EXT_TYPE_TRAITS 1
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : #pragma GCC system_header
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : #include &lt;bits/c++config.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;bits/cpp_type_traits.h&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :   // Define a nested type if some predicate holds.
+<span class="lineNum">      42 </span>            :   template&lt;bool, typename&gt;
+<span class="lineNum">      43 </span>            :     struct __enable_if 
+<span class="lineNum">      44 </span>            :     { };
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">      47 </span>            :     struct __enable_if&lt;true, _Tp&gt;
+<span class="lineNum">      48 </span>            :     { typedef _Tp __type; };
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :   // Conditional expression for types. If true, first, if false, second.
+<span class="lineNum">      52 </span>            :   template&lt;bool _Cond, typename _Iftrue, typename _Iffalse&gt;
+<span class="lineNum">      53 </span>            :     struct __conditional_type
+<span class="lineNum">      54 </span>            :     { typedef _Iftrue __type; };
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :   template&lt;typename _Iftrue, typename _Iffalse&gt;
+<span class="lineNum">      57 </span>            :     struct __conditional_type&lt;false, _Iftrue, _Iffalse&gt;
+<span class="lineNum">      58 </span>            :     { typedef _Iffalse __type; };
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :   // Given an integral builtin type, return the corresponding unsigned type.
+<span class="lineNum">      62 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">      63 </span>            :     struct __add_unsigned
+<span class="lineNum">      64 </span>            :     { 
+<span class="lineNum">      65 </span>            :     private:
+<span class="lineNum">      66 </span>            :       typedef __enable_if&lt;std::__is_integer&lt;_Tp&gt;::__value, _Tp&gt; __if_type;
+<span class="lineNum">      67 </span>            :       
+<span class="lineNum">      68 </span>            :     public:
+<span class="lineNum">      69 </span>            :       typedef typename __if_type::__type __type; 
+<span class="lineNum">      70 </span>            :     };
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :   template&lt;&gt;
+<span class="lineNum">      73 </span>            :     struct __add_unsigned&lt;char&gt;
+<span class="lineNum">      74 </span>            :     { typedef unsigned char __type; };
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :   template&lt;&gt;
+<span class="lineNum">      77 </span>            :     struct __add_unsigned&lt;signed char&gt;
+<span class="lineNum">      78 </span>            :     { typedef unsigned char __type; };
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :   template&lt;&gt;
+<span class="lineNum">      81 </span>            :     struct __add_unsigned&lt;short&gt;
+<span class="lineNum">      82 </span>            :     { typedef unsigned short __type; };
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :   template&lt;&gt;
+<span class="lineNum">      85 </span>            :     struct __add_unsigned&lt;int&gt;
+<span class="lineNum">      86 </span>            :     { typedef unsigned int __type; };
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :   template&lt;&gt;
+<span class="lineNum">      89 </span>            :     struct __add_unsigned&lt;long&gt;
+<span class="lineNum">      90 </span>            :     { typedef unsigned long __type; };
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :   template&lt;&gt;
+<span class="lineNum">      93 </span>            :     struct __add_unsigned&lt;long long&gt;
+<span class="lineNum">      94 </span>            :     { typedef unsigned long long __type; };
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :   // Declare but don't define.
+<span class="lineNum">      97 </span>            :   template&lt;&gt;
+<span class="lineNum">      98 </span>            :     struct __add_unsigned&lt;bool&gt;;
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :   template&lt;&gt;
+<span class="lineNum">     101 </span>            :     struct __add_unsigned&lt;wchar_t&gt;;
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :   // Given an integral builtin type, return the corresponding signed type.
+<span class="lineNum">     105 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     106 </span>            :     struct __remove_unsigned
+<span class="lineNum">     107 </span>            :     { 
+<span class="lineNum">     108 </span>            :     private:
+<span class="lineNum">     109 </span>            :       typedef __enable_if&lt;std::__is_integer&lt;_Tp&gt;::__value, _Tp&gt; __if_type;
+<span class="lineNum">     110 </span>            :       
+<span class="lineNum">     111 </span>            :     public:
+<span class="lineNum">     112 </span>            :       typedef typename __if_type::__type __type; 
+<span class="lineNum">     113 </span>            :     };
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :   template&lt;&gt;
+<span class="lineNum">     116 </span>            :     struct __remove_unsigned&lt;char&gt;
+<span class="lineNum">     117 </span>            :     { typedef signed char __type; };
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :   template&lt;&gt;
+<span class="lineNum">     120 </span>            :     struct __remove_unsigned&lt;unsigned char&gt;
+<span class="lineNum">     121 </span>            :     { typedef signed char __type; };
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :   template&lt;&gt;
+<span class="lineNum">     124 </span>            :     struct __remove_unsigned&lt;unsigned short&gt;
+<span class="lineNum">     125 </span>            :     { typedef short __type; };
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :   template&lt;&gt;
+<span class="lineNum">     128 </span>            :     struct __remove_unsigned&lt;unsigned int&gt;
+<span class="lineNum">     129 </span>            :     { typedef int __type; };
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :   template&lt;&gt;
+<span class="lineNum">     132 </span>            :     struct __remove_unsigned&lt;unsigned long&gt;
+<span class="lineNum">     133 </span>            :     { typedef long __type; };
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :   template&lt;&gt;
+<span class="lineNum">     136 </span>            :     struct __remove_unsigned&lt;unsigned long long&gt;
+<span class="lineNum">     137 </span>            :     { typedef long long __type; };
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :   // Declare but don't define.
+<span class="lineNum">     140 </span>            :   template&lt;&gt;
+<span class="lineNum">     141 </span>            :     struct __remove_unsigned&lt;bool&gt;;
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :   template&lt;&gt;
+<span class="lineNum">     144 </span>            :     struct __remove_unsigned&lt;wchar_t&gt;;
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :   // For use in string and vstring.
+<a name="148"><span class="lineNum">     148 </span>            :   template&lt;typename _Type&gt;</a>
+<span class="lineNum">     149 </span>            :     inline bool
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     __is_null_pointer(_Type* __ptr)</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     { return __ptr == 0; }</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :   template&lt;typename _Type&gt;
+<span class="lineNum">     154 </span>            :     inline bool
+<span class="lineNum">     155 </span>            :     __is_null_pointer(_Type)
+<span class="lineNum">     156 </span>            :     { return false; }
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :   // For complex and cmath
+<span class="lineNum">     160 </span>            :   template&lt;typename _Tp, bool = std::__is_integer&lt;_Tp&gt;::__value&gt;
+<span class="lineNum">     161 </span>            :     struct __promote
+<span class="lineNum">     162 </span>            :     { typedef double __type; };
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :   // No nested __type member for non-integer non-floating point types,
+<span class="lineNum">     165 </span>            :   // allows this type to be used for SFINAE to constrain overloads in
+<span class="lineNum">     166 </span>            :   // &lt;cmath&gt; and &lt;complex&gt; to only the intended types.
+<span class="lineNum">     167 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     168 </span>            :     struct __promote&lt;_Tp, false&gt;
+<span class="lineNum">     169 </span>            :     { };
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :   template&lt;&gt;
+<span class="lineNum">     172 </span>            :     struct __promote&lt;long double&gt;
+<span class="lineNum">     173 </span>            :     { typedef long double __type; };
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :   template&lt;&gt;
+<span class="lineNum">     176 </span>            :     struct __promote&lt;double&gt;
+<span class="lineNum">     177 </span>            :     { typedef double __type; };
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :   template&lt;&gt;
+<span class="lineNum">     180 </span>            :     struct __promote&lt;float&gt;
+<span class="lineNum">     181 </span>            :     { typedef float __type; };
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :   template&lt;typename _Tp, typename _Up,
+<span class="lineNum">     184 </span>            :            typename _Tp2 = typename __promote&lt;_Tp&gt;::__type,
+<span class="lineNum">     185 </span>            :            typename _Up2 = typename __promote&lt;_Up&gt;::__type&gt;
+<span class="lineNum">     186 </span>            :     struct __promote_2
+<span class="lineNum">     187 </span>            :     {
+<span class="lineNum">     188 </span>            :       typedef __typeof__(_Tp2() + _Up2()) __type;
+<span class="lineNum">     189 </span>            :     };
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :   template&lt;typename _Tp, typename _Up, typename _Vp,
+<span class="lineNum">     192 </span>            :            typename _Tp2 = typename __promote&lt;_Tp&gt;::__type,
+<span class="lineNum">     193 </span>            :            typename _Up2 = typename __promote&lt;_Up&gt;::__type,
+<span class="lineNum">     194 </span>            :            typename _Vp2 = typename __promote&lt;_Vp&gt;::__type&gt;
+<span class="lineNum">     195 </span>            :     struct __promote_3
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span>            :       typedef __typeof__(_Tp2() + _Up2() + _Vp2()) __type;
+<span class="lineNum">     198 </span>            :     };
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :   template&lt;typename _Tp, typename _Up, typename _Vp, typename _Wp,
+<span class="lineNum">     201 </span>            :            typename _Tp2 = typename __promote&lt;_Tp&gt;::__type,
+<span class="lineNum">     202 </span>            :            typename _Up2 = typename __promote&lt;_Up&gt;::__type,
+<span class="lineNum">     203 </span>            :            typename _Vp2 = typename __promote&lt;_Vp&gt;::__type,
+<span class="lineNum">     204 </span>            :            typename _Wp2 = typename __promote&lt;_Wp&gt;::__type&gt;
+<span class="lineNum">     205 </span>            :     struct __promote_4
+<span class="lineNum">     206 </span>            :     {
+<span class="lineNum">     207 </span>            :       typedef __typeof__(_Tp2() + _Up2() + _Vp2() + _Wp2()) __type;
+<span class="lineNum">     208 </span>            :     };
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">     211 </span>            : } // namespace
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            : #endif 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

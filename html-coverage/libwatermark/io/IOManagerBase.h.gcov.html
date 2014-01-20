@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/io/IOManagerBase.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/io</a> - IOManagerBase.h<span style="font-size: 80%;"> (source / <a href="IOManagerBase.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryMed">82.4 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : #include &lt;memory&gt;
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;copystyle/CopyStyle.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;../Parameters.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;../Data.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;IOInterface.h&quot;
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : template &lt;typename data_type&gt;
+<span class="lineNum">      10 </span>            : class FFTInputProxy;
+<span class="lineNum">      11 </span>            : template &lt;typename data_type&gt;
+<span class="lineNum">      12 </span>            : class FFTOutputProxy;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /**
+<span class="lineNum">      15 </span>            :  * @brief The IOManagerBase class
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * Classe de base pour la gestion des entrées sorties.
+<span class="lineNum">      18 </span>            :  * Concept : séparation en buffers. Entrée et sortie marchent main dans la main
+<span class="lineNum">      19 </span>            :  * et peuvent se plugger les unes aux autres, ou appliquer des transformations.
+<span class="lineNum">      20 </span>            :  *
+<span class="lineNum">      21 </span>            :  * Réalise un découpage buffer par buffer des données dans vec.
+<span class="lineNum">      22 </span>            :  */
+<span class="lineNum">      23 </span>            : template &lt;typename data_type&gt;
+<span class="lineNum">      24 </span>            : class IOManagerBase : public IOInterface
+<span class="lineNum">      25 </span>            : {
+<span class="lineNum">      26 </span>            :                 using size_type = typename Parameters&lt;data_type&gt;::size_type;
+<span class="lineNum">      27 </span>            :                 std::vector&lt;std::vector&lt;data_type&gt;&gt; _baseData = {};
+<span class="lineNum">      28 </span>            :                 size_type _pos = 0;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :         protected:
+<span class="lineNum">      31 </span>            :                 Parameters&lt;data_type&gt;&amp; conf;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :         public:
+<span class="lineNum">      34 </span>            :                 friend class FFTInputProxy&lt;data_type&gt;;
+<a name="35"><span class="lineNum">      35 </span>            :                 friend class FFTOutputProxy&lt;data_type&gt;;</a>
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineCov">        228 :                 IOManagerBase(Parameters&lt;data_type&gt;&amp; cfg):</span>
+<span class="lineNum">      38 </span><span class="lineCov">        228 :                         conf(cfg)</span>
+<span class="lineNum">      39 </span>            :                 {
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        228 :                 }</span></a>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineCov">        228 :                 virtual ~IOManagerBase() = default;</span>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /**
+<span class="lineNum">      45 </span>            :                  * @brief v Accès au vecteur sous-jacent
+<a name="46"><span class="lineNum">      46 </span>            :                  * @return  Vecteur sous-j      xznr</a>
+<span class="lineNum">      47 </span>            :                  */
+<span class="lineNum">      48 </span><span class="lineCov">     243282 :         virtual std::vector&lt;std::vector&lt;data_type&gt; &gt;&amp; v()</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span><span class="lineCov">     243282 :                         return _baseData;</span>
+<a name="51"><span class="lineNum">      51 </span>            :                 }</a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">        100 :                 virtual std::vector&lt;data_type&gt;&amp; v(size_type i)</span>
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span><span class="lineCov">        100 :                         return _baseData.at(i);</span>
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /**
+<span class="lineNum">      60 </span>            :                  * @brief channels
+<a name="61"><span class="lineNum">      61 </span>            :                  * @return Nombre de canaux</a>
+<span class="lineNum">      62 </span>            :                  */
+<span class="lineNum">      63 </span><span class="lineCov">      97246 :                 virtual size_type channels() override</span>
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span><span class="lineCov">      97246 :                         return v().size();</span>
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /**
+<span class="lineNum">      69 </span>            :                  * @brief frames
+<a name="70"><span class="lineNum">      70 </span>            :                  * @return Nombre de samples</a>
+<span class="lineNum">      71 </span>            :                  */
+<span class="lineNum">      72 </span><span class="lineCov">      66867 :                 virtual size_type frames() override</span>
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span><span class="lineCov">      66867 :                         return v()[0].size();</span>
+<span class="lineNum">      75 </span>            :                 }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                 /**
+<span class="lineNum">      78 </span>            :                  * @brief pos
+<a name="79"><span class="lineNum">      79 </span>            :                  * @return Position</a>
+<span class="lineNum">      80 </span>            :                  */
+<span class="lineNum">      81 </span><span class="lineCov">     137708 :                 size_type&amp; pos()</span>
+<span class="lineNum">      82 </span>            :                 {
+<span class="lineNum">      83 </span><span class="lineCov">     137708 :                         return _pos;</span>
+<span class="lineNum">      84 </span>            :                 }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 void reset()
+<span class="lineNum">      87 </span>            :                 {
+<span class="lineNum">      88 </span>            :                         _pos = 0;
+<span class="lineNum">      89 </span>            :                 }
+<span class="lineNum">      90 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

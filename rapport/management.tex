@@ -23,13 +23,13 @@ This can be used as a testimony to check that the project correctly builds on a 
 \paragraph{QtCreator} was the chosen development environment. It has a tight integration with \brand{qmake} as a build system, hence the hard dependency on it (which is anyway included with \brand{Qt}, required for the user interface). 
 
 \paragraph{Qt Test Framework}
-This test frameworkwas used for the unit test, in order to provide an easy-to-read output. It can also provide an Xunit XML output which is a standard unit test output, but we did not feel the need for it. 
+This test frameworkwas used for the unit testing, in order to provide an easy-to-read output. It can also provide an Xunit XML output which is a standard unit test output, but we did not feel the need for it. 
 
 \paragraph{cppcheck}
 It is a static code analysis software which finds bugs unlikely to be found by a compiler, like memory leaks, array bounds overflow... We ran it regularly to check for potential bugs.
 
 \paragraph{valgrind}
-A big emphasis was put on the memory cleanliness : as a matter of fact, there is not a single memory leak in the library.
+A big emphasis was put on the memory cleanliness : as a matter of fact, there is not a single memory leak in the library, thanks to the extensive use of smart pointers (there is not a single free pointer in our classes, they are all embedded in \texttt{std::smart\_ptr} objects).
 
 \paragraph{gcov}
 This software was used to test the code coverage of the library during the unit tests, to ensure maximum efficiency for the other tools that we explained before.
@@ -47,7 +47,7 @@ The repartition was as follows :
 \hline
 Person & Work done \\
 \hline
-Jean-Michaël Celerier & Work on the framework \\
+Jean-Michaël Celerier & Work on the framework, project management \\
 Abdelhamid Cherif & Evaluation \\
 Augustin Chevrier & Compression-expansion method \\
 Alban De Martin & \ac{GUI} \\

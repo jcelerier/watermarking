@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/watermark/LSBDecode.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/watermark</a> - LSBDecode.h<span style="font-size: 80%;"> (source / <a href="LSBDecode.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;LSB/LSBBase.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : /**
+<span class="lineNum">       7 </span>            :  * @brief The LSBDecode class
+<span class="lineNum">       8 </span>            :  *
+<span class="lineNum">       9 </span>            :  * Implémente le décodage sur bit de poids faible.
+<a name="10"><span class="lineNum">      10 </span>            :  */</a>
+<span class="lineNum">      11 </span>            : template &lt;typename data_type&gt;
+<span class="lineNum">      12 </span><span class="lineCov">         10 : class LSBDecode : public LSBBase&lt;data_type&gt;</span>
+<a name="13"><span class="lineNum">      13 </span>            : {</a>
+<span class="lineNum">      14 </span>            :         public:
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">          5 :                 using LSBBase&lt;data_type&gt;::LSBBase;</span></a>
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span><span class="lineCov">        867 :                 virtual void operator()(Audio_p&amp; data, WatermarkData&amp; watermark)  override</span>
+<span class="lineNum">      18 </span>            :                 {
+<span class="lineNum">      19 </span><span class="lineCov">        867 :                         auto&amp; channelsData = getAudio&lt;data_type&gt;(data);</span>
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span><span class="lineCov">       1734 :                         for(int j = 0; j &lt; channelsData.size(); j++)</span>
+<span class="lineNum">      22 </span>            :                         {
+<span class="lineNum">      23 </span><span class="lineCov">        867 :                                 auto&amp; sampleData = channelsData[j];</span>
+<span class="lineNum">      24 </span><span class="lineCov">     444771 :                                 for(int i = 0; i &lt; sampleData.size(); ++i)</span>
+<span class="lineNum">      25 </span>            :                                 {
+<span class="lineNum">      26 </span><span class="lineCov">    4882944 :                                         for(int nb = 0; nb &lt; this-&gt;nbBits; ++nb)</span>
+<span class="lineNum">      27 </span>            :                     {
+<span class="lineNum">      28 </span><span class="lineCov">    4439040 :                         short bit16 = 1;</span>
+<span class="lineNum">      29 </span><span class="lineCov">    4439040 :                         bit16 = bit16 &lt;&lt; nb;</span>
+<span class="lineNum">      30 </span><span class="lineCov">    4439040 :                         short testBit = bit16 &amp; sampleData[i];</span>
+<span class="lineNum">      31 </span><span class="lineCov">    4439040 :                         bool bit = (testBit != 0);</span>
+<span class="lineNum">      32 </span><span class="lineCov">    4439040 :                         watermark.setNextBit(bit);</span>
+<span class="lineNum">      33 </span>            :                     }
+<span class="lineNum">      34 </span>            :                                 }
+<span class="lineNum">      35 </span>            :                         }
+<span class="lineNum">      36 </span><span class="lineCov">        867 :                 }</span>
+<span class="lineNum">      37 </span>            : };
+<span class="lineNum">      38 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

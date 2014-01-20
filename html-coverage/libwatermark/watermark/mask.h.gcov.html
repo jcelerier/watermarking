@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/watermark/mask.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">libwatermark/watermark</a> - mask.h<span style="font-size: 80%;"> (source / <a href="mask.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : #include &lt;math.h&gt;
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : using namespace std;
+<span class="lineNum">       5 </span>            : //template &lt;typename data_type&gt;
+<a name="6"><span class="lineNum">       6 </span>            : class Mask{</a>
+<span class="lineNum">       7 </span>            : public:
+<span class="lineNum">       8 </span><span class="lineCov">          1 :     static void calcul(){</span>
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            :     double magnitude[257];//norme au carré de la fft de la trame
+<span class="lineNum">      11 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">      12 </span>            :     {
+<span class="lineNum">      13 </span><span class="lineCov">        257 :         magnitude[i]=i;</span>
+<span class="lineNum">      14 </span>            :     }
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :     //définition des fréquences
+<span class="lineNum">      17 </span>            :     double f[257];
+<span class="lineNum">      18 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">      19 </span>            :     {
+<span class="lineNum">      20 </span><span class="lineCov">        257 :         f[i]=(22050*i)/257;</span>
+<span class="lineNum">      21 </span>            :     }
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :     //définition du bark
+<span class="lineNum">      24 </span>            :     double z[257];
+<span class="lineNum">      25 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">      26 </span>            :     {
+<span class="lineNum">      27 </span><span class="lineCov">        257 :         z[i]=13*atan(0.00076*f[i]) + 3.5*atan(pow((f[i]/7500),2));</span>
+<span class="lineNum">      28 </span><span class="lineCov">        257 :         z[i]=floor(z[i]);</span>
+<span class="lineNum">      29 </span>            :     }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :     //energy per critical band
+<span class="lineNum">      32 </span><span class="lineCov">          1 :     double Spz[25]={0};</span>
+<span class="lineNum">      33 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">      34 </span>            :     {
+<span class="lineNum">      35 </span><span class="lineCov">       6682 :         for (int bark=0;bark&lt;25;bark++)</span>
+<span class="lineNum">      36 </span>            :         {
+<span class="lineNum">      37 </span><span class="lineCov">       6425 :             if (z[i]==bark)</span>
+<span class="lineNum">      38 </span><span class="lineCov">        257 :                 Spz[bark]=Spz[bark]+magnitude[i];</span>
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span>            :     }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :     //Basilar membrane spreading function
+<span class="lineNum">      44 </span>            :     double B[11];
+<span class="lineNum">      45 </span><span class="lineCov">         12 :     for (int i=-5;i&lt;6;i++)</span>
+<span class="lineNum">      46 </span>            :     {
+<span class="lineNum">      47 </span><span class="lineCov">         11 :         B[i+5]=15.91+7.5*(i+0.474)-17.5*sqrt(1+pow((i+0.474),2));</span>
+<span class="lineNum">      48 </span>            :     }
+<span class="lineNum">      49 </span>            :     //linear
+<span class="lineNum">      50 </span><span class="lineCov">         12 :     for (int i=0;i&lt;11;i++)</span>
+<span class="lineNum">      51 </span>            :     {
+<span class="lineNum">      52 </span><span class="lineCov">         11 :         B[i]=pow(pow(10,((double)B[i]/(double)20)),2);</span>
+<span class="lineNum">      53 </span>            :     }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :     double Sm[35];
+<span class="lineNum">      56 </span>            :     double Smbis[25];//26??
+<span class="lineNum">      57 </span>            :     //convolution
+<span class="lineNum">      58 </span>            :     //Sm=conv(Spz,B);//conv?
+<span class="lineNum">      59 </span>            :     // start convolution from out[kernelSize-1] to out[dataSize-1] (last)
+<span class="lineNum">      60 </span><span class="lineCov">         26 :        for(int i = 11-1; i &lt; 35; ++i)</span>
+<span class="lineNum">      61 </span>            :        {
+<span class="lineNum">      62 </span><span class="lineCov">         25 :            Sm[i] = 0;                             // init to 0 before accumulate</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">        300 :            for(int j = i, k = 0; k &lt; 11; --j, ++k)</span>
+<span class="lineNum">      65 </span><span class="lineCov">        275 :                Sm[i] += Spz[j] * B[k];</span>
+<span class="lineNum">      66 </span>            :        }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :        // convolution from out[0] to out[kernelSize-2]
+<span class="lineNum">      69 </span><span class="lineCov">         11 :        for(int i = 0; i &lt; 11 - 1; ++i)</span>
+<span class="lineNum">      70 </span>            :        {
+<span class="lineNum">      71 </span><span class="lineCov">         10 :            Sm[i] = 0;                             // init to 0 before sum</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">         65 :            for(int j = i, k = 0; j &gt;= 0; --j, ++k)</span>
+<span class="lineNum">      74 </span><span class="lineCov">         55 :                Sm[i] += Spz[j] * B[k];</span>
+<span class="lineNum">      75 </span>            :        }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">         26 :     for (int i=0;i&lt;25;i++)</span>
+<span class="lineNum">      78 </span>            :     {
+<span class="lineNum">      79 </span><span class="lineCov">         25 :         Smbis[i]=Sm[i+5];</span>
+<span class="lineNum">      80 </span>            :     }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :     //Masking threshold estimate
+<span class="lineNum">      83 </span><span class="lineCov">          1 :     double P=1;</span>
+<span class="lineNum">      84 </span><span class="lineCov">         26 :     for(int i=0;i&lt;25;i++)</span>
+<span class="lineNum">      85 </span>            :     {
+<span class="lineNum">      86 </span><span class="lineCov">         25 :         P=P*Spz[i];</span>
+<span class="lineNum">      87 </span>            :     }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineCov">          1 :     double S=0;</span>
+<span class="lineNum">      90 </span><span class="lineCov">         26 :     for(int i=0;i&lt;25;i++)</span>
+<span class="lineNum">      91 </span>            :     {
+<span class="lineNum">      92 </span><span class="lineCov">         25 :         S=S+Spz[i];</span>
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :     double SFM;
+<span class="lineNum">      96 </span><span class="lineCov">          1 :     SFM=10*log10(pow((P/(((double)1/(double)25)*S)),((double)1/(double)25)));</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">          1 :     double alpha=fmin(double(SFM/(-60)),1);//min(SFM/-60,1)</span>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :     double O[25];
+<span class="lineNum">     101 </span><span class="lineCov">         26 :     for(int i=0;i&lt;25;i++)</span>
+<span class="lineNum">     102 </span>            :     {
+<span class="lineNum">     103 </span><span class="lineCov">         25 :         O[i]=alpha*(14.5+i)+(1-alpha)*5.5;</span>
+<span class="lineNum">     104 </span>            :     }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :     double Traw[25];
+<span class="lineNum">     107 </span><span class="lineCov">         26 :     for(int i=0;i&lt;25;i++)</span>
+<span class="lineNum">     108 </span>            :     {
+<span class="lineNum">     109 </span><span class="lineCov">         25 :         Traw[i]=pow(10,(log10(Smbis[i])-((double)O[i]/(double)10)));</span>
+<span class="lineNum">     110 </span>            :     }
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">          1 :     double Pz[25]={0};</span>
+<span class="lineNum">     113 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineCov">       6682 :         for (int bark=0;bark&lt;25;bark++)</span>
+<span class="lineNum">     116 </span>            :         {
+<span class="lineNum">     117 </span><span class="lineCov">       6425 :             if (z[i]==bark)</span>
+<span class="lineNum">     118 </span><span class="lineCov">        257 :                 Pz[bark]=Pz[bark]+1;</span>
+<span class="lineNum">     119 </span>            :         }
+<span class="lineNum">     120 </span>            :     }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">          1 :     double Tnorm[25]={0};</span>
+<span class="lineNum">     123 </span><span class="lineCov">        258 :     for (int i=0;i&lt;257;i++)</span>
+<span class="lineNum">     124 </span>            :     {
+<span class="lineNum">     125 </span><span class="lineCov">       6682 :         for (int bark=0;bark&lt;25;bark++)</span>
+<span class="lineNum">     126 </span>            :         {
+<span class="lineNum">     127 </span><span class="lineCov">       6425 :             if (z[i]==bark)</span>
+<span class="lineNum">     128 </span><span class="lineCov">        257 :                 Tnorm[bark]=(double)Traw[bark]/(double)Pz[bark];</span>
+<span class="lineNum">     129 </span>            :         }
+<span class="lineNum">     130 </span>            :     }
+<span class="lineNum">     131 </span><span class="lineCov">         26 :     for (int i=0;i&lt;25;i++){</span>
+<span class="lineNum">     132 </span><span class="lineCov">         25 :     std::cout&lt;&lt;Tnorm[i]&lt;&lt;std::endl;</span>
+<span class="lineNum">     133 </span>            :     }
+<span class="lineNum">     134 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

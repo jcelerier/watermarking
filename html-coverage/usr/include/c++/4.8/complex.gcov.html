@@ -1,0 +1,2009 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /usr/include/c++/4.8/complex</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/4.8</a> - complex<span style="font-size: 80%;"> (source / <a href="complex.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // The template and inlines for the -*- C++ -*- complex number classes.</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 1997-2013 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the
+<span class="lineNum">       7 </span>            : // terms of the GNU General Public License as published by the
+<span class="lineNum">       8 </span>            : // Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>            : // any later version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>            : // GNU General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /** @file include/complex
+<span class="lineNum">      26 </span>            :  *  This is a Standard C++ Library header.
+<span class="lineNum">      27 </span>            :  */
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : //
+<span class="lineNum">      30 </span>            : // ISO C++ 14882: 26.2  Complex Numbers
+<span class="lineNum">      31 </span>            : // Note: this is not a conforming implementation.
+<span class="lineNum">      32 </span>            : // Initially implemented by Ulrich Drepper &lt;drepper@cygnus.com&gt;
+<span class="lineNum">      33 </span>            : // Improved by Gabriel Dos Reis &lt;dosreis@cmla.ens-cachan.fr&gt;
+<span class="lineNum">      34 </span>            : //
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #ifndef _GLIBCXX_COMPLEX
+<span class="lineNum">      37 </span>            : #define _GLIBCXX_COMPLEX 1
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #pragma GCC system_header
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : #include &lt;bits/c++config.h&gt;
+<span class="lineNum">      42 </span>            : #include &lt;bits/cpp_type_traits.h&gt;
+<span class="lineNum">      43 </span>            : #include &lt;ext/type_traits.h&gt;
+<span class="lineNum">      44 </span>            : #include &lt;cmath&gt;
+<span class="lineNum">      45 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : // Get rid of a macro possibly defined in &lt;complex.h&gt;
+<span class="lineNum">      48 </span>            : #undef complex
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :   /**
+<span class="lineNum">      55 </span>            :    * @defgroup complex_numbers Complex Numbers
+<span class="lineNum">      56 </span>            :    * @ingroup numerics
+<span class="lineNum">      57 </span>            :    *
+<span class="lineNum">      58 </span>            :    * Classes and functions for complex numbers.
+<span class="lineNum">      59 </span>            :    * @{
+<span class="lineNum">      60 </span>            :    */
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :   // Forward declarations.
+<span class="lineNum">      63 </span>            :   template&lt;typename _Tp&gt; class complex;
+<span class="lineNum">      64 </span>            :   template&lt;&gt; class complex&lt;float&gt;;
+<span class="lineNum">      65 </span>            :   template&lt;&gt; class complex&lt;double&gt;;
+<span class="lineNum">      66 </span>            :   template&lt;&gt; class complex&lt;long double&gt;;
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :   ///  Return magnitude of @a z.
+<span class="lineNum">      69 </span>            :   template&lt;typename _Tp&gt; _Tp abs(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      70 </span>            :   ///  Return phase angle of @a z.
+<span class="lineNum">      71 </span>            :   template&lt;typename _Tp&gt; _Tp arg(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      72 </span>            :   ///  Return @a z magnitude squared.
+<span class="lineNum">      73 </span>            :   template&lt;typename _Tp&gt; _Tp norm(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :   ///  Return complex conjugate of @a z.
+<span class="lineNum">      76 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; conj(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      77 </span>            :   ///  Return complex with magnitude @a rho and angle @a theta.
+<span class="lineNum">      78 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; polar(const _Tp&amp;, const _Tp&amp; = 0);
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :   // Transcendentals:
+<span class="lineNum">      81 </span>            :   /// Return complex cosine of @a z.
+<span class="lineNum">      82 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; cos(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      83 </span>            :   /// Return complex hyperbolic cosine of @a z.
+<span class="lineNum">      84 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; cosh(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      85 </span>            :   /// Return complex base e exponential of @a z.
+<span class="lineNum">      86 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; exp(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      87 </span>            :   /// Return complex natural logarithm of @a z.
+<span class="lineNum">      88 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; log(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      89 </span>            :   /// Return complex base 10 logarithm of @a z.
+<span class="lineNum">      90 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; log10(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">      91 </span>            : #if __cplusplus &lt; 201103L
+<span class="lineNum">      92 </span>            :   // DR 844.
+<span class="lineNum">      93 </span>            :   /// Return @a x to the @a y'th power.
+<span class="lineNum">      94 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; pow(const complex&lt;_Tp&gt;&amp;, int);
+<span class="lineNum">      95 </span>            : #endif
+<span class="lineNum">      96 </span>            :   /// Return @a x to the @a y'th power.
+<span class="lineNum">      97 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; pow(const complex&lt;_Tp&gt;&amp;, const _Tp&amp;);
+<span class="lineNum">      98 </span>            :   /// Return @a x to the @a y'th power.
+<span class="lineNum">      99 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; pow(const complex&lt;_Tp&gt;&amp;, 
+<span class="lineNum">     100 </span>            :                                           const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     101 </span>            :   /// Return @a x to the @a y'th power.
+<span class="lineNum">     102 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; pow(const _Tp&amp;, const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     103 </span>            :   /// Return complex sine of @a z.
+<span class="lineNum">     104 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; sin(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     105 </span>            :   /// Return complex hyperbolic sine of @a z.
+<span class="lineNum">     106 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; sinh(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     107 </span>            :   /// Return complex square root of @a z.
+<span class="lineNum">     108 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; sqrt(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     109 </span>            :   /// Return complex tangent of @a z.
+<span class="lineNum">     110 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; tan(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     111 </span>            :   /// Return complex hyperbolic tangent of @a z.
+<span class="lineNum">     112 </span>            :   template&lt;typename _Tp&gt; complex&lt;_Tp&gt; tanh(const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     113 </span>            :     
+<span class="lineNum">     114 </span>            :     
+<span class="lineNum">     115 </span>            :   // 26.2.2  Primary template class complex
+<span class="lineNum">     116 </span>            :   /**
+<span class="lineNum">     117 </span>            :    *  Template to represent complex numbers.
+<span class="lineNum">     118 </span>            :    *
+<span class="lineNum">     119 </span>            :    *  Specializations for float, double, and long double are part of the
+<span class="lineNum">     120 </span>            :    *  library.  Results with any other type are not guaranteed.
+<span class="lineNum">     121 </span>            :    *
+<span class="lineNum">     122 </span>            :    *  @param  Tp  Type of real and imaginary values.
+<span class="lineNum">     123 </span>            :   */
+<span class="lineNum">     124 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     125 </span>            :     struct complex
+<span class="lineNum">     126 </span>            :     {
+<span class="lineNum">     127 </span>            :       /// Value typedef.
+<span class="lineNum">     128 </span>            :       typedef _Tp value_type;
+<span class="lineNum">     129 </span>            :       
+<span class="lineNum">     130 </span>            :       ///  Default constructor.  First parameter is x, second parameter is y.
+<span class="lineNum">     131 </span>            :       ///  Unspecified parameters default to 0.
+<span class="lineNum">     132 </span>            :       _GLIBCXX_CONSTEXPR complex(const _Tp&amp; __r = _Tp(), const _Tp&amp; __i = _Tp())
+<span class="lineNum">     133 </span>            :       : _M_real(__r), _M_imag(__i) { }
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :       // Lets the compiler synthesize the copy constructor   
+<span class="lineNum">     136 </span>            :       // complex (const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     137 </span>            :       ///  Copy constructor.
+<span class="lineNum">     138 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     139 </span>            :         _GLIBCXX_CONSTEXPR complex(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     140 </span>            :         : _M_real(__z.real()), _M_imag(__z.imag()) { }
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     143 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">     144 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">     145 </span>            :       _GLIBCXX_ABI_TAG_CXX11
+<span class="lineNum">     146 </span>            :       constexpr _Tp 
+<span class="lineNum">     147 </span>            :       real() { return _M_real; }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :       _GLIBCXX_ABI_TAG_CXX11
+<span class="lineNum">     150 </span>            :       constexpr _Tp 
+<span class="lineNum">     151 </span>            :       imag() { return _M_imag; }
+<span class="lineNum">     152 </span>            : #else
+<span class="lineNum">     153 </span>            :       ///  Return real part of complex number.
+<span class="lineNum">     154 </span>            :       _Tp&amp; 
+<span class="lineNum">     155 </span>            :       real() { return _M_real; }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :       ///  Return real part of complex number.
+<span class="lineNum">     158 </span>            :       const _Tp&amp; 
+<span class="lineNum">     159 </span>            :       real() const { return _M_real; }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :       ///  Return imaginary part of complex number.
+<span class="lineNum">     162 </span>            :       _Tp&amp; 
+<span class="lineNum">     163 </span>            :       imag() { return _M_imag; }
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            :       ///  Return imaginary part of complex number.
+<span class="lineNum">     166 </span>            :       const _Tp&amp; 
+<span class="lineNum">     167 </span>            :       imag() const { return _M_imag; }
+<span class="lineNum">     168 </span>            : #endif
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">     171 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">     172 </span>            :       void 
+<span class="lineNum">     173 </span>            :       real(_Tp __val) { _M_real = __val; }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :       void 
+<span class="lineNum">     176 </span>            :       imag(_Tp __val) { _M_imag = __val; }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :       /// Assign this complex number to scalar @a t.
+<span class="lineNum">     179 </span>            :       complex&lt;_Tp&gt;&amp; operator=(const _Tp&amp;);
+<span class="lineNum">     180 </span>            :       
+<span class="lineNum">     181 </span>            :       /// Add @a t to this complex number.
+<span class="lineNum">     182 </span>            :       // 26.2.5/1
+<span class="lineNum">     183 </span>            :       complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     184 </span>            :       operator+=(const _Tp&amp; __t)
+<span class="lineNum">     185 </span>            :       {
+<span class="lineNum">     186 </span>            :         _M_real += __t;
+<span class="lineNum">     187 </span>            :         return *this;
+<span class="lineNum">     188 </span>            :       }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :       /// Subtract @a t from this complex number.
+<span class="lineNum">     191 </span>            :       // 26.2.5/3
+<span class="lineNum">     192 </span>            :       complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     193 </span>            :       operator-=(const _Tp&amp; __t)
+<span class="lineNum">     194 </span>            :       {
+<span class="lineNum">     195 </span>            :         _M_real -= __t;
+<span class="lineNum">     196 </span>            :         return *this;
+<span class="lineNum">     197 </span>            :       }
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :       /// Multiply this complex number by @a t.
+<span class="lineNum">     200 </span>            :       complex&lt;_Tp&gt;&amp; operator*=(const _Tp&amp;);
+<span class="lineNum">     201 </span>            :       /// Divide this complex number by @a t.
+<span class="lineNum">     202 </span>            :       complex&lt;_Tp&gt;&amp; operator/=(const _Tp&amp;);
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :       // Lets the compiler synthesize the
+<span class="lineNum">     205 </span>            :       // copy and assignment operator
+<span class="lineNum">     206 </span>            :       // complex&lt;_Tp&gt;&amp; operator= (const complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">     207 </span>            :       /// Assign this complex number to complex @a z.
+<span class="lineNum">     208 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     209 </span>            :         complex&lt;_Tp&gt;&amp; operator=(const complex&lt;_Up&gt;&amp;);
+<span class="lineNum">     210 </span>            :       /// Add @a z to this complex number.
+<span class="lineNum">     211 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     212 </span>            :         complex&lt;_Tp&gt;&amp; operator+=(const complex&lt;_Up&gt;&amp;);
+<span class="lineNum">     213 </span>            :       /// Subtract @a z from this complex number.
+<span class="lineNum">     214 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     215 </span>            :         complex&lt;_Tp&gt;&amp; operator-=(const complex&lt;_Up&gt;&amp;);
+<span class="lineNum">     216 </span>            :       /// Multiply this complex number by @a z.
+<span class="lineNum">     217 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     218 </span>            :         complex&lt;_Tp&gt;&amp; operator*=(const complex&lt;_Up&gt;&amp;);
+<span class="lineNum">     219 </span>            :       /// Divide this complex number by @a z.
+<span class="lineNum">     220 </span>            :       template&lt;typename _Up&gt;
+<span class="lineNum">     221 </span>            :         complex&lt;_Tp&gt;&amp; operator/=(const complex&lt;_Up&gt;&amp;);
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :       _GLIBCXX_USE_CONSTEXPR complex __rep() const
+<span class="lineNum">     224 </span>            :       { return *this; }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :     private:
+<span class="lineNum">     227 </span>            :       _Tp _M_real;
+<span class="lineNum">     228 </span>            :       _Tp _M_imag;
+<span class="lineNum">     229 </span>            :     };
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     232 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     233 </span>            :     complex&lt;_Tp&gt;::operator=(const _Tp&amp; __t)
+<span class="lineNum">     234 </span>            :     {
+<span class="lineNum">     235 </span>            :      _M_real = __t;
+<span class="lineNum">     236 </span>            :      _M_imag = _Tp();
+<span class="lineNum">     237 </span>            :      return *this;
+<span class="lineNum">     238 </span>            :     } 
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :   // 26.2.5/5
+<span class="lineNum">     241 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     242 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     243 </span>            :     complex&lt;_Tp&gt;::operator*=(const _Tp&amp; __t)
+<span class="lineNum">     244 </span>            :     {
+<span class="lineNum">     245 </span>            :       _M_real *= __t;
+<span class="lineNum">     246 </span>            :       _M_imag *= __t;
+<span class="lineNum">     247 </span>            :       return *this;
+<span class="lineNum">     248 </span>            :     }
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :   // 26.2.5/7
+<span class="lineNum">     251 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     252 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     253 </span>            :     complex&lt;_Tp&gt;::operator/=(const _Tp&amp; __t)
+<span class="lineNum">     254 </span>            :     {
+<span class="lineNum">     255 </span>            :       _M_real /= __t;
+<span class="lineNum">     256 </span>            :       _M_imag /= __t;
+<span class="lineNum">     257 </span>            :       return *this;
+<span class="lineNum">     258 </span>            :     }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     261 </span>            :     template&lt;typename _Up&gt;
+<span class="lineNum">     262 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     263 </span>            :     complex&lt;_Tp&gt;::operator=(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     264 </span>            :     {
+<span class="lineNum">     265 </span>            :       _M_real = __z.real();
+<span class="lineNum">     266 </span>            :       _M_imag = __z.imag();
+<span class="lineNum">     267 </span>            :       return *this;
+<span class="lineNum">     268 </span>            :     }
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :   // 26.2.5/9
+<span class="lineNum">     271 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     272 </span>            :     template&lt;typename _Up&gt;
+<span class="lineNum">     273 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     274 </span>            :     complex&lt;_Tp&gt;::operator+=(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     275 </span>            :     {
+<span class="lineNum">     276 </span>            :       _M_real += __z.real();
+<span class="lineNum">     277 </span>            :       _M_imag += __z.imag();
+<span class="lineNum">     278 </span>            :       return *this;
+<span class="lineNum">     279 </span>            :     }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :   // 26.2.5/11
+<span class="lineNum">     282 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     283 </span>            :     template&lt;typename _Up&gt;
+<span class="lineNum">     284 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     285 </span>            :     complex&lt;_Tp&gt;::operator-=(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     286 </span>            :     {
+<span class="lineNum">     287 </span>            :       _M_real -= __z.real();
+<span class="lineNum">     288 </span>            :       _M_imag -= __z.imag();
+<span class="lineNum">     289 </span>            :       return *this;
+<span class="lineNum">     290 </span>            :     }
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :   // 26.2.5/13
+<span class="lineNum">     293 </span>            :   // XXX: This is a grammar school implementation.
+<span class="lineNum">     294 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     295 </span>            :     template&lt;typename _Up&gt;
+<span class="lineNum">     296 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     297 </span>            :     complex&lt;_Tp&gt;::operator*=(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     298 </span>            :     {
+<span class="lineNum">     299 </span>            :       const _Tp __r = _M_real * __z.real() - _M_imag * __z.imag();
+<span class="lineNum">     300 </span>            :       _M_imag = _M_real * __z.imag() + _M_imag * __z.real();
+<span class="lineNum">     301 </span>            :       _M_real = __r;
+<span class="lineNum">     302 </span>            :       return *this;
+<span class="lineNum">     303 </span>            :     }
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :   // 26.2.5/15
+<span class="lineNum">     306 </span>            :   // XXX: This is a grammar school implementation.
+<span class="lineNum">     307 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     308 </span>            :     template&lt;typename _Up&gt;
+<span class="lineNum">     309 </span>            :     complex&lt;_Tp&gt;&amp;
+<span class="lineNum">     310 </span>            :     complex&lt;_Tp&gt;::operator/=(const complex&lt;_Up&gt;&amp; __z)
+<span class="lineNum">     311 </span>            :     {
+<span class="lineNum">     312 </span>            :       const _Tp __r =  _M_real * __z.real() + _M_imag * __z.imag();
+<span class="lineNum">     313 </span>            :       const _Tp __n = std::norm(__z);
+<span class="lineNum">     314 </span>            :       _M_imag = (_M_imag * __z.real() - _M_real * __z.imag()) / __n;
+<span class="lineNum">     315 </span>            :       _M_real = __r / __n;
+<span class="lineNum">     316 </span>            :       return *this;
+<span class="lineNum">     317 </span>            :     }
+<span class="lineNum">     318 </span>            :     
+<span class="lineNum">     319 </span>            :   // Operators:
+<span class="lineNum">     320 </span>            :   //@{
+<span class="lineNum">     321 </span>            :   ///  Return new complex value @a x plus @a y.
+<a name="322"><span class="lineNum">     322 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     323 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     324 </span><span class="lineCov">    1577733 :     operator+(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)</span>
+<span class="lineNum">     325 </span>            :     {
+<span class="lineNum">     326 </span><span class="lineCov">    1577733 :       complex&lt;_Tp&gt; __r = __x;</span>
+<span class="lineNum">     327 </span><span class="lineCov">    1577733 :       __r += __y;</span>
+<span class="lineNum">     328 </span><span class="lineCov">    1577733 :       return __r;</span>
+<span class="lineNum">     329 </span>            :     }
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     332 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     333 </span>            :     operator+(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     334 </span>            :     {
+<span class="lineNum">     335 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     336 </span>            :       __r += __y;
+<span class="lineNum">     337 </span>            :       return __r;
+<span class="lineNum">     338 </span>            :     }
+<span class="lineNum">     339 </span>            : 
+<span class="lineNum">     340 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     341 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     342 </span>            :     operator+(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     343 </span>            :     {
+<span class="lineNum">     344 </span>            :       complex&lt;_Tp&gt; __r = __y;
+<span class="lineNum">     345 </span>            :       __r += __x;
+<span class="lineNum">     346 </span>            :       return __r;
+<span class="lineNum">     347 </span>            :     }
+<span class="lineNum">     348 </span>            :   //@}
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span>            :   //@{
+<span class="lineNum">     351 </span>            :   ///  Return new complex value @a x minus @a y.
+<a name="352"><span class="lineNum">     352 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     353 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     354 </span><span class="lineCov">    1577733 :     operator-(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)</span>
+<span class="lineNum">     355 </span>            :     {
+<span class="lineNum">     356 </span><span class="lineCov">    1577733 :       complex&lt;_Tp&gt; __r = __x;</span>
+<span class="lineNum">     357 </span><span class="lineCov">    1577733 :       __r -= __y;</span>
+<span class="lineNum">     358 </span><span class="lineCov">    1577733 :       return __r;</span>
+<span class="lineNum">     359 </span>            :     }
+<span class="lineNum">     360 </span>            :     
+<span class="lineNum">     361 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     362 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     363 </span>            :     operator-(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     364 </span>            :     {
+<span class="lineNum">     365 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     366 </span>            :       __r -= __y;
+<span class="lineNum">     367 </span>            :       return __r;
+<span class="lineNum">     368 </span>            :     }
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     371 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     372 </span>            :     operator-(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     373 </span>            :     {
+<span class="lineNum">     374 </span>            :       complex&lt;_Tp&gt; __r(__x, -__y.imag());
+<span class="lineNum">     375 </span>            :       __r -= __y.real();
+<span class="lineNum">     376 </span>            :       return __r;
+<span class="lineNum">     377 </span>            :     }
+<span class="lineNum">     378 </span>            :   //@}
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span>            :   //@{
+<span class="lineNum">     381 </span>            :   ///  Return new complex value @a x times @a y.
+<a name="382"><span class="lineNum">     382 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     383 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     384 </span><span class="lineCov">    6318642 :     operator*(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)</span>
+<span class="lineNum">     385 </span>            :     {
+<span class="lineNum">     386 </span><span class="lineCov">    6318642 :       complex&lt;_Tp&gt; __r = __x;</span>
+<span class="lineNum">     387 </span><span class="lineCov">    6318642 :       __r *= __y;</span>
+<span class="lineNum">     388 </span><span class="lineCov">    6318642 :       return __r;</span>
+<span class="lineNum">     389 </span>            :     }
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     392 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     393 </span>            :     operator*(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     394 </span>            :     {
+<span class="lineNum">     395 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     396 </span>            :       __r *= __y;
+<span class="lineNum">     397 </span>            :       return __r;
+<span class="lineNum">     398 </span>            :     }
+<span class="lineNum">     399 </span>            : 
+<a name="400"><span class="lineNum">     400 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     401 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     402 </span><span class="lineCov">    1577733 :     operator*(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)</span>
+<span class="lineNum">     403 </span>            :     {
+<span class="lineNum">     404 </span><span class="lineCov">    1577733 :       complex&lt;_Tp&gt; __r = __y;</span>
+<span class="lineNum">     405 </span><span class="lineCov">    1577733 :       __r *= __x;</span>
+<span class="lineNum">     406 </span><span class="lineCov">    1577733 :       return __r;</span>
+<span class="lineNum">     407 </span>            :     }
+<span class="lineNum">     408 </span>            :   //@}
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            :   //@{
+<span class="lineNum">     411 </span>            :   ///  Return new complex value @a x divided by @a y.
+<span class="lineNum">     412 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     413 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     414 </span>            :     operator/(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     415 </span>            :     {
+<span class="lineNum">     416 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     417 </span>            :       __r /= __y;
+<span class="lineNum">     418 </span>            :       return __r;
+<span class="lineNum">     419 </span>            :     }
+<span class="lineNum">     420 </span>            :     
+<span class="lineNum">     421 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     422 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     423 </span>            :     operator/(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     424 </span>            :     {
+<span class="lineNum">     425 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     426 </span>            :       __r /= __y;
+<span class="lineNum">     427 </span>            :       return __r;
+<span class="lineNum">     428 </span>            :     }
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     431 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     432 </span>            :     operator/(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     433 </span>            :     {
+<span class="lineNum">     434 </span>            :       complex&lt;_Tp&gt; __r = __x;
+<span class="lineNum">     435 </span>            :       __r /= __y;
+<span class="lineNum">     436 </span>            :       return __r;
+<span class="lineNum">     437 </span>            :     }
+<span class="lineNum">     438 </span>            :   //@}
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span>            :   ///  Return @a x.
+<span class="lineNum">     441 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     442 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     443 </span>            :     operator+(const complex&lt;_Tp&gt;&amp; __x)
+<span class="lineNum">     444 </span>            :     { return __x; }
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span>            :   ///  Return complex negation of @a x.
+<span class="lineNum">     447 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     448 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     449 </span>            :     operator-(const complex&lt;_Tp&gt;&amp; __x)
+<span class="lineNum">     450 </span>            :     {  return complex&lt;_Tp&gt;(-__x.real(), -__x.imag()); }
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            :   //@{
+<span class="lineNum">     453 </span>            :   ///  Return true if @a x is equal to @a y.
+<span class="lineNum">     454 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     455 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     456 </span>            :     operator==(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     457 </span>            :     { return __x.real() == __y.real() &amp;&amp; __x.imag() == __y.imag(); }
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     460 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     461 </span>            :     operator==(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     462 </span>            :     { return __x.real() == __y &amp;&amp; __x.imag() == _Tp(); }
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     465 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     466 </span>            :     operator==(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     467 </span>            :     { return __x == __y.real() &amp;&amp; _Tp() == __y.imag(); }
+<span class="lineNum">     468 </span>            :   //@}
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            :   //@{
+<span class="lineNum">     471 </span>            :   ///  Return false if @a x is equal to @a y.
+<span class="lineNum">     472 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     473 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     474 </span>            :     operator!=(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     475 </span>            :     { return __x.real() != __y.real() || __x.imag() != __y.imag(); }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     478 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     479 </span>            :     operator!=(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     480 </span>            :     { return __x.real() != __y || __x.imag() != _Tp(); }
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     483 </span>            :     inline _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">     484 </span>            :     operator!=(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">     485 </span>            :     { return __x != __y.real() || _Tp() != __y.imag(); }
+<span class="lineNum">     486 </span>            :   //@}
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span>            :   ///  Extraction operator for complex values.
+<span class="lineNum">     489 </span>            :   template&lt;typename _Tp, typename _CharT, class _Traits&gt;
+<span class="lineNum">     490 </span>            :     basic_istream&lt;_CharT, _Traits&gt;&amp;
+<span class="lineNum">     491 </span>            :     operator&gt;&gt;(basic_istream&lt;_CharT, _Traits&gt;&amp; __is, complex&lt;_Tp&gt;&amp; __x)
+<span class="lineNum">     492 </span>            :     {
+<span class="lineNum">     493 </span>            :       _Tp __re_x, __im_x;
+<span class="lineNum">     494 </span>            :       _CharT __ch;
+<span class="lineNum">     495 </span>            :       __is &gt;&gt; __ch;
+<span class="lineNum">     496 </span>            :       if (__ch == '(') 
+<span class="lineNum">     497 </span>            :         {
+<span class="lineNum">     498 </span>            :           __is &gt;&gt; __re_x &gt;&gt; __ch;
+<span class="lineNum">     499 </span>            :           if (__ch == ',') 
+<span class="lineNum">     500 </span>            :             {
+<span class="lineNum">     501 </span>            :               __is &gt;&gt; __im_x &gt;&gt; __ch;
+<span class="lineNum">     502 </span>            :               if (__ch == ')') 
+<span class="lineNum">     503 </span>            :                 __x = complex&lt;_Tp&gt;(__re_x, __im_x);
+<span class="lineNum">     504 </span>            :               else
+<span class="lineNum">     505 </span>            :                 __is.setstate(ios_base::failbit);
+<span class="lineNum">     506 </span>            :             }
+<span class="lineNum">     507 </span>            :           else if (__ch == ')') 
+<span class="lineNum">     508 </span>            :             __x = __re_x;
+<span class="lineNum">     509 </span>            :           else
+<span class="lineNum">     510 </span>            :             __is.setstate(ios_base::failbit);
+<span class="lineNum">     511 </span>            :         }
+<span class="lineNum">     512 </span>            :       else 
+<span class="lineNum">     513 </span>            :         {
+<span class="lineNum">     514 </span>            :           __is.putback(__ch);
+<span class="lineNum">     515 </span>            :           __is &gt;&gt; __re_x;
+<span class="lineNum">     516 </span>            :           __x = __re_x;
+<span class="lineNum">     517 </span>            :         }
+<span class="lineNum">     518 </span>            :       return __is;
+<span class="lineNum">     519 </span>            :     }
+<span class="lineNum">     520 </span>            : 
+<span class="lineNum">     521 </span>            :   ///  Insertion operator for complex values.
+<span class="lineNum">     522 </span>            :   template&lt;typename _Tp, typename _CharT, class _Traits&gt;
+<span class="lineNum">     523 </span>            :     basic_ostream&lt;_CharT, _Traits&gt;&amp;
+<span class="lineNum">     524 </span>            :     operator&lt;&lt;(basic_ostream&lt;_CharT, _Traits&gt;&amp; __os, const complex&lt;_Tp&gt;&amp; __x)
+<span class="lineNum">     525 </span>            :     {
+<span class="lineNum">     526 </span>            :       basic_ostringstream&lt;_CharT, _Traits&gt; __s;
+<span class="lineNum">     527 </span>            :       __s.flags(__os.flags());
+<span class="lineNum">     528 </span>            :       __s.imbue(__os.getloc());
+<span class="lineNum">     529 </span>            :       __s.precision(__os.precision());
+<span class="lineNum">     530 </span>            :       __s &lt;&lt; '(' &lt;&lt; __x.real() &lt;&lt; ',' &lt;&lt; __x.imag() &lt;&lt; ')';
+<span class="lineNum">     531 </span>            :       return __os &lt;&lt; __s.str();
+<span class="lineNum">     532 </span>            :     }
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span>            :   // Values
+<span class="lineNum">     535 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     536 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     537 </span>            :     constexpr _Tp
+<span class="lineNum">     538 </span>            :     real(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     539 </span>            :     { return __z.real(); }
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     542 </span>            :     constexpr _Tp
+<span class="lineNum">     543 </span>            :     imag(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     544 </span>            :     { return __z.imag(); }
+<span class="lineNum">     545 </span>            : #else
+<span class="lineNum">     546 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     547 </span>            :     inline _Tp&amp;
+<span class="lineNum">     548 </span>            :     real(complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     549 </span>            :     { return __z.real(); }
+<span class="lineNum">     550 </span>            :     
+<span class="lineNum">     551 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     552 </span>            :     inline const _Tp&amp;
+<span class="lineNum">     553 </span>            :     real(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     554 </span>            :     { return __z.real(); }
+<span class="lineNum">     555 </span>            :     
+<span class="lineNum">     556 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     557 </span>            :     inline _Tp&amp;
+<span class="lineNum">     558 </span>            :     imag(complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     559 </span>            :     { return __z.imag(); }
+<span class="lineNum">     560 </span>            :     
+<span class="lineNum">     561 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     562 </span>            :     inline const _Tp&amp;
+<span class="lineNum">     563 </span>            :     imag(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     564 </span>            :     { return __z.imag(); }
+<span class="lineNum">     565 </span>            : #endif
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span>            :   // 26.2.7/3 abs(__z):  Returns the magnitude of __z.
+<span class="lineNum">     568 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     569 </span>            :     inline _Tp
+<span class="lineNum">     570 </span>            :     __complex_abs(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     571 </span>            :     {
+<span class="lineNum">     572 </span>            :       _Tp __x = __z.real();
+<span class="lineNum">     573 </span>            :       _Tp __y = __z.imag();
+<span class="lineNum">     574 </span>            :       const _Tp __s = std::max(abs(__x), abs(__y));
+<span class="lineNum">     575 </span>            :       if (__s == _Tp())  // well ...
+<span class="lineNum">     576 </span>            :         return __s;
+<span class="lineNum">     577 </span>            :       __x /= __s; 
+<span class="lineNum">     578 </span>            :       __y /= __s;
+<span class="lineNum">     579 </span>            :       return __s * sqrt(__x * __x + __y * __y);
+<span class="lineNum">     580 </span>            :     }
+<span class="lineNum">     581 </span>            : 
+<span class="lineNum">     582 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     583 </span>            :   inline float
+<span class="lineNum">     584 </span>            :   __complex_abs(__complex__ float __z) { return __builtin_cabsf(__z); }
+<a name="585"><span class="lineNum">     585 </span>            : </a>
+<span class="lineNum">     586 </span>            :   inline double
+<span class="lineNum">     587 </span><span class="lineCov">     490805 :   __complex_abs(__complex__ double __z) { return __builtin_cabs(__z); }</span>
+<span class="lineNum">     588 </span>            : 
+<span class="lineNum">     589 </span>            :   inline long double
+<span class="lineNum">     590 </span>            :   __complex_abs(const __complex__ long double&amp; __z)
+<span class="lineNum">     591 </span>            :   { return __builtin_cabsl(__z); }
+<span class="lineNum">     592 </span>            : 
+<a name="593"><span class="lineNum">     593 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     594 </span>            :     inline _Tp
+<span class="lineNum">     595 </span><span class="lineCov">     490805 :     abs(const complex&lt;_Tp&gt;&amp; __z) { return __complex_abs(__z.__rep()); }</span>
+<span class="lineNum">     596 </span>            : #else
+<span class="lineNum">     597 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     598 </span>            :     inline _Tp
+<span class="lineNum">     599 </span>            :     abs(const complex&lt;_Tp&gt;&amp; __z) { return __complex_abs(__z); }
+<span class="lineNum">     600 </span>            : #endif  
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span>            : 
+<span class="lineNum">     603 </span>            :   // 26.2.7/4: arg(__z): Returns the phase angle of __z.
+<span class="lineNum">     604 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     605 </span>            :     inline _Tp
+<span class="lineNum">     606 </span>            :     __complex_arg(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     607 </span>            :     { return  atan2(__z.imag(), __z.real()); }
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     610 </span>            :   inline float
+<span class="lineNum">     611 </span>            :   __complex_arg(__complex__ float __z) { return __builtin_cargf(__z); }
+<a name="612"><span class="lineNum">     612 </span>            : </a>
+<span class="lineNum">     613 </span>            :   inline double
+<span class="lineNum">     614 </span><span class="lineCov">     246555 :   __complex_arg(__complex__ double __z) { return __builtin_carg(__z); }</span>
+<span class="lineNum">     615 </span>            : 
+<span class="lineNum">     616 </span>            :   inline long double
+<span class="lineNum">     617 </span>            :   __complex_arg(const __complex__ long double&amp; __z)
+<span class="lineNum">     618 </span>            :   { return __builtin_cargl(__z); }
+<span class="lineNum">     619 </span>            : 
+<a name="620"><span class="lineNum">     620 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     621 </span>            :     inline _Tp
+<span class="lineNum">     622 </span><span class="lineCov">     246555 :     arg(const complex&lt;_Tp&gt;&amp; __z) { return __complex_arg(__z.__rep()); }</span>
+<span class="lineNum">     623 </span>            : #else
+<span class="lineNum">     624 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     625 </span>            :     inline _Tp
+<span class="lineNum">     626 </span>            :     arg(const complex&lt;_Tp&gt;&amp; __z) { return __complex_arg(__z); }
+<span class="lineNum">     627 </span>            : #endif
+<span class="lineNum">     628 </span>            : 
+<span class="lineNum">     629 </span>            :   // 26.2.7/5: norm(__z) returns the squared magnitude of __z.
+<span class="lineNum">     630 </span>            :   //     As defined, norm() is -not- a norm is the common mathematical
+<span class="lineNum">     631 </span>            :   //     sens used in numerics.  The helper class _Norm_helper&lt;&gt; tries to
+<span class="lineNum">     632 </span>            :   //     distinguish between builtin floating point and the rest, so as
+<span class="lineNum">     633 </span>            :   //     to deliver an answer as close as possible to the real value.
+<span class="lineNum">     634 </span>            :   template&lt;bool&gt;
+<span class="lineNum">     635 </span>            :     struct _Norm_helper
+<span class="lineNum">     636 </span>            :     {
+<span class="lineNum">     637 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     638 </span>            :         static inline _Tp _S_do_it(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     639 </span>            :         {
+<span class="lineNum">     640 </span>            :           const _Tp __x = __z.real();
+<span class="lineNum">     641 </span>            :           const _Tp __y = __z.imag();
+<span class="lineNum">     642 </span>            :           return __x * __x + __y * __y;
+<span class="lineNum">     643 </span>            :         }
+<span class="lineNum">     644 </span>            :     };
+<span class="lineNum">     645 </span>            : 
+<span class="lineNum">     646 </span>            :   template&lt;&gt;
+<span class="lineNum">     647 </span>            :     struct _Norm_helper&lt;true&gt;
+<a name="648"><span class="lineNum">     648 </span>            :     {</a>
+<span class="lineNum">     649 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">     650 </span><span class="lineCov">     312961 :         static inline _Tp _S_do_it(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">     651 </span>            :         {
+<span class="lineNum">     652 </span><span class="lineCov">     312961 :           _Tp __res = std::abs(__z);</span>
+<span class="lineNum">     653 </span><span class="lineCov">     312961 :           return __res * __res;</span>
+<span class="lineNum">     654 </span>            :         }
+<span class="lineNum">     655 </span>            :     };
+<span class="lineNum">     656 </span>            :   
+<a name="657"><span class="lineNum">     657 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     658 </span>            :     inline _Tp
+<span class="lineNum">     659 </span><span class="lineCov">     312961 :     norm(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">     660 </span>            :     {
+<span class="lineNum">     661 </span>            :       return _Norm_helper&lt;__is_floating&lt;_Tp&gt;::__value 
+<span class="lineNum">     662 </span><span class="lineCov">     312961 :         &amp;&amp; !_GLIBCXX_FAST_MATH&gt;::_S_do_it(__z);</span>
+<span class="lineNum">     663 </span>            :     }
+<span class="lineNum">     664 </span>            : 
+<a name="665"><span class="lineNum">     665 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     666 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     667 </span><span class="lineCov">       3092 :     polar(const _Tp&amp; __rho, const _Tp&amp; __theta)</span>
+<span class="lineNum">     668 </span><span class="lineCov">       3092 :     { return complex&lt;_Tp&gt;(__rho * cos(__theta), __rho * sin(__theta)); }</span>
+<span class="lineNum">     669 </span>            : 
+<a name="670"><span class="lineNum">     670 </span>            :   template&lt;typename _Tp&gt;</a>
+<span class="lineNum">     671 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     672 </span><span class="lineCov">    1577733 :     conj(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">     673 </span><span class="lineCov">    1577733 :     { return complex&lt;_Tp&gt;(__z.real(), -__z.imag()); }</span>
+<span class="lineNum">     674 </span>            :   
+<span class="lineNum">     675 </span>            :   // Transcendentals
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span>            :   // 26.2.8/1 cos(__z):  Returns the cosine of __z.
+<span class="lineNum">     678 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     679 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     680 </span>            :     __complex_cos(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     681 </span>            :     {
+<span class="lineNum">     682 </span>            :       const _Tp __x = __z.real();
+<span class="lineNum">     683 </span>            :       const _Tp __y = __z.imag();
+<span class="lineNum">     684 </span>            :       return complex&lt;_Tp&gt;(cos(__x) * cosh(__y), -sin(__x) * sinh(__y));
+<span class="lineNum">     685 </span>            :     }
+<span class="lineNum">     686 </span>            : 
+<span class="lineNum">     687 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     688 </span>            :   inline __complex__ float
+<span class="lineNum">     689 </span>            :   __complex_cos(__complex__ float __z) { return __builtin_ccosf(__z); }
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span>            :   inline __complex__ double
+<span class="lineNum">     692 </span>            :   __complex_cos(__complex__ double __z) { return __builtin_ccos(__z); }
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span>            :   inline __complex__ long double
+<span class="lineNum">     695 </span>            :   __complex_cos(const __complex__ long double&amp; __z)
+<span class="lineNum">     696 </span>            :   { return __builtin_ccosl(__z); }
+<span class="lineNum">     697 </span>            : 
+<span class="lineNum">     698 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     699 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     700 </span>            :     cos(const complex&lt;_Tp&gt;&amp; __z) { return __complex_cos(__z.__rep()); }
+<span class="lineNum">     701 </span>            : #else
+<span class="lineNum">     702 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     703 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     704 </span>            :     cos(const complex&lt;_Tp&gt;&amp; __z) { return __complex_cos(__z); }
+<span class="lineNum">     705 </span>            : #endif
+<span class="lineNum">     706 </span>            : 
+<span class="lineNum">     707 </span>            :   // 26.2.8/2 cosh(__z): Returns the hyperbolic cosine of __z.
+<span class="lineNum">     708 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     709 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     710 </span>            :     __complex_cosh(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     711 </span>            :     {
+<span class="lineNum">     712 </span>            :       const _Tp __x = __z.real();
+<span class="lineNum">     713 </span>            :       const _Tp __y = __z.imag();
+<span class="lineNum">     714 </span>            :       return complex&lt;_Tp&gt;(cosh(__x) * cos(__y), sinh(__x) * sin(__y));
+<span class="lineNum">     715 </span>            :     }
+<span class="lineNum">     716 </span>            : 
+<span class="lineNum">     717 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     718 </span>            :   inline __complex__ float
+<span class="lineNum">     719 </span>            :   __complex_cosh(__complex__ float __z) { return __builtin_ccoshf(__z); }
+<span class="lineNum">     720 </span>            : 
+<span class="lineNum">     721 </span>            :   inline __complex__ double
+<span class="lineNum">     722 </span>            :   __complex_cosh(__complex__ double __z) { return __builtin_ccosh(__z); }
+<span class="lineNum">     723 </span>            : 
+<span class="lineNum">     724 </span>            :   inline __complex__ long double
+<span class="lineNum">     725 </span>            :   __complex_cosh(const __complex__ long double&amp; __z)
+<span class="lineNum">     726 </span>            :   { return __builtin_ccoshl(__z); }
+<span class="lineNum">     727 </span>            : 
+<span class="lineNum">     728 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     729 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     730 </span>            :     cosh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_cosh(__z.__rep()); }
+<span class="lineNum">     731 </span>            : #else
+<span class="lineNum">     732 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     733 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     734 </span>            :     cosh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_cosh(__z); }
+<span class="lineNum">     735 </span>            : #endif
+<span class="lineNum">     736 </span>            : 
+<span class="lineNum">     737 </span>            :   // 26.2.8/3 exp(__z): Returns the complex base e exponential of x
+<span class="lineNum">     738 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     739 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     740 </span>            :     __complex_exp(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     741 </span>            :     { return std::polar(exp(__z.real()), __z.imag()); }
+<span class="lineNum">     742 </span>            : 
+<span class="lineNum">     743 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     744 </span>            :   inline __complex__ float
+<span class="lineNum">     745 </span>            :   __complex_exp(__complex__ float __z) { return __builtin_cexpf(__z); }
+<span class="lineNum">     746 </span>            : 
+<span class="lineNum">     747 </span>            :   inline __complex__ double
+<span class="lineNum">     748 </span>            :   __complex_exp(__complex__ double __z) { return __builtin_cexp(__z); }
+<span class="lineNum">     749 </span>            : 
+<span class="lineNum">     750 </span>            :   inline __complex__ long double
+<span class="lineNum">     751 </span>            :   __complex_exp(const __complex__ long double&amp; __z)
+<span class="lineNum">     752 </span>            :   { return __builtin_cexpl(__z); }
+<span class="lineNum">     753 </span>            : 
+<span class="lineNum">     754 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     755 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     756 </span>            :     exp(const complex&lt;_Tp&gt;&amp; __z) { return __complex_exp(__z.__rep()); }
+<span class="lineNum">     757 </span>            : #else
+<span class="lineNum">     758 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     759 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     760 </span>            :     exp(const complex&lt;_Tp&gt;&amp; __z) { return __complex_exp(__z); }
+<span class="lineNum">     761 </span>            : #endif
+<span class="lineNum">     762 </span>            : 
+<span class="lineNum">     763 </span>            :   // 26.2.8/5 log(__z): Returns the natural complex logarithm of __z.
+<span class="lineNum">     764 </span>            :   //                    The branch cut is along the negative axis.
+<span class="lineNum">     765 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     766 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     767 </span>            :     __complex_log(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     768 </span>            :     { return complex&lt;_Tp&gt;(log(std::abs(__z)), std::arg(__z)); }
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     771 </span>            :   inline __complex__ float
+<span class="lineNum">     772 </span>            :   __complex_log(__complex__ float __z) { return __builtin_clogf(__z); }
+<span class="lineNum">     773 </span>            : 
+<span class="lineNum">     774 </span>            :   inline __complex__ double
+<span class="lineNum">     775 </span>            :   __complex_log(__complex__ double __z) { return __builtin_clog(__z); }
+<span class="lineNum">     776 </span>            : 
+<span class="lineNum">     777 </span>            :   inline __complex__ long double
+<span class="lineNum">     778 </span>            :   __complex_log(const __complex__ long double&amp; __z)
+<span class="lineNum">     779 </span>            :   { return __builtin_clogl(__z); }
+<span class="lineNum">     780 </span>            : 
+<span class="lineNum">     781 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     782 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     783 </span>            :     log(const complex&lt;_Tp&gt;&amp; __z) { return __complex_log(__z.__rep()); }
+<span class="lineNum">     784 </span>            : #else
+<span class="lineNum">     785 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     786 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     787 </span>            :     log(const complex&lt;_Tp&gt;&amp; __z) { return __complex_log(__z); }
+<span class="lineNum">     788 </span>            : #endif
+<span class="lineNum">     789 </span>            : 
+<span class="lineNum">     790 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     791 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     792 </span>            :     log10(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     793 </span>            :     { return std::log(__z) / log(_Tp(10.0)); }
+<span class="lineNum">     794 </span>            : 
+<span class="lineNum">     795 </span>            :   // 26.2.8/10 sin(__z): Returns the sine of __z.
+<span class="lineNum">     796 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     797 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     798 </span>            :     __complex_sin(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     799 </span>            :     {
+<span class="lineNum">     800 </span>            :       const _Tp __x = __z.real();
+<span class="lineNum">     801 </span>            :       const _Tp __y = __z.imag();
+<span class="lineNum">     802 </span>            :       return complex&lt;_Tp&gt;(sin(__x) * cosh(__y), cos(__x) * sinh(__y)); 
+<span class="lineNum">     803 </span>            :     }
+<span class="lineNum">     804 </span>            : 
+<span class="lineNum">     805 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     806 </span>            :   inline __complex__ float
+<span class="lineNum">     807 </span>            :   __complex_sin(__complex__ float __z) { return __builtin_csinf(__z); }
+<span class="lineNum">     808 </span>            : 
+<span class="lineNum">     809 </span>            :   inline __complex__ double
+<span class="lineNum">     810 </span>            :   __complex_sin(__complex__ double __z) { return __builtin_csin(__z); }
+<span class="lineNum">     811 </span>            : 
+<span class="lineNum">     812 </span>            :   inline __complex__ long double
+<span class="lineNum">     813 </span>            :   __complex_sin(const __complex__ long double&amp; __z)
+<span class="lineNum">     814 </span>            :   { return __builtin_csinl(__z); }
+<span class="lineNum">     815 </span>            : 
+<span class="lineNum">     816 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     817 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     818 </span>            :     sin(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sin(__z.__rep()); }
+<span class="lineNum">     819 </span>            : #else
+<span class="lineNum">     820 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     821 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     822 </span>            :     sin(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sin(__z); }
+<span class="lineNum">     823 </span>            : #endif
+<span class="lineNum">     824 </span>            : 
+<span class="lineNum">     825 </span>            :   // 26.2.8/11 sinh(__z): Returns the hyperbolic sine of __z.
+<span class="lineNum">     826 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     827 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     828 </span>            :     __complex_sinh(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     829 </span>            :     {
+<span class="lineNum">     830 </span>            :       const _Tp __x = __z.real();
+<span class="lineNum">     831 </span>            :       const _Tp  __y = __z.imag();
+<span class="lineNum">     832 </span>            :       return complex&lt;_Tp&gt;(sinh(__x) * cos(__y), cosh(__x) * sin(__y));
+<span class="lineNum">     833 </span>            :     }
+<span class="lineNum">     834 </span>            : 
+<span class="lineNum">     835 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     836 </span>            :   inline __complex__ float
+<span class="lineNum">     837 </span>            :   __complex_sinh(__complex__ float __z) { return __builtin_csinhf(__z); }      
+<span class="lineNum">     838 </span>            : 
+<span class="lineNum">     839 </span>            :   inline __complex__ double
+<span class="lineNum">     840 </span>            :   __complex_sinh(__complex__ double __z) { return __builtin_csinh(__z); }      
+<span class="lineNum">     841 </span>            : 
+<span class="lineNum">     842 </span>            :   inline __complex__ long double
+<span class="lineNum">     843 </span>            :   __complex_sinh(const __complex__ long double&amp; __z)
+<span class="lineNum">     844 </span>            :   { return __builtin_csinhl(__z); }      
+<span class="lineNum">     845 </span>            : 
+<span class="lineNum">     846 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     847 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     848 </span>            :     sinh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sinh(__z.__rep()); }
+<span class="lineNum">     849 </span>            : #else
+<span class="lineNum">     850 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     851 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     852 </span>            :     sinh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sinh(__z); }
+<span class="lineNum">     853 </span>            : #endif
+<span class="lineNum">     854 </span>            : 
+<span class="lineNum">     855 </span>            :   // 26.2.8/13 sqrt(__z): Returns the complex square root of __z.
+<span class="lineNum">     856 </span>            :   //                     The branch cut is on the negative axis.
+<span class="lineNum">     857 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     858 </span>            :     complex&lt;_Tp&gt;
+<span class="lineNum">     859 </span>            :     __complex_sqrt(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     860 </span>            :     {
+<span class="lineNum">     861 </span>            :       _Tp __x = __z.real();
+<span class="lineNum">     862 </span>            :       _Tp __y = __z.imag();
+<span class="lineNum">     863 </span>            : 
+<span class="lineNum">     864 </span>            :       if (__x == _Tp())
+<span class="lineNum">     865 </span>            :         {
+<span class="lineNum">     866 </span>            :           _Tp __t = sqrt(abs(__y) / 2);
+<span class="lineNum">     867 </span>            :           return complex&lt;_Tp&gt;(__t, __y &lt; _Tp() ? -__t : __t);
+<span class="lineNum">     868 </span>            :         }
+<span class="lineNum">     869 </span>            :       else
+<span class="lineNum">     870 </span>            :         {
+<span class="lineNum">     871 </span>            :           _Tp __t = sqrt(2 * (std::abs(__z) + abs(__x)));
+<span class="lineNum">     872 </span>            :           _Tp __u = __t / 2;
+<span class="lineNum">     873 </span>            :           return __x &gt; _Tp()
+<span class="lineNum">     874 </span>            :             ? complex&lt;_Tp&gt;(__u, __y / __t)
+<span class="lineNum">     875 </span>            :             : complex&lt;_Tp&gt;(abs(__y) / __t, __y &lt; _Tp() ? -__u : __u);
+<span class="lineNum">     876 </span>            :         }
+<span class="lineNum">     877 </span>            :     }
+<span class="lineNum">     878 </span>            : 
+<span class="lineNum">     879 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     880 </span>            :   inline __complex__ float
+<span class="lineNum">     881 </span>            :   __complex_sqrt(__complex__ float __z) { return __builtin_csqrtf(__z); }
+<span class="lineNum">     882 </span>            : 
+<span class="lineNum">     883 </span>            :   inline __complex__ double
+<span class="lineNum">     884 </span>            :   __complex_sqrt(__complex__ double __z) { return __builtin_csqrt(__z); }
+<span class="lineNum">     885 </span>            : 
+<span class="lineNum">     886 </span>            :   inline __complex__ long double
+<span class="lineNum">     887 </span>            :   __complex_sqrt(const __complex__ long double&amp; __z)
+<span class="lineNum">     888 </span>            :   { return __builtin_csqrtl(__z); }
+<span class="lineNum">     889 </span>            : 
+<span class="lineNum">     890 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     891 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     892 </span>            :     sqrt(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sqrt(__z.__rep()); }
+<span class="lineNum">     893 </span>            : #else
+<span class="lineNum">     894 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     895 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     896 </span>            :     sqrt(const complex&lt;_Tp&gt;&amp; __z) { return __complex_sqrt(__z); }
+<span class="lineNum">     897 </span>            : #endif
+<span class="lineNum">     898 </span>            : 
+<span class="lineNum">     899 </span>            :   // 26.2.8/14 tan(__z):  Return the complex tangent of __z.
+<span class="lineNum">     900 </span>            :   
+<span class="lineNum">     901 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     902 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     903 </span>            :     __complex_tan(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     904 </span>            :     { return std::sin(__z) / std::cos(__z); }
+<span class="lineNum">     905 </span>            : 
+<span class="lineNum">     906 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     907 </span>            :   inline __complex__ float
+<span class="lineNum">     908 </span>            :   __complex_tan(__complex__ float __z) { return __builtin_ctanf(__z); }
+<span class="lineNum">     909 </span>            : 
+<span class="lineNum">     910 </span>            :   inline __complex__ double
+<span class="lineNum">     911 </span>            :   __complex_tan(__complex__ double __z) { return __builtin_ctan(__z); }
+<span class="lineNum">     912 </span>            : 
+<span class="lineNum">     913 </span>            :   inline __complex__ long double
+<span class="lineNum">     914 </span>            :   __complex_tan(const __complex__ long double&amp; __z)
+<span class="lineNum">     915 </span>            :   { return __builtin_ctanl(__z); }
+<span class="lineNum">     916 </span>            : 
+<span class="lineNum">     917 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     918 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     919 </span>            :     tan(const complex&lt;_Tp&gt;&amp; __z) { return __complex_tan(__z.__rep()); }
+<span class="lineNum">     920 </span>            : #else
+<span class="lineNum">     921 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     922 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     923 </span>            :     tan(const complex&lt;_Tp&gt;&amp; __z) { return __complex_tan(__z); }
+<span class="lineNum">     924 </span>            : #endif
+<span class="lineNum">     925 </span>            : 
+<span class="lineNum">     926 </span>            : 
+<span class="lineNum">     927 </span>            :   // 26.2.8/15 tanh(__z):  Returns the hyperbolic tangent of __z.
+<span class="lineNum">     928 </span>            :   
+<span class="lineNum">     929 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     930 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     931 </span>            :     __complex_tanh(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">     932 </span>            :     { return std::sinh(__z) / std::cosh(__z); }
+<span class="lineNum">     933 </span>            : 
+<span class="lineNum">     934 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     935 </span>            :   inline __complex__ float
+<span class="lineNum">     936 </span>            :   __complex_tanh(__complex__ float __z) { return __builtin_ctanhf(__z); }
+<span class="lineNum">     937 </span>            : 
+<span class="lineNum">     938 </span>            :   inline __complex__ double
+<span class="lineNum">     939 </span>            :   __complex_tanh(__complex__ double __z) { return __builtin_ctanh(__z); }
+<span class="lineNum">     940 </span>            : 
+<span class="lineNum">     941 </span>            :   inline __complex__ long double
+<span class="lineNum">     942 </span>            :   __complex_tanh(const __complex__ long double&amp; __z)
+<span class="lineNum">     943 </span>            :   { return __builtin_ctanhl(__z); }
+<span class="lineNum">     944 </span>            : 
+<span class="lineNum">     945 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     946 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     947 </span>            :     tanh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_tanh(__z.__rep()); }
+<span class="lineNum">     948 </span>            : #else
+<span class="lineNum">     949 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     950 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     951 </span>            :     tanh(const complex&lt;_Tp&gt;&amp; __z) { return __complex_tanh(__z); }
+<span class="lineNum">     952 </span>            : #endif
+<span class="lineNum">     953 </span>            : 
+<span class="lineNum">     954 </span>            : 
+<span class="lineNum">     955 </span>            :   // 26.2.8/9  pow(__x, __y): Returns the complex power base of __x
+<span class="lineNum">     956 </span>            :   //                          raised to the __y-th power.  The branch
+<span class="lineNum">     957 </span>            :   //                          cut is on the negative axis.
+<span class="lineNum">     958 </span>            : #if __cplusplus &lt; 201103L
+<span class="lineNum">     959 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     960 </span>            :     complex&lt;_Tp&gt;
+<span class="lineNum">     961 </span>            :     __complex_pow_unsigned(complex&lt;_Tp&gt; __x, unsigned __n)
+<span class="lineNum">     962 </span>            :     {
+<span class="lineNum">     963 </span>            :       complex&lt;_Tp&gt; __y = __n % 2 ? __x : complex&lt;_Tp&gt;(1);
+<span class="lineNum">     964 </span>            : 
+<span class="lineNum">     965 </span>            :       while (__n &gt;&gt;= 1)
+<span class="lineNum">     966 </span>            :         {
+<span class="lineNum">     967 </span>            :           __x *= __x;
+<span class="lineNum">     968 </span>            :           if (__n % 2)
+<span class="lineNum">     969 </span>            :             __y *= __x;
+<span class="lineNum">     970 </span>            :         }
+<span class="lineNum">     971 </span>            : 
+<span class="lineNum">     972 </span>            :       return __y;
+<span class="lineNum">     973 </span>            :     }
+<span class="lineNum">     974 </span>            : 
+<span class="lineNum">     975 </span>            :   // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">     976 </span>            :   // DR 844. complex pow return type is ambiguous.
+<span class="lineNum">     977 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     978 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">     979 </span>            :     pow(const complex&lt;_Tp&gt;&amp; __z, int __n)
+<span class="lineNum">     980 </span>            :     {
+<span class="lineNum">     981 </span>            :       return __n &lt; 0
+<span class="lineNum">     982 </span>            :         ? complex&lt;_Tp&gt;(1) / std::__complex_pow_unsigned(__z, -(unsigned)__n)
+<span class="lineNum">     983 </span>            :         : std::__complex_pow_unsigned(__z, __n);
+<span class="lineNum">     984 </span>            :     }
+<span class="lineNum">     985 </span>            : #endif
+<span class="lineNum">     986 </span>            : 
+<span class="lineNum">     987 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">     988 </span>            :     complex&lt;_Tp&gt;
+<span class="lineNum">     989 </span>            :     pow(const complex&lt;_Tp&gt;&amp; __x, const _Tp&amp; __y)
+<span class="lineNum">     990 </span>            :     {
+<span class="lineNum">     991 </span>            : #ifndef _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">     992 </span>            :       if (__x == _Tp())
+<span class="lineNum">     993 </span>            :         return _Tp();
+<span class="lineNum">     994 </span>            : #endif
+<span class="lineNum">     995 </span>            :       if (__x.imag() == _Tp() &amp;&amp; __x.real() &gt; _Tp())
+<span class="lineNum">     996 </span>            :         return pow(__x.real(), __y);
+<span class="lineNum">     997 </span>            : 
+<span class="lineNum">     998 </span>            :       complex&lt;_Tp&gt; __t = std::log(__x);
+<span class="lineNum">     999 </span>            :       return std::polar(exp(__y * __t.real()), __y * __t.imag());
+<span class="lineNum">    1000 </span>            :     }
+<span class="lineNum">    1001 </span>            : 
+<span class="lineNum">    1002 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1003 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">    1004 </span>            :     __complex_pow(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">    1005 </span>            :     { return __x == _Tp() ? _Tp() : std::exp(__y * std::log(__x)); }
+<span class="lineNum">    1006 </span>            : 
+<span class="lineNum">    1007 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">    1008 </span>            :   inline __complex__ float
+<span class="lineNum">    1009 </span>            :   __complex_pow(__complex__ float __x, __complex__ float __y)
+<span class="lineNum">    1010 </span>            :   { return __builtin_cpowf(__x, __y); }
+<span class="lineNum">    1011 </span>            : 
+<span class="lineNum">    1012 </span>            :   inline __complex__ double
+<span class="lineNum">    1013 </span>            :   __complex_pow(__complex__ double __x, __complex__ double __y)
+<span class="lineNum">    1014 </span>            :   { return __builtin_cpow(__x, __y); }
+<span class="lineNum">    1015 </span>            : 
+<span class="lineNum">    1016 </span>            :   inline __complex__ long double
+<span class="lineNum">    1017 </span>            :   __complex_pow(const __complex__ long double&amp; __x,
+<span class="lineNum">    1018 </span>            :                 const __complex__ long double&amp; __y)
+<span class="lineNum">    1019 </span>            :   { return __builtin_cpowl(__x, __y); }
+<span class="lineNum">    1020 </span>            : 
+<span class="lineNum">    1021 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1022 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">    1023 </span>            :     pow(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">    1024 </span>            :     { return __complex_pow(__x.__rep(), __y.__rep()); }
+<span class="lineNum">    1025 </span>            : #else
+<span class="lineNum">    1026 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1027 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">    1028 </span>            :     pow(const complex&lt;_Tp&gt;&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">    1029 </span>            :     { return __complex_pow(__x, __y); }
+<span class="lineNum">    1030 </span>            : #endif
+<span class="lineNum">    1031 </span>            : 
+<span class="lineNum">    1032 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1033 </span>            :     inline complex&lt;_Tp&gt;
+<span class="lineNum">    1034 </span>            :     pow(const _Tp&amp; __x, const complex&lt;_Tp&gt;&amp; __y)
+<span class="lineNum">    1035 </span>            :     {
+<span class="lineNum">    1036 </span>            :       return __x &gt; _Tp() ? std::polar(pow(__x, __y.real()),
+<span class="lineNum">    1037 </span>            :                                       __y.imag() * log(__x))
+<span class="lineNum">    1038 </span>            :                          : std::pow(complex&lt;_Tp&gt;(__x), __y);
+<span class="lineNum">    1039 </span>            :     }
+<span class="lineNum">    1040 </span>            : 
+<span class="lineNum">    1041 </span>            :   /// 26.2.3  complex specializations
+<span class="lineNum">    1042 </span>            :   /// complex&lt;float&gt; specialization
+<span class="lineNum">    1043 </span>            :   template&lt;&gt;
+<span class="lineNum">    1044 </span>            :     struct complex&lt;float&gt;
+<span class="lineNum">    1045 </span>            :     {
+<span class="lineNum">    1046 </span>            :       typedef float value_type;
+<span class="lineNum">    1047 </span>            :       typedef __complex__ float _ComplexT;
+<span class="lineNum">    1048 </span>            : 
+<span class="lineNum">    1049 </span>            :       _GLIBCXX_CONSTEXPR complex(_ComplexT __z) : _M_value(__z) { }
+<span class="lineNum">    1050 </span>            : 
+<span class="lineNum">    1051 </span>            :       _GLIBCXX_CONSTEXPR complex(float __r = 0.0f, float __i = 0.0f)
+<span class="lineNum">    1052 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1053 </span>            :       : _M_value{ __r, __i } { }
+<span class="lineNum">    1054 </span>            : #else
+<span class="lineNum">    1055 </span>            :       {
+<span class="lineNum">    1056 </span>            :         __real__ _M_value = __r;
+<span class="lineNum">    1057 </span>            :         __imag__ _M_value = __i;
+<span class="lineNum">    1058 </span>            :       }
+<span class="lineNum">    1059 </span>            : #endif
+<span class="lineNum">    1060 </span>            : 
+<span class="lineNum">    1061 </span>            :       explicit _GLIBCXX_CONSTEXPR complex(const complex&lt;double&gt;&amp;);
+<span class="lineNum">    1062 </span>            :       explicit _GLIBCXX_CONSTEXPR complex(const complex&lt;long double&gt;&amp;);       
+<span class="lineNum">    1063 </span>            : 
+<span class="lineNum">    1064 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1065 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1066 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">    1067 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))
+<span class="lineNum">    1068 </span>            :       constexpr float 
+<span class="lineNum">    1069 </span>            :       real() { return __real__ _M_value; }
+<span class="lineNum">    1070 </span>            : 
+<span class="lineNum">    1071 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))
+<span class="lineNum">    1072 </span>            :       constexpr float 
+<span class="lineNum">    1073 </span>            :       imag() { return __imag__ _M_value; }
+<span class="lineNum">    1074 </span>            : #else
+<span class="lineNum">    1075 </span>            :       float&amp; 
+<span class="lineNum">    1076 </span>            :       real() { return __real__ _M_value; }
+<span class="lineNum">    1077 </span>            : 
+<span class="lineNum">    1078 </span>            :       const float&amp; 
+<span class="lineNum">    1079 </span>            :       real() const { return __real__ _M_value; }      
+<span class="lineNum">    1080 </span>            : 
+<span class="lineNum">    1081 </span>            :       float&amp; 
+<span class="lineNum">    1082 </span>            :       imag() { return __imag__ _M_value; }
+<span class="lineNum">    1083 </span>            : 
+<span class="lineNum">    1084 </span>            :       const float&amp; 
+<span class="lineNum">    1085 </span>            :       imag() const { return __imag__ _M_value; }
+<span class="lineNum">    1086 </span>            : #endif
+<span class="lineNum">    1087 </span>            : 
+<span class="lineNum">    1088 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1089 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">    1090 </span>            :       void 
+<span class="lineNum">    1091 </span>            :       real(float __val) { __real__ _M_value = __val; }
+<span class="lineNum">    1092 </span>            : 
+<span class="lineNum">    1093 </span>            :       void 
+<span class="lineNum">    1094 </span>            :       imag(float __val) { __imag__ _M_value = __val; }
+<span class="lineNum">    1095 </span>            : 
+<span class="lineNum">    1096 </span>            :       complex&amp;
+<span class="lineNum">    1097 </span>            :       operator=(float __f)
+<span class="lineNum">    1098 </span>            :       {
+<span class="lineNum">    1099 </span>            :         _M_value = __f;
+<span class="lineNum">    1100 </span>            :         return *this;
+<span class="lineNum">    1101 </span>            :       }
+<span class="lineNum">    1102 </span>            : 
+<span class="lineNum">    1103 </span>            :       complex&amp;
+<span class="lineNum">    1104 </span>            :       operator+=(float __f)
+<span class="lineNum">    1105 </span>            :       {
+<span class="lineNum">    1106 </span>            :         _M_value += __f;
+<span class="lineNum">    1107 </span>            :         return *this;
+<span class="lineNum">    1108 </span>            :       }
+<span class="lineNum">    1109 </span>            : 
+<span class="lineNum">    1110 </span>            :       complex&amp;
+<span class="lineNum">    1111 </span>            :       operator-=(float __f)
+<span class="lineNum">    1112 </span>            :       {
+<span class="lineNum">    1113 </span>            :         _M_value -= __f;
+<span class="lineNum">    1114 </span>            :         return *this;
+<span class="lineNum">    1115 </span>            :       }
+<span class="lineNum">    1116 </span>            : 
+<span class="lineNum">    1117 </span>            :       complex&amp;
+<span class="lineNum">    1118 </span>            :       operator*=(float __f)
+<span class="lineNum">    1119 </span>            :       {
+<span class="lineNum">    1120 </span>            :         _M_value *= __f;
+<span class="lineNum">    1121 </span>            :         return *this;
+<span class="lineNum">    1122 </span>            :       }
+<span class="lineNum">    1123 </span>            : 
+<span class="lineNum">    1124 </span>            :       complex&amp;
+<span class="lineNum">    1125 </span>            :       operator/=(float __f)
+<span class="lineNum">    1126 </span>            :       {
+<span class="lineNum">    1127 </span>            :         _M_value /= __f;
+<span class="lineNum">    1128 </span>            :         return *this;
+<span class="lineNum">    1129 </span>            :       }
+<span class="lineNum">    1130 </span>            : 
+<span class="lineNum">    1131 </span>            :       // Let the compiler synthesize the copy and assignment
+<span class="lineNum">    1132 </span>            :       // operator.  It always does a pretty good job.
+<span class="lineNum">    1133 </span>            :       // complex&amp; operator=(const complex&amp;);
+<span class="lineNum">    1134 </span>            : 
+<span class="lineNum">    1135 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1136 </span>            :         complex&amp;
+<span class="lineNum">    1137 </span>            :         operator=(const complex&lt;_Tp&gt;&amp;  __z)
+<span class="lineNum">    1138 </span>            :         {
+<span class="lineNum">    1139 </span>            :           __real__ _M_value = __z.real();
+<span class="lineNum">    1140 </span>            :           __imag__ _M_value = __z.imag();
+<span class="lineNum">    1141 </span>            :           return *this;
+<span class="lineNum">    1142 </span>            :         }
+<span class="lineNum">    1143 </span>            : 
+<span class="lineNum">    1144 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1145 </span>            :         complex&amp;
+<span class="lineNum">    1146 </span>            :         operator+=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1147 </span>            :         {
+<span class="lineNum">    1148 </span>            :           __real__ _M_value += __z.real();
+<span class="lineNum">    1149 </span>            :           __imag__ _M_value += __z.imag();
+<span class="lineNum">    1150 </span>            :           return *this;
+<span class="lineNum">    1151 </span>            :         }
+<span class="lineNum">    1152 </span>            : 
+<span class="lineNum">    1153 </span>            :       template&lt;class _Tp&gt;
+<span class="lineNum">    1154 </span>            :         complex&amp;
+<span class="lineNum">    1155 </span>            :         operator-=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1156 </span>            :         {
+<span class="lineNum">    1157 </span>            :           __real__ _M_value -= __z.real();
+<span class="lineNum">    1158 </span>            :           __imag__ _M_value -= __z.imag();
+<span class="lineNum">    1159 </span>            :           return *this;
+<span class="lineNum">    1160 </span>            :         }
+<span class="lineNum">    1161 </span>            : 
+<span class="lineNum">    1162 </span>            :       template&lt;class _Tp&gt;
+<span class="lineNum">    1163 </span>            :         complex&amp;
+<span class="lineNum">    1164 </span>            :         operator*=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1165 </span>            :         {
+<span class="lineNum">    1166 </span>            :           _ComplexT __t;
+<span class="lineNum">    1167 </span>            :           __real__ __t = __z.real();
+<span class="lineNum">    1168 </span>            :           __imag__ __t = __z.imag();
+<span class="lineNum">    1169 </span>            :           _M_value *= __t;
+<span class="lineNum">    1170 </span>            :           return *this;
+<span class="lineNum">    1171 </span>            :         }
+<span class="lineNum">    1172 </span>            : 
+<span class="lineNum">    1173 </span>            :       template&lt;class _Tp&gt;
+<span class="lineNum">    1174 </span>            :         complex&amp;
+<span class="lineNum">    1175 </span>            :         operator/=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1176 </span>            :         {
+<span class="lineNum">    1177 </span>            :           _ComplexT __t;
+<span class="lineNum">    1178 </span>            :           __real__ __t = __z.real();
+<span class="lineNum">    1179 </span>            :           __imag__ __t = __z.imag();
+<span class="lineNum">    1180 </span>            :           _M_value /= __t;
+<span class="lineNum">    1181 </span>            :           return *this;
+<span class="lineNum">    1182 </span>            :         }
+<span class="lineNum">    1183 </span>            : 
+<span class="lineNum">    1184 </span>            :       _GLIBCXX_USE_CONSTEXPR _ComplexT __rep() const { return _M_value; }
+<span class="lineNum">    1185 </span>            : 
+<span class="lineNum">    1186 </span>            :     private:
+<span class="lineNum">    1187 </span>            :       _ComplexT _M_value;
+<span class="lineNum">    1188 </span>            :     };
+<span class="lineNum">    1189 </span>            : 
+<span class="lineNum">    1190 </span>            :   /// 26.2.3  complex specializations
+<span class="lineNum">    1191 </span>            :   /// complex&lt;double&gt; specialization
+<span class="lineNum">    1192 </span>            :   template&lt;&gt;
+<span class="lineNum">    1193 </span>            :     struct complex&lt;double&gt;
+<span class="lineNum">    1194 </span>            :     {
+<span class="lineNum">    1195 </span>            :       typedef double value_type;
+<span class="lineNum">    1196 </span>            :       typedef __complex__ double _ComplexT;
+<span class="lineNum">    1197 </span>            : 
+<a name="1198"><span class="lineNum">    1198 </span>            :       _GLIBCXX_CONSTEXPR complex(_ComplexT __z) : _M_value(__z) { }</a>
+<span class="lineNum">    1199 </span>            : 
+<span class="lineNum">    1200 </span><span class="lineCov">    5000091 :       _GLIBCXX_CONSTEXPR complex(double __r = 0.0, double __i = 0.0)</span>
+<span class="lineNum">    1201 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1202 </span><span class="lineCov">    5000091 :       : _M_value{ __r, __i } { }</span>
+<span class="lineNum">    1203 </span>            : #else
+<span class="lineNum">    1204 </span>            :       {
+<span class="lineNum">    1205 </span>            :         __real__ _M_value = __r;
+<span class="lineNum">    1206 </span>            :         __imag__ _M_value = __i;
+<span class="lineNum">    1207 </span>            :       }
+<span class="lineNum">    1208 </span>            : #endif
+<span class="lineNum">    1209 </span>            : 
+<span class="lineNum">    1210 </span>            :       _GLIBCXX_CONSTEXPR complex(const complex&lt;float&gt;&amp; __z)
+<span class="lineNum">    1211 </span>            :       : _M_value(__z.__rep()) { }
+<span class="lineNum">    1212 </span>            : 
+<span class="lineNum">    1213 </span>            :       explicit _GLIBCXX_CONSTEXPR complex(const complex&lt;long double&gt;&amp;);       
+<span class="lineNum">    1214 </span>            : 
+<span class="lineNum">    1215 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1216 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1217 </span>            :       // DR 387. std::complex over-encapsulated.
+<a name="1218"><span class="lineNum">    1218 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))</a>
+<span class="lineNum">    1219 </span>            :       constexpr double 
+<span class="lineNum">    1220 </span><span class="lineCov">   11064169 :       real() { return __real__ _M_value; }</span>
+<span class="lineNum">    1221 </span>            : 
+<a name="1222"><span class="lineNum">    1222 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))</a>
+<span class="lineNum">    1223 </span>            :       constexpr double 
+<span class="lineNum">    1224 </span><span class="lineCov">   11064169 :       imag() { return __imag__ _M_value; }</span>
+<span class="lineNum">    1225 </span>            : #else
+<span class="lineNum">    1226 </span>            :       double&amp; 
+<span class="lineNum">    1227 </span>            :       real() { return __real__ _M_value; }
+<span class="lineNum">    1228 </span>            : 
+<span class="lineNum">    1229 </span>            :       const double&amp; 
+<span class="lineNum">    1230 </span>            :       real() const { return __real__ _M_value; }
+<span class="lineNum">    1231 </span>            : 
+<span class="lineNum">    1232 </span>            :       double&amp; 
+<span class="lineNum">    1233 </span>            :       imag() { return __imag__ _M_value; }
+<span class="lineNum">    1234 </span>            : 
+<span class="lineNum">    1235 </span>            :       const double&amp; 
+<span class="lineNum">    1236 </span>            :       imag() const { return __imag__ _M_value; }
+<span class="lineNum">    1237 </span>            : #endif
+<span class="lineNum">    1238 </span>            : 
+<span class="lineNum">    1239 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1240 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">    1241 </span>            :       void 
+<span class="lineNum">    1242 </span>            :       real(double __val) { __real__ _M_value = __val; }
+<span class="lineNum">    1243 </span>            : 
+<span class="lineNum">    1244 </span>            :       void 
+<span class="lineNum">    1245 </span>            :       imag(double __val) { __imag__ _M_value = __val; }
+<a name="1246"><span class="lineNum">    1246 </span>            : </a>
+<span class="lineNum">    1247 </span>            :       complex&amp;
+<span class="lineNum">    1248 </span><span class="lineCov">      12328 :       operator=(double __d)</span>
+<span class="lineNum">    1249 </span>            :       {
+<span class="lineNum">    1250 </span><span class="lineCov">      12328 :         _M_value = __d;</span>
+<span class="lineNum">    1251 </span><span class="lineCov">      12328 :         return *this;</span>
+<span class="lineNum">    1252 </span>            :       }
+<span class="lineNum">    1253 </span>            : 
+<span class="lineNum">    1254 </span>            :       complex&amp;
+<span class="lineNum">    1255 </span>            :       operator+=(double __d)
+<span class="lineNum">    1256 </span>            :       {
+<span class="lineNum">    1257 </span>            :         _M_value += __d;
+<span class="lineNum">    1258 </span>            :         return *this;
+<span class="lineNum">    1259 </span>            :       }
+<span class="lineNum">    1260 </span>            :         
+<span class="lineNum">    1261 </span>            :       complex&amp;
+<span class="lineNum">    1262 </span>            :       operator-=(double __d)
+<span class="lineNum">    1263 </span>            :       {
+<span class="lineNum">    1264 </span>            :         _M_value -= __d;
+<span class="lineNum">    1265 </span>            :         return *this;
+<span class="lineNum">    1266 </span>            :       }
+<a name="1267"><span class="lineNum">    1267 </span>            : </a>
+<span class="lineNum">    1268 </span>            :       complex&amp;
+<span class="lineNum">    1269 </span><span class="lineCov">    1577733 :       operator*=(double __d)</span>
+<span class="lineNum">    1270 </span>            :       {
+<span class="lineNum">    1271 </span><span class="lineCov">    1577733 :         _M_value *= __d;</span>
+<span class="lineNum">    1272 </span><span class="lineCov">    1577733 :         return *this;</span>
+<span class="lineNum">    1273 </span>            :       }
+<span class="lineNum">    1274 </span>            : 
+<span class="lineNum">    1275 </span>            :       complex&amp;
+<span class="lineNum">    1276 </span>            :       operator/=(double __d)
+<span class="lineNum">    1277 </span>            :       {
+<span class="lineNum">    1278 </span>            :         _M_value /= __d;
+<span class="lineNum">    1279 </span>            :         return *this;
+<span class="lineNum">    1280 </span>            :       }
+<span class="lineNum">    1281 </span>            : 
+<span class="lineNum">    1282 </span>            :       // The compiler will synthesize this, efficiently.
+<span class="lineNum">    1283 </span>            :       // complex&amp; operator=(const complex&amp;);
+<span class="lineNum">    1284 </span>            : 
+<span class="lineNum">    1285 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1286 </span>            :         complex&amp;
+<span class="lineNum">    1287 </span>            :         operator=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1288 </span>            :         {
+<span class="lineNum">    1289 </span>            :           __real__ _M_value = __z.real();
+<span class="lineNum">    1290 </span>            :           __imag__ _M_value = __z.imag();
+<span class="lineNum">    1291 </span>            :           return *this;
+<span class="lineNum">    1292 </span>            :         }
+<span class="lineNum">    1293 </span>            : 
+<a name="1294"><span class="lineNum">    1294 </span>            :       template&lt;typename _Tp&gt;</a>
+<span class="lineNum">    1295 </span>            :         complex&amp;
+<span class="lineNum">    1296 </span><span class="lineCov">    1577733 :         operator+=(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">    1297 </span>            :         {
+<span class="lineNum">    1298 </span><span class="lineCov">    1577733 :           __real__ _M_value += __z.real();</span>
+<span class="lineNum">    1299 </span><span class="lineCov">    1577733 :           __imag__ _M_value += __z.imag();</span>
+<span class="lineNum">    1300 </span><span class="lineCov">    1577733 :           return *this;</span>
+<span class="lineNum">    1301 </span>            :         }
+<span class="lineNum">    1302 </span>            : 
+<a name="1303"><span class="lineNum">    1303 </span>            :       template&lt;typename _Tp&gt;</a>
+<span class="lineNum">    1304 </span>            :         complex&amp;
+<span class="lineNum">    1305 </span><span class="lineCov">    1577733 :         operator-=(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">    1306 </span>            :         {
+<span class="lineNum">    1307 </span><span class="lineCov">    1577733 :           __real__ _M_value -= __z.real();</span>
+<span class="lineNum">    1308 </span><span class="lineCov">    1577733 :           __imag__ _M_value -= __z.imag();</span>
+<span class="lineNum">    1309 </span><span class="lineCov">    1577733 :           return *this;</span>
+<span class="lineNum">    1310 </span>            :         }
+<span class="lineNum">    1311 </span>            : 
+<a name="1312"><span class="lineNum">    1312 </span>            :       template&lt;typename _Tp&gt;</a>
+<span class="lineNum">    1313 </span>            :         complex&amp;
+<span class="lineNum">    1314 </span><span class="lineCov">    6318642 :         operator*=(const complex&lt;_Tp&gt;&amp; __z)</span>
+<span class="lineNum">    1315 </span>            :         {
+<span class="lineNum">    1316 </span>            :           _ComplexT __t;
+<span class="lineNum">    1317 </span><span class="lineCov">    6318642 :           __real__ __t = __z.real();</span>
+<span class="lineNum">    1318 </span><span class="lineCov">    6318642 :           __imag__ __t = __z.imag();</span>
+<span class="lineNum">    1319 </span><span class="lineCov">    6318642 :           _M_value *= __t;</span>
+<span class="lineNum">    1320 </span><span class="lineCov">    6318642 :           return *this;</span>
+<span class="lineNum">    1321 </span>            :         }
+<span class="lineNum">    1322 </span>            : 
+<span class="lineNum">    1323 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1324 </span>            :         complex&amp;
+<span class="lineNum">    1325 </span>            :         operator/=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1326 </span>            :         {
+<span class="lineNum">    1327 </span>            :           _ComplexT __t;
+<span class="lineNum">    1328 </span>            :           __real__ __t = __z.real();
+<span class="lineNum">    1329 </span>            :           __imag__ __t = __z.imag();
+<span class="lineNum">    1330 </span>            :           _M_value /= __t;
+<span class="lineNum">    1331 </span>            :           return *this;
+<a name="1332"><span class="lineNum">    1332 </span>            :         }</a>
+<span class="lineNum">    1333 </span>            : 
+<span class="lineNum">    1334 </span><span class="lineCov">     737360 :       _GLIBCXX_USE_CONSTEXPR _ComplexT __rep() const { return _M_value; }</span>
+<span class="lineNum">    1335 </span>            : 
+<span class="lineNum">    1336 </span>            :     private:
+<span class="lineNum">    1337 </span>            :       _ComplexT _M_value;
+<span class="lineNum">    1338 </span>            :     };
+<span class="lineNum">    1339 </span>            : 
+<span class="lineNum">    1340 </span>            :   /// 26.2.3  complex specializations
+<span class="lineNum">    1341 </span>            :   /// complex&lt;long double&gt; specialization
+<span class="lineNum">    1342 </span>            :   template&lt;&gt;
+<span class="lineNum">    1343 </span>            :     struct complex&lt;long double&gt;
+<span class="lineNum">    1344 </span>            :     {
+<span class="lineNum">    1345 </span>            :       typedef long double value_type;
+<span class="lineNum">    1346 </span>            :       typedef __complex__ long double _ComplexT;
+<span class="lineNum">    1347 </span>            : 
+<span class="lineNum">    1348 </span>            :       _GLIBCXX_CONSTEXPR complex(_ComplexT __z) : _M_value(__z) { }
+<span class="lineNum">    1349 </span>            : 
+<span class="lineNum">    1350 </span>            :       _GLIBCXX_CONSTEXPR complex(long double __r = 0.0L, 
+<span class="lineNum">    1351 </span>            :                                  long double __i = 0.0L)
+<span class="lineNum">    1352 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1353 </span>            :       : _M_value{ __r, __i } { }
+<span class="lineNum">    1354 </span>            : #else
+<span class="lineNum">    1355 </span>            :       {
+<span class="lineNum">    1356 </span>            :         __real__ _M_value = __r;
+<span class="lineNum">    1357 </span>            :         __imag__ _M_value = __i;
+<span class="lineNum">    1358 </span>            :       }
+<span class="lineNum">    1359 </span>            : #endif
+<span class="lineNum">    1360 </span>            : 
+<span class="lineNum">    1361 </span>            :       _GLIBCXX_CONSTEXPR complex(const complex&lt;float&gt;&amp; __z)
+<span class="lineNum">    1362 </span>            :       : _M_value(__z.__rep()) { }
+<span class="lineNum">    1363 </span>            : 
+<span class="lineNum">    1364 </span>            :       _GLIBCXX_CONSTEXPR complex(const complex&lt;double&gt;&amp; __z)
+<span class="lineNum">    1365 </span>            :       : _M_value(__z.__rep()) { }
+<span class="lineNum">    1366 </span>            : 
+<span class="lineNum">    1367 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1368 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1369 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">    1370 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))
+<span class="lineNum">    1371 </span>            :       constexpr long double 
+<span class="lineNum">    1372 </span>            :       real() { return __real__ _M_value; }
+<span class="lineNum">    1373 </span>            : 
+<span class="lineNum">    1374 </span>            :       __attribute ((__abi_tag__ (&quot;cxx11&quot;)))
+<span class="lineNum">    1375 </span>            :       constexpr long double 
+<span class="lineNum">    1376 </span>            :       imag() { return __imag__ _M_value; }
+<span class="lineNum">    1377 </span>            : #else
+<span class="lineNum">    1378 </span>            :       long double&amp; 
+<span class="lineNum">    1379 </span>            :       real() { return __real__ _M_value; }
+<span class="lineNum">    1380 </span>            : 
+<span class="lineNum">    1381 </span>            :       const long double&amp; 
+<span class="lineNum">    1382 </span>            :       real() const { return __real__ _M_value; }
+<span class="lineNum">    1383 </span>            : 
+<span class="lineNum">    1384 </span>            :       long double&amp; 
+<span class="lineNum">    1385 </span>            :       imag() { return __imag__ _M_value; }
+<span class="lineNum">    1386 </span>            : 
+<span class="lineNum">    1387 </span>            :       const long double&amp; 
+<span class="lineNum">    1388 </span>            :       imag() const { return __imag__ _M_value; }
+<span class="lineNum">    1389 </span>            : #endif
+<span class="lineNum">    1390 </span>            : 
+<span class="lineNum">    1391 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1392 </span>            :       // DR 387. std::complex over-encapsulated.
+<span class="lineNum">    1393 </span>            :       void 
+<span class="lineNum">    1394 </span>            :       real(long double __val) { __real__ _M_value = __val; }
+<span class="lineNum">    1395 </span>            : 
+<span class="lineNum">    1396 </span>            :       void 
+<span class="lineNum">    1397 </span>            :       imag(long double __val) { __imag__ _M_value = __val; }
+<span class="lineNum">    1398 </span>            : 
+<span class="lineNum">    1399 </span>            :       complex&amp;
+<span class="lineNum">    1400 </span>            :       operator=(long double __r)
+<span class="lineNum">    1401 </span>            :       {
+<span class="lineNum">    1402 </span>            :         _M_value = __r;
+<span class="lineNum">    1403 </span>            :         return *this;
+<span class="lineNum">    1404 </span>            :       }
+<span class="lineNum">    1405 </span>            : 
+<span class="lineNum">    1406 </span>            :       complex&amp;
+<span class="lineNum">    1407 </span>            :       operator+=(long double __r)
+<span class="lineNum">    1408 </span>            :       {
+<span class="lineNum">    1409 </span>            :         _M_value += __r;
+<span class="lineNum">    1410 </span>            :         return *this;
+<span class="lineNum">    1411 </span>            :       }
+<span class="lineNum">    1412 </span>            : 
+<span class="lineNum">    1413 </span>            :       complex&amp;
+<span class="lineNum">    1414 </span>            :       operator-=(long double __r)
+<span class="lineNum">    1415 </span>            :       {
+<span class="lineNum">    1416 </span>            :         _M_value -= __r;
+<span class="lineNum">    1417 </span>            :         return *this;
+<span class="lineNum">    1418 </span>            :       }
+<span class="lineNum">    1419 </span>            : 
+<span class="lineNum">    1420 </span>            :       complex&amp;
+<span class="lineNum">    1421 </span>            :       operator*=(long double __r)
+<span class="lineNum">    1422 </span>            :       {
+<span class="lineNum">    1423 </span>            :         _M_value *= __r;
+<span class="lineNum">    1424 </span>            :         return *this;
+<span class="lineNum">    1425 </span>            :       }
+<span class="lineNum">    1426 </span>            : 
+<span class="lineNum">    1427 </span>            :       complex&amp;
+<span class="lineNum">    1428 </span>            :       operator/=(long double __r)
+<span class="lineNum">    1429 </span>            :       {
+<span class="lineNum">    1430 </span>            :         _M_value /= __r;
+<span class="lineNum">    1431 </span>            :         return *this;
+<span class="lineNum">    1432 </span>            :       }
+<span class="lineNum">    1433 </span>            : 
+<span class="lineNum">    1434 </span>            :       // The compiler knows how to do this efficiently
+<span class="lineNum">    1435 </span>            :       // complex&amp; operator=(const complex&amp;);
+<span class="lineNum">    1436 </span>            : 
+<span class="lineNum">    1437 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1438 </span>            :         complex&amp;
+<span class="lineNum">    1439 </span>            :         operator=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1440 </span>            :         {
+<span class="lineNum">    1441 </span>            :           __real__ _M_value = __z.real();
+<span class="lineNum">    1442 </span>            :           __imag__ _M_value = __z.imag();
+<span class="lineNum">    1443 </span>            :           return *this;
+<span class="lineNum">    1444 </span>            :         }
+<span class="lineNum">    1445 </span>            : 
+<span class="lineNum">    1446 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1447 </span>            :         complex&amp;
+<span class="lineNum">    1448 </span>            :         operator+=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1449 </span>            :         {
+<span class="lineNum">    1450 </span>            :           __real__ _M_value += __z.real();
+<span class="lineNum">    1451 </span>            :           __imag__ _M_value += __z.imag();
+<span class="lineNum">    1452 </span>            :           return *this;
+<span class="lineNum">    1453 </span>            :         }
+<span class="lineNum">    1454 </span>            : 
+<span class="lineNum">    1455 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1456 </span>            :         complex&amp;
+<span class="lineNum">    1457 </span>            :         operator-=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1458 </span>            :         {
+<span class="lineNum">    1459 </span>            :           __real__ _M_value -= __z.real();
+<span class="lineNum">    1460 </span>            :           __imag__ _M_value -= __z.imag();
+<span class="lineNum">    1461 </span>            :           return *this;
+<span class="lineNum">    1462 </span>            :         }
+<span class="lineNum">    1463 </span>            : 
+<span class="lineNum">    1464 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1465 </span>            :         complex&amp;
+<span class="lineNum">    1466 </span>            :         operator*=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1467 </span>            :         {
+<span class="lineNum">    1468 </span>            :           _ComplexT __t;
+<span class="lineNum">    1469 </span>            :           __real__ __t = __z.real();
+<span class="lineNum">    1470 </span>            :           __imag__ __t = __z.imag();
+<span class="lineNum">    1471 </span>            :           _M_value *= __t;
+<span class="lineNum">    1472 </span>            :           return *this;
+<span class="lineNum">    1473 </span>            :         }
+<span class="lineNum">    1474 </span>            : 
+<span class="lineNum">    1475 </span>            :       template&lt;typename _Tp&gt;
+<span class="lineNum">    1476 </span>            :         complex&amp;
+<span class="lineNum">    1477 </span>            :         operator/=(const complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1478 </span>            :         {
+<span class="lineNum">    1479 </span>            :           _ComplexT __t;
+<span class="lineNum">    1480 </span>            :           __real__ __t = __z.real();
+<span class="lineNum">    1481 </span>            :           __imag__ __t = __z.imag();
+<span class="lineNum">    1482 </span>            :           _M_value /= __t;
+<span class="lineNum">    1483 </span>            :           return *this;
+<span class="lineNum">    1484 </span>            :         }
+<span class="lineNum">    1485 </span>            : 
+<span class="lineNum">    1486 </span>            :       _GLIBCXX_USE_CONSTEXPR _ComplexT __rep() const { return _M_value; }
+<span class="lineNum">    1487 </span>            : 
+<span class="lineNum">    1488 </span>            :     private:
+<span class="lineNum">    1489 </span>            :       _ComplexT _M_value;
+<span class="lineNum">    1490 </span>            :     };
+<span class="lineNum">    1491 </span>            : 
+<span class="lineNum">    1492 </span>            :   // These bits have to be at the end of this file, so that the
+<span class="lineNum">    1493 </span>            :   // specializations have all been defined.
+<span class="lineNum">    1494 </span>            :   inline _GLIBCXX_CONSTEXPR
+<span class="lineNum">    1495 </span>            :   complex&lt;float&gt;::complex(const complex&lt;double&gt;&amp; __z)
+<span class="lineNum">    1496 </span>            :   : _M_value(__z.__rep()) { }
+<span class="lineNum">    1497 </span>            : 
+<span class="lineNum">    1498 </span>            :   inline _GLIBCXX_CONSTEXPR
+<span class="lineNum">    1499 </span>            :   complex&lt;float&gt;::complex(const complex&lt;long double&gt;&amp; __z)
+<span class="lineNum">    1500 </span>            :   : _M_value(__z.__rep()) { }
+<span class="lineNum">    1501 </span>            : 
+<span class="lineNum">    1502 </span>            :   inline _GLIBCXX_CONSTEXPR
+<span class="lineNum">    1503 </span>            :   complex&lt;double&gt;::complex(const complex&lt;long double&gt;&amp; __z)
+<span class="lineNum">    1504 </span>            :   : _M_value(__z.__rep()) { }
+<span class="lineNum">    1505 </span>            : 
+<span class="lineNum">    1506 </span>            :   // Inhibit implicit instantiations for required instantiations,
+<span class="lineNum">    1507 </span>            :   // which are defined via explicit instantiations elsewhere.
+<span class="lineNum">    1508 </span>            :   // NB:  This syntax is a GNU extension.
+<span class="lineNum">    1509 </span>            : #if _GLIBCXX_EXTERN_TEMPLATE
+<span class="lineNum">    1510 </span>            :   extern template istream&amp; operator&gt;&gt;(istream&amp;, complex&lt;float&gt;&amp;);
+<span class="lineNum">    1511 </span>            :   extern template ostream&amp; operator&lt;&lt;(ostream&amp;, const complex&lt;float&gt;&amp;);
+<span class="lineNum">    1512 </span>            :   extern template istream&amp; operator&gt;&gt;(istream&amp;, complex&lt;double&gt;&amp;);
+<span class="lineNum">    1513 </span>            :   extern template ostream&amp; operator&lt;&lt;(ostream&amp;, const complex&lt;double&gt;&amp;);
+<span class="lineNum">    1514 </span>            :   extern template istream&amp; operator&gt;&gt;(istream&amp;, complex&lt;long double&gt;&amp;);
+<span class="lineNum">    1515 </span>            :   extern template ostream&amp; operator&lt;&lt;(ostream&amp;, const complex&lt;long double&gt;&amp;);
+<span class="lineNum">    1516 </span>            : 
+<span class="lineNum">    1517 </span>            : #ifdef _GLIBCXX_USE_WCHAR_T
+<span class="lineNum">    1518 </span>            :   extern template wistream&amp; operator&gt;&gt;(wistream&amp;, complex&lt;float&gt;&amp;);
+<span class="lineNum">    1519 </span>            :   extern template wostream&amp; operator&lt;&lt;(wostream&amp;, const complex&lt;float&gt;&amp;);
+<span class="lineNum">    1520 </span>            :   extern template wistream&amp; operator&gt;&gt;(wistream&amp;, complex&lt;double&gt;&amp;);
+<span class="lineNum">    1521 </span>            :   extern template wostream&amp; operator&lt;&lt;(wostream&amp;, const complex&lt;double&gt;&amp;);
+<span class="lineNum">    1522 </span>            :   extern template wistream&amp; operator&gt;&gt;(wistream&amp;, complex&lt;long double&gt;&amp;);
+<span class="lineNum">    1523 </span>            :   extern template wostream&amp; operator&lt;&lt;(wostream&amp;, const complex&lt;long double&gt;&amp;);
+<span class="lineNum">    1524 </span>            : #endif
+<span class="lineNum">    1525 </span>            : #endif
+<span class="lineNum">    1526 </span>            : 
+<span class="lineNum">    1527 </span>            :   // @} group complex_numbers
+<span class="lineNum">    1528 </span>            : 
+<span class="lineNum">    1529 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">    1530 </span>            : } // namespace
+<span class="lineNum">    1531 </span>            : 
+<span class="lineNum">    1532 </span>            : namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">    1533 </span>            : {
+<span class="lineNum">    1534 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">    1535 </span>            : 
+<span class="lineNum">    1536 </span>            :   // See ext/type_traits.h for the primary template.
+<span class="lineNum">    1537 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1538 </span>            :     struct __promote_2&lt;std::complex&lt;_Tp&gt;, _Up&gt;
+<span class="lineNum">    1539 </span>            :     {
+<span class="lineNum">    1540 </span>            :     public:
+<span class="lineNum">    1541 </span>            :       typedef std::complex&lt;typename __promote_2&lt;_Tp, _Up&gt;::__type&gt; __type;
+<span class="lineNum">    1542 </span>            :     };
+<span class="lineNum">    1543 </span>            : 
+<span class="lineNum">    1544 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1545 </span>            :     struct __promote_2&lt;_Tp, std::complex&lt;_Up&gt; &gt;
+<span class="lineNum">    1546 </span>            :     {
+<span class="lineNum">    1547 </span>            :     public:
+<span class="lineNum">    1548 </span>            :       typedef std::complex&lt;typename __promote_2&lt;_Tp, _Up&gt;::__type&gt; __type;
+<span class="lineNum">    1549 </span>            :     };
+<span class="lineNum">    1550 </span>            :   
+<span class="lineNum">    1551 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1552 </span>            :     struct __promote_2&lt;std::complex&lt;_Tp&gt;, std::complex&lt;_Up&gt; &gt;
+<span class="lineNum">    1553 </span>            :     {
+<span class="lineNum">    1554 </span>            :     public:
+<span class="lineNum">    1555 </span>            :       typedef std::complex&lt;typename __promote_2&lt;_Tp, _Up&gt;::__type&gt; __type;
+<span class="lineNum">    1556 </span>            :     };
+<span class="lineNum">    1557 </span>            : 
+<span class="lineNum">    1558 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">    1559 </span>            : } // namespace
+<span class="lineNum">    1560 </span>            : 
+<span class="lineNum">    1561 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1562 </span>            : 
+<span class="lineNum">    1563 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">    1564 </span>            : {
+<span class="lineNum">    1565 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">    1566 </span>            : 
+<span class="lineNum">    1567 </span>            :   // Forward declarations.
+<span class="lineNum">    1568 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; acos(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1569 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; asin(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1570 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; atan(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1571 </span>            : 
+<span class="lineNum">    1572 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; acosh(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1573 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; asinh(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1574 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; atanh(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1575 </span>            :   // DR 595.
+<span class="lineNum">    1576 </span>            :   template&lt;typename _Tp&gt; _Tp               fabs(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1577 </span>            : 
+<span class="lineNum">    1578 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1579 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1580 </span>            :     __complex_acos(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1581 </span>            :     {
+<span class="lineNum">    1582 </span>            :       const std::complex&lt;_Tp&gt; __t = std::asin(__z);
+<span class="lineNum">    1583 </span>            :       const _Tp __pi_2 = 1.5707963267948966192313216916397514L;
+<span class="lineNum">    1584 </span>            :       return std::complex&lt;_Tp&gt;(__pi_2 - __t.real(), -__t.imag());
+<span class="lineNum">    1585 </span>            :     }
+<span class="lineNum">    1586 </span>            : 
+<span class="lineNum">    1587 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1588 </span>            :   inline __complex__ float
+<span class="lineNum">    1589 </span>            :   __complex_acos(__complex__ float __z)
+<span class="lineNum">    1590 </span>            :   { return __builtin_cacosf(__z); }
+<span class="lineNum">    1591 </span>            : 
+<span class="lineNum">    1592 </span>            :   inline __complex__ double
+<span class="lineNum">    1593 </span>            :   __complex_acos(__complex__ double __z)
+<span class="lineNum">    1594 </span>            :   { return __builtin_cacos(__z); }
+<span class="lineNum">    1595 </span>            : 
+<span class="lineNum">    1596 </span>            :   inline __complex__ long double
+<span class="lineNum">    1597 </span>            :   __complex_acos(const __complex__ long double&amp; __z)
+<span class="lineNum">    1598 </span>            :   { return __builtin_cacosl(__z); }
+<span class="lineNum">    1599 </span>            : 
+<span class="lineNum">    1600 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1601 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1602 </span>            :     acos(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1603 </span>            :     { return __complex_acos(__z.__rep()); }
+<span class="lineNum">    1604 </span>            : #else
+<span class="lineNum">    1605 </span>            :   /// acos(__z) [8.1.2].
+<span class="lineNum">    1606 </span>            :   //  Effects:  Behaves the same as C99 function cacos, defined
+<span class="lineNum">    1607 </span>            :   //            in subclause 7.3.5.1.
+<span class="lineNum">    1608 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1609 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1610 </span>            :     acos(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1611 </span>            :     { return __complex_acos(__z); }
+<span class="lineNum">    1612 </span>            : #endif
+<span class="lineNum">    1613 </span>            : 
+<span class="lineNum">    1614 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1615 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1616 </span>            :     __complex_asin(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1617 </span>            :     {
+<span class="lineNum">    1618 </span>            :       std::complex&lt;_Tp&gt; __t(-__z.imag(), __z.real());
+<span class="lineNum">    1619 </span>            :       __t = std::asinh(__t);
+<span class="lineNum">    1620 </span>            :       return std::complex&lt;_Tp&gt;(__t.imag(), -__t.real());
+<span class="lineNum">    1621 </span>            :     }
+<span class="lineNum">    1622 </span>            : 
+<span class="lineNum">    1623 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1624 </span>            :   inline __complex__ float
+<span class="lineNum">    1625 </span>            :   __complex_asin(__complex__ float __z)
+<span class="lineNum">    1626 </span>            :   { return __builtin_casinf(__z); }
+<span class="lineNum">    1627 </span>            : 
+<span class="lineNum">    1628 </span>            :   inline __complex__ double
+<span class="lineNum">    1629 </span>            :   __complex_asin(__complex__ double __z)
+<span class="lineNum">    1630 </span>            :   { return __builtin_casin(__z); }
+<span class="lineNum">    1631 </span>            : 
+<span class="lineNum">    1632 </span>            :   inline __complex__ long double
+<span class="lineNum">    1633 </span>            :   __complex_asin(const __complex__ long double&amp; __z)
+<span class="lineNum">    1634 </span>            :   { return __builtin_casinl(__z); }
+<span class="lineNum">    1635 </span>            : 
+<span class="lineNum">    1636 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1637 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1638 </span>            :     asin(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1639 </span>            :     { return __complex_asin(__z.__rep()); }
+<span class="lineNum">    1640 </span>            : #else
+<span class="lineNum">    1641 </span>            :   /// asin(__z) [8.1.3].
+<span class="lineNum">    1642 </span>            :   //  Effects:  Behaves the same as C99 function casin, defined
+<span class="lineNum">    1643 </span>            :   //            in subclause 7.3.5.2.
+<span class="lineNum">    1644 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1645 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1646 </span>            :     asin(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1647 </span>            :     { return __complex_asin(__z); }
+<span class="lineNum">    1648 </span>            : #endif
+<span class="lineNum">    1649 </span>            :   
+<span class="lineNum">    1650 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1651 </span>            :     std::complex&lt;_Tp&gt;
+<span class="lineNum">    1652 </span>            :     __complex_atan(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1653 </span>            :     {
+<span class="lineNum">    1654 </span>            :       const _Tp __r2 = __z.real() * __z.real();
+<span class="lineNum">    1655 </span>            :       const _Tp __x = _Tp(1.0) - __r2 - __z.imag() * __z.imag();
+<span class="lineNum">    1656 </span>            : 
+<span class="lineNum">    1657 </span>            :       _Tp __num = __z.imag() + _Tp(1.0);
+<span class="lineNum">    1658 </span>            :       _Tp __den = __z.imag() - _Tp(1.0);
+<span class="lineNum">    1659 </span>            : 
+<span class="lineNum">    1660 </span>            :       __num = __r2 + __num * __num;
+<span class="lineNum">    1661 </span>            :       __den = __r2 + __den * __den;
+<span class="lineNum">    1662 </span>            : 
+<span class="lineNum">    1663 </span>            :       return std::complex&lt;_Tp&gt;(_Tp(0.5) * atan2(_Tp(2.0) * __z.real(), __x),
+<span class="lineNum">    1664 </span>            :                                _Tp(0.25) * log(__num / __den));
+<span class="lineNum">    1665 </span>            :     }
+<span class="lineNum">    1666 </span>            : 
+<span class="lineNum">    1667 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1668 </span>            :   inline __complex__ float
+<span class="lineNum">    1669 </span>            :   __complex_atan(__complex__ float __z)
+<span class="lineNum">    1670 </span>            :   { return __builtin_catanf(__z); }
+<span class="lineNum">    1671 </span>            : 
+<span class="lineNum">    1672 </span>            :   inline __complex__ double
+<span class="lineNum">    1673 </span>            :   __complex_atan(__complex__ double __z)
+<span class="lineNum">    1674 </span>            :   { return __builtin_catan(__z); }
+<span class="lineNum">    1675 </span>            : 
+<span class="lineNum">    1676 </span>            :   inline __complex__ long double
+<span class="lineNum">    1677 </span>            :   __complex_atan(const __complex__ long double&amp; __z)
+<span class="lineNum">    1678 </span>            :   { return __builtin_catanl(__z); }
+<span class="lineNum">    1679 </span>            : 
+<span class="lineNum">    1680 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1681 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1682 </span>            :     atan(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1683 </span>            :     { return __complex_atan(__z.__rep()); }
+<span class="lineNum">    1684 </span>            : #else
+<span class="lineNum">    1685 </span>            :   /// atan(__z) [8.1.4].
+<span class="lineNum">    1686 </span>            :   //  Effects:  Behaves the same as C99 function catan, defined
+<span class="lineNum">    1687 </span>            :   //            in subclause 7.3.5.3.
+<span class="lineNum">    1688 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1689 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1690 </span>            :     atan(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1691 </span>            :     { return __complex_atan(__z); }
+<span class="lineNum">    1692 </span>            : #endif
+<span class="lineNum">    1693 </span>            : 
+<span class="lineNum">    1694 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1695 </span>            :     std::complex&lt;_Tp&gt;
+<span class="lineNum">    1696 </span>            :     __complex_acosh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1697 </span>            :     {
+<span class="lineNum">    1698 </span>            :       // Kahan's formula.
+<span class="lineNum">    1699 </span>            :       return _Tp(2.0) * std::log(std::sqrt(_Tp(0.5) * (__z + _Tp(1.0)))
+<span class="lineNum">    1700 </span>            :                                  + std::sqrt(_Tp(0.5) * (__z - _Tp(1.0))));
+<span class="lineNum">    1701 </span>            :     }
+<span class="lineNum">    1702 </span>            : 
+<span class="lineNum">    1703 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1704 </span>            :   inline __complex__ float
+<span class="lineNum">    1705 </span>            :   __complex_acosh(__complex__ float __z)
+<span class="lineNum">    1706 </span>            :   { return __builtin_cacoshf(__z); }
+<span class="lineNum">    1707 </span>            : 
+<span class="lineNum">    1708 </span>            :   inline __complex__ double
+<span class="lineNum">    1709 </span>            :   __complex_acosh(__complex__ double __z)
+<span class="lineNum">    1710 </span>            :   { return __builtin_cacosh(__z); }
+<span class="lineNum">    1711 </span>            : 
+<span class="lineNum">    1712 </span>            :   inline __complex__ long double
+<span class="lineNum">    1713 </span>            :   __complex_acosh(const __complex__ long double&amp; __z)
+<span class="lineNum">    1714 </span>            :   { return __builtin_cacoshl(__z); }
+<span class="lineNum">    1715 </span>            : 
+<span class="lineNum">    1716 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1717 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1718 </span>            :     acosh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1719 </span>            :     { return __complex_acosh(__z.__rep()); }
+<span class="lineNum">    1720 </span>            : #else
+<span class="lineNum">    1721 </span>            :   /// acosh(__z) [8.1.5].
+<span class="lineNum">    1722 </span>            :   //  Effects:  Behaves the same as C99 function cacosh, defined
+<span class="lineNum">    1723 </span>            :   //            in subclause 7.3.6.1.
+<span class="lineNum">    1724 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1725 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1726 </span>            :     acosh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1727 </span>            :     { return __complex_acosh(__z); }
+<span class="lineNum">    1728 </span>            : #endif
+<span class="lineNum">    1729 </span>            : 
+<span class="lineNum">    1730 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1731 </span>            :     std::complex&lt;_Tp&gt;
+<span class="lineNum">    1732 </span>            :     __complex_asinh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1733 </span>            :     {
+<span class="lineNum">    1734 </span>            :       std::complex&lt;_Tp&gt; __t((__z.real() - __z.imag())
+<span class="lineNum">    1735 </span>            :                             * (__z.real() + __z.imag()) + _Tp(1.0),
+<span class="lineNum">    1736 </span>            :                             _Tp(2.0) * __z.real() * __z.imag());
+<span class="lineNum">    1737 </span>            :       __t = std::sqrt(__t);
+<span class="lineNum">    1738 </span>            : 
+<span class="lineNum">    1739 </span>            :       return std::log(__t + __z);
+<span class="lineNum">    1740 </span>            :     }
+<span class="lineNum">    1741 </span>            : 
+<span class="lineNum">    1742 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1743 </span>            :   inline __complex__ float
+<span class="lineNum">    1744 </span>            :   __complex_asinh(__complex__ float __z)
+<span class="lineNum">    1745 </span>            :   { return __builtin_casinhf(__z); }
+<span class="lineNum">    1746 </span>            : 
+<span class="lineNum">    1747 </span>            :   inline __complex__ double
+<span class="lineNum">    1748 </span>            :   __complex_asinh(__complex__ double __z)
+<span class="lineNum">    1749 </span>            :   { return __builtin_casinh(__z); }
+<span class="lineNum">    1750 </span>            : 
+<span class="lineNum">    1751 </span>            :   inline __complex__ long double
+<span class="lineNum">    1752 </span>            :   __complex_asinh(const __complex__ long double&amp; __z)
+<span class="lineNum">    1753 </span>            :   { return __builtin_casinhl(__z); }
+<span class="lineNum">    1754 </span>            : 
+<span class="lineNum">    1755 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1756 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1757 </span>            :     asinh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1758 </span>            :     { return __complex_asinh(__z.__rep()); }
+<span class="lineNum">    1759 </span>            : #else
+<span class="lineNum">    1760 </span>            :   /// asinh(__z) [8.1.6].
+<span class="lineNum">    1761 </span>            :   //  Effects:  Behaves the same as C99 function casin, defined
+<span class="lineNum">    1762 </span>            :   //            in subclause 7.3.6.2.
+<span class="lineNum">    1763 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1764 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1765 </span>            :     asinh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1766 </span>            :     { return __complex_asinh(__z); }
+<span class="lineNum">    1767 </span>            : #endif
+<span class="lineNum">    1768 </span>            : 
+<span class="lineNum">    1769 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1770 </span>            :     std::complex&lt;_Tp&gt;
+<span class="lineNum">    1771 </span>            :     __complex_atanh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1772 </span>            :     {
+<span class="lineNum">    1773 </span>            :       const _Tp __i2 = __z.imag() * __z.imag();
+<span class="lineNum">    1774 </span>            :       const _Tp __x = _Tp(1.0) - __i2 - __z.real() * __z.real();
+<span class="lineNum">    1775 </span>            : 
+<span class="lineNum">    1776 </span>            :       _Tp __num = _Tp(1.0) + __z.real();
+<span class="lineNum">    1777 </span>            :       _Tp __den = _Tp(1.0) - __z.real();
+<span class="lineNum">    1778 </span>            : 
+<span class="lineNum">    1779 </span>            :       __num = __i2 + __num * __num;
+<span class="lineNum">    1780 </span>            :       __den = __i2 + __den * __den;
+<span class="lineNum">    1781 </span>            : 
+<span class="lineNum">    1782 </span>            :       return std::complex&lt;_Tp&gt;(_Tp(0.25) * (log(__num) - log(__den)),
+<span class="lineNum">    1783 </span>            :                                _Tp(0.5) * atan2(_Tp(2.0) * __z.imag(), __x));
+<span class="lineNum">    1784 </span>            :     }
+<span class="lineNum">    1785 </span>            : 
+<span class="lineNum">    1786 </span>            : #if _GLIBCXX_USE_C99_COMPLEX_TR1
+<span class="lineNum">    1787 </span>            :   inline __complex__ float
+<span class="lineNum">    1788 </span>            :   __complex_atanh(__complex__ float __z)
+<span class="lineNum">    1789 </span>            :   { return __builtin_catanhf(__z); }
+<span class="lineNum">    1790 </span>            : 
+<span class="lineNum">    1791 </span>            :   inline __complex__ double
+<span class="lineNum">    1792 </span>            :   __complex_atanh(__complex__ double __z)
+<span class="lineNum">    1793 </span>            :   { return __builtin_catanh(__z); }
+<span class="lineNum">    1794 </span>            : 
+<span class="lineNum">    1795 </span>            :   inline __complex__ long double
+<span class="lineNum">    1796 </span>            :   __complex_atanh(const __complex__ long double&amp; __z)
+<span class="lineNum">    1797 </span>            :   { return __builtin_catanhl(__z); }
+<span class="lineNum">    1798 </span>            : 
+<span class="lineNum">    1799 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1800 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1801 </span>            :     atanh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1802 </span>            :     { return __complex_atanh(__z.__rep()); }
+<span class="lineNum">    1803 </span>            : #else
+<span class="lineNum">    1804 </span>            :   /// atanh(__z) [8.1.7].
+<span class="lineNum">    1805 </span>            :   //  Effects:  Behaves the same as C99 function catanh, defined
+<span class="lineNum">    1806 </span>            :   //            in subclause 7.3.6.3.
+<span class="lineNum">    1807 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1808 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1809 </span>            :     atanh(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1810 </span>            :     { return __complex_atanh(__z); }
+<span class="lineNum">    1811 </span>            : #endif
+<span class="lineNum">    1812 </span>            : 
+<span class="lineNum">    1813 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1814 </span>            :     inline _Tp
+<span class="lineNum">    1815 </span>            :     /// fabs(__z) [8.1.8].
+<span class="lineNum">    1816 </span>            :     //  Effects:  Behaves the same as C99 function cabs, defined
+<span class="lineNum">    1817 </span>            :     //            in subclause 7.3.8.1.
+<span class="lineNum">    1818 </span>            :     fabs(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1819 </span>            :     { return std::abs(__z); }
+<span class="lineNum">    1820 </span>            : 
+<span class="lineNum">    1821 </span>            :   /// Additional overloads [8.1.9].
+<span class="lineNum">    1822 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1823 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1824 </span>            :     arg(_Tp __x)
+<span class="lineNum">    1825 </span>            :     {
+<span class="lineNum">    1826 </span>            :       typedef typename __gnu_cxx::__promote&lt;_Tp&gt;::__type __type;
+<span class="lineNum">    1827 </span>            : #if (_GLIBCXX_USE_C99_MATH &amp;&amp; !_GLIBCXX_USE_C99_FP_MACROS_DYNAMIC)
+<span class="lineNum">    1828 </span>            :       return std::signbit(__x) ? __type(3.1415926535897932384626433832795029L)
+<span class="lineNum">    1829 </span>            :                                : __type();
+<span class="lineNum">    1830 </span>            : #else
+<span class="lineNum">    1831 </span>            :       return std::arg(std::complex&lt;__type&gt;(__x));
+<span class="lineNum">    1832 </span>            : #endif
+<span class="lineNum">    1833 </span>            :     }
+<span class="lineNum">    1834 </span>            : 
+<span class="lineNum">    1835 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1836 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1837 </span>            :     imag(_Tp)
+<span class="lineNum">    1838 </span>            :     { return _Tp(); }
+<span class="lineNum">    1839 </span>            : 
+<span class="lineNum">    1840 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1841 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1842 </span>            :     norm(_Tp __x)
+<span class="lineNum">    1843 </span>            :     {
+<span class="lineNum">    1844 </span>            :       typedef typename __gnu_cxx::__promote&lt;_Tp&gt;::__type __type;
+<span class="lineNum">    1845 </span>            :       return __type(__x) * __type(__x);
+<span class="lineNum">    1846 </span>            :     }
+<span class="lineNum">    1847 </span>            : 
+<span class="lineNum">    1848 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1849 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1850 </span>            :     real(_Tp __x)
+<span class="lineNum">    1851 </span>            :     { return __x; }
+<span class="lineNum">    1852 </span>            : 
+<span class="lineNum">    1853 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1854 </span>            :     inline std::complex&lt;typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type&gt;
+<span class="lineNum">    1855 </span>            :     pow(const std::complex&lt;_Tp&gt;&amp; __x, const _Up&amp; __y)
+<span class="lineNum">    1856 </span>            :     {
+<span class="lineNum">    1857 </span>            :       typedef typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type __type;
+<span class="lineNum">    1858 </span>            :       return std::pow(std::complex&lt;__type&gt;(__x), __type(__y));
+<span class="lineNum">    1859 </span>            :     }
+<span class="lineNum">    1860 </span>            : 
+<span class="lineNum">    1861 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1862 </span>            :     inline std::complex&lt;typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type&gt;
+<span class="lineNum">    1863 </span>            :     pow(const _Tp&amp; __x, const std::complex&lt;_Up&gt;&amp; __y)
+<span class="lineNum">    1864 </span>            :     {
+<span class="lineNum">    1865 </span>            :       typedef typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type __type;
+<span class="lineNum">    1866 </span>            :       return std::pow(__type(__x), std::complex&lt;__type&gt;(__y));
+<span class="lineNum">    1867 </span>            :     }
+<span class="lineNum">    1868 </span>            : 
+<span class="lineNum">    1869 </span>            :   template&lt;typename _Tp, typename _Up&gt;
+<span class="lineNum">    1870 </span>            :     inline std::complex&lt;typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type&gt;
+<span class="lineNum">    1871 </span>            :     pow(const std::complex&lt;_Tp&gt;&amp; __x, const std::complex&lt;_Up&gt;&amp; __y)
+<span class="lineNum">    1872 </span>            :     {
+<span class="lineNum">    1873 </span>            :       typedef typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type __type;
+<span class="lineNum">    1874 </span>            :       return std::pow(std::complex&lt;__type&gt;(__x),
+<span class="lineNum">    1875 </span>            :                       std::complex&lt;__type&gt;(__y));
+<span class="lineNum">    1876 </span>            :     }
+<span class="lineNum">    1877 </span>            : 
+<span class="lineNum">    1878 </span>            :   // Forward declarations.
+<span class="lineNum">    1879 </span>            :   // DR 781.
+<span class="lineNum">    1880 </span>            :   template&lt;typename _Tp&gt; std::complex&lt;_Tp&gt; proj(const std::complex&lt;_Tp&gt;&amp;);
+<span class="lineNum">    1881 </span>            : 
+<span class="lineNum">    1882 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1883 </span>            :     std::complex&lt;_Tp&gt;
+<span class="lineNum">    1884 </span>            :     __complex_proj(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1885 </span>            :     {
+<span class="lineNum">    1886 </span>            :       const _Tp __den = (__z.real() * __z.real()
+<span class="lineNum">    1887 </span>            :                          + __z.imag() * __z.imag() + _Tp(1.0));
+<span class="lineNum">    1888 </span>            : 
+<span class="lineNum">    1889 </span>            :       return std::complex&lt;_Tp&gt;((_Tp(2.0) * __z.real()) / __den,
+<span class="lineNum">    1890 </span>            :                                (_Tp(2.0) * __z.imag()) / __den);
+<span class="lineNum">    1891 </span>            :     }
+<span class="lineNum">    1892 </span>            : 
+<span class="lineNum">    1893 </span>            : #if _GLIBCXX_USE_C99_COMPLEX
+<span class="lineNum">    1894 </span>            :   inline __complex__ float
+<span class="lineNum">    1895 </span>            :   __complex_proj(__complex__ float __z)
+<span class="lineNum">    1896 </span>            :   { return __builtin_cprojf(__z); }
+<span class="lineNum">    1897 </span>            : 
+<span class="lineNum">    1898 </span>            :   inline __complex__ double
+<span class="lineNum">    1899 </span>            :   __complex_proj(__complex__ double __z)
+<span class="lineNum">    1900 </span>            :   { return __builtin_cproj(__z); }
+<span class="lineNum">    1901 </span>            : 
+<span class="lineNum">    1902 </span>            :   inline __complex__ long double
+<span class="lineNum">    1903 </span>            :   __complex_proj(const __complex__ long double&amp; __z)
+<span class="lineNum">    1904 </span>            :   { return __builtin_cprojl(__z); }
+<span class="lineNum">    1905 </span>            : 
+<span class="lineNum">    1906 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1907 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1908 </span>            :     proj(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1909 </span>            :     { return __complex_proj(__z.__rep()); }
+<span class="lineNum">    1910 </span>            : #else
+<span class="lineNum">    1911 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1912 </span>            :     inline std::complex&lt;_Tp&gt;
+<span class="lineNum">    1913 </span>            :     proj(const std::complex&lt;_Tp&gt;&amp; __z)
+<span class="lineNum">    1914 </span>            :     { return __complex_proj(__z); }
+<span class="lineNum">    1915 </span>            : #endif
+<span class="lineNum">    1916 </span>            : 
+<span class="lineNum">    1917 </span>            :   // DR 1137.
+<span class="lineNum">    1918 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1919 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1920 </span>            :     proj(_Tp __x)
+<span class="lineNum">    1921 </span>            :     { return __x; }
+<span class="lineNum">    1922 </span>            : 
+<span class="lineNum">    1923 </span>            :   template&lt;typename _Tp&gt;
+<span class="lineNum">    1924 </span>            :     inline typename __gnu_cxx::__promote&lt;_Tp&gt;::__type
+<span class="lineNum">    1925 </span>            :     conj(_Tp __x)
+<span class="lineNum">    1926 </span>            :     { return __x; }
+<span class="lineNum">    1927 </span>            : 
+<span class="lineNum">    1928 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">    1929 </span>            : } // namespace
+<span class="lineNum">    1930 </span>            : 
+<span class="lineNum">    1931 </span>            : #endif  // C++11
+<span class="lineNum">    1932 </span>            : 
+<span class="lineNum">    1933 </span>            : #endif  /* _GLIBCXX_COMPLEX */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

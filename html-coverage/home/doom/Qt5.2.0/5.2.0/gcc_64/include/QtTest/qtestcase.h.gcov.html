@@ -1,0 +1,431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/doom/Qt5.2.0/5.2.0/gcc_64/include/QtTest/qtestcase.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/doom/Qt5.2.0/5.2.0/gcc_64/include/QtTest</a> - qtestcase.h<span style="font-size: 80%;"> (source / <a href="qtestcase.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /****************************************************************************</a>
+<span class="lineNum">       2 </span>            : **
+<span class="lineNum">       3 </span>            : ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+<span class="lineNum">       4 </span>            : ** Contact: http://www.qt-project.org/legal
+<span class="lineNum">       5 </span>            : **
+<span class="lineNum">       6 </span>            : ** This file is part of the QtTest module of the Qt Toolkit.
+<span class="lineNum">       7 </span>            : **
+<span class="lineNum">       8 </span>            : ** $QT_BEGIN_LICENSE:LGPL$
+<span class="lineNum">       9 </span>            : ** Commercial License Usage
+<span class="lineNum">      10 </span>            : ** Licensees holding valid commercial Qt licenses may use this file in
+<span class="lineNum">      11 </span>            : ** accordance with the commercial license agreement provided with the
+<span class="lineNum">      12 </span>            : ** Software or, alternatively, in accordance with the terms contained in
+<span class="lineNum">      13 </span>            : ** a written agreement between you and Digia.  For licensing terms and
+<span class="lineNum">      14 </span>            : ** conditions see http://qt.digia.com/licensing.  For further information
+<span class="lineNum">      15 </span>            : ** use the contact form at http://qt.digia.com/contact-us.
+<span class="lineNum">      16 </span>            : **
+<span class="lineNum">      17 </span>            : ** GNU Lesser General Public License Usage
+<span class="lineNum">      18 </span>            : ** Alternatively, this file may be used under the terms of the GNU Lesser
+<span class="lineNum">      19 </span>            : ** General Public License version 2.1 as published by the Free Software
+<span class="lineNum">      20 </span>            : ** Foundation and appearing in the file LICENSE.LGPL included in the
+<span class="lineNum">      21 </span>            : ** packaging of this file.  Please review the following information to
+<span class="lineNum">      22 </span>            : ** ensure the GNU Lesser General Public License version 2.1 requirements
+<span class="lineNum">      23 </span>            : ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+<span class="lineNum">      24 </span>            : **
+<span class="lineNum">      25 </span>            : ** In addition, as a special exception, Digia gives you certain additional
+<span class="lineNum">      26 </span>            : ** rights.  These rights are described in the Digia Qt LGPL Exception
+<span class="lineNum">      27 </span>            : ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+<span class="lineNum">      28 </span>            : **
+<span class="lineNum">      29 </span>            : ** GNU General Public License Usage
+<span class="lineNum">      30 </span>            : ** Alternatively, this file may be used under the terms of the GNU
+<span class="lineNum">      31 </span>            : ** General Public License version 3.0 as published by the Free Software
+<span class="lineNum">      32 </span>            : ** Foundation and appearing in the file LICENSE.GPL included in the
+<span class="lineNum">      33 </span>            : ** packaging of this file.  Please review the following information to
+<span class="lineNum">      34 </span>            : ** ensure the GNU General Public License version 3.0 requirements will be
+<span class="lineNum">      35 </span>            : ** met: http://www.gnu.org/copyleft/gpl.html.
+<span class="lineNum">      36 </span>            : **
+<span class="lineNum">      37 </span>            : **
+<span class="lineNum">      38 </span>            : ** $QT_END_LICENSE$
+<span class="lineNum">      39 </span>            : **
+<span class="lineNum">      40 </span>            : ****************************************************************************/
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : #ifndef QTESTCASE_H
+<span class="lineNum">      43 </span>            : #define QTESTCASE_H
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &lt;QtTest/qtest_global.h&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : #include &lt;QtCore/qstring.h&gt;
+<span class="lineNum">      48 </span>            : #include &lt;QtCore/qnamespace.h&gt;
+<span class="lineNum">      49 </span>            : #include &lt;QtCore/qmetatype.h&gt;
+<span class="lineNum">      50 </span>            : #include &lt;QtCore/qtypetraits.h&gt;
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : QT_BEGIN_NAMESPACE
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            : #define QVERIFY(statement) \
+<span class="lineNum">      58 </span>            : do {\
+<span class="lineNum">      59 </span>            :     if (!QTest::qVerify((statement), #statement, &quot;&quot;, __FILE__, __LINE__))\
+<span class="lineNum">      60 </span>            :         return;\
+<span class="lineNum">      61 </span>            : } while (0)
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : #define QFAIL(message) \
+<span class="lineNum">      64 </span>            : do {\
+<span class="lineNum">      65 </span>            :     QTest::qFail(message, __FILE__, __LINE__);\
+<span class="lineNum">      66 </span>            :     return;\
+<span class="lineNum">      67 </span>            : } while (0)
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            : #define QVERIFY2(statement, description) \
+<span class="lineNum">      70 </span>            : do {\
+<span class="lineNum">      71 </span>            :     if (statement) {\
+<span class="lineNum">      72 </span>            :         if (!QTest::qVerify(true, #statement, (description), __FILE__, __LINE__))\
+<span class="lineNum">      73 </span>            :             return;\
+<span class="lineNum">      74 </span>            :     } else {\
+<span class="lineNum">      75 </span>            :         if (!QTest::qVerify(false, #statement, (description), __FILE__, __LINE__))\
+<span class="lineNum">      76 </span>            :             return;\
+<span class="lineNum">      77 </span>            :     }\
+<span class="lineNum">      78 </span>            : } while (0)
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : #define QCOMPARE(actual, expected) \
+<span class="lineNum">      81 </span>            : do {\
+<span class="lineNum">      82 </span>            :     if (!QTest::qCompare(actual, expected, #actual, #expected, __FILE__, __LINE__))\
+<span class="lineNum">      83 </span>            :         return;\
+<span class="lineNum">      84 </span>            : } while (0)
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            : // Will try to wait for the expression to become true while allowing event processing
+<span class="lineNum">      87 </span>            : #define QTRY_VERIFY_WITH_TIMEOUT(__expr, __timeout) \
+<span class="lineNum">      88 </span>            : do { \
+<span class="lineNum">      89 </span>            :     const int __step = 50; \
+<span class="lineNum">      90 </span>            :     const int __timeoutValue = __timeout; \
+<span class="lineNum">      91 </span>            :     if (!(__expr)) { \
+<span class="lineNum">      92 </span>            :         QTest::qWait(0); \
+<span class="lineNum">      93 </span>            :     } \
+<span class="lineNum">      94 </span>            :     for (int __i = 0; __i &lt; __timeoutValue &amp;&amp; !(__expr); __i+=__step) { \
+<span class="lineNum">      95 </span>            :         QTest::qWait(__step); \
+<span class="lineNum">      96 </span>            :     } \
+<span class="lineNum">      97 </span>            :     QVERIFY(__expr); \
+<span class="lineNum">      98 </span>            : } while (0)
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            : #define QTRY_VERIFY(__expr) QTRY_VERIFY_WITH_TIMEOUT(__expr, 5000)
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            : // Will try to wait for the comparison to become successful while allowing event processing
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            : #define QTRY_COMPARE_WITH_TIMEOUT(__expr, __expected, __timeout) \
+<span class="lineNum">     105 </span>            : do { \
+<span class="lineNum">     106 </span>            :     const int __step = 50; \
+<span class="lineNum">     107 </span>            :     const int __timeoutValue = __timeout; \
+<span class="lineNum">     108 </span>            :     if ((__expr) != (__expected)) { \
+<span class="lineNum">     109 </span>            :         QTest::qWait(0); \
+<span class="lineNum">     110 </span>            :     } \
+<span class="lineNum">     111 </span>            :     for (int __i = 0; __i &lt; __timeoutValue &amp;&amp; ((__expr) != (__expected)); __i+=__step) { \
+<span class="lineNum">     112 </span>            :         QTest::qWait(__step); \
+<span class="lineNum">     113 </span>            :     } \
+<span class="lineNum">     114 </span>            :     QCOMPARE(__expr, __expected); \
+<span class="lineNum">     115 </span>            : } while (0)
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            : #define QTRY_COMPARE(__expr, __expected) QTRY_COMPARE_WITH_TIMEOUT(__expr, __expected, 5000)
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            : #define QSKIP_INTERNAL(statement) \
+<span class="lineNum">     120 </span>            : do {\
+<span class="lineNum">     121 </span>            :     QTest::qSkip(statement, __FILE__, __LINE__);\
+<span class="lineNum">     122 </span>            :     return;\
+<span class="lineNum">     123 </span>            : } while (0)
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : #ifdef Q_COMPILER_VARIADIC_MACROS
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            : #define QSKIP(statement, ...) QSKIP_INTERNAL(statement)
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : #else
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : #define QSKIP(statement) QSKIP_INTERNAL(statement)
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            : #endif
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            : #define QEXPECT_FAIL(dataIndex, comment, mode)\
+<span class="lineNum">     136 </span>            : do {\
+<span class="lineNum">     137 </span>            :     if (!QTest::qExpectFail(dataIndex, comment, QTest::mode, __FILE__, __LINE__))\
+<span class="lineNum">     138 </span>            :         return;\
+<span class="lineNum">     139 </span>            : } while (0)
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            : #define QFETCH(type, name)\
+<span class="lineNum">     142 </span>            :     type name = *static_cast&lt;type *&gt;(QTest::qData(#name, ::qMetaTypeId&lt;type &gt;()))
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            : #define QFETCH_GLOBAL(type, name)\
+<span class="lineNum">     145 </span>            :     type name = *static_cast&lt;type *&gt;(QTest::qGlobalData(#name, ::qMetaTypeId&lt;type &gt;()))
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : #define QTEST(actual, testElement)\
+<span class="lineNum">     148 </span>            : do {\
+<span class="lineNum">     149 </span>            :     if (!QTest::qTest(actual, testElement, #actual, #testElement, __FILE__, __LINE__))\
+<span class="lineNum">     150 </span>            :         return;\
+<span class="lineNum">     151 </span>            : } while (0)
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : #define QWARN(msg)\
+<span class="lineNum">     154 </span>            :     QTest::qWarn(msg, __FILE__, __LINE__)
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            : #ifdef QT_TESTCASE_BUILDDIR
+<span class="lineNum">     157 </span>            : # define QFINDTESTDATA(basepath)\
+<span class="lineNum">     158 </span>            :     QTest::qFindTestData(basepath, __FILE__, __LINE__, QT_TESTCASE_BUILDDIR)
+<span class="lineNum">     159 </span>            : #else
+<span class="lineNum">     160 </span>            : # define QFINDTESTDATA(basepath)\
+<span class="lineNum">     161 </span>            :     QTest::qFindTestData(basepath, __FILE__, __LINE__)
+<span class="lineNum">     162 </span>            : #endif
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            : class QObject;
+<span class="lineNum">     165 </span>            : class QTestData;
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            : #define QTEST_COMPARE_DECL(KLASS)\
+<span class="lineNum">     168 </span>            :     template&lt;&gt; Q_TESTLIB_EXPORT char *toString&lt;KLASS &gt;(const KLASS &amp;);
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : namespace QTest
+<a name="171"><span class="lineNum">     171 </span>            : {</a>
+<span class="lineNum">     172 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     173 </span><span class="lineCov">          8 :     inline char *toString(const T &amp;)</span>
+<span class="lineNum">     174 </span>            :     {
+<span class="lineNum">     175 </span><span class="lineCov">          8 :         return 0;</span>
+<span class="lineNum">     176 </span>            :     }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :     Q_TESTLIB_EXPORT char *toHexRepresentation(const char *ba, int length);
+<span class="lineNum">     180 </span>            :     Q_TESTLIB_EXPORT char *toString(const char *);
+<span class="lineNum">     181 </span>            :     Q_TESTLIB_EXPORT char *toString(const void *);
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :     Q_TESTLIB_EXPORT int qExec(QObject *testObject, int argc = 0, char **argv = 0);
+<span class="lineNum">     184 </span>            :     Q_TESTLIB_EXPORT int qExec(QObject *testObject, const QStringList &amp;arguments);
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :     Q_TESTLIB_EXPORT bool qVerify(bool statement, const char *statementStr, const char *description,
+<span class="lineNum">     187 </span>            :                                  const char *file, int line);
+<span class="lineNum">     188 </span>            :     Q_TESTLIB_EXPORT void qFail(const char *statementStr, const char *file, int line);
+<span class="lineNum">     189 </span>            :     Q_TESTLIB_EXPORT void qSkip(const char *message, const char *file, int line);
+<span class="lineNum">     190 </span>            :     Q_TESTLIB_EXPORT bool qExpectFail(const char *dataIndex, const char *comment, TestFailMode mode,
+<span class="lineNum">     191 </span>            :                            const char *file, int line);
+<span class="lineNum">     192 </span>            :     Q_TESTLIB_EXPORT void qWarn(const char *message, const char *file = 0, int line = 0);
+<span class="lineNum">     193 </span>            :     Q_TESTLIB_EXPORT void ignoreMessage(QtMsgType type, const char *message);
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :     Q_TESTLIB_EXPORT QString qFindTestData(const char* basepath, const char* file = 0, int line = 0, const char* builddir = 0);
+<span class="lineNum">     196 </span>            :     Q_TESTLIB_EXPORT QString qFindTestData(const QString&amp; basepath, const char* file = 0, int line = 0, const char* builddir = 0);
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :     Q_TESTLIB_EXPORT void *qData(const char *tagName, int typeId);
+<span class="lineNum">     199 </span>            :     Q_TESTLIB_EXPORT void *qGlobalData(const char *tagName, int typeId);
+<span class="lineNum">     200 </span>            :     Q_TESTLIB_EXPORT void *qElementData(const char *elementName, int metaTypeId);
+<span class="lineNum">     201 </span>            :     Q_TESTLIB_EXPORT QObject *testObject();
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :     Q_TESTLIB_EXPORT const char *currentAppName();
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            :     Q_TESTLIB_EXPORT const char *currentTestFunction();
+<span class="lineNum">     206 </span>            :     Q_TESTLIB_EXPORT const char *currentDataTag();
+<span class="lineNum">     207 </span>            :     Q_TESTLIB_EXPORT bool currentTestFailed();
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :     Q_TESTLIB_EXPORT Qt::Key asciiToKey(char ascii);
+<span class="lineNum">     210 </span>            :     Q_TESTLIB_EXPORT char keyToAscii(Qt::Key key);
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :     Q_TESTLIB_EXPORT bool compare_helper(bool success, const char *failureMsg,
+<span class="lineNum">     213 </span>            :                                          char *val1, char *val2,
+<span class="lineNum">     214 </span>            :                                          const char *actual, const char *expected,
+<span class="lineNum">     215 </span>            :                                          const char *file, int line);
+<span class="lineNum">     216 </span>            :     Q_TESTLIB_EXPORT void qSleep(int ms);
+<span class="lineNum">     217 </span>            :     Q_TESTLIB_EXPORT void addColumnInternal(int id, const char *name);
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     220 </span>            :     inline void addColumn(const char *name, T * = 0)
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span>            :         typedef QtPrivate::is_same&lt;T, const char*&gt; QIsSameTConstChar;
+<span class="lineNum">     223 </span>            :         Q_STATIC_ASSERT_X(!QIsSameTConstChar::value, &quot;const char* is not allowed as a test data format.&quot;);
+<span class="lineNum">     224 </span>            :         addColumnInternal(qMetaTypeId&lt;T&gt;(), name);
+<span class="lineNum">     225 </span>            :     }
+<span class="lineNum">     226 </span>            :     Q_TESTLIB_EXPORT QTestData &amp;newRow(const char *dataTag);
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<span class="lineNum">     228 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     229 </span><span class="lineCov">          4 :     inline bool qCompare(T const &amp;t1, T const &amp;t2, const char *actual, const char *expected,</span>
+<span class="lineNum">     230 </span>            :                         const char *file, int line)
+<span class="lineNum">     231 </span>            :     {
+<span class="lineNum">     232 </span><span class="lineCov">          4 :         return compare_helper(t1 == t2, &quot;Compared values are not the same&quot;,</span>
+<span class="lineNum">     233 </span><span class="lineCov">          8 :                               toString&lt;T&gt;(t1), toString&lt;T&gt;(t2), actual, expected, file, line);</span>
+<span class="lineNum">     234 </span>            :     }
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :     Q_TESTLIB_EXPORT bool qCompare(float const &amp;t1, float const &amp;t2,
+<span class="lineNum">     237 </span>            :                     const char *actual, const char *expected, const char *file, int line);
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :     Q_TESTLIB_EXPORT bool qCompare(double const &amp;t1, double const &amp;t2,
+<span class="lineNum">     240 </span>            :                     const char *actual, const char *expected, const char *file, int line);
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            :     inline bool compare_ptr_helper(const void *t1, const void *t2, const char *actual,
+<span class="lineNum">     243 </span>            :                                    const char *expected, const char *file, int line)
+<span class="lineNum">     244 </span>            :     {
+<span class="lineNum">     245 </span>            :         return compare_helper(t1 == t2, &quot;Compared pointers are not the same&quot;,
+<span class="lineNum">     246 </span>            :                               toString(t1), toString(t2), actual, expected, file, line);
+<span class="lineNum">     247 </span>            :     }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :     Q_TESTLIB_EXPORT bool compare_string_helper(const char *t1, const char *t2, const char *actual,
+<span class="lineNum">     250 </span>            :                                       const char *expected, const char *file, int line);
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            : #ifndef Q_QDOC
+<span class="lineNum">     253 </span>            :     QTEST_COMPARE_DECL(short)
+<span class="lineNum">     254 </span>            :     QTEST_COMPARE_DECL(ushort)
+<span class="lineNum">     255 </span>            :     QTEST_COMPARE_DECL(int)
+<span class="lineNum">     256 </span>            :     QTEST_COMPARE_DECL(uint)
+<span class="lineNum">     257 </span>            :     QTEST_COMPARE_DECL(long)
+<span class="lineNum">     258 </span>            :     QTEST_COMPARE_DECL(ulong)
+<span class="lineNum">     259 </span>            :     QTEST_COMPARE_DECL(qint64)
+<span class="lineNum">     260 </span>            :     QTEST_COMPARE_DECL(quint64)
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :     QTEST_COMPARE_DECL(float)
+<span class="lineNum">     263 </span>            :     QTEST_COMPARE_DECL(double)
+<span class="lineNum">     264 </span>            :     QTEST_COMPARE_DECL(char)
+<span class="lineNum">     265 </span>            :     QTEST_COMPARE_DECL(bool)
+<span class="lineNum">     266 </span>            : #endif
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :     template &lt;typename T1, typename T2&gt;
+<span class="lineNum">     269 </span>            :     bool qCompare(T1 const &amp;, T2 const &amp;, const char *, const char *, const char *, int);
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :     inline bool qCompare(double const &amp;t1, float const &amp;t2, const char *actual,
+<span class="lineNum">     272 </span>            :                                  const char *expected, const char *file, int line)
+<span class="lineNum">     273 </span>            :     {
+<span class="lineNum">     274 </span>            :         return qCompare(qreal(t1), qreal(t2), actual, expected, file, line);
+<span class="lineNum">     275 </span>            :     }
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :     inline bool qCompare(float const &amp;t1, double const &amp;t2, const char *actual,
+<span class="lineNum">     278 </span>            :                                  const char *expected, const char *file, int line)
+<span class="lineNum">     279 </span>            :     {
+<span class="lineNum">     280 </span>            :         return qCompare(qreal(t1), qreal(t2), actual, expected, file, line);
+<span class="lineNum">     281 </span>            :     }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     284 </span>            :     inline bool qCompare(const T *t1, const T *t2, const char *actual, const char *expected,
+<span class="lineNum">     285 </span>            :                         const char *file, int line)
+<span class="lineNum">     286 </span>            :     {
+<span class="lineNum">     287 </span>            :         return compare_ptr_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     288 </span>            :     }
+<span class="lineNum">     289 </span>            :     template &lt;typename T&gt;
+<span class="lineNum">     290 </span>            :     inline bool qCompare(T *t1, T *t2, const char *actual, const char *expected,
+<span class="lineNum">     291 </span>            :                         const char *file, int line)
+<span class="lineNum">     292 </span>            :     {
+<span class="lineNum">     293 </span>            :         return compare_ptr_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     294 </span>            :     }
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span>            :     template &lt;typename T1, typename T2&gt;
+<span class="lineNum">     297 </span>            :     inline bool qCompare(const T1 *t1, const T2 *t2, const char *actual, const char *expected,
+<span class="lineNum">     298 </span>            :                         const char *file, int line)
+<span class="lineNum">     299 </span>            :     {
+<span class="lineNum">     300 </span>            :         return compare_ptr_helper(t1, static_cast&lt;const T1 *&gt;(t2), actual, expected, file, line);
+<span class="lineNum">     301 </span>            :     }
+<span class="lineNum">     302 </span>            :     template &lt;typename T1, typename T2&gt;
+<span class="lineNum">     303 </span>            :     inline bool qCompare(T1 *t1, T2 *t2, const char *actual, const char *expected,
+<span class="lineNum">     304 </span>            :                         const char *file, int line)
+<span class="lineNum">     305 </span>            :     {
+<span class="lineNum">     306 </span>            :         return compare_ptr_helper(const_cast&lt;const T1 *&gt;(t1),
+<span class="lineNum">     307 </span>            :                 static_cast&lt;const T1 *&gt;(const_cast&lt;const T2 *&gt;(t2)), actual, expected, file, line);
+<span class="lineNum">     308 </span>            :     }
+<span class="lineNum">     309 </span>            :     inline bool qCompare(const char *t1, const char *t2, const char *actual,
+<span class="lineNum">     310 </span>            :                                        const char *expected, const char *file, int line)
+<span class="lineNum">     311 </span>            :     {
+<span class="lineNum">     312 </span>            :         return compare_string_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     313 </span>            :     }
+<span class="lineNum">     314 </span>            :     inline bool qCompare(char *t1, char *t2, const char *actual, const char *expected,
+<span class="lineNum">     315 </span>            :                         const char *file, int line)
+<span class="lineNum">     316 </span>            :     {
+<span class="lineNum">     317 </span>            :         return compare_string_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     318 </span>            :     }
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span>            :     /* The next two overloads are for MSVC that shows problems with implicit
+<span class="lineNum">     321 </span>            :        conversions
+<span class="lineNum">     322 </span>            :      */
+<span class="lineNum">     323 </span>            :     inline bool qCompare(char *t1, const char *t2, const char *actual,
+<span class="lineNum">     324 </span>            :                          const char *expected, const char *file, int line)
+<span class="lineNum">     325 </span>            :     {
+<span class="lineNum">     326 </span>            :         return compare_string_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     327 </span>            :     }
+<span class="lineNum">     328 </span>            :     inline bool qCompare(const char *t1, char *t2, const char *actual,
+<span class="lineNum">     329 </span>            :                          const char *expected, const char *file, int line)
+<span class="lineNum">     330 </span>            :     {
+<span class="lineNum">     331 </span>            :         return compare_string_helper(t1, t2, actual, expected, file, line);
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :     // NokiaX86 and RVCT do not like implicitly comparing bool with int
+<span class="lineNum">     335 </span>            :     inline bool qCompare(bool const &amp;t1, int const &amp;t2,
+<span class="lineNum">     336 </span>            :                     const char *actual, const char *expected, const char *file, int line)
+<span class="lineNum">     337 </span>            :     {
+<span class="lineNum">     338 </span>            :         return qCompare(int(t1), t2, actual, expected, file, line);
+<span class="lineNum">     339 </span>            :     }
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :     template &lt;class T&gt;
+<span class="lineNum">     343 </span>            :     inline bool qTest(const T&amp; actual, const char *elementName, const char *actualStr,
+<span class="lineNum">     344 </span>            :                      const char *expected, const char *file, int line)
+<span class="lineNum">     345 </span>            :     {
+<span class="lineNum">     346 </span>            :         return qCompare(actual, *static_cast&lt;const T *&gt;(QTest::qElementData(elementName,
+<span class="lineNum">     347 </span>            :                        qMetaTypeId&lt;T&gt;())), actualStr, expected, file, line);
+<span class="lineNum">     348 </span>            :     }
+<span class="lineNum">     349 </span>            : }
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            : #undef QTEST_COMPARE_DECL
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            : QT_END_NAMESPACE
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

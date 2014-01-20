@@ -1,0 +1,1661 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /usr/include/c++/4.8/bitset</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">usr/include/c++/4.8</a> - bitset<span style="font-size: 80%;"> (source / <a href="bitset.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // &lt;bitset&gt; -*- C++ -*-</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : // Copyright (C) 2001-2013 Free Software Foundation, Inc.
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : // This file is part of the GNU ISO C++ Library.  This library is free
+<span class="lineNum">       6 </span>            : // software; you can redistribute it and/or modify it under the
+<span class="lineNum">       7 </span>            : // terms of the GNU General Public License as published by the
+<span class="lineNum">       8 </span>            : // Free Software Foundation; either version 3, or (at your option)
+<span class="lineNum">       9 </span>            : // any later version.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : // This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            : // but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            : // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<span class="lineNum">      14 </span>            : // GNU General Public License for more details.
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : // Under Section 7 of GPL version 3, you are granted additional
+<span class="lineNum">      17 </span>            : // permissions described in the GCC Runtime Library Exception, version
+<span class="lineNum">      18 </span>            : // 3.1, as published by the Free Software Foundation.
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // You should have received a copy of the GNU General Public License and
+<span class="lineNum">      21 </span>            : // a copy of the GCC Runtime Library Exception along with this program;
+<span class="lineNum">      22 </span>            : // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<span class="lineNum">      23 </span>            : // &lt;http://www.gnu.org/licenses/&gt;.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /*
+<span class="lineNum">      26 </span>            :  * Copyright (c) 1998
+<span class="lineNum">      27 </span>            :  * Silicon Graphics Computer Systems, Inc.
+<span class="lineNum">      28 </span>            :  *
+<span class="lineNum">      29 </span>            :  * Permission to use, copy, modify, distribute and sell this software
+<span class="lineNum">      30 </span>            :  * and its documentation for any purpose is hereby granted without fee,
+<span class="lineNum">      31 </span>            :  * provided that the above copyright notice appear in all copies and
+<span class="lineNum">      32 </span>            :  * that both that copyright notice and this permission notice appear
+<span class="lineNum">      33 </span>            :  * in supporting documentation.  Silicon Graphics makes no
+<span class="lineNum">      34 </span>            :  * representations about the suitability of this software for any
+<span class="lineNum">      35 </span>            :  * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<span class="lineNum">      36 </span>            :  */
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : /** @file include/bitset
+<span class="lineNum">      39 </span>            :  *  This is a Standard C++ Library header.
+<span class="lineNum">      40 </span>            :  */
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : #ifndef _GLIBCXX_BITSET
+<span class="lineNum">      43 </span>            : #define _GLIBCXX_BITSET 1
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #pragma GCC system_header
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : #include &lt;string&gt;
+<span class="lineNum">      48 </span>            : #include &lt;bits/functexcept.h&gt;   // For invalid_argument, out_of_range,
+<span class="lineNum">      49 </span>            :                                 // overflow_error
+<span class="lineNum">      50 </span>            : #include &lt;iosfwd&gt;
+<span class="lineNum">      51 </span>            : #include &lt;bits/cxxabi_forced.h&gt;
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : #define _GLIBCXX_BITSET_BITS_PER_WORD  (__CHAR_BIT__ * __SIZEOF_LONG__)
+<span class="lineNum">      54 </span>            : #define _GLIBCXX_BITSET_WORDS(__n) \
+<span class="lineNum">      55 </span>            :   ((__n) / _GLIBCXX_BITSET_BITS_PER_WORD + \
+<span class="lineNum">      56 </span>            :    ((__n) % _GLIBCXX_BITSET_BITS_PER_WORD == 0 ? 0 : 1))
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : #define _GLIBCXX_BITSET_BITS_PER_ULL (__CHAR_BIT__ * __SIZEOF_LONG_LONG__)
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            : _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :   /**
+<span class="lineNum">      65 </span>            :    *  Base class, general case.  It is a class invariant that _Nw will be
+<span class="lineNum">      66 </span>            :    *  nonnegative.
+<span class="lineNum">      67 </span>            :    *
+<span class="lineNum">      68 </span>            :    *  See documentation for bitset.
+<span class="lineNum">      69 </span>            :   */
+<span class="lineNum">      70 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">      71 </span>            :     struct _Base_bitset
+<span class="lineNum">      72 </span>            :     {
+<span class="lineNum">      73 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :       /// 0 is the least significant word.
+<span class="lineNum">      76 </span>            :       _WordT            _M_w[_Nw];
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :       _GLIBCXX_CONSTEXPR _Base_bitset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">      79 </span>            :       : _M_w() { }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">      82 </span>            :       constexpr _Base_bitset(unsigned long long __val) noexcept
+<span class="lineNum">      83 </span>            :       : _M_w{ _WordT(__val)
+<span class="lineNum">      84 </span>            : #if __SIZEOF_LONG_LONG__ &gt; __SIZEOF_LONG__
+<span class="lineNum">      85 </span>            :                , _WordT(__val &gt;&gt; _GLIBCXX_BITSET_BITS_PER_WORD)
+<span class="lineNum">      86 </span>            : #endif
+<span class="lineNum">      87 </span>            :        } { }
+<span class="lineNum">      88 </span>            : #else
+<span class="lineNum">      89 </span>            :       _Base_bitset(unsigned long __val)
+<span class="lineNum">      90 </span>            :       : _M_w()
+<span class="lineNum">      91 </span>            :       { _M_w[0] = __val; }
+<span class="lineNum">      92 </span>            : #endif
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">      95 </span>            :       _S_whichword(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">      96 </span>            :       { return __pos / _GLIBCXX_BITSET_BITS_PER_WORD; }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">      99 </span>            :       _S_whichbyte(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     100 </span>            :       { return (__pos % _GLIBCXX_BITSET_BITS_PER_WORD) / __CHAR_BIT__; }
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     103 </span>            :       _S_whichbit(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     104 </span>            :       { return __pos % _GLIBCXX_BITSET_BITS_PER_WORD; }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :       static _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     107 </span>            :       _S_maskbit(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     108 </span>            :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :       _WordT&amp;
+<span class="lineNum">     111 </span>            :       _M_getword(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     112 </span>            :       { return _M_w[_S_whichword(__pos)]; }
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     115 </span>            :       _M_getword(size_t __pos) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     116 </span>            :       { return _M_w[_S_whichword(__pos)]; }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     119 </span>            :       const _WordT*
+<span class="lineNum">     120 </span>            :       _M_getdata() const noexcept
+<span class="lineNum">     121 </span>            :       { return _M_w; }
+<span class="lineNum">     122 </span>            : #endif
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :       _WordT&amp;
+<span class="lineNum">     125 </span>            :       _M_hiword() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     126 </span>            :       { return _M_w[_Nw - 1]; }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     129 </span>            :       _M_hiword() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     130 </span>            :       { return _M_w[_Nw - 1]; }
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :       void
+<span class="lineNum">     133 </span>            :       _M_do_and(const _Base_bitset&lt;_Nw&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     134 </span>            :       {
+<span class="lineNum">     135 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     136 </span>            :           _M_w[__i] &amp;= __x._M_w[__i];
+<span class="lineNum">     137 </span>            :       }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :       void
+<span class="lineNum">     140 </span>            :       _M_do_or(const _Base_bitset&lt;_Nw&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     141 </span>            :       {
+<span class="lineNum">     142 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     143 </span>            :           _M_w[__i] |= __x._M_w[__i];
+<span class="lineNum">     144 </span>            :       }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :       void
+<span class="lineNum">     147 </span>            :       _M_do_xor(const _Base_bitset&lt;_Nw&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     148 </span>            :       {
+<span class="lineNum">     149 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     150 </span>            :           _M_w[__i] ^= __x._M_w[__i];
+<span class="lineNum">     151 </span>            :       }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :       void
+<span class="lineNum">     154 </span>            :       _M_do_left_shift(size_t __shift) _GLIBCXX_NOEXCEPT;
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :       void
+<span class="lineNum">     157 </span>            :       _M_do_right_shift(size_t __shift) _GLIBCXX_NOEXCEPT;
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :       void
+<span class="lineNum">     160 </span>            :       _M_do_flip() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     161 </span>            :       {
+<span class="lineNum">     162 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     163 </span>            :           _M_w[__i] = ~_M_w[__i];
+<span class="lineNum">     164 </span>            :       }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :       void
+<span class="lineNum">     167 </span>            :       _M_do_set() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     168 </span>            :       {
+<span class="lineNum">     169 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     170 </span>            :           _M_w[__i] = ~static_cast&lt;_WordT&gt;(0);
+<span class="lineNum">     171 </span>            :       }
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :       void
+<span class="lineNum">     174 </span>            :       _M_do_reset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     175 </span>            :       { __builtin_memset(_M_w, 0, _Nw * sizeof(_WordT)); }
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :       bool
+<span class="lineNum">     178 </span>            :       _M_is_equal(const _Base_bitset&lt;_Nw&gt;&amp; __x) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     179 </span>            :       {
+<span class="lineNum">     180 </span>            :         for (size_t __i = 0; __i &lt; _Nw; ++__i)
+<span class="lineNum">     181 </span>            :           if (_M_w[__i] != __x._M_w[__i])
+<span class="lineNum">     182 </span>            :             return false;
+<span class="lineNum">     183 </span>            :         return true;
+<span class="lineNum">     184 </span>            :       }
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :       template&lt;size_t _Nb&gt;
+<span class="lineNum">     187 </span>            :         bool
+<span class="lineNum">     188 </span>            :         _M_are_all() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     189 </span>            :         {
+<span class="lineNum">     190 </span>            :           for (size_t __i = 0; __i &lt; _Nw - 1; __i++)
+<span class="lineNum">     191 </span>            :             if (_M_w[__i] != ~static_cast&lt;_WordT&gt;(0))
+<span class="lineNum">     192 </span>            :               return false;
+<span class="lineNum">     193 </span>            :           return _M_hiword() == (~static_cast&lt;_WordT&gt;(0)
+<span class="lineNum">     194 </span>            :                                  &gt;&gt; (_Nw * _GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">     195 </span>            :                                      - _Nb));
+<span class="lineNum">     196 </span>            :         }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :       bool
+<span class="lineNum">     199 </span>            :       _M_is_any() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     200 </span>            :       {
+<span class="lineNum">     201 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     202 </span>            :           if (_M_w[__i] != static_cast&lt;_WordT&gt;(0))
+<span class="lineNum">     203 </span>            :             return true;
+<span class="lineNum">     204 </span>            :         return false;
+<span class="lineNum">     205 </span>            :       }
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :       size_t
+<span class="lineNum">     208 </span>            :       _M_do_count() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     209 </span>            :       {
+<span class="lineNum">     210 </span>            :         size_t __result = 0;
+<span class="lineNum">     211 </span>            :         for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     212 </span>            :           __result += __builtin_popcountl(_M_w[__i]);
+<span class="lineNum">     213 </span>            :         return __result;
+<span class="lineNum">     214 </span>            :       }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :       unsigned long
+<span class="lineNum">     217 </span>            :       _M_do_to_ulong() const;
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     220 </span>            :       unsigned long long
+<span class="lineNum">     221 </span>            :       _M_do_to_ullong() const;
+<span class="lineNum">     222 </span>            : #endif
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :       // find first &quot;on&quot; bit
+<span class="lineNum">     225 </span>            :       size_t
+<span class="lineNum">     226 </span>            :       _M_do_find_first(size_t) const _GLIBCXX_NOEXCEPT;
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :       // find the next &quot;on&quot; bit that follows &quot;prev&quot;
+<span class="lineNum">     229 </span>            :       size_t
+<span class="lineNum">     230 </span>            :       _M_do_find_next(size_t, size_t) const _GLIBCXX_NOEXCEPT;
+<span class="lineNum">     231 </span>            :     };
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :   // Definitions of non-inline functions from _Base_bitset.
+<span class="lineNum">     234 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     235 </span>            :     void
+<span class="lineNum">     236 </span>            :     _Base_bitset&lt;_Nw&gt;::_M_do_left_shift(size_t __shift) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span>            :       if (__builtin_expect(__shift != 0, 1))
+<span class="lineNum">     239 </span>            :         {
+<span class="lineNum">     240 </span>            :           const size_t __wshift = __shift / _GLIBCXX_BITSET_BITS_PER_WORD;
+<span class="lineNum">     241 </span>            :           const size_t __offset = __shift % _GLIBCXX_BITSET_BITS_PER_WORD;
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            :           if (__offset == 0)
+<span class="lineNum">     244 </span>            :             for (size_t __n = _Nw - 1; __n &gt;= __wshift; --__n)
+<span class="lineNum">     245 </span>            :               _M_w[__n] = _M_w[__n - __wshift];
+<span class="lineNum">     246 </span>            :           else
+<span class="lineNum">     247 </span>            :             {
+<span class="lineNum">     248 </span>            :               const size_t __sub_offset = (_GLIBCXX_BITSET_BITS_PER_WORD 
+<span class="lineNum">     249 </span>            :                                            - __offset);
+<span class="lineNum">     250 </span>            :               for (size_t __n = _Nw - 1; __n &gt; __wshift; --__n)
+<span class="lineNum">     251 </span>            :                 _M_w[__n] = ((_M_w[__n - __wshift] &lt;&lt; __offset)
+<span class="lineNum">     252 </span>            :                              | (_M_w[__n - __wshift - 1] &gt;&gt; __sub_offset));
+<span class="lineNum">     253 </span>            :               _M_w[__wshift] = _M_w[0] &lt;&lt; __offset;
+<span class="lineNum">     254 </span>            :             }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :           std::fill(_M_w + 0, _M_w + __wshift, static_cast&lt;_WordT&gt;(0));
+<span class="lineNum">     257 </span>            :         }
+<span class="lineNum">     258 </span>            :     }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     261 </span>            :     void
+<span class="lineNum">     262 </span>            :     _Base_bitset&lt;_Nw&gt;::_M_do_right_shift(size_t __shift) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     263 </span>            :     {
+<span class="lineNum">     264 </span>            :       if (__builtin_expect(__shift != 0, 1))
+<span class="lineNum">     265 </span>            :         {
+<span class="lineNum">     266 </span>            :           const size_t __wshift = __shift / _GLIBCXX_BITSET_BITS_PER_WORD;
+<span class="lineNum">     267 </span>            :           const size_t __offset = __shift % _GLIBCXX_BITSET_BITS_PER_WORD;
+<span class="lineNum">     268 </span>            :           const size_t __limit = _Nw - __wshift - 1;
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :           if (__offset == 0)
+<span class="lineNum">     271 </span>            :             for (size_t __n = 0; __n &lt;= __limit; ++__n)
+<span class="lineNum">     272 </span>            :               _M_w[__n] = _M_w[__n + __wshift];
+<span class="lineNum">     273 </span>            :           else
+<span class="lineNum">     274 </span>            :             {
+<span class="lineNum">     275 </span>            :               const size_t __sub_offset = (_GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">     276 </span>            :                                            - __offset);
+<span class="lineNum">     277 </span>            :               for (size_t __n = 0; __n &lt; __limit; ++__n)
+<span class="lineNum">     278 </span>            :                 _M_w[__n] = ((_M_w[__n + __wshift] &gt;&gt; __offset)
+<span class="lineNum">     279 </span>            :                              | (_M_w[__n + __wshift + 1] &lt;&lt; __sub_offset));
+<span class="lineNum">     280 </span>            :               _M_w[__limit] = _M_w[_Nw-1] &gt;&gt; __offset;
+<span class="lineNum">     281 </span>            :             }
+<span class="lineNum">     282 </span>            :           
+<span class="lineNum">     283 </span>            :           std::fill(_M_w + __limit + 1, _M_w + _Nw, static_cast&lt;_WordT&gt;(0));
+<span class="lineNum">     284 </span>            :         }
+<span class="lineNum">     285 </span>            :     }
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     288 </span>            :     unsigned long
+<span class="lineNum">     289 </span>            :     _Base_bitset&lt;_Nw&gt;::_M_do_to_ulong() const
+<span class="lineNum">     290 </span>            :     {
+<span class="lineNum">     291 </span>            :       for (size_t __i = 1; __i &lt; _Nw; ++__i)
+<span class="lineNum">     292 </span>            :         if (_M_w[__i])
+<span class="lineNum">     293 </span>            :           __throw_overflow_error(__N(&quot;_Base_bitset::_M_do_to_ulong&quot;));
+<span class="lineNum">     294 </span>            :       return _M_w[0];
+<span class="lineNum">     295 </span>            :     }
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     298 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     299 </span>            :     unsigned long long
+<span class="lineNum">     300 </span>            :     _Base_bitset&lt;_Nw&gt;::_M_do_to_ullong() const
+<span class="lineNum">     301 </span>            :     {
+<span class="lineNum">     302 </span>            :       const bool __dw = sizeof(unsigned long long) &gt; sizeof(unsigned long);
+<span class="lineNum">     303 </span>            :       for (size_t __i = 1 + __dw; __i &lt; _Nw; ++__i)
+<span class="lineNum">     304 </span>            :         if (_M_w[__i])
+<span class="lineNum">     305 </span>            :           __throw_overflow_error(__N(&quot;_Base_bitset::_M_do_to_ullong&quot;));
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span>            :       if (__dw)
+<span class="lineNum">     308 </span>            :         return _M_w[0] + (static_cast&lt;unsigned long long&gt;(_M_w[1])
+<span class="lineNum">     309 </span>            :                           &lt;&lt; _GLIBCXX_BITSET_BITS_PER_WORD);
+<span class="lineNum">     310 </span>            :       return _M_w[0];
+<span class="lineNum">     311 </span>            :     }
+<span class="lineNum">     312 </span>            : #endif
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     315 </span>            :     size_t
+<span class="lineNum">     316 </span>            :     _Base_bitset&lt;_Nw&gt;::
+<span class="lineNum">     317 </span>            :     _M_do_find_first(size_t __not_found) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     318 </span>            :     {
+<span class="lineNum">     319 </span>            :       for (size_t __i = 0; __i &lt; _Nw; __i++)
+<span class="lineNum">     320 </span>            :         {
+<span class="lineNum">     321 </span>            :           _WordT __thisword = _M_w[__i];
+<span class="lineNum">     322 </span>            :           if (__thisword != static_cast&lt;_WordT&gt;(0))
+<span class="lineNum">     323 </span>            :             return (__i * _GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">     324 </span>            :                     + __builtin_ctzl(__thisword));
+<span class="lineNum">     325 </span>            :         }
+<span class="lineNum">     326 </span>            :       // not found, so return an indication of failure.
+<span class="lineNum">     327 </span>            :       return __not_found;
+<span class="lineNum">     328 </span>            :     }
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span>            :   template&lt;size_t _Nw&gt;
+<span class="lineNum">     331 </span>            :     size_t
+<span class="lineNum">     332 </span>            :     _Base_bitset&lt;_Nw&gt;::
+<span class="lineNum">     333 </span>            :     _M_do_find_next(size_t __prev, size_t __not_found) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     334 </span>            :     {
+<span class="lineNum">     335 </span>            :       // make bound inclusive
+<span class="lineNum">     336 </span>            :       ++__prev;
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span>            :       // check out of bounds
+<span class="lineNum">     339 </span>            :       if (__prev &gt;= _Nw * _GLIBCXX_BITSET_BITS_PER_WORD)
+<span class="lineNum">     340 </span>            :         return __not_found;
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :       // search first word
+<span class="lineNum">     343 </span>            :       size_t __i = _S_whichword(__prev);
+<span class="lineNum">     344 </span>            :       _WordT __thisword = _M_w[__i];
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :       // mask off bits below bound
+<span class="lineNum">     347 </span>            :       __thisword &amp;= (~static_cast&lt;_WordT&gt;(0)) &lt;&lt; _S_whichbit(__prev);
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            :       if (__thisword != static_cast&lt;_WordT&gt;(0))
+<span class="lineNum">     350 </span>            :         return (__i * _GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">     351 </span>            :                 + __builtin_ctzl(__thisword));
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :       // check subsequent words
+<span class="lineNum">     354 </span>            :       __i++;
+<span class="lineNum">     355 </span>            :       for (; __i &lt; _Nw; __i++)
+<span class="lineNum">     356 </span>            :         {
+<span class="lineNum">     357 </span>            :           __thisword = _M_w[__i];
+<span class="lineNum">     358 </span>            :           if (__thisword != static_cast&lt;_WordT&gt;(0))
+<span class="lineNum">     359 </span>            :             return (__i * _GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">     360 </span>            :                     + __builtin_ctzl(__thisword));
+<span class="lineNum">     361 </span>            :         }
+<span class="lineNum">     362 </span>            :       // not found, so return an indication of failure.
+<span class="lineNum">     363 </span>            :       return __not_found;
+<span class="lineNum">     364 </span>            :     } // end _M_do_find_next
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :   /**
+<span class="lineNum">     367 </span>            :    *  Base class, specialization for a single word.
+<span class="lineNum">     368 </span>            :    *
+<span class="lineNum">     369 </span>            :    *  See documentation for bitset.
+<span class="lineNum">     370 </span>            :   */
+<span class="lineNum">     371 </span>            :   template&lt;&gt;
+<span class="lineNum">     372 </span>            :     struct _Base_bitset&lt;1&gt;
+<span class="lineNum">     373 </span>            :     {
+<span class="lineNum">     374 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">     375 </span>            :       _WordT _M_w;
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span>            :       _GLIBCXX_CONSTEXPR _Base_bitset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     378 </span>            :       : _M_w(0)
+<span class="lineNum">     379 </span>            :       { }
+<a name="380"><span class="lineNum">     380 </span>            : </a>
+<span class="lineNum">     381 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     382 </span><span class="lineCov">         14 :       constexpr _Base_bitset(unsigned long long __val) noexcept</span>
+<span class="lineNum">     383 </span>            : #else
+<span class="lineNum">     384 </span>            :       _Base_bitset(unsigned long __val)
+<span class="lineNum">     385 </span>            : #endif
+<span class="lineNum">     386 </span><span class="lineCov">         14 :       : _M_w(__val)</span>
+<span class="lineNum">     387 </span><span class="lineCov">         14 :       { }</span>
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     390 </span>            :       _S_whichword(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     391 </span>            :       { return __pos / _GLIBCXX_BITSET_BITS_PER_WORD; }
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     394 </span>            :       _S_whichbyte(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     395 </span>            :       { return (__pos % _GLIBCXX_BITSET_BITS_PER_WORD) / __CHAR_BIT__; }
+<a name="396"><span class="lineNum">     396 </span>            : </a>
+<span class="lineNum">     397 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     398 </span><span class="lineCov">       3072 :       _S_whichbit(size_t __pos) _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     399 </span><span class="lineCov">       3072 :       {  return __pos % _GLIBCXX_BITSET_BITS_PER_WORD; }</span>
+<a name="400"><span class="lineNum">     400 </span>            : </a>
+<span class="lineNum">     401 </span>            :       static _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     402 </span><span class="lineCov">       1536 :       _S_maskbit(size_t __pos) _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     403 </span><span class="lineCov">       1536 :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }</span>
+<a name="404"><span class="lineNum">     404 </span>            : </a>
+<span class="lineNum">     405 </span>            :       _WordT&amp;
+<span class="lineNum">     406 </span><span class="lineCov">       1536 :       _M_getword(size_t) _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     407 </span><span class="lineCov">       1536 :       { return _M_w; }</span>
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     410 </span>            :       _M_getword(size_t) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     411 </span>            :       { return _M_w; }
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     414 </span>            :       const _WordT*
+<span class="lineNum">     415 </span>            :       _M_getdata() const noexcept
+<span class="lineNum">     416 </span>            :       { return &amp;_M_w; }
+<span class="lineNum">     417 </span>            : #endif
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            :       _WordT&amp;
+<span class="lineNum">     420 </span>            :       _M_hiword() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     421 </span>            :       { return _M_w; }
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     424 </span>            :       _M_hiword() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     425 </span>            :       { return _M_w; }
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :       void
+<span class="lineNum">     428 </span>            :       _M_do_and(const _Base_bitset&lt;1&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     429 </span>            :       { _M_w &amp;= __x._M_w; }
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            :       void
+<span class="lineNum">     432 </span>            :       _M_do_or(const _Base_bitset&lt;1&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     433 </span>            :       { _M_w |= __x._M_w; }
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span>            :       void
+<span class="lineNum">     436 </span>            :       _M_do_xor(const _Base_bitset&lt;1&gt;&amp; __x) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     437 </span>            :       { _M_w ^= __x._M_w; }
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :       void
+<span class="lineNum">     440 </span>            :       _M_do_left_shift(size_t __shift) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     441 </span>            :       { _M_w &lt;&lt;= __shift; }
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span>            :       void
+<span class="lineNum">     444 </span>            :       _M_do_right_shift(size_t __shift) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     445 </span>            :       { _M_w &gt;&gt;= __shift; }
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span>            :       void
+<span class="lineNum">     448 </span>            :       _M_do_flip() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     449 </span>            :       { _M_w = ~_M_w; }
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span>            :       void
+<span class="lineNum">     452 </span>            :       _M_do_set() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     453 </span>            :       { _M_w = ~static_cast&lt;_WordT&gt;(0); }
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span>            :       void
+<span class="lineNum">     456 </span>            :       _M_do_reset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     457 </span>            :       { _M_w = 0; }
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span>            :       bool
+<span class="lineNum">     460 </span>            :       _M_is_equal(const _Base_bitset&lt;1&gt;&amp; __x) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     461 </span>            :       { return _M_w == __x._M_w; }
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            :       template&lt;size_t _Nb&gt;
+<span class="lineNum">     464 </span>            :         bool
+<span class="lineNum">     465 </span>            :         _M_are_all() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     466 </span>            :         { return _M_w == (~static_cast&lt;_WordT&gt;(0)
+<span class="lineNum">     467 </span>            :                           &gt;&gt; (_GLIBCXX_BITSET_BITS_PER_WORD - _Nb)); }
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span>            :       bool
+<span class="lineNum">     470 </span>            :       _M_is_any() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     471 </span>            :       { return _M_w != 0; }
+<span class="lineNum">     472 </span>            : 
+<span class="lineNum">     473 </span>            :       size_t
+<span class="lineNum">     474 </span>            :       _M_do_count() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     475 </span>            :       { return __builtin_popcountl(_M_w); }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            :       unsigned long
+<span class="lineNum">     478 </span>            :       _M_do_to_ulong() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     479 </span>            :       { return _M_w; }
+<span class="lineNum">     480 </span>            : 
+<a name="481"><span class="lineNum">     481 </span>            : #if __cplusplus &gt;= 201103L</a>
+<span class="lineNum">     482 </span>            :       unsigned long long
+<span class="lineNum">     483 </span><span class="lineCov">         10 :       _M_do_to_ullong() const noexcept</span>
+<span class="lineNum">     484 </span><span class="lineCov">         10 :       { return _M_w; }</span>
+<span class="lineNum">     485 </span>            : #endif
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span>            :       size_t
+<span class="lineNum">     488 </span>            :       _M_do_find_first(size_t __not_found) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     489 </span>            :       {
+<span class="lineNum">     490 </span>            :         if (_M_w != 0)
+<span class="lineNum">     491 </span>            :           return __builtin_ctzl(_M_w);
+<span class="lineNum">     492 </span>            :         else
+<span class="lineNum">     493 </span>            :           return __not_found;
+<span class="lineNum">     494 </span>            :       }
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :       // find the next &quot;on&quot; bit that follows &quot;prev&quot;
+<span class="lineNum">     497 </span>            :       size_t
+<span class="lineNum">     498 </span>            :       _M_do_find_next(size_t __prev, size_t __not_found) const
+<span class="lineNum">     499 </span>            :         _GLIBCXX_NOEXCEPT
+<span class="lineNum">     500 </span>            :       {
+<span class="lineNum">     501 </span>            :         ++__prev;
+<span class="lineNum">     502 </span>            :         if (__prev &gt;= ((size_t) _GLIBCXX_BITSET_BITS_PER_WORD))
+<span class="lineNum">     503 </span>            :           return __not_found;
+<span class="lineNum">     504 </span>            : 
+<span class="lineNum">     505 </span>            :         _WordT __x = _M_w &gt;&gt; __prev;
+<span class="lineNum">     506 </span>            :         if (__x != 0)
+<span class="lineNum">     507 </span>            :           return __builtin_ctzl(__x) + __prev;
+<span class="lineNum">     508 </span>            :         else
+<span class="lineNum">     509 </span>            :           return __not_found;
+<span class="lineNum">     510 </span>            :       }
+<span class="lineNum">     511 </span>            :     };
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span>            :   /**
+<span class="lineNum">     514 </span>            :    *  Base class, specialization for no storage (zero-length %bitset).
+<span class="lineNum">     515 </span>            :    *
+<span class="lineNum">     516 </span>            :    *  See documentation for bitset.
+<span class="lineNum">     517 </span>            :   */
+<span class="lineNum">     518 </span>            :   template&lt;&gt;
+<span class="lineNum">     519 </span>            :     struct _Base_bitset&lt;0&gt;
+<span class="lineNum">     520 </span>            :     {
+<span class="lineNum">     521 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span>            :       _GLIBCXX_CONSTEXPR _Base_bitset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     524 </span>            :       { }
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     527 </span>            :       constexpr _Base_bitset(unsigned long long) noexcept
+<span class="lineNum">     528 </span>            : #else
+<span class="lineNum">     529 </span>            :       _Base_bitset(unsigned long)
+<span class="lineNum">     530 </span>            : #endif
+<span class="lineNum">     531 </span>            :       { }
+<span class="lineNum">     532 </span>            : 
+<span class="lineNum">     533 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     534 </span>            :       _S_whichword(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     535 </span>            :       { return __pos / _GLIBCXX_BITSET_BITS_PER_WORD; }
+<span class="lineNum">     536 </span>            : 
+<span class="lineNum">     537 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     538 </span>            :       _S_whichbyte(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     539 </span>            :       { return (__pos % _GLIBCXX_BITSET_BITS_PER_WORD) / __CHAR_BIT__; }
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span>            :       static _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">     542 </span>            :       _S_whichbit(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     543 </span>            :       {  return __pos % _GLIBCXX_BITSET_BITS_PER_WORD; }
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span>            :       static _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     546 </span>            :       _S_maskbit(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     547 </span>            :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span>            :       // This would normally give access to the data.  The bounds-checking
+<span class="lineNum">     550 </span>            :       // in the bitset class will prevent the user from getting this far,
+<span class="lineNum">     551 </span>            :       // but (1) it must still return an lvalue to compile, and (2) the
+<span class="lineNum">     552 </span>            :       // user might call _Unchecked_set directly, in which case this /needs/
+<span class="lineNum">     553 </span>            :       // to fail.  Let's not penalize zero-length users unless they actually
+<span class="lineNum">     554 </span>            :       // make an unchecked call; all the memory ugliness is therefore
+<span class="lineNum">     555 </span>            :       // localized to this single should-never-get-this-far function.
+<span class="lineNum">     556 </span>            :       _WordT&amp;
+<span class="lineNum">     557 </span>            :       _M_getword(size_t) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     558 </span>            :       {
+<span class="lineNum">     559 </span>            :         __throw_out_of_range(__N(&quot;_Base_bitset::_M_getword&quot;)); 
+<span class="lineNum">     560 </span>            :         return *new _WordT;
+<span class="lineNum">     561 </span>            :       }
+<span class="lineNum">     562 </span>            : 
+<span class="lineNum">     563 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     564 </span>            :       _M_getword(size_t __pos) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     565 </span>            :       { return 0; }
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span>            :       _GLIBCXX_CONSTEXPR _WordT
+<span class="lineNum">     568 </span>            :       _M_hiword() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     569 </span>            :       { return 0; }
+<span class="lineNum">     570 </span>            : 
+<span class="lineNum">     571 </span>            :       void
+<span class="lineNum">     572 </span>            :       _M_do_and(const _Base_bitset&lt;0&gt;&amp;) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     573 </span>            :       { }
+<span class="lineNum">     574 </span>            : 
+<span class="lineNum">     575 </span>            :       void
+<span class="lineNum">     576 </span>            :       _M_do_or(const _Base_bitset&lt;0&gt;&amp;) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     577 </span>            :       { }
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span>            :       void
+<span class="lineNum">     580 </span>            :       _M_do_xor(const _Base_bitset&lt;0&gt;&amp;) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     581 </span>            :       { }
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span>            :       void
+<span class="lineNum">     584 </span>            :       _M_do_left_shift(size_t) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     585 </span>            :       { }
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span>            :       void
+<span class="lineNum">     588 </span>            :       _M_do_right_shift(size_t) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     589 </span>            :       { }
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            :       void
+<span class="lineNum">     592 </span>            :       _M_do_flip() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     593 </span>            :       { }
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            :       void
+<span class="lineNum">     596 </span>            :       _M_do_set() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     597 </span>            :       { }
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            :       void
+<span class="lineNum">     600 </span>            :       _M_do_reset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     601 </span>            :       { }
+<span class="lineNum">     602 </span>            : 
+<span class="lineNum">     603 </span>            :       // Are all empty bitsets equal to each other?  Are they equal to
+<span class="lineNum">     604 </span>            :       // themselves?  How to compare a thing which has no state?  What is
+<span class="lineNum">     605 </span>            :       // the sound of one zero-length bitset clapping?
+<span class="lineNum">     606 </span>            :       bool
+<span class="lineNum">     607 </span>            :       _M_is_equal(const _Base_bitset&lt;0&gt;&amp;) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     608 </span>            :       { return true; }
+<span class="lineNum">     609 </span>            : 
+<span class="lineNum">     610 </span>            :       template&lt;size_t _Nb&gt;
+<span class="lineNum">     611 </span>            :         bool
+<span class="lineNum">     612 </span>            :         _M_are_all() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     613 </span>            :         { return true; }
+<span class="lineNum">     614 </span>            : 
+<span class="lineNum">     615 </span>            :       bool
+<span class="lineNum">     616 </span>            :       _M_is_any() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     617 </span>            :       { return false; }
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span>            :       size_t
+<span class="lineNum">     620 </span>            :       _M_do_count() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     621 </span>            :       { return 0; }
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span>            :       unsigned long
+<span class="lineNum">     624 </span>            :       _M_do_to_ulong() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     625 </span>            :       { return 0; }
+<span class="lineNum">     626 </span>            : 
+<span class="lineNum">     627 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     628 </span>            :       unsigned long long
+<span class="lineNum">     629 </span>            :       _M_do_to_ullong() const noexcept
+<span class="lineNum">     630 </span>            :       { return 0; }
+<span class="lineNum">     631 </span>            : #endif
+<span class="lineNum">     632 </span>            : 
+<span class="lineNum">     633 </span>            :       // Normally &quot;not found&quot; is the size, but that could also be
+<span class="lineNum">     634 </span>            :       // misinterpreted as an index in this corner case.  Oh well.
+<span class="lineNum">     635 </span>            :       size_t
+<span class="lineNum">     636 </span>            :       _M_do_find_first(size_t) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     637 </span>            :       { return 0; }
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span>            :       size_t
+<span class="lineNum">     640 </span>            :       _M_do_find_next(size_t, size_t) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     641 </span>            :       { return 0; }
+<span class="lineNum">     642 </span>            :     };
+<span class="lineNum">     643 </span>            : 
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span>            :   // Helper class to zero out the unused high-order bits in the highest word.
+<span class="lineNum">     646 </span>            :   template&lt;size_t _Extrabits&gt;
+<span class="lineNum">     647 </span>            :     struct _Sanitize
+<span class="lineNum">     648 </span>            :     {
+<span class="lineNum">     649 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">     650 </span>            : 
+<span class="lineNum">     651 </span>            :       static void
+<span class="lineNum">     652 </span>            :       _S_do_sanitize(_WordT&amp; __val) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     653 </span>            :       { __val &amp;= ~((~static_cast&lt;_WordT&gt;(0)) &lt;&lt; _Extrabits); }
+<span class="lineNum">     654 </span>            :     };
+<span class="lineNum">     655 </span>            : 
+<span class="lineNum">     656 </span>            :   template&lt;&gt;
+<span class="lineNum">     657 </span>            :     struct _Sanitize&lt;0&gt;
+<span class="lineNum">     658 </span>            :     {
+<span class="lineNum">     659 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span>            :       static void
+<span class="lineNum">     662 </span>            :       _S_do_sanitize(_WordT) _GLIBCXX_NOEXCEPT { } 
+<span class="lineNum">     663 </span>            :     };
+<span class="lineNum">     664 </span>            : 
+<span class="lineNum">     665 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     666 </span>            :   template&lt;size_t _Nb, bool = _Nb &lt; _GLIBCXX_BITSET_BITS_PER_ULL&gt;
+<span class="lineNum">     667 </span>            :     struct _Sanitize_val
+<a name="668"><span class="lineNum">     668 </span>            :     {</a>
+<span class="lineNum">     669 </span>            :       static constexpr unsigned long long
+<span class="lineNum">     670 </span><span class="lineCov">         14 :       _S_do_sanitize_val(unsigned long long __val)</span>
+<span class="lineNum">     671 </span><span class="lineCov">         14 :       { return __val; }</span>
+<span class="lineNum">     672 </span>            :     };
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">     675 </span>            :     struct _Sanitize_val&lt;_Nb, true&gt;
+<span class="lineNum">     676 </span>            :     {
+<span class="lineNum">     677 </span>            :       static constexpr unsigned long long
+<span class="lineNum">     678 </span>            :       _S_do_sanitize_val(unsigned long long __val)
+<span class="lineNum">     679 </span>            :       { return __val &amp; ~((~static_cast&lt;unsigned long long&gt;(0)) &lt;&lt; _Nb); }
+<span class="lineNum">     680 </span>            :     };
+<span class="lineNum">     681 </span>            : #endif
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span>            :   /**
+<span class="lineNum">     684 </span>            :    *  The %bitset class represents a @e fixed-size sequence of bits.
+<span class="lineNum">     685 </span>            :    *
+<span class="lineNum">     686 </span>            :    *  @ingroup containers
+<span class="lineNum">     687 </span>            :    *
+<span class="lineNum">     688 </span>            :    *  (Note that %bitset does @e not meet the formal requirements of a
+<span class="lineNum">     689 </span>            :    *  &lt;a href=&quot;tables.html#65&quot;&gt;container&lt;/a&gt;.  Mainly, it lacks iterators.)
+<span class="lineNum">     690 </span>            :    *
+<span class="lineNum">     691 </span>            :    *  The template argument, @a Nb, may be any non-negative number,
+<span class="lineNum">     692 </span>            :    *  specifying the number of bits (e.g., &quot;0&quot;, &quot;12&quot;, &quot;1024*1024&quot;).
+<span class="lineNum">     693 </span>            :    *
+<span class="lineNum">     694 </span>            :    *  In the general unoptimized case, storage is allocated in word-sized
+<span class="lineNum">     695 </span>            :    *  blocks.  Let B be the number of bits in a word, then (Nb+(B-1))/B
+<span class="lineNum">     696 </span>            :    *  words will be used for storage.  B - Nb%B bits are unused.  (They are
+<span class="lineNum">     697 </span>            :    *  the high-order bits in the highest word.)  It is a class invariant
+<span class="lineNum">     698 </span>            :    *  that those unused bits are always zero.
+<span class="lineNum">     699 </span>            :    *
+<span class="lineNum">     700 </span>            :    *  If you think of %bitset as &lt;em&gt;a simple array of bits&lt;/em&gt;, be
+<span class="lineNum">     701 </span>            :    *  aware that your mental picture is reversed: a %bitset behaves
+<span class="lineNum">     702 </span>            :    *  the same way as bits in integers do, with the bit at index 0 in
+<span class="lineNum">     703 </span>            :    *  the &lt;em&gt;least significant / right-hand&lt;/em&gt; position, and the bit at
+<span class="lineNum">     704 </span>            :    *  index Nb-1 in the &lt;em&gt;most significant / left-hand&lt;/em&gt; position.
+<span class="lineNum">     705 </span>            :    *  Thus, unlike other containers, a %bitset's index &lt;em&gt;counts from
+<span class="lineNum">     706 </span>            :    *  right to left&lt;/em&gt;, to put it very loosely.
+<span class="lineNum">     707 </span>            :    *
+<span class="lineNum">     708 </span>            :    *  This behavior is preserved when translating to and from strings.  For
+<span class="lineNum">     709 </span>            :    *  example, the first line of the following program probably prints
+<span class="lineNum">     710 </span>            :    *  &lt;em&gt;b(&amp;apos;a&amp;apos;) is 0001100001&lt;/em&gt; on a modern ASCII system.
+<span class="lineNum">     711 </span>            :    *
+<span class="lineNum">     712 </span>            :    *  @code
+<span class="lineNum">     713 </span>            :    *     #include &lt;bitset&gt;
+<span class="lineNum">     714 </span>            :    *     #include &lt;iostream&gt;
+<span class="lineNum">     715 </span>            :    *     #include &lt;sstream&gt;
+<span class="lineNum">     716 </span>            :    *
+<span class="lineNum">     717 </span>            :    *     using namespace std;
+<span class="lineNum">     718 </span>            :    *
+<span class="lineNum">     719 </span>            :    *     int main()
+<span class="lineNum">     720 </span>            :    *     {
+<span class="lineNum">     721 </span>            :    *         long         a = 'a';
+<span class="lineNum">     722 </span>            :    *         bitset&lt;10&gt;   b(a);
+<span class="lineNum">     723 </span>            :    *
+<span class="lineNum">     724 </span>            :    *         cout &lt;&lt; &quot;b('a') is &quot; &lt;&lt; b &lt;&lt; endl;
+<span class="lineNum">     725 </span>            :    *
+<span class="lineNum">     726 </span>            :    *         ostringstream s;
+<span class="lineNum">     727 </span>            :    *         s &lt;&lt; b;
+<span class="lineNum">     728 </span>            :    *         string  str = s.str();
+<span class="lineNum">     729 </span>            :    *         cout &lt;&lt; &quot;index 3 in the string is &quot; &lt;&lt; str[3] &lt;&lt; &quot; but\n&quot;
+<span class="lineNum">     730 </span>            :    *              &lt;&lt; &quot;index 3 in the bitset is &quot; &lt;&lt; b[3] &lt;&lt; endl;
+<span class="lineNum">     731 </span>            :    *     }
+<span class="lineNum">     732 </span>            :    *  @endcode
+<span class="lineNum">     733 </span>            :    *
+<span class="lineNum">     734 </span>            :    *  Also see:
+<span class="lineNum">     735 </span>            :    *  http://gcc.gnu.org/onlinedocs/libstdc++/manual/bk01pt12ch33s02.html
+<span class="lineNum">     736 </span>            :    *  for a description of extensions.
+<span class="lineNum">     737 </span>            :    *
+<span class="lineNum">     738 </span>            :    *  Most of the actual code isn't contained in %bitset&lt;&gt; itself, but in the
+<span class="lineNum">     739 </span>            :    *  base class _Base_bitset.  The base class works with whole words, not with
+<span class="lineNum">     740 </span>            :    *  individual bits.  This allows us to specialize _Base_bitset for the
+<span class="lineNum">     741 </span>            :    *  important special case where the %bitset is only a single word.
+<span class="lineNum">     742 </span>            :    *
+<span class="lineNum">     743 </span>            :    *  Extra confusion can result due to the fact that the storage for
+<span class="lineNum">     744 </span>            :    *  _Base_bitset @e is a regular array, and is indexed as such.  This is
+<span class="lineNum">     745 </span>            :    *  carefully encapsulated.
+<span class="lineNum">     746 </span>            :   */
+<span class="lineNum">     747 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">     748 </span>            :     class bitset
+<span class="lineNum">     749 </span>            :     : private _Base_bitset&lt;_GLIBCXX_BITSET_WORDS(_Nb)&gt;
+<span class="lineNum">     750 </span>            :     {
+<span class="lineNum">     751 </span>            :     private:
+<span class="lineNum">     752 </span>            :       typedef _Base_bitset&lt;_GLIBCXX_BITSET_WORDS(_Nb)&gt; _Base;
+<span class="lineNum">     753 </span>            :       typedef unsigned long _WordT;
+<span class="lineNum">     754 </span>            : 
+<span class="lineNum">     755 </span>            :       void
+<span class="lineNum">     756 </span>            :       _M_do_sanitize() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     757 </span>            :       { 
+<span class="lineNum">     758 </span>            :         typedef _Sanitize&lt;_Nb % _GLIBCXX_BITSET_BITS_PER_WORD&gt; __sanitize_type;
+<span class="lineNum">     759 </span>            :         __sanitize_type::_S_do_sanitize(this-&gt;_M_hiword());
+<span class="lineNum">     760 </span>            :       }
+<span class="lineNum">     761 </span>            : 
+<span class="lineNum">     762 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     763 </span>            :       template&lt;typename&gt; friend struct hash;
+<span class="lineNum">     764 </span>            : #endif
+<span class="lineNum">     765 </span>            : 
+<span class="lineNum">     766 </span>            :     public:
+<span class="lineNum">     767 </span>            :       /**
+<span class="lineNum">     768 </span>            :        *  This encapsulates the concept of a single bit.  An instance of this
+<span class="lineNum">     769 </span>            :        *  class is a proxy for an actual bit; this way the individual bit
+<span class="lineNum">     770 </span>            :        *  operations are done as faster word-size bitwise instructions.
+<span class="lineNum">     771 </span>            :        *
+<span class="lineNum">     772 </span>            :        *  Most users will never need to use this class directly; conversions
+<span class="lineNum">     773 </span>            :        *  to and from bool are automatic and should be transparent.  Overloaded
+<span class="lineNum">     774 </span>            :        *  operators help to preserve the illusion.
+<span class="lineNum">     775 </span>            :        *
+<span class="lineNum">     776 </span>            :        *  (On a typical system, this &lt;em&gt;bit %reference&lt;/em&gt; is 64
+<span class="lineNum">     777 </span>            :        *  times the size of an actual bit.  Ha.)
+<span class="lineNum">     778 </span>            :        */
+<span class="lineNum">     779 </span>            :       class reference
+<span class="lineNum">     780 </span>            :       {
+<span class="lineNum">     781 </span>            :         friend class bitset;
+<span class="lineNum">     782 </span>            : 
+<span class="lineNum">     783 </span>            :         _WordT* _M_wp;
+<span class="lineNum">     784 </span>            :         size_t  _M_bpos;
+<span class="lineNum">     785 </span>            :         
+<span class="lineNum">     786 </span>            :         // left undefined
+<span class="lineNum">     787 </span>            :         reference();
+<a name="788"><span class="lineNum">     788 </span>            :         </a>
+<span class="lineNum">     789 </span>            :       public:
+<span class="lineNum">     790 </span><span class="lineCov">       1536 :         reference(bitset&amp; __b, size_t __pos) _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     791 </span>            :         {
+<span class="lineNum">     792 </span><span class="lineCov">       1536 :           _M_wp = &amp;__b._M_getword(__pos);</span>
+<span class="lineNum">     793 </span><span class="lineCov">       1536 :           _M_bpos = _Base::_S_whichbit(__pos);</span>
+<a name="794"><span class="lineNum">     794 </span><span class="lineCov">       1536 :         }</span></a>
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span><span class="lineCov">       1536 :         ~reference() _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     797 </span><span class="lineCov">       1536 :         { }</span>
+<span class="lineNum">     798 </span>            : 
+<a name="799"><span class="lineNum">     799 </span>            :         // For b[i] = __x;</a>
+<span class="lineNum">     800 </span>            :         reference&amp;
+<span class="lineNum">     801 </span><span class="lineCov">        640 :         operator=(bool __x) _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     802 </span>            :         {
+<span class="lineNum">     803 </span><span class="lineCov">        640 :           if (__x)</span>
+<span class="lineNum">     804 </span><span class="lineCov">        111 :             *_M_wp |= _Base::_S_maskbit(_M_bpos);</span>
+<span class="lineNum">     805 </span>            :           else
+<span class="lineNum">     806 </span><span class="lineCov">        529 :             *_M_wp &amp;= ~_Base::_S_maskbit(_M_bpos);</span>
+<span class="lineNum">     807 </span><span class="lineCov">        640 :           return *this;</span>
+<span class="lineNum">     808 </span>            :         }
+<span class="lineNum">     809 </span>            : 
+<span class="lineNum">     810 </span>            :         // For b[i] = b[__j];
+<span class="lineNum">     811 </span>            :         reference&amp;
+<span class="lineNum">     812 </span>            :         operator=(const reference&amp; __j) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     813 </span>            :         {
+<span class="lineNum">     814 </span>            :           if ((*(__j._M_wp) &amp; _Base::_S_maskbit(__j._M_bpos)))
+<span class="lineNum">     815 </span>            :             *_M_wp |= _Base::_S_maskbit(_M_bpos);
+<span class="lineNum">     816 </span>            :           else
+<span class="lineNum">     817 </span>            :             *_M_wp &amp;= ~_Base::_S_maskbit(_M_bpos);
+<span class="lineNum">     818 </span>            :           return *this;
+<span class="lineNum">     819 </span>            :         }
+<span class="lineNum">     820 </span>            : 
+<span class="lineNum">     821 </span>            :         // Flips the bit
+<span class="lineNum">     822 </span>            :         bool
+<span class="lineNum">     823 </span>            :         operator~() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">     824 </span>            :         { return (*(_M_wp) &amp; _Base::_S_maskbit(_M_bpos)) == 0; }
+<a name="825"><span class="lineNum">     825 </span>            : </a>
+<span class="lineNum">     826 </span>            :         // For __x = b[i];
+<span class="lineNum">     827 </span><span class="lineCov">        896 :         operator bool() const _GLIBCXX_NOEXCEPT</span>
+<span class="lineNum">     828 </span><span class="lineCov">        896 :         { return (*(_M_wp) &amp; _Base::_S_maskbit(_M_bpos)) != 0; }</span>
+<span class="lineNum">     829 </span>            : 
+<span class="lineNum">     830 </span>            :         // For b[i].flip();
+<span class="lineNum">     831 </span>            :         reference&amp;
+<span class="lineNum">     832 </span>            :         flip() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     833 </span>            :         {
+<span class="lineNum">     834 </span>            :           *_M_wp ^= _Base::_S_maskbit(_M_bpos);
+<span class="lineNum">     835 </span>            :           return *this;
+<span class="lineNum">     836 </span>            :         }
+<span class="lineNum">     837 </span>            :       };
+<span class="lineNum">     838 </span>            :       friend class reference;
+<span class="lineNum">     839 </span>            : 
+<span class="lineNum">     840 </span>            :       // 23.3.5.1 constructors:
+<span class="lineNum">     841 </span>            :       /// All bits set to zero.
+<span class="lineNum">     842 </span>            :       _GLIBCXX_CONSTEXPR bitset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">     843 </span>            :       { }
+<span class="lineNum">     844 </span>            : 
+<a name="845"><span class="lineNum">     845 </span>            :       /// Initial bits bitwise-copied from a single word (others set to zero).</a>
+<span class="lineNum">     846 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     847 </span><span class="lineCov">         14 :       constexpr bitset(unsigned long long __val) noexcept</span>
+<span class="lineNum">     848 </span><span class="lineCov">         14 :       : _Base(_Sanitize_val&lt;_Nb&gt;::_S_do_sanitize_val(__val)) { }</span>
+<span class="lineNum">     849 </span>            : #else
+<span class="lineNum">     850 </span>            :       bitset(unsigned long __val)
+<span class="lineNum">     851 </span>            :       : _Base(__val)
+<span class="lineNum">     852 </span>            :       { _M_do_sanitize(); }
+<span class="lineNum">     853 </span>            : #endif
+<span class="lineNum">     854 </span>            : 
+<span class="lineNum">     855 </span>            :       /**
+<span class="lineNum">     856 </span>            :        *  Use a subset of a string.
+<span class="lineNum">     857 </span>            :        *  @param  __s  A string of @a 0 and @a 1 characters.
+<span class="lineNum">     858 </span>            :        *  @param  __position  Index of the first character in @a __s to use;
+<span class="lineNum">     859 </span>            :        *                    defaults to zero.
+<span class="lineNum">     860 </span>            :        *  @throw  std::out_of_range  If @a pos is bigger the size of @a __s.
+<span class="lineNum">     861 </span>            :        *  @throw  std::invalid_argument  If a character appears in the string
+<span class="lineNum">     862 </span>            :        *                                 which is neither @a 0 nor @a 1.
+<span class="lineNum">     863 </span>            :        */
+<span class="lineNum">     864 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">     865 </span>            :         explicit
+<span class="lineNum">     866 </span>            :         bitset(const std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,
+<span class="lineNum">     867 </span>            :                size_t __position = 0)
+<span class="lineNum">     868 </span>            :         : _Base()
+<span class="lineNum">     869 </span>            :         {
+<span class="lineNum">     870 </span>            :           if (__position &gt; __s.size())
+<span class="lineNum">     871 </span>            :             __throw_out_of_range(__N(&quot;bitset::bitset initial position &quot;
+<span class="lineNum">     872 </span>            :                                      &quot;not valid&quot;));
+<span class="lineNum">     873 </span>            :           _M_copy_from_string(__s, __position,
+<span class="lineNum">     874 </span>            :                               std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::npos,
+<span class="lineNum">     875 </span>            :                               _CharT('0'), _CharT('1'));
+<span class="lineNum">     876 </span>            :         }
+<span class="lineNum">     877 </span>            : 
+<span class="lineNum">     878 </span>            :       /**
+<span class="lineNum">     879 </span>            :        *  Use a subset of a string.
+<span class="lineNum">     880 </span>            :        *  @param  __s  A string of @a 0 and @a 1 characters.
+<span class="lineNum">     881 </span>            :        *  @param  __position  Index of the first character in @a __s to use.
+<span class="lineNum">     882 </span>            :        *  @param  __n    The number of characters to copy.
+<span class="lineNum">     883 </span>            :        *  @throw std::out_of_range If @a __position is bigger the size
+<span class="lineNum">     884 </span>            :        *  of @a __s.
+<span class="lineNum">     885 </span>            :        *  @throw  std::invalid_argument  If a character appears in the string
+<span class="lineNum">     886 </span>            :        *                                 which is neither @a 0 nor @a 1.
+<span class="lineNum">     887 </span>            :        */
+<span class="lineNum">     888 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">     889 </span>            :         bitset(const std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,
+<span class="lineNum">     890 </span>            :                size_t __position, size_t __n)
+<span class="lineNum">     891 </span>            :         : _Base()
+<span class="lineNum">     892 </span>            :         {
+<span class="lineNum">     893 </span>            :           if (__position &gt; __s.size())
+<span class="lineNum">     894 </span>            :             __throw_out_of_range(__N(&quot;bitset::bitset initial position &quot;
+<span class="lineNum">     895 </span>            :                                      &quot;not valid&quot;));
+<span class="lineNum">     896 </span>            :           _M_copy_from_string(__s, __position, __n, _CharT('0'), _CharT('1'));
+<span class="lineNum">     897 </span>            :         }
+<span class="lineNum">     898 </span>            : 
+<span class="lineNum">     899 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">     900 </span>            :       // 396. what are characters zero and one.
+<span class="lineNum">     901 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">     902 </span>            :         bitset(const std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,
+<span class="lineNum">     903 </span>            :                size_t __position, size_t __n,
+<span class="lineNum">     904 </span>            :                _CharT __zero, _CharT __one = _CharT('1'))
+<span class="lineNum">     905 </span>            :         : _Base()
+<span class="lineNum">     906 </span>            :         {
+<span class="lineNum">     907 </span>            :           if (__position &gt; __s.size())
+<span class="lineNum">     908 </span>            :             __throw_out_of_range(__N(&quot;bitset::bitset initial position &quot;
+<span class="lineNum">     909 </span>            :                                      &quot;not valid&quot;));
+<span class="lineNum">     910 </span>            :           _M_copy_from_string(__s, __position, __n, __zero, __one);
+<span class="lineNum">     911 </span>            :         }
+<span class="lineNum">     912 </span>            : 
+<span class="lineNum">     913 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">     914 </span>            :       /**
+<span class="lineNum">     915 </span>            :        *  Construct from a character %array.
+<span class="lineNum">     916 </span>            :        *  @param  __str  An %array of characters @a zero and @a one.
+<span class="lineNum">     917 </span>            :        *  @param  __n    The number of characters to use.
+<span class="lineNum">     918 </span>            :        *  @param  __zero The character corresponding to the value 0.
+<span class="lineNum">     919 </span>            :        *  @param  __one  The character corresponding to the value 1.
+<span class="lineNum">     920 </span>            :        *  @throw  std::invalid_argument If a character appears in the string
+<span class="lineNum">     921 </span>            :        *                                which is neither @a __zero nor @a __one.
+<span class="lineNum">     922 </span>            :        */
+<span class="lineNum">     923 </span>            :       template&lt;typename _CharT&gt;
+<span class="lineNum">     924 </span>            :         explicit
+<span class="lineNum">     925 </span>            :         bitset(const _CharT* __str,
+<span class="lineNum">     926 </span>            :                typename std::basic_string&lt;_CharT&gt;::size_type __n
+<span class="lineNum">     927 </span>            :                = std::basic_string&lt;_CharT&gt;::npos,
+<span class="lineNum">     928 </span>            :                _CharT __zero = _CharT('0'), _CharT __one = _CharT('1'))
+<span class="lineNum">     929 </span>            :         : _Base()
+<span class="lineNum">     930 </span>            :         {
+<span class="lineNum">     931 </span>            :           if (!__str)
+<span class="lineNum">     932 </span>            :             __throw_logic_error(__N(&quot;bitset::bitset(const _CharT*, ...)&quot;));
+<span class="lineNum">     933 </span>            : 
+<span class="lineNum">     934 </span>            :           if (__n == std::basic_string&lt;_CharT&gt;::npos)
+<span class="lineNum">     935 </span>            :             __n = std::char_traits&lt;_CharT&gt;::length(__str);
+<span class="lineNum">     936 </span>            :           _M_copy_from_ptr&lt;_CharT, std::char_traits&lt;_CharT&gt;&gt;(__str, __n, 0,
+<span class="lineNum">     937 </span>            :                                                              __n, __zero,
+<span class="lineNum">     938 </span>            :                                                              __one);
+<span class="lineNum">     939 </span>            :         }
+<span class="lineNum">     940 </span>            : #endif
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span>            :       // 23.3.5.2 bitset operations:
+<span class="lineNum">     943 </span>            :       //@{
+<span class="lineNum">     944 </span>            :       /**
+<span class="lineNum">     945 </span>            :        *  Operations on bitsets.
+<span class="lineNum">     946 </span>            :        *  @param  __rhs  A same-sized bitset.
+<span class="lineNum">     947 </span>            :        *
+<span class="lineNum">     948 </span>            :        *  These should be self-explanatory.
+<span class="lineNum">     949 </span>            :        */
+<span class="lineNum">     950 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">     951 </span>            :       operator&amp;=(const bitset&lt;_Nb&gt;&amp; __rhs) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     952 </span>            :       {
+<span class="lineNum">     953 </span>            :         this-&gt;_M_do_and(__rhs);
+<span class="lineNum">     954 </span>            :         return *this;
+<span class="lineNum">     955 </span>            :       }
+<span class="lineNum">     956 </span>            : 
+<span class="lineNum">     957 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">     958 </span>            :       operator|=(const bitset&lt;_Nb&gt;&amp; __rhs) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     959 </span>            :       {
+<span class="lineNum">     960 </span>            :         this-&gt;_M_do_or(__rhs);
+<span class="lineNum">     961 </span>            :         return *this;
+<span class="lineNum">     962 </span>            :       }
+<span class="lineNum">     963 </span>            : 
+<span class="lineNum">     964 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">     965 </span>            :       operator^=(const bitset&lt;_Nb&gt;&amp; __rhs) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     966 </span>            :       {
+<span class="lineNum">     967 </span>            :         this-&gt;_M_do_xor(__rhs);
+<span class="lineNum">     968 </span>            :         return *this;
+<span class="lineNum">     969 </span>            :       }
+<span class="lineNum">     970 </span>            :       //@}
+<span class="lineNum">     971 </span>            :       
+<span class="lineNum">     972 </span>            :       //@{
+<span class="lineNum">     973 </span>            :       /**
+<span class="lineNum">     974 </span>            :        *  Operations on bitsets.
+<span class="lineNum">     975 </span>            :        *  @param  __position  The number of places to shift.
+<span class="lineNum">     976 </span>            :        *
+<span class="lineNum">     977 </span>            :        *  These should be self-explanatory.
+<span class="lineNum">     978 </span>            :        */
+<span class="lineNum">     979 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">     980 </span>            :       operator&lt;&lt;=(size_t __position) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     981 </span>            :       {
+<span class="lineNum">     982 </span>            :         if (__builtin_expect(__position &lt; _Nb, 1))
+<span class="lineNum">     983 </span>            :           {
+<span class="lineNum">     984 </span>            :             this-&gt;_M_do_left_shift(__position);
+<span class="lineNum">     985 </span>            :             this-&gt;_M_do_sanitize();
+<span class="lineNum">     986 </span>            :           }
+<span class="lineNum">     987 </span>            :         else
+<span class="lineNum">     988 </span>            :           this-&gt;_M_do_reset();
+<span class="lineNum">     989 </span>            :         return *this;
+<span class="lineNum">     990 </span>            :       }
+<span class="lineNum">     991 </span>            : 
+<span class="lineNum">     992 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">     993 </span>            :       operator&gt;&gt;=(size_t __position) _GLIBCXX_NOEXCEPT
+<span class="lineNum">     994 </span>            :       {
+<span class="lineNum">     995 </span>            :         if (__builtin_expect(__position &lt; _Nb, 1))
+<span class="lineNum">     996 </span>            :           {
+<span class="lineNum">     997 </span>            :             this-&gt;_M_do_right_shift(__position);
+<span class="lineNum">     998 </span>            :             this-&gt;_M_do_sanitize();
+<span class="lineNum">     999 </span>            :           }
+<span class="lineNum">    1000 </span>            :         else
+<span class="lineNum">    1001 </span>            :           this-&gt;_M_do_reset();
+<span class="lineNum">    1002 </span>            :         return *this;
+<span class="lineNum">    1003 </span>            :       }
+<span class="lineNum">    1004 </span>            :       //@}
+<span class="lineNum">    1005 </span>            :       
+<span class="lineNum">    1006 </span>            :       //@{
+<span class="lineNum">    1007 </span>            :       /**
+<span class="lineNum">    1008 </span>            :        *  These versions of single-bit set, reset, flip, and test are
+<span class="lineNum">    1009 </span>            :        *  extensions from the SGI version.  They do no range checking.
+<span class="lineNum">    1010 </span>            :        *  @ingroup SGIextensions
+<span class="lineNum">    1011 </span>            :        */
+<span class="lineNum">    1012 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1013 </span>            :       _Unchecked_set(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1014 </span>            :       {
+<span class="lineNum">    1015 </span>            :         this-&gt;_M_getword(__pos) |= _Base::_S_maskbit(__pos);
+<span class="lineNum">    1016 </span>            :         return *this;
+<span class="lineNum">    1017 </span>            :       }
+<span class="lineNum">    1018 </span>            : 
+<span class="lineNum">    1019 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1020 </span>            :       _Unchecked_set(size_t __pos, int __val) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1021 </span>            :       {
+<span class="lineNum">    1022 </span>            :         if (__val)
+<span class="lineNum">    1023 </span>            :           this-&gt;_M_getword(__pos) |= _Base::_S_maskbit(__pos);
+<span class="lineNum">    1024 </span>            :         else
+<span class="lineNum">    1025 </span>            :           this-&gt;_M_getword(__pos) &amp;= ~_Base::_S_maskbit(__pos);
+<span class="lineNum">    1026 </span>            :         return *this;
+<span class="lineNum">    1027 </span>            :       }
+<span class="lineNum">    1028 </span>            : 
+<span class="lineNum">    1029 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1030 </span>            :       _Unchecked_reset(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1031 </span>            :       {
+<span class="lineNum">    1032 </span>            :         this-&gt;_M_getword(__pos) &amp;= ~_Base::_S_maskbit(__pos);
+<span class="lineNum">    1033 </span>            :         return *this;
+<span class="lineNum">    1034 </span>            :       }
+<span class="lineNum">    1035 </span>            : 
+<span class="lineNum">    1036 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1037 </span>            :       _Unchecked_flip(size_t __pos) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1038 </span>            :       {
+<span class="lineNum">    1039 </span>            :         this-&gt;_M_getword(__pos) ^= _Base::_S_maskbit(__pos);
+<span class="lineNum">    1040 </span>            :         return *this;
+<span class="lineNum">    1041 </span>            :       }
+<span class="lineNum">    1042 </span>            : 
+<span class="lineNum">    1043 </span>            :       _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">    1044 </span>            :       _Unchecked_test(size_t __pos) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1045 </span>            :       { return ((this-&gt;_M_getword(__pos) &amp; _Base::_S_maskbit(__pos))
+<span class="lineNum">    1046 </span>            :                 != static_cast&lt;_WordT&gt;(0)); }
+<span class="lineNum">    1047 </span>            :       //@}
+<span class="lineNum">    1048 </span>            :       
+<span class="lineNum">    1049 </span>            :       // Set, reset, and flip.
+<span class="lineNum">    1050 </span>            :       /**
+<span class="lineNum">    1051 </span>            :        *  @brief Sets every bit to true.
+<span class="lineNum">    1052 </span>            :        */
+<span class="lineNum">    1053 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1054 </span>            :       set() _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1055 </span>            :       {
+<span class="lineNum">    1056 </span>            :         this-&gt;_M_do_set();
+<span class="lineNum">    1057 </span>            :         this-&gt;_M_do_sanitize();
+<span class="lineNum">    1058 </span>            :         return *this;
+<span class="lineNum">    1059 </span>            :       }
+<span class="lineNum">    1060 </span>            : 
+<span class="lineNum">    1061 </span>            :       /**
+<span class="lineNum">    1062 </span>            :        *  @brief Sets a given bit to a particular value.
+<span class="lineNum">    1063 </span>            :        *  @param  __position  The index of the bit.
+<span class="lineNum">    1064 </span>            :        *  @param  __val  Either true or false, defaults to true.
+<span class="lineNum">    1065 </span>            :        *  @throw  std::out_of_range  If @a pos is bigger the size of the %set.
+<span class="lineNum">    1066 </span>            :        */
+<span class="lineNum">    1067 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1068 </span>            :       set(size_t __position, bool __val = true)
+<span class="lineNum">    1069 </span>            :       {
+<span class="lineNum">    1070 </span>            :         if (__position &gt;= _Nb)
+<span class="lineNum">    1071 </span>            :           __throw_out_of_range(__N(&quot;bitset::set&quot;));
+<span class="lineNum">    1072 </span>            :         return _Unchecked_set(__position, __val);
+<span class="lineNum">    1073 </span>            :       }
+<span class="lineNum">    1074 </span>            : 
+<span class="lineNum">    1075 </span>            :       /**
+<span class="lineNum">    1076 </span>            :        *  @brief Sets every bit to false.
+<span class="lineNum">    1077 </span>            :        */
+<span class="lineNum">    1078 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1079 </span>            :       reset() _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1080 </span>            :       {
+<span class="lineNum">    1081 </span>            :         this-&gt;_M_do_reset();
+<span class="lineNum">    1082 </span>            :         return *this;
+<span class="lineNum">    1083 </span>            :       }
+<span class="lineNum">    1084 </span>            : 
+<span class="lineNum">    1085 </span>            :       /**
+<span class="lineNum">    1086 </span>            :        *  @brief Sets a given bit to false.
+<span class="lineNum">    1087 </span>            :        *  @param  __position  The index of the bit.
+<span class="lineNum">    1088 </span>            :        *  @throw  std::out_of_range  If @a pos is bigger the size of the %set.
+<span class="lineNum">    1089 </span>            :        *
+<span class="lineNum">    1090 </span>            :        *  Same as writing @c set(pos,false).
+<span class="lineNum">    1091 </span>            :        */
+<span class="lineNum">    1092 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1093 </span>            :       reset(size_t __position)
+<span class="lineNum">    1094 </span>            :       {
+<span class="lineNum">    1095 </span>            :         if (__position &gt;= _Nb)
+<span class="lineNum">    1096 </span>            :           __throw_out_of_range(__N(&quot;bitset::reset&quot;));
+<span class="lineNum">    1097 </span>            :         return _Unchecked_reset(__position);
+<span class="lineNum">    1098 </span>            :       }
+<span class="lineNum">    1099 </span>            :       
+<span class="lineNum">    1100 </span>            :       /**
+<span class="lineNum">    1101 </span>            :        *  @brief Toggles every bit to its opposite value.
+<span class="lineNum">    1102 </span>            :        */
+<span class="lineNum">    1103 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1104 </span>            :       flip() _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1105 </span>            :       {
+<span class="lineNum">    1106 </span>            :         this-&gt;_M_do_flip();
+<span class="lineNum">    1107 </span>            :         this-&gt;_M_do_sanitize();
+<span class="lineNum">    1108 </span>            :         return *this;
+<span class="lineNum">    1109 </span>            :       }
+<span class="lineNum">    1110 </span>            : 
+<span class="lineNum">    1111 </span>            :       /**
+<span class="lineNum">    1112 </span>            :        *  @brief Toggles a given bit to its opposite value.
+<span class="lineNum">    1113 </span>            :        *  @param  __position  The index of the bit.
+<span class="lineNum">    1114 </span>            :        *  @throw  std::out_of_range  If @a pos is bigger the size of the %set.
+<span class="lineNum">    1115 </span>            :        */
+<span class="lineNum">    1116 </span>            :       bitset&lt;_Nb&gt;&amp;
+<span class="lineNum">    1117 </span>            :       flip(size_t __position)
+<span class="lineNum">    1118 </span>            :       {
+<span class="lineNum">    1119 </span>            :         if (__position &gt;= _Nb)
+<span class="lineNum">    1120 </span>            :           __throw_out_of_range(__N(&quot;bitset::flip&quot;));
+<span class="lineNum">    1121 </span>            :         return _Unchecked_flip(__position);
+<span class="lineNum">    1122 </span>            :       }
+<span class="lineNum">    1123 </span>            :       
+<span class="lineNum">    1124 </span>            :       /// See the no-argument flip().
+<span class="lineNum">    1125 </span>            :       bitset&lt;_Nb&gt;
+<span class="lineNum">    1126 </span>            :       operator~() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1127 </span>            :       { return bitset&lt;_Nb&gt;(*this).flip(); }
+<span class="lineNum">    1128 </span>            : 
+<span class="lineNum">    1129 </span>            :       //@{
+<span class="lineNum">    1130 </span>            :       /**
+<span class="lineNum">    1131 </span>            :        *  @brief  Array-indexing support.
+<span class="lineNum">    1132 </span>            :        *  @param  __position  Index into the %bitset.
+<span class="lineNum">    1133 </span>            :        *  @return A bool for a &lt;em&gt;const %bitset&lt;/em&gt;.  For non-const
+<span class="lineNum">    1134 </span>            :        *           bitsets, an instance of the reference proxy class.
+<span class="lineNum">    1135 </span>            :        *  @note  These operators do no range checking and throw no exceptions,
+<span class="lineNum">    1136 </span>            :        *         as required by DR 11 to the standard.
+<span class="lineNum">    1137 </span>            :        *
+<span class="lineNum">    1138 </span>            :        *  _GLIBCXX_RESOLVE_LIB_DEFECTS Note that this implementation already
+<span class="lineNum">    1139 </span>            :        *  resolves DR 11 (items 1 and 2), but does not do the range-checking
+<span class="lineNum">    1140 </span>            :        *  required by that DR's resolution.  -pme
+<span class="lineNum">    1141 </span>            :        *  The DR has since been changed:  range-checking is a precondition
+<span class="lineNum">    1142 </span>            :        *  (users' responsibility), and these functions must not throw.  -pme
+<a name="1143"><span class="lineNum">    1143 </span>            :        */</a>
+<span class="lineNum">    1144 </span>            :       reference
+<span class="lineNum">    1145 </span><span class="lineCov">       1536 :       operator[](size_t __position)</span>
+<span class="lineNum">    1146 </span><span class="lineCov">       1536 :       { return reference(*this, __position); }</span>
+<span class="lineNum">    1147 </span>            : 
+<span class="lineNum">    1148 </span>            :       _GLIBCXX_CONSTEXPR bool
+<span class="lineNum">    1149 </span>            :       operator[](size_t __position) const
+<span class="lineNum">    1150 </span>            :       { return _Unchecked_test(__position); }
+<span class="lineNum">    1151 </span>            :       //@}
+<span class="lineNum">    1152 </span>            :       
+<span class="lineNum">    1153 </span>            :       /**
+<span class="lineNum">    1154 </span>            :        *  @brief Returns a numerical interpretation of the %bitset.
+<span class="lineNum">    1155 </span>            :        *  @return  The integral equivalent of the bits.
+<span class="lineNum">    1156 </span>            :        *  @throw  std::overflow_error  If there are too many bits to be
+<span class="lineNum">    1157 </span>            :        *                               represented in an @c unsigned @c long.
+<span class="lineNum">    1158 </span>            :        */
+<span class="lineNum">    1159 </span>            :       unsigned long
+<span class="lineNum">    1160 </span>            :       to_ulong() const
+<span class="lineNum">    1161 </span>            :       { return this-&gt;_M_do_to_ulong(); }
+<span class="lineNum">    1162 </span>            : 
+<a name="1163"><span class="lineNum">    1163 </span>            : #if __cplusplus &gt;= 201103L</a>
+<span class="lineNum">    1164 </span>            :       unsigned long long
+<span class="lineNum">    1165 </span><span class="lineCov">         10 :       to_ullong() const</span>
+<span class="lineNum">    1166 </span><span class="lineCov">         10 :       { return this-&gt;_M_do_to_ullong(); }</span>
+<span class="lineNum">    1167 </span>            : #endif
+<span class="lineNum">    1168 </span>            : 
+<span class="lineNum">    1169 </span>            :       /**
+<span class="lineNum">    1170 </span>            :        *  @brief Returns a character interpretation of the %bitset.
+<span class="lineNum">    1171 </span>            :        *  @return  The string equivalent of the bits.
+<span class="lineNum">    1172 </span>            :        *
+<span class="lineNum">    1173 </span>            :        *  Note the ordering of the bits:  decreasing character positions
+<span class="lineNum">    1174 </span>            :        *  correspond to increasing bit positions (see the main class notes for
+<span class="lineNum">    1175 </span>            :        *  an example).
+<span class="lineNum">    1176 </span>            :        */
+<span class="lineNum">    1177 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1178 </span>            :         std::basic_string&lt;_CharT, _Traits, _Alloc&gt;
+<span class="lineNum">    1179 </span>            :         to_string() const
+<span class="lineNum">    1180 </span>            :         {
+<span class="lineNum">    1181 </span>            :           std::basic_string&lt;_CharT, _Traits, _Alloc&gt; __result;
+<span class="lineNum">    1182 </span>            :           _M_copy_to_string(__result, _CharT('0'), _CharT('1'));
+<span class="lineNum">    1183 </span>            :           return __result;
+<span class="lineNum">    1184 </span>            :         }
+<span class="lineNum">    1185 </span>            : 
+<span class="lineNum">    1186 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1187 </span>            :       // 396. what are characters zero and one.
+<span class="lineNum">    1188 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1189 </span>            :         std::basic_string&lt;_CharT, _Traits, _Alloc&gt;
+<span class="lineNum">    1190 </span>            :         to_string(_CharT __zero, _CharT __one = _CharT('1')) const
+<span class="lineNum">    1191 </span>            :         {
+<span class="lineNum">    1192 </span>            :           std::basic_string&lt;_CharT, _Traits, _Alloc&gt; __result;
+<span class="lineNum">    1193 </span>            :           _M_copy_to_string(__result, __zero, __one);
+<span class="lineNum">    1194 </span>            :           return __result;
+<span class="lineNum">    1195 </span>            :         }
+<span class="lineNum">    1196 </span>            : 
+<span class="lineNum">    1197 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1198 </span>            :       // 434. bitset::to_string() hard to use.
+<span class="lineNum">    1199 </span>            :       template&lt;class _CharT, class _Traits&gt;
+<span class="lineNum">    1200 </span>            :         std::basic_string&lt;_CharT, _Traits, std::allocator&lt;_CharT&gt; &gt;
+<span class="lineNum">    1201 </span>            :         to_string() const
+<span class="lineNum">    1202 </span>            :         { return to_string&lt;_CharT, _Traits, std::allocator&lt;_CharT&gt; &gt;(); }
+<span class="lineNum">    1203 </span>            : 
+<span class="lineNum">    1204 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1205 </span>            :       // 853. to_string needs updating with zero and one.
+<span class="lineNum">    1206 </span>            :       template&lt;class _CharT, class _Traits&gt;
+<span class="lineNum">    1207 </span>            :         std::basic_string&lt;_CharT, _Traits, std::allocator&lt;_CharT&gt; &gt;
+<span class="lineNum">    1208 </span>            :         to_string(_CharT __zero, _CharT __one = _CharT('1')) const
+<span class="lineNum">    1209 </span>            :         { return to_string&lt;_CharT, _Traits,
+<span class="lineNum">    1210 </span>            :                            std::allocator&lt;_CharT&gt; &gt;(__zero, __one); }
+<span class="lineNum">    1211 </span>            : 
+<span class="lineNum">    1212 </span>            :       template&lt;class _CharT&gt;
+<span class="lineNum">    1213 </span>            :         std::basic_string&lt;_CharT, std::char_traits&lt;_CharT&gt;,
+<span class="lineNum">    1214 </span>            :                           std::allocator&lt;_CharT&gt; &gt;
+<span class="lineNum">    1215 </span>            :         to_string() const
+<span class="lineNum">    1216 </span>            :         {
+<span class="lineNum">    1217 </span>            :           return to_string&lt;_CharT, std::char_traits&lt;_CharT&gt;,
+<span class="lineNum">    1218 </span>            :                            std::allocator&lt;_CharT&gt; &gt;();
+<span class="lineNum">    1219 </span>            :         }
+<span class="lineNum">    1220 </span>            : 
+<span class="lineNum">    1221 </span>            :       template&lt;class _CharT&gt;
+<span class="lineNum">    1222 </span>            :         std::basic_string&lt;_CharT, std::char_traits&lt;_CharT&gt;,
+<span class="lineNum">    1223 </span>            :                           std::allocator&lt;_CharT&gt; &gt;
+<span class="lineNum">    1224 </span>            :         to_string(_CharT __zero, _CharT __one = _CharT('1')) const
+<span class="lineNum">    1225 </span>            :         {
+<span class="lineNum">    1226 </span>            :           return to_string&lt;_CharT, std::char_traits&lt;_CharT&gt;,
+<span class="lineNum">    1227 </span>            :                            std::allocator&lt;_CharT&gt; &gt;(__zero, __one);
+<span class="lineNum">    1228 </span>            :         }
+<span class="lineNum">    1229 </span>            : 
+<span class="lineNum">    1230 </span>            :       std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;
+<span class="lineNum">    1231 </span>            :       to_string() const
+<span class="lineNum">    1232 </span>            :       {
+<span class="lineNum">    1233 </span>            :         return to_string&lt;char, std::char_traits&lt;char&gt;,
+<span class="lineNum">    1234 </span>            :                          std::allocator&lt;char&gt; &gt;();
+<span class="lineNum">    1235 </span>            :       }
+<span class="lineNum">    1236 </span>            : 
+<span class="lineNum">    1237 </span>            :       std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;
+<span class="lineNum">    1238 </span>            :       to_string(char __zero, char __one = '1') const
+<span class="lineNum">    1239 </span>            :       {
+<span class="lineNum">    1240 </span>            :         return to_string&lt;char, std::char_traits&lt;char&gt;,
+<span class="lineNum">    1241 </span>            :                          std::allocator&lt;char&gt; &gt;(__zero, __one);
+<span class="lineNum">    1242 </span>            :       }
+<span class="lineNum">    1243 </span>            : 
+<span class="lineNum">    1244 </span>            :       // Helper functions for string operations.
+<span class="lineNum">    1245 </span>            :       template&lt;class _CharT, class _Traits&gt;
+<span class="lineNum">    1246 </span>            :         void
+<span class="lineNum">    1247 </span>            :         _M_copy_from_ptr(const _CharT*, size_t, size_t, size_t,
+<span class="lineNum">    1248 </span>            :                          _CharT, _CharT);
+<span class="lineNum">    1249 </span>            : 
+<span class="lineNum">    1250 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1251 </span>            :         void
+<span class="lineNum">    1252 </span>            :         _M_copy_from_string(const std::basic_string&lt;_CharT,
+<span class="lineNum">    1253 </span>            :                             _Traits, _Alloc&gt;&amp; __s, size_t __pos, size_t __n,
+<span class="lineNum">    1254 </span>            :                             _CharT __zero, _CharT __one)
+<span class="lineNum">    1255 </span>            :         { _M_copy_from_ptr&lt;_CharT, _Traits&gt;(__s.data(), __s.size(), __pos, __n,
+<span class="lineNum">    1256 </span>            :                                             __zero, __one); }
+<span class="lineNum">    1257 </span>            : 
+<span class="lineNum">    1258 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1259 </span>            :         void
+<span class="lineNum">    1260 </span>            :         _M_copy_to_string(std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp;,
+<span class="lineNum">    1261 </span>            :                           _CharT, _CharT) const;
+<span class="lineNum">    1262 </span>            : 
+<span class="lineNum">    1263 </span>            :       // NB: Backward compat.
+<span class="lineNum">    1264 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1265 </span>            :         void
+<span class="lineNum">    1266 </span>            :         _M_copy_from_string(const std::basic_string&lt;_CharT,
+<span class="lineNum">    1267 </span>            :                             _Traits, _Alloc&gt;&amp; __s, size_t __pos, size_t __n)
+<span class="lineNum">    1268 </span>            :         { _M_copy_from_string(__s, __pos, __n, _CharT('0'), _CharT('1')); }
+<span class="lineNum">    1269 </span>            : 
+<span class="lineNum">    1270 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1271 </span>            :         void
+<span class="lineNum">    1272 </span>            :         _M_copy_to_string(std::basic_string&lt;_CharT, _Traits,_Alloc&gt;&amp; __s) const
+<span class="lineNum">    1273 </span>            :         { _M_copy_to_string(__s, _CharT('0'), _CharT('1')); }
+<span class="lineNum">    1274 </span>            : 
+<span class="lineNum">    1275 </span>            :       /// Returns the number of bits which are set.
+<span class="lineNum">    1276 </span>            :       size_t
+<span class="lineNum">    1277 </span>            :       count() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1278 </span>            :       { return this-&gt;_M_do_count(); }
+<span class="lineNum">    1279 </span>            : 
+<span class="lineNum">    1280 </span>            :       /// Returns the total number of bits.
+<span class="lineNum">    1281 </span>            :       _GLIBCXX_CONSTEXPR size_t
+<span class="lineNum">    1282 </span>            :       size() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1283 </span>            :       { return _Nb; }
+<span class="lineNum">    1284 </span>            : 
+<span class="lineNum">    1285 </span>            :       //@{
+<span class="lineNum">    1286 </span>            :       /// These comparisons for equality/inequality are, well, @e bitwise.
+<span class="lineNum">    1287 </span>            :       bool
+<span class="lineNum">    1288 </span>            :       operator==(const bitset&lt;_Nb&gt;&amp; __rhs) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1289 </span>            :       { return this-&gt;_M_is_equal(__rhs); }
+<span class="lineNum">    1290 </span>            : 
+<span class="lineNum">    1291 </span>            :       bool
+<span class="lineNum">    1292 </span>            :       operator!=(const bitset&lt;_Nb&gt;&amp; __rhs) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1293 </span>            :       { return !this-&gt;_M_is_equal(__rhs); }
+<span class="lineNum">    1294 </span>            :       //@}
+<span class="lineNum">    1295 </span>            :       
+<span class="lineNum">    1296 </span>            :       /**
+<span class="lineNum">    1297 </span>            :        *  @brief Tests the value of a bit.
+<span class="lineNum">    1298 </span>            :        *  @param  __position  The index of a bit.
+<span class="lineNum">    1299 </span>            :        *  @return  The value at @a pos.
+<span class="lineNum">    1300 </span>            :        *  @throw  std::out_of_range  If @a pos is bigger the size of the %set.
+<span class="lineNum">    1301 </span>            :        */
+<span class="lineNum">    1302 </span>            :       bool
+<span class="lineNum">    1303 </span>            :       test(size_t __position) const
+<span class="lineNum">    1304 </span>            :       {
+<span class="lineNum">    1305 </span>            :         if (__position &gt;= _Nb)
+<span class="lineNum">    1306 </span>            :           __throw_out_of_range(__N(&quot;bitset::test&quot;));
+<span class="lineNum">    1307 </span>            :         return _Unchecked_test(__position);
+<span class="lineNum">    1308 </span>            :       }
+<span class="lineNum">    1309 </span>            : 
+<span class="lineNum">    1310 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1311 </span>            :       // DR 693. std::bitset::all() missing.
+<span class="lineNum">    1312 </span>            :       /**
+<span class="lineNum">    1313 </span>            :        *  @brief Tests whether all the bits are on.
+<span class="lineNum">    1314 </span>            :        *  @return  True if all the bits are set.
+<span class="lineNum">    1315 </span>            :        */
+<span class="lineNum">    1316 </span>            :       bool
+<span class="lineNum">    1317 </span>            :       all() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1318 </span>            :       { return this-&gt;template _M_are_all&lt;_Nb&gt;(); }
+<span class="lineNum">    1319 </span>            : 
+<span class="lineNum">    1320 </span>            :       /**
+<span class="lineNum">    1321 </span>            :        *  @brief Tests whether any of the bits are on.
+<span class="lineNum">    1322 </span>            :        *  @return  True if at least one bit is set.
+<span class="lineNum">    1323 </span>            :        */
+<span class="lineNum">    1324 </span>            :       bool
+<span class="lineNum">    1325 </span>            :       any() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1326 </span>            :       { return this-&gt;_M_is_any(); }
+<span class="lineNum">    1327 </span>            : 
+<span class="lineNum">    1328 </span>            :       /**
+<span class="lineNum">    1329 </span>            :        *  @brief Tests whether any of the bits are on.
+<span class="lineNum">    1330 </span>            :        *  @return  True if none of the bits are set.
+<span class="lineNum">    1331 </span>            :        */
+<span class="lineNum">    1332 </span>            :       bool
+<span class="lineNum">    1333 </span>            :       none() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1334 </span>            :       { return !this-&gt;_M_is_any(); }
+<span class="lineNum">    1335 </span>            : 
+<span class="lineNum">    1336 </span>            :       //@{
+<span class="lineNum">    1337 </span>            :       /// Self-explanatory.
+<span class="lineNum">    1338 </span>            :       bitset&lt;_Nb&gt;
+<span class="lineNum">    1339 </span>            :       operator&lt;&lt;(size_t __position) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1340 </span>            :       { return bitset&lt;_Nb&gt;(*this) &lt;&lt;= __position; }
+<span class="lineNum">    1341 </span>            : 
+<span class="lineNum">    1342 </span>            :       bitset&lt;_Nb&gt;
+<span class="lineNum">    1343 </span>            :       operator&gt;&gt;(size_t __position) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1344 </span>            :       { return bitset&lt;_Nb&gt;(*this) &gt;&gt;= __position; }
+<span class="lineNum">    1345 </span>            :       //@}
+<span class="lineNum">    1346 </span>            :       
+<span class="lineNum">    1347 </span>            :       /**
+<span class="lineNum">    1348 </span>            :        *  @brief  Finds the index of the first &quot;on&quot; bit.
+<span class="lineNum">    1349 </span>            :        *  @return  The index of the first bit set, or size() if not found.
+<span class="lineNum">    1350 </span>            :        *  @ingroup SGIextensions
+<span class="lineNum">    1351 </span>            :        *  @sa  _Find_next
+<span class="lineNum">    1352 </span>            :        */
+<span class="lineNum">    1353 </span>            :       size_t
+<span class="lineNum">    1354 </span>            :       _Find_first() const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1355 </span>            :       { return this-&gt;_M_do_find_first(_Nb); }
+<span class="lineNum">    1356 </span>            : 
+<span class="lineNum">    1357 </span>            :       /**
+<span class="lineNum">    1358 </span>            :        *  @brief  Finds the index of the next &quot;on&quot; bit after prev.
+<span class="lineNum">    1359 </span>            :        *  @return  The index of the next bit set, or size() if not found.
+<span class="lineNum">    1360 </span>            :        *  @param  __prev  Where to start searching.
+<span class="lineNum">    1361 </span>            :        *  @ingroup SGIextensions
+<span class="lineNum">    1362 </span>            :        *  @sa  _Find_first
+<span class="lineNum">    1363 </span>            :        */
+<span class="lineNum">    1364 </span>            :       size_t
+<span class="lineNum">    1365 </span>            :       _Find_next(size_t __prev) const _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1366 </span>            :       { return this-&gt;_M_do_find_next(__prev, _Nb); }
+<span class="lineNum">    1367 </span>            :     };
+<span class="lineNum">    1368 </span>            : 
+<span class="lineNum">    1369 </span>            :   // Definitions of non-inline member functions.
+<span class="lineNum">    1370 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">    1371 </span>            :     template&lt;class _CharT, class _Traits&gt;
+<span class="lineNum">    1372 </span>            :       void
+<span class="lineNum">    1373 </span>            :       bitset&lt;_Nb&gt;::
+<span class="lineNum">    1374 </span>            :       _M_copy_from_ptr(const _CharT* __s, size_t __len,
+<span class="lineNum">    1375 </span>            :                        size_t __pos, size_t __n, _CharT __zero, _CharT __one)
+<span class="lineNum">    1376 </span>            :       {
+<span class="lineNum">    1377 </span>            :         reset();
+<span class="lineNum">    1378 </span>            :         const size_t __nbits = std::min(_Nb, std::min(__n, size_t(__len - __pos)));
+<span class="lineNum">    1379 </span>            :         for (size_t __i = __nbits; __i &gt; 0; --__i)
+<span class="lineNum">    1380 </span>            :           {
+<span class="lineNum">    1381 </span>            :             const _CharT __c = __s[__pos + __nbits - __i];
+<span class="lineNum">    1382 </span>            :             if (_Traits::eq(__c, __zero))
+<span class="lineNum">    1383 </span>            :               ;
+<span class="lineNum">    1384 </span>            :             else if (_Traits::eq(__c, __one))
+<span class="lineNum">    1385 </span>            :               _Unchecked_set(__i - 1);
+<span class="lineNum">    1386 </span>            :             else
+<span class="lineNum">    1387 </span>            :               __throw_invalid_argument(__N(&quot;bitset::_M_copy_from_ptr&quot;));
+<span class="lineNum">    1388 </span>            :           }
+<span class="lineNum">    1389 </span>            :       }
+<span class="lineNum">    1390 </span>            : 
+<span class="lineNum">    1391 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">    1392 </span>            :     template&lt;class _CharT, class _Traits, class _Alloc&gt;
+<span class="lineNum">    1393 </span>            :       void
+<span class="lineNum">    1394 </span>            :       bitset&lt;_Nb&gt;::
+<span class="lineNum">    1395 </span>            :       _M_copy_to_string(std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,
+<span class="lineNum">    1396 </span>            :                         _CharT __zero, _CharT __one) const
+<span class="lineNum">    1397 </span>            :       {
+<span class="lineNum">    1398 </span>            :         __s.assign(_Nb, __zero);
+<span class="lineNum">    1399 </span>            :         for (size_t __i = _Nb; __i &gt; 0; --__i)
+<span class="lineNum">    1400 </span>            :           if (_Unchecked_test(__i - 1))
+<span class="lineNum">    1401 </span>            :             _Traits::assign(__s[_Nb - __i], __one);
+<span class="lineNum">    1402 </span>            :       }
+<span class="lineNum">    1403 </span>            : 
+<span class="lineNum">    1404 </span>            :   // 23.3.5.3 bitset operations:
+<span class="lineNum">    1405 </span>            :   //@{
+<span class="lineNum">    1406 </span>            :   /**
+<span class="lineNum">    1407 </span>            :    *  @brief  Global bitwise operations on bitsets.
+<span class="lineNum">    1408 </span>            :    *  @param  __x  A bitset.
+<span class="lineNum">    1409 </span>            :    *  @param  __y  A bitset of the same size as @a __x.
+<span class="lineNum">    1410 </span>            :    *  @return  A new bitset.
+<span class="lineNum">    1411 </span>            :    *
+<span class="lineNum">    1412 </span>            :    *  These should be self-explanatory.
+<span class="lineNum">    1413 </span>            :   */
+<span class="lineNum">    1414 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">    1415 </span>            :     inline bitset&lt;_Nb&gt;
+<span class="lineNum">    1416 </span>            :     operator&amp;(const bitset&lt;_Nb&gt;&amp; __x, const bitset&lt;_Nb&gt;&amp; __y) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1417 </span>            :     {
+<span class="lineNum">    1418 </span>            :       bitset&lt;_Nb&gt; __result(__x);
+<span class="lineNum">    1419 </span>            :       __result &amp;= __y;
+<span class="lineNum">    1420 </span>            :       return __result;
+<span class="lineNum">    1421 </span>            :     }
+<span class="lineNum">    1422 </span>            : 
+<span class="lineNum">    1423 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">    1424 </span>            :     inline bitset&lt;_Nb&gt;
+<span class="lineNum">    1425 </span>            :     operator|(const bitset&lt;_Nb&gt;&amp; __x, const bitset&lt;_Nb&gt;&amp; __y) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1426 </span>            :     {
+<span class="lineNum">    1427 </span>            :       bitset&lt;_Nb&gt; __result(__x);
+<span class="lineNum">    1428 </span>            :       __result |= __y;
+<span class="lineNum">    1429 </span>            :       return __result;
+<span class="lineNum">    1430 </span>            :     }
+<span class="lineNum">    1431 </span>            : 
+<span class="lineNum">    1432 </span>            :   template &lt;size_t _Nb&gt;
+<span class="lineNum">    1433 </span>            :     inline bitset&lt;_Nb&gt;
+<span class="lineNum">    1434 </span>            :     operator^(const bitset&lt;_Nb&gt;&amp; __x, const bitset&lt;_Nb&gt;&amp; __y) _GLIBCXX_NOEXCEPT
+<span class="lineNum">    1435 </span>            :     {
+<span class="lineNum">    1436 </span>            :       bitset&lt;_Nb&gt; __result(__x);
+<span class="lineNum">    1437 </span>            :       __result ^= __y;
+<span class="lineNum">    1438 </span>            :       return __result;
+<span class="lineNum">    1439 </span>            :     }
+<span class="lineNum">    1440 </span>            :   //@}
+<span class="lineNum">    1441 </span>            : 
+<span class="lineNum">    1442 </span>            :   //@{
+<span class="lineNum">    1443 </span>            :   /**
+<span class="lineNum">    1444 </span>            :    *  @brief Global I/O operators for bitsets.
+<span class="lineNum">    1445 </span>            :    *
+<span class="lineNum">    1446 </span>            :    *  Direct I/O between streams and bitsets is supported.  Output is
+<span class="lineNum">    1447 </span>            :    *  straightforward.  Input will skip whitespace, only accept @a 0 and @a 1
+<span class="lineNum">    1448 </span>            :    *  characters, and will only extract as many digits as the %bitset will
+<span class="lineNum">    1449 </span>            :    *  hold.
+<span class="lineNum">    1450 </span>            :   */
+<span class="lineNum">    1451 </span>            :   template&lt;class _CharT, class _Traits, size_t _Nb&gt;
+<span class="lineNum">    1452 </span>            :     std::basic_istream&lt;_CharT, _Traits&gt;&amp;
+<span class="lineNum">    1453 </span>            :     operator&gt;&gt;(std::basic_istream&lt;_CharT, _Traits&gt;&amp; __is, bitset&lt;_Nb&gt;&amp; __x)
+<span class="lineNum">    1454 </span>            :     {
+<span class="lineNum">    1455 </span>            :       typedef typename _Traits::char_type          char_type;
+<span class="lineNum">    1456 </span>            :       typedef std::basic_istream&lt;_CharT, _Traits&gt;  __istream_type;
+<span class="lineNum">    1457 </span>            :       typedef typename __istream_type::ios_base    __ios_base;
+<span class="lineNum">    1458 </span>            : 
+<span class="lineNum">    1459 </span>            :       std::basic_string&lt;_CharT, _Traits&gt; __tmp;
+<span class="lineNum">    1460 </span>            :       __tmp.reserve(_Nb);
+<span class="lineNum">    1461 </span>            : 
+<span class="lineNum">    1462 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1463 </span>            :       // 303. Bitset input operator underspecified
+<span class="lineNum">    1464 </span>            :       const char_type __zero = __is.widen('0');
+<span class="lineNum">    1465 </span>            :       const char_type __one = __is.widen('1');
+<span class="lineNum">    1466 </span>            : 
+<span class="lineNum">    1467 </span>            :       typename __ios_base::iostate __state = __ios_base::goodbit;
+<span class="lineNum">    1468 </span>            :       typename __istream_type::sentry __sentry(__is);
+<span class="lineNum">    1469 </span>            :       if (__sentry)
+<span class="lineNum">    1470 </span>            :         {
+<span class="lineNum">    1471 </span>            :           __try
+<span class="lineNum">    1472 </span>            :             {
+<span class="lineNum">    1473 </span>            :               for (size_t __i = _Nb; __i &gt; 0; --__i)
+<span class="lineNum">    1474 </span>            :                 {
+<span class="lineNum">    1475 </span>            :                   static typename _Traits::int_type __eof = _Traits::eof();
+<span class="lineNum">    1476 </span>            :                   
+<span class="lineNum">    1477 </span>            :                   typename _Traits::int_type __c1 = __is.rdbuf()-&gt;sbumpc();
+<span class="lineNum">    1478 </span>            :                   if (_Traits::eq_int_type(__c1, __eof))
+<span class="lineNum">    1479 </span>            :                     {
+<span class="lineNum">    1480 </span>            :                       __state |= __ios_base::eofbit;
+<span class="lineNum">    1481 </span>            :                       break;
+<span class="lineNum">    1482 </span>            :                     }
+<span class="lineNum">    1483 </span>            :                   else
+<span class="lineNum">    1484 </span>            :                     {
+<span class="lineNum">    1485 </span>            :                       const char_type __c2 = _Traits::to_char_type(__c1);
+<span class="lineNum">    1486 </span>            :                       if (_Traits::eq(__c2, __zero))
+<span class="lineNum">    1487 </span>            :                         __tmp.push_back(__zero);
+<span class="lineNum">    1488 </span>            :                       else if (_Traits::eq(__c2, __one))
+<span class="lineNum">    1489 </span>            :                         __tmp.push_back(__one);
+<span class="lineNum">    1490 </span>            :                       else if (_Traits::
+<span class="lineNum">    1491 </span>            :                                eq_int_type(__is.rdbuf()-&gt;sputbackc(__c2),
+<span class="lineNum">    1492 </span>            :                                            __eof))
+<span class="lineNum">    1493 </span>            :                         {
+<span class="lineNum">    1494 </span>            :                           __state |= __ios_base::failbit;
+<span class="lineNum">    1495 </span>            :                           break;
+<span class="lineNum">    1496 </span>            :                         }
+<span class="lineNum">    1497 </span>            :                     }
+<span class="lineNum">    1498 </span>            :                 }
+<span class="lineNum">    1499 </span>            :             }
+<span class="lineNum">    1500 </span>            :           __catch(__cxxabiv1::__forced_unwind&amp;)
+<span class="lineNum">    1501 </span>            :             {
+<span class="lineNum">    1502 </span>            :               __is._M_setstate(__ios_base::badbit);             
+<span class="lineNum">    1503 </span>            :               __throw_exception_again;
+<span class="lineNum">    1504 </span>            :             }
+<span class="lineNum">    1505 </span>            :           __catch(...)
+<span class="lineNum">    1506 </span>            :             { __is._M_setstate(__ios_base::badbit); }
+<span class="lineNum">    1507 </span>            :         }
+<span class="lineNum">    1508 </span>            : 
+<span class="lineNum">    1509 </span>            :       if (__tmp.empty() &amp;&amp; _Nb)
+<span class="lineNum">    1510 </span>            :         __state |= __ios_base::failbit;
+<span class="lineNum">    1511 </span>            :       else
+<span class="lineNum">    1512 </span>            :         __x._M_copy_from_string(__tmp, static_cast&lt;size_t&gt;(0), _Nb,
+<span class="lineNum">    1513 </span>            :                                 __zero, __one);
+<span class="lineNum">    1514 </span>            :       if (__state)
+<span class="lineNum">    1515 </span>            :         __is.setstate(__state);
+<span class="lineNum">    1516 </span>            :       return __is;
+<span class="lineNum">    1517 </span>            :     }
+<span class="lineNum">    1518 </span>            : 
+<span class="lineNum">    1519 </span>            :   template &lt;class _CharT, class _Traits, size_t _Nb&gt;
+<span class="lineNum">    1520 </span>            :     std::basic_ostream&lt;_CharT, _Traits&gt;&amp;
+<span class="lineNum">    1521 </span>            :     operator&lt;&lt;(std::basic_ostream&lt;_CharT, _Traits&gt;&amp; __os,
+<span class="lineNum">    1522 </span>            :                const bitset&lt;_Nb&gt;&amp; __x)
+<span class="lineNum">    1523 </span>            :     {
+<span class="lineNum">    1524 </span>            :       std::basic_string&lt;_CharT, _Traits&gt; __tmp;
+<span class="lineNum">    1525 </span>            : 
+<span class="lineNum">    1526 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<span class="lineNum">    1527 </span>            :       // 396. what are characters zero and one.
+<span class="lineNum">    1528 </span>            :       const ctype&lt;_CharT&gt;&amp; __ct = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__os.getloc());
+<span class="lineNum">    1529 </span>            :       __x._M_copy_to_string(__tmp, __ct.widen('0'), __ct.widen('1'));
+<span class="lineNum">    1530 </span>            :       return __os &lt;&lt; __tmp;
+<span class="lineNum">    1531 </span>            :     }
+<span class="lineNum">    1532 </span>            :   //@}
+<span class="lineNum">    1533 </span>            : 
+<span class="lineNum">    1534 </span>            : _GLIBCXX_END_NAMESPACE_CONTAINER
+<span class="lineNum">    1535 </span>            : } // namespace std
+<span class="lineNum">    1536 </span>            : 
+<span class="lineNum">    1537 </span>            : #undef _GLIBCXX_BITSET_WORDS
+<span class="lineNum">    1538 </span>            : #undef _GLIBCXX_BITSET_BITS_PER_WORD
+<span class="lineNum">    1539 </span>            : #undef _GLIBCXX_BITSET_BITS_PER_ULL
+<span class="lineNum">    1540 </span>            : 
+<span class="lineNum">    1541 </span>            : #if __cplusplus &gt;= 201103L
+<span class="lineNum">    1542 </span>            : 
+<span class="lineNum">    1543 </span>            : #include &lt;bits/functional_hash.h&gt;
+<span class="lineNum">    1544 </span>            : 
+<span class="lineNum">    1545 </span>            : namespace std _GLIBCXX_VISIBILITY(default)
+<span class="lineNum">    1546 </span>            : {
+<span class="lineNum">    1547 </span>            : _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<span class="lineNum">    1548 </span>            : 
+<span class="lineNum">    1549 </span>            :   // DR 1182.
+<span class="lineNum">    1550 </span>            :   /// std::hash specialization for bitset.
+<span class="lineNum">    1551 </span>            :   template&lt;size_t _Nb&gt;
+<span class="lineNum">    1552 </span>            :     struct hash&lt;_GLIBCXX_STD_C::bitset&lt;_Nb&gt;&gt;
+<span class="lineNum">    1553 </span>            :     : public __hash_base&lt;size_t, _GLIBCXX_STD_C::bitset&lt;_Nb&gt;&gt;
+<span class="lineNum">    1554 </span>            :     {
+<span class="lineNum">    1555 </span>            :       size_t
+<span class="lineNum">    1556 </span>            :       operator()(const _GLIBCXX_STD_C::bitset&lt;_Nb&gt;&amp; __b) const noexcept
+<span class="lineNum">    1557 </span>            :       {
+<span class="lineNum">    1558 </span>            :         const size_t __clength = (_Nb + __CHAR_BIT__ - 1) / __CHAR_BIT__;
+<span class="lineNum">    1559 </span>            :         return std::_Hash_impl::hash(__b._M_getdata(), __clength);
+<span class="lineNum">    1560 </span>            :       }
+<span class="lineNum">    1561 </span>            :     };
+<span class="lineNum">    1562 </span>            : 
+<span class="lineNum">    1563 </span>            :   template&lt;&gt;
+<span class="lineNum">    1564 </span>            :     struct hash&lt;_GLIBCXX_STD_C::bitset&lt;0&gt;&gt;
+<span class="lineNum">    1565 </span>            :     : public __hash_base&lt;size_t, _GLIBCXX_STD_C::bitset&lt;0&gt;&gt;
+<span class="lineNum">    1566 </span>            :     {
+<span class="lineNum">    1567 </span>            :       size_t
+<span class="lineNum">    1568 </span>            :       operator()(const _GLIBCXX_STD_C::bitset&lt;0&gt;&amp;) const noexcept
+<span class="lineNum">    1569 </span>            :       { return 0; }
+<span class="lineNum">    1570 </span>            :     };
+<span class="lineNum">    1571 </span>            : 
+<span class="lineNum">    1572 </span>            : _GLIBCXX_END_NAMESPACE_VERSION
+<span class="lineNum">    1573 </span>            : } // namespace
+<span class="lineNum">    1574 </span>            : 
+<span class="lineNum">    1575 </span>            : #endif // C++11
+<span class="lineNum">    1576 </span>            : 
+<span class="lineNum">    1577 </span>            : #ifdef _GLIBCXX_DEBUG
+<span class="lineNum">    1578 </span>            : # include &lt;debug/bitset&gt;
+<span class="lineNum">    1579 </span>            : #endif
+<span class="lineNum">    1580 </span>            : 
+<span class="lineNum">    1581 </span>            : #ifdef _GLIBCXX_PROFILE
+<span class="lineNum">    1582 </span>            : # include &lt;profile/bitset&gt;
+<span class="lineNum">    1583 </span>            : #endif
+<span class="lineNum">    1584 </span>            : 
+<span class="lineNum">    1585 </span>            : #endif /* _GLIBCXX_BITSET */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

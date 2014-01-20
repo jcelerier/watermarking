@@ -1,0 +1,805 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - libwatermark/io/gnuplot/gnuplot_i.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">libwatermark/io/gnuplot</a> - gnuplot_i.h<span style="font-size: 80%;"> (source / <a href="gnuplot_i.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">178</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2014-01-20</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">       3 </span>            : /**
+<span class="lineNum">       4 </span>            :   @file         gnuplot_i.h
+<span class="lineNum">       5 </span>            :   @author       N. Devillard
+<span class="lineNum">       6 </span>            :   @date         Sep 1998
+<span class="lineNum">       7 </span>            :   @version      $Revision: 1.11 $
+<span class="lineNum">       8 </span>            :   @brief        C interface to gnuplot.
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            :   gnuplot is a freely available, command-driven graphical display tool for
+<span class="lineNum">      11 </span>            :   Unix. It compiles and works quite well on a number of Unix flavours as
+<span class="lineNum">      12 </span>            :   well as other operating systems. The following module enables sending
+<span class="lineNum">      13 </span>            :   display requests to gnuplot through simple C calls.
+<span class="lineNum">      14 </span>            :   
+<span class="lineNum">      15 </span>            : */
+<span class="lineNum">      16 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : /*
+<span class="lineNum">      19 </span>            :         $Id: gnuplot_i.h,v 1.11 2003/01/27 08:58:04 ndevilla Exp $
+<span class="lineNum">      20 </span>            :         $Author: ndevilla $
+<span class="lineNum">      21 </span>            :         $Date: 2003/01/27 08:58:04 $
+<span class="lineNum">      22 </span>            :         $Revision: 1.11 $
+<span class="lineNum">      23 </span>            :  */
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #pragma once
+<span class="lineNum">      26 </span>            : /*---------------------------------------------------------------------------
+<span class="lineNum">      27 </span>            :                                 Includes
+<span class="lineNum">      28 </span>            :  ---------------------------------------------------------------------------*/
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : #include &lt;cstdio&gt;
+<span class="lineNum">      31 </span>            : #include &lt;cstdlib&gt;
+<span class="lineNum">      32 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      33 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;cstdarg&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : /*---------------------------------------------------------------------------
+<span class="lineNum">      39 </span>            :                                                                 Defines
+<span class="lineNum">      40 </span>            :  ---------------------------------------------------------------------------*/
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : /** Maximal size of a gnuplot command */
+<span class="lineNum">      43 </span>            : #define GP_CMD_SIZE             2048
+<span class="lineNum">      44 </span>            : /** Maximal size of a plot title */
+<span class="lineNum">      45 </span>            : #define GP_TITLE_SIZE           80
+<span class="lineNum">      46 </span>            : /** Maximal size for an equation */
+<span class="lineNum">      47 </span>            : #define GP_EQ_SIZE              512
+<span class="lineNum">      48 </span>            : /** Maximal size of a name in the PATH */
+<span class="lineNum">      49 </span>            : #define PATH_MAXNAMESZ       4096
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : /** Define P_tmpdir if not defined (this is normally a POSIX symbol) */
+<span class="lineNum">      52 </span>            : #ifndef P_tmpdir
+<span class="lineNum">      53 </span>            : #define P_tmpdir &quot;.&quot;
+<span class="lineNum">      54 </span>            : #endif
+<span class="lineNum">      55 </span>            : /** Maximal number of simultaneous temporary files */
+<span class="lineNum">      56 </span>            : #define GP_MAX_TMP_FILES    64
+<span class="lineNum">      57 </span>            : /** Maximal size of a temporary file name */
+<span class="lineNum">      58 </span>            : #define GP_TMP_NAME_SIZE    512
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : /*---------------------------------------------------------------------------
+<span class="lineNum">      62 </span>            :                                 New Types
+<span class="lineNum">      63 </span>            :  ---------------------------------------------------------------------------*/
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">      66 </span>            : /**
+<span class="lineNum">      67 </span>            :   @typedef      gnuplot_ctrl
+<span class="lineNum">      68 </span>            :   @brief        gnuplot session handle (opaque type).
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :   This structure holds all necessary information to talk to a gnuplot
+<span class="lineNum">      71 </span>            :   session. It is built and returned by gnuplot_init() and later used
+<span class="lineNum">      72 </span>            :   by all functions in this module to communicate with the session, then
+<span class="lineNum">      73 </span>            :   meant to be closed by gnuplot_close().
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :   This structure is meant to remain opaque, you normally do not need
+<span class="lineNum">      76 </span>            :   to know what is contained in there.
+<span class="lineNum">      77 </span>            :  */
+<span class="lineNum">      78 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : typedef struct _GNUPLOT_CTRL_ {
+<span class="lineNum">      81 </span>            :     /** Pipe to gnuplot process */
+<span class="lineNum">      82 </span>            :     FILE    * gnucmd ;
+<span class="lineNum">      83 </span>            :     
+<span class="lineNum">      84 </span>            :     /** Number of currently active plots */
+<span class="lineNum">      85 </span>            :     int       nplots ;
+<span class="lineNum">      86 </span>            :         /** Current plotting style */
+<span class="lineNum">      87 </span>            :     char      pstyle[32] ;
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :     /** Name of temporary files */
+<span class="lineNum">      90 </span>            :     char      to_delete[GP_MAX_TMP_FILES][GP_TMP_NAME_SIZE] ;
+<span class="lineNum">      91 </span>            :         /** Number of temporary files */
+<span class="lineNum">      92 </span>            :     int       ntmp ;
+<span class="lineNum">      93 </span>            : } gnuplot_ctrl ;
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : /*---------------------------------------------------------------------------
+<span class="lineNum">      96 </span>            :                         Function ANSI C prototypes
+<span class="lineNum">      97 </span>            :  ---------------------------------------------------------------------------*/
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     101 </span>            : /**
+<span class="lineNum">     102 </span>            :   @brief    Change the plotting style of a gnuplot session.
+<span class="lineNum">     103 </span>            :   @param    h Gnuplot session control handle
+<span class="lineNum">     104 </span>            :   @param    plot_style Plotting-style to use (character string)
+<span class="lineNum">     105 </span>            :   @return   void
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :   The provided plotting style is a character string. It must be one of
+<span class="lineNum">     108 </span>            :   the following:
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :   - lines
+<span class="lineNum">     111 </span>            :   - points
+<span class="lineNum">     112 </span>            :   - linespoints
+<span class="lineNum">     113 </span>            :   - impulses
+<span class="lineNum">     114 </span>            :   - dots
+<span class="lineNum">     115 </span>            :   - steps
+<span class="lineNum">     116 </span>            :   - errorbars
+<span class="lineNum">     117 </span>            :   - boxes
+<span class="lineNum">     118 </span>            :   - boxeserrorbars
+<a name="119"><span class="lineNum">     119 </span>            :  */</a>
+<span class="lineNum">     120 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 : void gnuplot_setstyle(gnuplot_ctrl * h, const char * plot_style)</span>
+<span class="lineNum">     122 </span>            : {
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         if (strcmp(plot_style, &quot;lines&quot;) &amp;&amp;</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;points&quot;) &amp;&amp;</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;linespoints&quot;) &amp;&amp;</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;impulses&quot;) &amp;&amp;</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;dots&quot;) &amp;&amp;</span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;steps&quot;) &amp;&amp;</span>
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;errorbars&quot;) &amp;&amp;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;boxes&quot;) &amp;&amp;</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                         strcmp(plot_style, &quot;boxerrorbars&quot;)) {</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;warning: unknown requested style: using points\n&quot;) ;</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 strcpy(h-&gt;pstyle, &quot;points&quot;) ;</span>
+<span class="lineNum">     134 </span>            :         } else {
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 strcpy(h-&gt;pstyle, plot_style) ;</span>
+<span class="lineNum">     136 </span>            :         }
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     138 </span>            : }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     142 </span>            : /**
+<span class="lineNum">     143 </span>            :   @brief    Find out where a command lives in your PATH.
+<span class="lineNum">     144 </span>            :   @param    pname Name of the program to look for.
+<span class="lineNum">     145 </span>            :   @return   pointer to statically allocated character string.
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :   This is the C equivalent to the 'which' command in Unix. It parses
+<span class="lineNum">     148 </span>            :   out your PATH environment variable to find out where a command
+<span class="lineNum">     149 </span>            :   lives. The returned character string is statically allocated within
+<span class="lineNum">     150 </span>            :   this function, i.e. there is no need to free it. Beware that the
+<span class="lineNum">     151 </span>            :   contents of this string will change from one call to the next,
+<span class="lineNum">     152 </span>            :   though (as all static variables in a function).
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :   The input character string must be the name of a command without
+<span class="lineNum">     155 </span>            :   prefixing path of any kind, i.e. only the command name. The returned
+<span class="lineNum">     156 </span>            :   string is the path in which a command matching the same name was
+<span class="lineNum">     157 </span>            :   found.
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :   Examples (assuming there is a prog named 'hello' in the cwd):
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :   @verbatim
+<span class="lineNum">     162 </span>            :   gnuplot_get_program_path(&quot;hello&quot;) returns &quot;.&quot;
+<span class="lineNum">     163 </span>            :   gnuplot_get_program_path(&quot;ls&quot;) returns &quot;/bin&quot;
+<span class="lineNum">     164 </span>            :   gnuplot_get_program_path(&quot;csh&quot;) returns &quot;/usr/bin&quot;
+<span class="lineNum">     165 </span>            :   gnuplot_get_program_path(&quot;/bin/ls&quot;) returns NULL
+<span class="lineNum">     166 </span>            :   @endverbatim
+<span class="lineNum">     167 </span>            :   
+<a name="168"><span class="lineNum">     168 </span>            :  */</a>
+<span class="lineNum">     169 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 : char * gnuplot_get_program_path(const char * pname)</span>
+<span class="lineNum">     171 </span>            : {
+<span class="lineNum">     172 </span>            :         int         i, j, lg;
+<span class="lineNum">     173 </span>            :         char    *   path;
+<span class="lineNum">     174 </span>            :         static char buf[PATH_MAXNAMESZ];
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :         /* Trivial case: try in CWD */
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         sprintf(buf, &quot;./%s&quot;, pname) ;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         if (access(buf, X_OK)==0) {</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 sprintf(buf, &quot;.&quot;);</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 return buf ;</span>
+<span class="lineNum">     181 </span>            :         }
+<span class="lineNum">     182 </span>            :         /* Try out in all paths given in the PATH variable */
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :         buf[0] = 0;</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         path = getenv(&quot;PATH&quot;) ;</span>
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :         if (path!=NULL) {</span>
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 for (i=0; path[i]; ) {</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                         for (j=i ; (path[j]) &amp;&amp; (path[j]!=':') ; j++);</span>
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :                         lg = j - i;</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                         strncpy(buf, path + i, lg);</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                         if (lg == 0) buf[lg++] = '.';</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         buf[lg++] = '/';</span>
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :                         strcpy(buf + lg, pname);</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         if (access(buf, X_OK) == 0) {</span>
+<span class="lineNum">     194 </span>            :                                 /* Found it! */
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :                                 break ;</span>
+<span class="lineNum">     196 </span>            :                         }
+<span class="lineNum">     197 </span><span class="lineNoCov">          0 :                         buf[0] = 0;</span>
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                         i = j;</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         if (path[i] == ':') i++ ;</span>
+<span class="lineNum">     200 </span>            :                 }
+<span class="lineNum">     201 </span>            :         } else {
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;PATH variable not set\n&quot;);</span>
+<span class="lineNum">     203 </span>            :         }
+<span class="lineNum">     204 </span>            :         /* If the buffer is still empty, the command was not found */
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         if (buf[0] == 0) return NULL ;</span>
+<span class="lineNum">     206 </span>            :         /* Otherwise truncate the command name to yield path only */
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         lg = strlen(buf) - 1 ;</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         while (buf[lg]!='/') {</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 buf[lg]=0 ;</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 lg -- ;</span>
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         buf[lg] = 0;</span>
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         return buf ;</span>
+<span class="lineNum">     214 </span>            : }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     217 </span>            : /**
+<span class="lineNum">     218 </span>            :   @brief    Opens up a gnuplot session, ready to receive commands.
+<span class="lineNum">     219 </span>            :   @return   Newly allocated gnuplot control structure.
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :   This opens up a new gnuplot session, ready for input. The struct
+<span class="lineNum">     222 </span>            :   controlling a gnuplot session should remain opaque and only be
+<span class="lineNum">     223 </span>            :   accessed through the provided functions.
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :   The session must be closed using gnuplot_close().
+<a name="226"><span class="lineNum">     226 </span>            :  */</a>
+<span class="lineNum">     227 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 : gnuplot_ctrl * gnuplot_init(void)</span>
+<span class="lineNum">     229 </span>            : {
+<span class="lineNum">     230 </span>            :         gnuplot_ctrl *  handle ;
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         if (getenv(&quot;DISPLAY&quot;) == NULL) {</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;cannot find DISPLAY variable: is it set?\n&quot;) ;</span>
+<span class="lineNum">     234 </span>            :         }
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         if (gnuplot_get_program_path(&quot;gnuplot&quot;)==NULL) {</span>
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;cannot find gnuplot in your PATH&quot;);</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 return NULL ;</span>
+<span class="lineNum">     238 </span>            :         }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :         /*
+<span class="lineNum">     241 </span>            :          * Structure initialization:
+<span class="lineNum">     242 </span>            :          */
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         handle = (gnuplot_ctrl*)malloc(sizeof(gnuplot_ctrl)) ;</span>
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         handle-&gt;nplots = 0 ;</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         gnuplot_setstyle(handle, &quot;points&quot;) ;</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         handle-&gt;ntmp = 0 ;</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         handle-&gt;gnucmd = popen(&quot;gnuplot&quot;, &quot;w&quot;) ;</span>
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :         if (handle-&gt;gnucmd == NULL) {</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;error starting gnuplot\n&quot;) ;</span>
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 free(handle) ;</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 return NULL ;</span>
+<span class="lineNum">     253 </span>            :         }
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         return handle;</span>
+<span class="lineNum">     255 </span>            : }
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     258 </span>            : /**
+<span class="lineNum">     259 </span>            :   @brief    Closes a gnuplot session previously opened by gnuplot_init()
+<span class="lineNum">     260 </span>            :   @param    handle Gnuplot session control handle.
+<span class="lineNum">     261 </span>            :   @return   void
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :   Kills the child PID and deletes all opened temporary files.
+<span class="lineNum">     264 </span>            :   It is mandatory to call this function to close the handle, otherwise
+<span class="lineNum">     265 </span>            :   temporary files are not cleaned and child process might survive.
+<span class="lineNum">     266 </span>            : 
+<a name="267"><span class="lineNum">     267 </span>            :  */</a>
+<span class="lineNum">     268 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 : void gnuplot_close(gnuplot_ctrl * handle)</span>
+<span class="lineNum">     270 </span>            : {
+<span class="lineNum">     271 </span>            :         int     i ;
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :         if (pclose(handle-&gt;gnucmd) == -1) {</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :                 fprintf(stderr, &quot;problem closing communication to gnuplot\n&quot;) ;</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 return ;</span>
+<span class="lineNum">     276 </span>            :         }
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         if (handle-&gt;ntmp) {</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 for (i=0 ; i&lt;handle-&gt;ntmp ; i++) {</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :                         remove(handle-&gt;to_delete[i]) ;</span>
+<span class="lineNum">     280 </span>            :                 }
+<span class="lineNum">     281 </span>            :         }
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         free(handle) ;</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     284 </span>            : }
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     287 </span>            : /**
+<span class="lineNum">     288 </span>            :   @brief    Sends a command to an active gnuplot session.
+<span class="lineNum">     289 </span>            :   @param    handle Gnuplot session control handle
+<span class="lineNum">     290 </span>            :   @param    cmd    Command to send, same as a printf statement.
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :   This sends a string to an active gnuplot session, to be executed.
+<span class="lineNum">     293 </span>            :   There is strictly no way to know if the command has been
+<span class="lineNum">     294 </span>            :   successfully executed or not.
+<span class="lineNum">     295 </span>            :   The command syntax is the same as printf.
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :   Examples:
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            :   @code
+<span class="lineNum">     300 </span>            :   gnuplot_cmd(g, &quot;plot %d*x&quot;, 23.0);
+<span class="lineNum">     301 </span>            :   gnuplot_cmd(g, &quot;plot %g * cos(%g * x)&quot;, 32.0, -3.0);
+<span class="lineNum">     302 </span>            :   @endcode
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span>            :   Since the communication to the gnuplot process is run through
+<span class="lineNum">     305 </span>            :   a standard Unix pipe, it is only unidirectional. This means that
+<span class="lineNum">     306 </span>            :   it is not possible for this interface to query an error status
+<span class="lineNum">     307 </span>            :   back from gnuplot.
+<a name="308"><span class="lineNum">     308 </span>            :  */</a>
+<span class="lineNum">     309 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 : void gnuplot_cmd(gnuplot_ctrl *  handle, char *  cmd, ...)</span>
+<span class="lineNum">     311 </span>            : {
+<span class="lineNum">     312 </span>            :         va_list ap ;
+<span class="lineNum">     313 </span>            :         char    local_cmd[GP_CMD_SIZE];
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         va_start(ap, cmd);</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         vsprintf(local_cmd, cmd, ap);</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         va_end(ap);</span>
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         strcat(local_cmd, &quot;\n&quot;);</span>
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         fputs(local_cmd, handle-&gt;gnucmd) ;</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         fflush(handle-&gt;gnucmd) ;</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     324 </span>            : }
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     328 </span>            : /**
+<span class="lineNum">     329 </span>            :   @brief    Sets the x label of a gnuplot session.
+<span class="lineNum">     330 </span>            :   @param    h Gnuplot session control handle.
+<span class="lineNum">     331 </span>            :   @param    label Character string to use for X label.
+<span class="lineNum">     332 </span>            :   @return   void
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :   Sets the x label for a gnuplot session.
+<a name="335"><span class="lineNum">     335 </span>            :  */</a>
+<span class="lineNum">     336 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 : void gnuplot_set_xlabel(gnuplot_ctrl * h, const char * label)</span>
+<span class="lineNum">     338 </span>            : {
+<span class="lineNum">     339 </span>            :         char    cmd[GP_CMD_SIZE] ;
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         sprintf(cmd, &quot;set xlabel \&quot;%s\&quot;&quot;, label) ;</span>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         gnuplot_cmd(h, cmd) ;</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     344 </span>            : }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     348 </span>            : /**
+<span class="lineNum">     349 </span>            :   @brief    Sets the y label of a gnuplot session.
+<span class="lineNum">     350 </span>            :   @param    h Gnuplot session control handle.
+<span class="lineNum">     351 </span>            :   @param    label Character string to use for Y label.
+<span class="lineNum">     352 </span>            :   @return   void
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            :   Sets the y label for a gnuplot session.
+<a name="355"><span class="lineNum">     355 </span>            :  */</a>
+<span class="lineNum">     356 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 : void gnuplot_set_ylabel(gnuplot_ctrl * h, const char * label)</span>
+<span class="lineNum">     358 </span>            : {
+<span class="lineNum">     359 </span>            :         char    cmd[GP_CMD_SIZE] ;
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :         sprintf(cmd, &quot;set ylabel \&quot;%s\&quot;&quot;, label) ;</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :         gnuplot_cmd(h, cmd) ;</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     364 </span>            : }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     367 </span>            : /**
+<span class="lineNum">     368 </span>            :   @brief    Resets a gnuplot session (next plot will erase previous ones).
+<span class="lineNum">     369 </span>            :   @param    h Gnuplot session control handle.
+<span class="lineNum">     370 </span>            :   @return   void
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span>            :   Resets a gnuplot session, i.e. the next plot will erase all previous
+<span class="lineNum">     373 </span>            :   ones.
+<a name="374"><span class="lineNum">     374 </span>            :  */</a>
+<span class="lineNum">     375 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 : void gnuplot_resetplot(gnuplot_ctrl * h)</span>
+<span class="lineNum">     377 </span>            : {
+<span class="lineNum">     378 </span>            :         int     i ;
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :         if (h-&gt;ntmp) {</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 for (i=0 ; i&lt;h-&gt;ntmp ; i++) {</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                         remove(h-&gt;to_delete[i]) ;</span>
+<span class="lineNum">     382 </span>            :                 }
+<span class="lineNum">     383 </span>            :         }
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :         h-&gt;ntmp = 0 ;</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :         h-&gt;nplots = 0 ;</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     387 </span>            : }
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     391 </span>            : /**
+<span class="lineNum">     392 </span>            :   @brief    Plots a 2d graph from a list of doubles.
+<span class="lineNum">     393 </span>            :   @param    handle  Gnuplot session control handle.
+<span class="lineNum">     394 </span>            :   @param    d       Array of doubles.
+<span class="lineNum">     395 </span>            :   @param    n       Number of values in the passed array.
+<span class="lineNum">     396 </span>            :   @param    title   Title of the plot.
+<span class="lineNum">     397 </span>            :   @return   void
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            :   Plots out a 2d graph from a list of doubles. The x-coordinate is the
+<span class="lineNum">     400 </span>            :   index of the double in the list, the y coordinate is the double in
+<span class="lineNum">     401 </span>            :   the list.
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span>            :   Example:
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :   @code
+<span class="lineNum">     406 </span>            :     gnuplot_ctrl    *h ;
+<span class="lineNum">     407 </span>            :     double          d[50] ;
+<span class="lineNum">     408 </span>            :     int             i ;
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            :     h = gnuplot_init() ;
+<span class="lineNum">     411 </span>            :     for (i=0 ; i&lt;50 ; i++) {
+<span class="lineNum">     412 </span>            :         d[i] = (double)(i*i) ;
+<span class="lineNum">     413 </span>            :     }
+<span class="lineNum">     414 </span>            :     gnuplot_plot_x(h, d, 50, &quot;parabola&quot;) ;
+<span class="lineNum">     415 </span>            :     sleep(2) ;
+<span class="lineNum">     416 </span>            :     gnuplot_close(h) ;
+<span class="lineNum">     417 </span>            :   @endcode
+<a name="418"><span class="lineNum">     418 </span>            :  */</a>
+<span class="lineNum">     419 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 : void gnuplot_plot_x(gnuplot_ctrl * handle, double * d, int n, char * title)</span>
+<span class="lineNum">     421 </span>            : {
+<span class="lineNum">     422 </span>            :         int     i ;
+<span class="lineNum">     423 </span>            :         int             tmpfd ;
+<span class="lineNum">     424 </span>            :         char    name[128] ;
+<span class="lineNum">     425 </span>            :         char    cmd[GP_CMD_SIZE] ;
+<span class="lineNum">     426 </span>            :         char    line[GP_CMD_SIZE] ;
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span><span class="lineNoCov">          0 :         if (handle==NULL || d==NULL || (n&lt;1)) return ;</span>
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            :         /* Open one more temporary file? */
+<span class="lineNum">     432 </span><span class="lineNoCov">          0 :         if (handle-&gt;ntmp == GP_MAX_TMP_FILES - 1) {</span>
+<span class="lineNum">     433 </span>            :                 fprintf(stderr,
+<span class="lineNum">     434 </span>            :                                 &quot;maximum # of temporary files reached (%d): cannot open more&quot;,
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :                                 GP_MAX_TMP_FILES) ;</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                 return ;</span>
+<span class="lineNum">     437 </span>            :         }
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :         /* Open temporary file for output   */
+<span class="lineNum">     440 </span><span class="lineNoCov">          0 :         sprintf(name, &quot;%s/gnuplot-i-XXXXXX&quot;, P_tmpdir);</span>
+<span class="lineNum">     441 </span><span class="lineNoCov">          0 :         if ((tmpfd=mkstemp(name))==-1) {</span>
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :                 fprintf(stderr,&quot;cannot create temporary file: exiting plot&quot;) ;</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :                 return ;</span>
+<span class="lineNum">     444 </span>            :         }
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span>            :         /* Store file name in array for future deletion */
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :         strcpy(handle-&gt;to_delete[handle-&gt;ntmp], name) ;</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :         handle-&gt;ntmp ++ ;</span>
+<span class="lineNum">     449 </span>            :         /* Write data to this file  */
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :         for (i=0 ; i&lt;n ; i++) {</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :                 sprintf(line, &quot;%g\n&quot;, d[i]);</span>
+<span class="lineNum">     452 </span><span class="lineNoCov">          0 :                 write(tmpfd, line, strlen(line));</span>
+<span class="lineNum">     453 </span>            :         }
+<span class="lineNum">     454 </span><span class="lineNoCov">          0 :         close(tmpfd) ;</span>
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span>            :         /* Command to be sent to gnuplot    */
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :         if (handle-&gt;nplots &gt; 0) {</span>
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 :                 strcpy(cmd, &quot;replot&quot;) ;</span>
+<span class="lineNum">     459 </span>            :         } else {
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :                 strcpy(cmd, &quot;plot&quot;) ;</span>
+<span class="lineNum">     461 </span>            :         }
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 :         if (title == NULL) {</span>
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :                 sprintf(line, &quot;%s \&quot;%s\&quot; with %s&quot;, cmd, name, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     465 </span>            :         } else {
+<span class="lineNum">     466 </span>            :                 sprintf(line, &quot;%s \&quot;%s\&quot; title \&quot;%s\&quot; with %s&quot;, cmd, name,
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :                                 title, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     468 </span>            :         }
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            :         /* send command to gnuplot  */
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :         gnuplot_cmd(handle, line) ;</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         handle-&gt;nplots++ ;</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     474 </span>            : }
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     477 </span>            : /**
+<span class="lineNum">     478 </span>            :   @brief    Plot a 2d graph from a list of points.
+<span class="lineNum">     479 </span>            :   @param    handle      Gnuplot session control handle.
+<span class="lineNum">     480 </span>            :   @param    x           Pointer to a list of x coordinates.
+<span class="lineNum">     481 </span>            :   @param    y           Pointer to a list of y coordinates.
+<span class="lineNum">     482 </span>            :   @param    n           Number of doubles in x (assumed the same as in y).
+<span class="lineNum">     483 </span>            :   @param    title       Title of the plot.
+<span class="lineNum">     484 </span>            :   @return   void
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span>            :   Plots out a 2d graph from a list of points. Provide points through a list
+<span class="lineNum">     487 </span>            :   of x and a list of y coordinates. Both provided arrays are assumed to
+<span class="lineNum">     488 </span>            :   contain the same number of values.
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span>            :   @code
+<span class="lineNum">     491 </span>            :     gnuplot_ctrl    *h ;
+<span class="lineNum">     492 </span>            :     double          x[50] ;
+<span class="lineNum">     493 </span>            :     double          y[50] ;
+<span class="lineNum">     494 </span>            :     int             i ;
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :     h = gnuplot_init() ;
+<span class="lineNum">     497 </span>            :     for (i=0 ; i&lt;50 ; i++) {
+<span class="lineNum">     498 </span>            :         x[i] = (double)(i)/10.0 ;
+<span class="lineNum">     499 </span>            :         y[i] = x[i] * x[i] ;
+<span class="lineNum">     500 </span>            :     }
+<span class="lineNum">     501 </span>            :     gnuplot_plot_xy(h, x, y, 50, &quot;parabola&quot;) ;
+<span class="lineNum">     502 </span>            :     sleep(2) ;
+<span class="lineNum">     503 </span>            :     gnuplot_close(h) ;
+<span class="lineNum">     504 </span>            :   @endcode
+<a name="505"><span class="lineNum">     505 </span>            :  */</a>
+<span class="lineNum">     506 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 : void gnuplot_plot_xy(</span>
+<span class="lineNum">     508 </span>            :                 gnuplot_ctrl    *   handle,
+<span class="lineNum">     509 </span>            :                 double          *   x,
+<span class="lineNum">     510 </span>            :                 double          *   y,
+<span class="lineNum">     511 </span>            :                 int                 n,
+<span class="lineNum">     512 </span>            :                 char            *   title
+<span class="lineNum">     513 </span>            :                 )
+<span class="lineNum">     514 </span>            : {
+<span class="lineNum">     515 </span>            :         int     i ;
+<span class="lineNum">     516 </span>            :         int             tmpfd ;
+<span class="lineNum">     517 </span>            :         char    name[128] ;
+<span class="lineNum">     518 </span>            :         char    cmd[GP_CMD_SIZE] ;
+<span class="lineNum">     519 </span>            :         char    line[GP_CMD_SIZE] ;
+<span class="lineNum">     520 </span>            : 
+<span class="lineNum">     521 </span><span class="lineNoCov">          0 :         if (handle==NULL || x==NULL || y==NULL || (n&lt;1)) return ;</span>
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span>            :         /* Open one more temporary file? */
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         if (handle-&gt;ntmp == GP_MAX_TMP_FILES - 1) {</span>
+<span class="lineNum">     525 </span>            :                 fprintf(stderr,
+<span class="lineNum">     526 </span>            :                                 &quot;maximum # of temporary files reached (%d): cannot open more&quot;,
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :                                 GP_MAX_TMP_FILES) ;</span>
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 :                 return ;</span>
+<span class="lineNum">     529 </span>            :         }
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            :         /* Open temporary file for output   */
+<span class="lineNum">     532 </span><span class="lineNoCov">          0 :         sprintf(name, &quot;%s/gnuplot-i-XXXXXX&quot;, P_tmpdir);</span>
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :         if ((tmpfd=mkstemp(name))==-1) {</span>
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :                 fprintf(stderr,&quot;cannot create temporary file: exiting plot&quot;) ;</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :                 return ;</span>
+<span class="lineNum">     536 </span>            :         }
+<span class="lineNum">     537 </span>            :         /* Store file name in array for future deletion */
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         strcpy(handle-&gt;to_delete[handle-&gt;ntmp], name) ;</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :         handle-&gt;ntmp ++ ;</span>
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span>            :         /* Write data to this file  */
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         for (i=0 ; i&lt;n; i++) {</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :                 sprintf(line, &quot;%g %g\n&quot;, x[i], y[i]) ;</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :                 write(tmpfd, line, strlen(line));</span>
+<span class="lineNum">     545 </span>            :         }
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :         close(tmpfd) ;</span>
+<span class="lineNum">     547 </span>            : 
+<span class="lineNum">     548 </span>            :         /* Command to be sent to gnuplot    */
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :         if (handle-&gt;nplots &gt; 0) {</span>
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :                 strcpy(cmd, &quot;replot&quot;) ;</span>
+<span class="lineNum">     551 </span>            :         } else {
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :                 strcpy(cmd, &quot;plot&quot;) ;</span>
+<span class="lineNum">     553 </span>            :         }
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :         if (title == NULL) {</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :                 sprintf(line, &quot;%s \&quot;%s\&quot; with %s&quot;, cmd, name, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     557 </span>            :         } else {
+<span class="lineNum">     558 </span>            :                 sprintf(line, &quot;%s \&quot;%s\&quot; title \&quot;%s\&quot; with %s&quot;, cmd, name,
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :                                 title, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     560 </span>            :         }
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span>            :         /* send command to gnuplot  */
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :         gnuplot_cmd(handle, line) ;</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :         handle-&gt;nplots++ ;</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     566 </span>            : }
+<span class="lineNum">     567 </span>            : 
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     570 </span>            : /** 
+<span class="lineNum">     571 </span>            :   @brief    Open a new session, plot a signal, close the session.
+<span class="lineNum">     572 </span>            :   @param    title   Plot title
+<span class="lineNum">     573 </span>            :   @param    style   Plot style
+<span class="lineNum">     574 </span>            :   @param    label_x Label for X
+<span class="lineNum">     575 </span>            :   @param    label_y Label for Y
+<span class="lineNum">     576 </span>            :   @param    x       Array of X coordinates
+<span class="lineNum">     577 </span>            :   @param    y       Array of Y coordinates (can be NULL)
+<span class="lineNum">     578 </span>            :   @param    n       Number of values in x and y.
+<span class="lineNum">     579 </span>            :   @return
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            :   This function opens a new gnuplot session, plots the provided
+<span class="lineNum">     582 </span>            :   signal as an X or XY signal depending on a provided y, waits for
+<span class="lineNum">     583 </span>            :   a carriage return on stdin and closes the session.
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :   It is Ok to provide an empty title, empty style, or empty labels for
+<span class="lineNum">     586 </span>            :   X and Y. Defaults are provided in this case.
+<a name="587"><span class="lineNum">     587 </span>            :  */</a>
+<span class="lineNum">     588 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 : void gnuplot_plot_once(</span>
+<span class="lineNum">     590 </span>            :                 char    *   title,
+<span class="lineNum">     591 </span>            :                 char    *   style,
+<span class="lineNum">     592 </span>            :                 char    *   label_x,
+<span class="lineNum">     593 </span>            :                 char    *   label_y,
+<span class="lineNum">     594 </span>            :                 double  *   x,
+<span class="lineNum">     595 </span>            :                 double  *   y,
+<span class="lineNum">     596 </span>            :                 int         n
+<span class="lineNum">     597 </span>            :                 )
+<span class="lineNum">     598 </span>            : {
+<span class="lineNum">     599 </span>            :         gnuplot_ctrl    *       handle ;
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span><span class="lineNoCov">          0 :         if (x==NULL || n&lt;1) return ;</span>
+<span class="lineNum">     602 </span>            : 
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :         if ((handle = gnuplot_init()) == NULL) return ;</span>
+<span class="lineNum">     604 </span><span class="lineNoCov">          0 :         if (style!=NULL) {</span>
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :                 gnuplot_setstyle(handle, style);</span>
+<span class="lineNum">     606 </span>            :         } else {
+<span class="lineNum">     607 </span><span class="lineNoCov">          0 :                 gnuplot_setstyle(handle, &quot;lines&quot;);</span>
+<span class="lineNum">     608 </span>            :         }
+<span class="lineNum">     609 </span><span class="lineNoCov">          0 :         if (label_x!=NULL) {</span>
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 :                 gnuplot_set_xlabel(handle, label_x);</span>
+<span class="lineNum">     611 </span>            :         } else {
+<span class="lineNum">     612 </span><span class="lineNoCov">          0 :                 gnuplot_set_xlabel(handle, &quot;X&quot;);</span>
+<span class="lineNum">     613 </span>            :         }
+<span class="lineNum">     614 </span><span class="lineNoCov">          0 :         if (label_y!=NULL) {</span>
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :                 gnuplot_set_ylabel(handle, label_y);</span>
+<span class="lineNum">     616 </span>            :         } else {
+<span class="lineNum">     617 </span><span class="lineNoCov">          0 :                 gnuplot_set_ylabel(handle, &quot;Y&quot;);</span>
+<span class="lineNum">     618 </span>            :         }
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :         if (y==NULL) {</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :                 gnuplot_plot_x(handle, x, n, title);</span>
+<span class="lineNum">     621 </span>            :         } else {
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :                 gnuplot_plot_xy(handle, x, y, n, title);</span>
+<span class="lineNum">     623 </span>            :         }
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :         printf(&quot;press ENTER to continue\n&quot;);</span>
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 :         while (getchar()!='\n') {}</span>
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :         gnuplot_close(handle);</span>
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     628 </span>            : }
+<span class="lineNum">     629 </span>            : 
+<span class="lineNum">     630 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     631 </span>            : /**
+<span class="lineNum">     632 </span>            :   @brief    Plot a slope on a gnuplot session.
+<span class="lineNum">     633 </span>            :   @param    handle      Gnuplot session control handle.
+<span class="lineNum">     634 </span>            :   @param    a           Slope.
+<span class="lineNum">     635 </span>            :   @param    b           Intercept.
+<span class="lineNum">     636 </span>            :   @param    title       Title of the plot.
+<span class="lineNum">     637 </span>            :   @return   void
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span>            :   Plot a slope on a gnuplot session. The provided slope has an
+<span class="lineNum">     640 </span>            :   equation of the form y=ax+b
+<span class="lineNum">     641 </span>            : 
+<span class="lineNum">     642 </span>            :   Example:
+<span class="lineNum">     643 </span>            : 
+<span class="lineNum">     644 </span>            :   @code
+<span class="lineNum">     645 </span>            :     gnuplot_ctrl    *   h ;
+<span class="lineNum">     646 </span>            :     double              a, b ;
+<span class="lineNum">     647 </span>            : 
+<span class="lineNum">     648 </span>            :     h = gnuplot_init() ;
+<span class="lineNum">     649 </span>            :     gnuplot_plot_slope(h, 1.0, 0.0, &quot;unity slope&quot;) ;
+<span class="lineNum">     650 </span>            :     sleep(2) ;
+<span class="lineNum">     651 </span>            :     gnuplot_close(h) ;
+<span class="lineNum">     652 </span>            :   @endcode
+<a name="653"><span class="lineNum">     653 </span>            :  */</a>
+<span class="lineNum">     654 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 : void gnuplot_plot_slope(</span>
+<span class="lineNum">     656 </span>            :                 gnuplot_ctrl    *   handle,
+<span class="lineNum">     657 </span>            :                 double              a,
+<span class="lineNum">     658 </span>            :                 double              b,
+<span class="lineNum">     659 </span>            :                 char            *   title
+<span class="lineNum">     660 </span>            :                 )
+<span class="lineNum">     661 </span>            : {
+<span class="lineNum">     662 </span>            :         char    stitle[GP_TITLE_SIZE] ;
+<span class="lineNum">     663 </span>            :         char    cmd[GP_CMD_SIZE] ;
+<span class="lineNum">     664 </span>            : 
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 :         if (title == NULL) {</span>
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :                 strcpy(stitle, &quot;no title&quot;) ;</span>
+<span class="lineNum">     667 </span>            :         } else {
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 :                 strcpy(stitle, title) ;</span>
+<span class="lineNum">     669 </span>            :         }
+<span class="lineNum">     670 </span>            : 
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :         if (handle-&gt;nplots &gt; 0) {</span>
+<span class="lineNum">     672 </span>            :                 sprintf(cmd, &quot;replot %g * x + %g title \&quot;%s\&quot; with %s&quot;,
+<span class="lineNum">     673 </span><span class="lineNoCov">          0 :                                 a, b, title, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     674 </span>            :         } else {
+<span class="lineNum">     675 </span>            :                 sprintf(cmd, &quot;plot %g * x + %g title \&quot;%s\&quot; with %s&quot;,
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 :                                 a, b, title, handle-&gt;pstyle) ;</span>
+<span class="lineNum">     677 </span>            :         }
+<span class="lineNum">     678 </span><span class="lineNoCov">          0 :         gnuplot_cmd(handle, cmd) ;</span>
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :         handle-&gt;nplots++ ;</span>
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     681 </span>            : }
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span>            : /*-------------------------------------------------------------------------*/
+<span class="lineNum">     684 </span>            : /**
+<span class="lineNum">     685 </span>            :   @brief    Plot a curve of given equation y=f(x).
+<span class="lineNum">     686 </span>            :   @param    h           Gnuplot session control handle.
+<span class="lineNum">     687 </span>            :   @param    equation    Equation to plot.
+<span class="lineNum">     688 </span>            :   @param    title       Title of the plot.
+<span class="lineNum">     689 </span>            :   @return   void
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span>            :   Plots out a curve of given equation. The general form of the
+<span class="lineNum">     692 </span>            :   equation is y=f(x), you only provide the f(x) side of the equation.
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span>            :   Example:
+<span class="lineNum">     695 </span>            : 
+<span class="lineNum">     696 </span>            :   @code
+<span class="lineNum">     697 </span>            :         gnuplot_ctrl    *h ;
+<span class="lineNum">     698 </span>            :         char            eq[80] ;
+<span class="lineNum">     699 </span>            : 
+<span class="lineNum">     700 </span>            :         h = gnuplot_init() ;
+<span class="lineNum">     701 </span>            :         strcpy(eq, &quot;sin(x) * cos(2*x)&quot;) ;
+<span class="lineNum">     702 </span>            :         gnuplot_plot_equation(h, eq, &quot;sine wave&quot;, normal) ;
+<span class="lineNum">     703 </span>            :         gnuplot_close(h) ;
+<span class="lineNum">     704 </span>            :   @endcode
+<a name="705"><span class="lineNum">     705 </span>            :  */</a>
+<span class="lineNum">     706 </span>            : /*--------------------------------------------------------------------------*/
+<span class="lineNum">     707 </span><span class="lineNoCov">          0 : void gnuplot_plot_equation(gnuplot_ctrl * h, char * equation, char * title)</span>
+<span class="lineNum">     708 </span>            : {
+<span class="lineNum">     709 </span>            :         char    cmd[GP_CMD_SIZE];
+<span class="lineNum">     710 </span>            :         char    plot_str[GP_EQ_SIZE] ;
+<span class="lineNum">     711 </span>            :         char    title_str[GP_TITLE_SIZE] ;
+<span class="lineNum">     712 </span>            : 
+<span class="lineNum">     713 </span><span class="lineNoCov">          0 :         if (title == NULL) {</span>
+<span class="lineNum">     714 </span><span class="lineNoCov">          0 :                 strcpy(title_str, &quot;no title&quot;) ;</span>
+<span class="lineNum">     715 </span>            :         } else {
+<span class="lineNum">     716 </span><span class="lineNoCov">          0 :                 strcpy(title_str, title) ;</span>
+<span class="lineNum">     717 </span>            :         }
+<span class="lineNum">     718 </span><span class="lineNoCov">          0 :         if (h-&gt;nplots &gt; 0) {</span>
+<span class="lineNum">     719 </span><span class="lineNoCov">          0 :                 strcpy(plot_str, &quot;replot&quot;) ;</span>
+<span class="lineNum">     720 </span>            :         } else {
+<span class="lineNum">     721 </span><span class="lineNoCov">          0 :                 strcpy(plot_str, &quot;plot&quot;) ;</span>
+<span class="lineNum">     722 </span>            :         }
+<span class="lineNum">     723 </span>            : 
+<span class="lineNum">     724 </span>            :         sprintf(cmd, &quot;%s %s title \&quot;%s\&quot; with %s&quot;,
+<span class="lineNum">     725 </span><span class="lineNoCov">          0 :                         plot_str, equation, title_str, h-&gt;pstyle) ;</span>
+<span class="lineNum">     726 </span><span class="lineNoCov">          0 :         gnuplot_cmd(h, cmd) ;</span>
+<span class="lineNum">     727 </span><span class="lineNoCov">          0 :         h-&gt;nplots++ ;</span>
+<span class="lineNum">     728 </span><span class="lineNoCov">          0 :         return ;</span>
+<span class="lineNum">     729 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

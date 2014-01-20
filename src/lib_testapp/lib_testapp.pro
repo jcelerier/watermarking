@@ -16,14 +16,16 @@ DESTDIR = $$PWD/../../output
 contains(QMAKE_TARGET.arch, 64):{
 msvc:QMAKE_CXXFLAGS_RELEASE += -openmp -arch:AVX
 else:QMAKE_CXXFLAGS_RELEASE += -fopenmp -O3 -march=native -D_GLIBCXX_PARALLEL
+QMAKE_LFLAGS_RELEASE += -fopenmp -O3 -march=native -D_GLIBCXX_PARALLEL
 }
 contains(QMAKE_TARGET.arch, arm):{
 QMAKE_CXXFLAGS_RELEASE += -O3 -march=native
 }
 
 
-QMAKE_CXXFLAGS += -Wall -pedantic -Wextra -Weffc++  -Wall -Wcast-align  -Wcast-qual  -Wchar-subscripts  -Wcomment -Wconversion  -Wdisabled-optimization    -Wformat  -Wformat=1  -Wformat-nonliteral -Wformat-security   -Wformat-y2k  -Wimport  -Winit-self  -Winline  -Winvalid-pch    -Wunsafe-loop-optimizations  -Wmissing-braces  -Wmissing-field-initializers -Wmissing-format-attribute    -Wmissing-include-dirs -Wmissing-noreturn  -Wpacked  -Wparentheses  -Wpointer-arith  -Wredundant-decls -Wreturn-type  -Wsequence-point  -Wshadow -Wsign-compare  -Wstack-protector -Wstrict-aliasing=3 -Wswitch  -Wswitch-default  -Wswitch-enum -Wtrigraphs  -Wuninitialized  -Wunknown-pragmas  -Wunreachable-code -Wunused  -Wunused-function  -Wunused-label  -Wunused-parameter  -Wunused-value  -Wunused-variable  -Wvariadic-macros  -Wvolatile-register-var  -Wwrite-strings
-QMAKE_CXXFLAGS += -Wno-unknown-pragmas -Wno-inline -Wno-conversion
+QMAKE_CXXFLAGS += -Wall -pedantic -Wextra -Weffc++ -Wcast-align  -Wcast-qual  -Wchar-subscripts  -Wcomment -Wconversion  -Wdisabled-optimization    -Wformat  -Wformat=1  -Wformat-nonliteral -Wformat-security   -Wformat-y2k  -Wimport  -Winit-self  -Winline  -Winvalid-pch    -Wunsafe-loop-optimizations  -Wmissing-braces  -Wmissing-field-initializers -Wmissing-format-attribute    -Wmissing-include-dirs -Wmissing-noreturn  -Wpacked  -Wparentheses  -Wpointer-arith  -Wredundant-decls -Wreturn-type  -Wsequence-point  -Wshadow -Wsign-compare  -Wstack-protector -Wstrict-aliasing=3 -Wswitch  -Wswitch-default  -Wswitch-enum -Wtrigraphs  -Wuninitialized  -Wunknown-pragmas  -Wunreachable-code -Wunused  -Wunused-function  -Wunused-label  -Wunused-parameter  -Wunused-value  -Wunused-variable  -Wvariadic-macros  -Wvolatile-register-var  -Wwrite-strings
+QMAKE_CXXFLAGS_DEBUG += --coverage -g -Wall -fprofile-arcs -ftest-coverage -O0 -Wno-unknown-pragmas -Wno-inline -Wno-conversion
+QMAKE_LFLAGS_DEBUG += --coverage -g -Wall -fprofile-arcs -ftest-coverage -O0
 
 lessThan(QT_MAJOR_VERSION, 5) {
 message("Warning: Qt4 used. Consider switching to Qt5")
@@ -35,7 +37,7 @@ DEPENDPATH += $$PWD/../libwatermark
 macx {
  LIBS += -L/usr/local/Cellar/libsndfile/1.0.25/lib/ -L/usr/local/Cellar/fftw/3.3.3/lib/
 }
-LIBS+=-lsndfile  -lfftw3
+LIBS+=-lsndfile  -lfftw3 -lgcov
 
 OTHER_FILES += \
     Vieux_tests.txt

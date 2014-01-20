@@ -120,9 +120,7 @@ InputFilter & OutputFilter & Copies in order to perform convolution \\
 \hline
 RectWindow & Rectangular window : does nothing \\
 BartlettWindow & Bartlett window \\
-BlackmanWindow & Blackman window \\
-Hann & Hann window \\
-Hamming & Hamming window \\ 
+HighOrderCosineWindow & Allows the conception of cosine windows like \\ & Hann, Hamming, Blackman, Nuttal, STxF \\ 
 \hline
 \end{tabular}
 
@@ -138,7 +136,8 @@ Hamming & Hamming window \\
 \texttt{WatermarkBase} & \texttt{WatermarkBase} & \\
 \hline
 LSBEncode & LSBDecode & LSB algorithm \\
-SSWEncode & SSWDecode & SSW algorithm \\
+RLSBEncode & RLSBDecode & Resistant LSB algorithm \\
+SSWEncode & SSWDecode & \ac{SSW} algorithm \\
 \hline
 \end{tabular}
 
@@ -368,7 +367,7 @@ Here is for instance the code that performs the \texttt{Amplify} operation :
 \label{amplify}
 \end{figure}
 
-It reads very easily : "For each channel, multiply the whole channel by the gain", thanks to lamda-expressions and range-based for-loop.
+It reads very easily : "For each channel, multiply the whole channel by the gain", thanks to lambda-expressions and range-based for-loops.
 
 We also made our system so that the user of our framework can choose when does the effect starts, how long it should last, and if it repeats. The granularity is the buffer size.
 
@@ -385,12 +384,14 @@ only holds the $\frac{N}{2} + 1$ relevant coefficients ($N$ being the number of 
 \subsubsection{Modulated complex lapped transform}
 This transform was referred to in \cite{malvar1999modulated}. It seems that it can provide better results with the spread-spectrum technique. However our implementation assumes that the Fourier transform has already been applied to the buffer.
 
+However, the main problem we had is that the MCLT requires 
+
 \section{Tests}
 The tests referred here are only there to check that the algorithms are properly implemented and that for instance a watermark can be retrieved without problems..
 
 Every object is tested and produces an audio file which is then either manually (for benchmarks for instance) or automatically (for watermark embedding and reading) checked. The \brand{QtTest} framework is used.
 
-The testing of core features (e.g. transforms, overlap, windowing, etc...) is achieved by null-testing to the reference audio and checking that the RMS value of the difference is not too high.
+The testing of core library features (e.g. transforms, overlap, windowing, etc...) is achieved by \glslink{nulltest}{null-testing} to the reference audio and checking that the RMS value of the difference is not too high.
 \section{GUI}
 \subsection{Capabilities}
 Here is a non-exhaustive list of the capabilities of our graphical interface.

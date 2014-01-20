@@ -1,12 +1,11 @@
 \chapter{Watermarking}
-\Gls{watermarking} is cool! Le ssw aussi\cite{cox1997secure}
 \section{Presentation}
 \section{Existing work}
 \section{Techniques}
 \subsection{Least Significant Bit}
 \subsection{Spread-spectrum Watermarking}
 
-The purpose of the spread-spectrum watermarking (SSW) method is to embed the hidden data of the watermark in the frequency domain of the host signal. Hence, SSW algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.
+The purpose of the \ac{SSW} method is to embed the hidden data of the watermark in the frequency domain of the host signal. Hence, \ac{SSW} algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.
 
 ~
 
@@ -18,7 +17,7 @@ Therefore, the first step is to generate this sequence.
 
 \subsubsection{Watermark insertion}
 
-In order to embed data with the SSW method, the host signal must firstly be divided into chunks of given size (for example, chunks of $512$ samples). The SSW algorithm can then be applied to each of these chunks in order to embed the hidden data. Only 1 bit of hidden data can be embedded in a chunk.
+In order to embed data with the \ac{SSW} method, the host signal must firstly be divided into chunks of given size (for example, chunks of $512$ samples). The \ac{SSW} algorithm can then be applied to each of these chunks in order to embed the hidden data. Only 1 bit of hidden data can be embedded in a chunk.
 
 ~
 

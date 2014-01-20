@@ -24,8 +24,8 @@
 
 void TestEvaluation()
 {
-	BitError<double, Amplify<double>, short, LSBEncode<short>, LSBDecode<short>> b;
+    BitError<double, Amplify<double>, short, LSBEncode<short>, LSBDecode<short>> b;
 
 	b.execute("input_mono.wav");
-
+    //std::cout << "False bits = " << b.getError() << std::endl;
 }

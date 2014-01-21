@@ -1,8 +1,5 @@
-\chapter{Watermarking}
-\section{Presentation}
-\section{Existing work}
-\section{Techniques}
-\subsection{Least Significant Bit}
+\chapter{Watermarking Techniques}
+\section{Least Significant Bit}
 The most common way to store audio data is by using 16 bit signed integers : it is the Red Book standard (example : figure \ref{fig:audio}).
 
 The audio is divided in samples and a common sample rate (the one given in the Red Book) is $44\,100$ Hz. The audio is encoded using pulse-code modulation : each sample roughly equates the average voltage measured by the analog-to-digital converter during one $44\,100$th of a second.
@@ -25,9 +22,9 @@ The principle of the \ac{LSB} method \cite{tirkel1993electronic} is to encode th
 \end{figure}
 
 This method presents two main advantages. 
-\subsubsection{Advantage: Quantity of embeddable data}
+\subsection{Advantage: Quantity of embeddable data}
 The quantity of information watermarkable in the signal is quite high : we are able to encode 1 bit per sample. In order to give an order of magnitude, for a music track of a common length of 2 minutes, with a sampling frequency of $44\,100$ Hz, the \ac{LSB} method would allow to encode $5\,292\,000$ bits, which is about 645 kbytes, i.e. about the size of a long text, an image and even short audio signals. 
-\subsubsection{Advantage: Simplicity}
+\subsection{Advantage: Simplicity}
 The method is really simple to implement.
 The algorithm is present on \ref{algo:lsb}.
 
@@ -52,7 +49,7 @@ The algorithm is present on \ref{algo:lsb}.
 
 \end{algorithm}
 
-\subsubsection{Advantage: Lack of audibility}
+\subsection{Advantage: Lack of audibility}
 The distortion of the signal after encoding the watermark is very weak. Indeed, the least significant bit of a $16$ bits digital signal affects the amplitude of the signal by a value of $\displaystyle\frac{1}{2^{16}} * V_{cc}$\cite{kester2005data}, with $V_{cc}$ the maximum voltage that the sound card is able to create.
 Finally, the LSB method gives a maximum signal-noise ratio of : 
  
@@ -62,13 +59,13 @@ Finally, the LSB method gives a maximum signal-noise ratio of :
 \end{math}
 \end{center}
 
-\subsubsection{Drawback: Easy interception}
+\subsection{Drawback: Easy interception}
 Despite these advantages, the LSB method has a main drawback : the watermark is very simple to decode. If someone wants to intercept the hidden signal, he just has to take the $LSB$ of the transmitted signal's samples to know the content of the watermark.  
 
-\subsubsection{Drawback: Fragility}
+\subsection{Drawback: Fragility}
 Another important point is that this does not resist well to audio distorsions, and compression (the 16th bit is generally very close to the noise floor, hence a lossy compression like MP3 will damage the watermark and make it unreadable). 
 
-\subsubsection{Other approaches to LSB method}
+\subsection{Other approaches to LSB method}
 In this project, two further approaches of the \ac{LSB} are proposed :
 \begin{itemize}
 \item Rather than only encoding the watermark on just one line of bits, it could be encoded on several lines of bits. For example, the three last bits of each samples would serve to encode the watermark. The encodable quantity of information hence increases three-fold. We implemented this capability in our \ac{LSB} algorithm.
@@ -80,9 +77,9 @@ These two methods increase either redundancy or capacity at the cost of an incre
 To conclude, the \ac{LSB} method is inaudible and it provides a huge watermarking rate in comparison to the other methods. However, the watermark encoded by this algorithm is not really hidden and it does not resist to lossy compression and audio attacks.
 
 We choose to use this algorithm as a base to test our software and provide a working example and a lowest common denominator for benchmarks.
-\subsection{Spread-spectrum Watermarking}
+\section{Spread-spectrum Watermarking}
 
-The purpose of the \ac{SSW} method is to embed the hidden data of the watermark in the frequency domain of the host signal. Hence, \ac{SSW} algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.
+The purpose of the \ac{SSW} method is to embed the hidden data of the watermark in the frequency domain of the host signal\cite{cox1997secure}. Hence, \ac{SSW} algorithm relies on a time-to-frequency transform and on its inverse transform. In fact, any frequency transform can be used with this method, as long as the same transform is used for watermarking insertion and detection. For example, in this project, we used the Discrete Fourier Transform.
 
 ~
 
@@ -92,7 +89,7 @@ The core of this method is based on a random sequence of N numbers, whose values
 
 Therefore, the first step is to generate this sequence.
 
-\subsubsection{Watermark insertion}
+\subsection{Watermark insertion}
 
 In order to embed data with the \ac{SSW} method, the host signal must firstly be divided into chunks of given size (for example, chunks of $512$ samples). The \ac{SSW} algorithm can then be applied to each of these chunks in order to embed the hidden data. Only 1 bit of hidden data can be embedded in a chunk.
 
@@ -120,7 +117,7 @@ $F[i] = F[i] + W[k] \times \delta \times S[i]$, for $i$ varying from 1 to N.
 
 After the modification on the frequency magnitudes, the time signal is reconstructed using the original phases and the inverse frequency transform.
 
-\subsubsection{Watermark detection}
+\subsection{Watermark detection}
 
 Just like in the embedding part, the signal must be divided into chunks. They have to be the same size as during embedding.
 
@@ -152,12 +149,12 @@ A bigger $N$ would allow better correlation values but also a more audible water
 
 There are several methods that can improve watermark detection, like cepstrum filtering, but these were not implemented in this project.
 
-\subsection{Compression-Expansion}\cite{foo2010}
+\section{Compression-Expansion}\cite{foo2010}
 
 Compression-expansion is a time-based method for watermarking, unlike S.S.W. which is a spectral-based method.\\
 Its purpose is based on dividing a signal into segments of frames that overlap each other, calculate a local mask and taking specific coefficients according to the mask previously calculated from a frame to add them to the end of the following one. The technique is detailed in this subsection.
 
-\paragraph{Purpose of the compression-expansion of segments}
+\subsection{Purpose of the compression-expansion of segments}
 Let's consider a signal. One divide it into segments that are containing the same number of frames.\\
 The division must be in respect of the following purpose : each segment half-overlaps the following one. A Hanning window is then applied to the segments, as showed by the following figure :
 \begin{figure}[H]
@@ -181,7 +178,7 @@ An inverse D.C.T. is applied then to come back to the time domain. The differenc
 \caption{\label{diamond} Diamond obtained by the difference of original and reconstructed waveforms}
 \end{figure}
 
-\paragraph{Use of the diamonds}
+\subsection{Use of the diamonds}
 Depending on the original signal, either mono, either stereo, the method differs. In each case, the diamonds that are previously obtained by the difference of the original signal and the reconstructed one are used, but in different ways.
 
 Let's consider a mono signal. The principle is here to obtain a diamond to embed the bit "1" (therefore, apply the method described in the previous paragraph), and nothing to embed the bit "0" (no calculation).\\
@@ -203,7 +200,9 @@ Such a problem can be easily avoided in stereo signals, because the watermarks c
 
 To detect the watermark inside a signal, the original non-watermarked signal is needed to calculate the diamonds. The detection of the diamonds can be done with several methods : some are described here.\\
 \begin{itemize}
-\item \textbf{Sum of absolute difference} : one computes the sums of absolute differences between the watermarked signals and the original signals. So as to detect a diamond, which duration is equal to 2 segments of frames that overlap each other by 50\% in the signal, in addition to one frame unused due to the 50\% overlap, each sum is calculated on the base of 3 segments as described previously. On the one hand, when there is a diamond (thus, a distortion on the watermarked signal), the sum of the absolute values of the differences during the distortion is found to be greater than 5,5. On the other hand, the sum of the absolute values of the differences is always under 0,8. Thus, a threshold of $\frac{5,5 + 0,8}{2} = 3,15$ can be taken to detect a diamond.\\
+\item \textbf{Sum of absolute difference} : one computes the sums of absolute differences between the watermarked signals and the original signals. So as to detect a diamond, which duration is equal to 2 segments of frames that overlap each other by 50\% in the signal, in addition to one frame unused due to the 50\% overlap, each sum is calculated on the base of 3 segments as described previously. 
+
+On one hand, when there is a diamond (thus, a distortion on the watermarked signal), the sum of the absolute values of the differences during the distortion is found to be greater than 5,5. On the other hand, the sum of the absolute values of the differences is always under 0,8. Thus, a threshold of $\frac{5,5 + 0,8}{2} = 3,15$ can be taken to detect a diamond.\\
 This method is very simple and very accurate when no attack is done on the watermarked signal. But when it is damaged, several errors of detection can be made.
 \item \textbf{Calculation of gradients} : a diamond has two slopes that make the shape of a triangle, such as showed on the figure below :
 \begin{figure}[H]
@@ -221,7 +220,7 @@ The cross-correlation between this shape and the signal with the diamonds is cal
 Experiments indicate that a cross-correlation value over 0,78 is a diamond and under 0,31 represents non-distorted frames. If the value is between 0,78 and 0,31, then another detection method is applied. This method gives higher detection accuracy than the previous one.
 \end{itemize}
 
-\paragraph{Calculation of the mask}
+\subsection{Calculation of the mask}
 The signal is segmented into overlapped frames. Then, the short time Fourier transform is applied in order to get a spectral representation. However, another scale is used : the Bark Scale. The concept of the Bark scale is based on a psychoacoustic phenomenon : the basilar membrane in the hearing mechanism analyses the incoming sound through a spatial-spectral analysis. This is done in small regions of the basilar membrane called “critical bands”.\\
 The \textbf{Bark scale} is obtained from the frequency range with the following formula :
 $$z_i = 13\textnormal{tan}^{-1}\frac{0,76f_i}{1000}+3,5\textnormal{tan}^{-1}\left(\frac{f_i}{7500}\right)^2$$
@@ -273,15 +272,15 @@ where $O(z)$ is the masking energy offset :
 $$O(z) = \alpha(14,5 + z) + 5,5(1 - \alpha)$$
 and $P_z$ is the number of points in each band $z$, $z \in [\![1 ; Z_t]\!]$.
 
-\paragraph{Results of the method}
+\subsection{Results of the method}
 Experiments have been made on three types of signals :
 \begin{itemize}
 \item rock music
 \item classical music
 \item male speech
 \end{itemize}
-Rock music have a very high signal energy, unlike classical music. A speech has also a moderate signal energy, but sequences are very energied-low.\\
-All signals are sampled at 44,1 kHz and quantized with 16 b. Files are either mono (segment size : 512), either stereo (segment sizes : 256, 512 or 1024).
+Rock music has a very high signal energy, unlike classical music. A speech has also a moderate signal energy, but sequences are very low-energied.\\
+All signals are sampled at 44,1 kHz and quantized with 16 bits. Files are either mono (segment size : 512), either stereo (segment sizes : 256, 512 or 1024).
 
 The information was a binary $64\times64$ image.
 
@@ -289,10 +288,12 @@ The audio quality of the watermarked signal was measured with several methods. L
 $$SNR = 10\textnormal{log}\frac{\sum_{n} x(n)^2}{\sum_{n} (x(n) - y(n))^2}$$
 where $x$ is the original signal and $y$ the watermarked one.\\
 This experiment leads to conclude that the watermarked signals are not damaged perceptually. Furthermore, the S.N.R. values obtained for watermarked signals are around 40 dB. Notice that, for stereo signals, the S.N.R. is calculated on each channel.\\
+
 The requirement of the I.F.P.I. (International Federation of the Phonographic Industry) is 20 dB. Therefore, it can be concluded that the watermarks do not affect the signal perceptually speaking.
 
 To test the robustness, several attacks were made. The robustness is calculated with the bit error rate, which is the number of false bits recovered divided by the total number of bits.\\
 The attacks were :
+
 \begin{itemize}
 \item Attack free
 \item Noise addition (decrease of the S.N.R. of 20 dB)

@@ -414,7 +414,7 @@ The tests referred here are only there to check that the algorithms are properly
 
 Every object is tested and produces an audio file which is then either manually (for benchmarks for instance) or automatically (for watermark embedding and reading) checked. The \brand{QtTest} framework is used.
 
-The testing of core library features (e.g. transforms, overlap, windowing, etc...) is achieved by \glslink{nulltest}{null-testing} to the reference audio and checking that the RMS value of the difference is not too high.
+The testing of core library features (e.g. transforms, overlap, windowing, etc...) is achieved by null-testing to the reference audio and checking that the RMS value of the difference is not too high.
 \section{GUI}
 \subsection{Capabilities}
 Here is a non-exhaustive list of the capabilities of our graphical interface.
@@ -427,4 +427,9 @@ Here is a non-exhaustive list of the capabilities of our graphical interface.
 \item Multiple configuration options, that can be saved and loaded.
 \end{itemize}
 \subsection{Screenshots}
-\section{Evaluation}
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/choix.png}
+\includegraphics[scale=0.5]{images/encode.png}
+\caption{Some screenshots of our software}
+\end{figure}

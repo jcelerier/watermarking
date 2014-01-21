@@ -62,10 +62,10 @@ Finally, the LSB method gives a maximum signal-noise ratio of :
 \end{math}
 \end{center}
 
-\subsubsection{Drawback: easy interception}
+\subsubsection{Drawback: Easy interception}
 Despite these advantages, the LSB method has a main drawback : the watermark is very simple to decode. If someone wants to intercept the hidden signal, he just has to take the $LSB$ of the transmitted signal's samples to know the content of the watermark.  
 
-\subsubsection{Drawback: fragility}
+\subsubsection{Drawback: Fragility}
 Another important point is that this does not resist well to audio distorsions, and compression (the 16th bit is generally very close to the noise floor, hence a lossy compression like MP3 will damage the watermark and make it unreadable). 
 
 \subsubsection{Other approaches to LSB method}

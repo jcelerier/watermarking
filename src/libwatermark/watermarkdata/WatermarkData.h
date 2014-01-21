@@ -150,7 +150,7 @@ class WatermarkData
 		int compareBits(std::vector<bool>& otherBits)
 		{
 			int e = 0;
-			for(int i = 0; i < std::min(bits.size(), otherBits.size()); i++)
+			for(auto i = 0U; i < std::min(bits.size(), otherBits.size()); i++)
 				if(bits[i] != otherBits[i])
 					e++;
 

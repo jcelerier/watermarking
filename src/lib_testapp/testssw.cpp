@@ -34,7 +34,7 @@ void TestSSW()
 	std::cout << std::endl;
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
 
-	for (int i = 0; i < PNSequence.size(); i++) {
+	for (auto i = 0U; i < PNSequence.size(); i++) {
 		std::cout << PNSequence[i] << " ";
 	}
 	std::cout << std::endl;

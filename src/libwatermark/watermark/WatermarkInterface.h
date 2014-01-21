@@ -15,7 +15,7 @@ class WatermarkInterface
 		 */
 		virtual void operator()(Audio_p& data, WatermarkData& watermark) = 0;
 
-		virtual void finish(WatermarkData& watermark) {}
+		virtual void finish(WatermarkData& ) {}
 };
 
 using Watermark_p = std::shared_ptr<WatermarkInterface>;

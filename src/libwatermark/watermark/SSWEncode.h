@@ -21,13 +21,13 @@ class SSWEncode : public WatermarkBase<data_type>, public FFTProperty
 		}
 
 		SSWEncode(const Parameters<data_type>& configuration,
-				  std::vector<int> & PNSequence,
-				  std::vector<unsigned int> & freqWinIndexes,
-				  double watermarkAmp):
+				  std::vector<int> & pPNSequence,
+				  std::vector<unsigned int> & pfreqWinIndexes,
+				  double pwatermarkAmp):
 			WatermarkBase<data_type>(configuration),
-			_PNSequence(PNSequence),
-			_freqWinIndexes(freqWinIndexes),
-			_watermarkAmp(watermarkAmp)
+			_PNSequence(pPNSequence),
+			_freqWinIndexes(pfreqWinIndexes),
+			_watermarkAmp(pwatermarkAmp)
 		{
 		}
 
@@ -74,34 +74,34 @@ class SSWEncode : public WatermarkBase<data_type>, public FFTProperty
 		return _PNSequence;
 		}
 
-		void setPNSequence(const std::vector<int>& PNSequence)
+		void setPNSequence(const std::vector<int>& pPNSequence)
 		{
-		_PNSequence = PNSequence;
+		_PNSequence = pPNSequence;
 		}
 		std::vector<unsigned int> freqWinIndexes() const
 		{
 		return _freqWinIndexes;
 		}
 
-		void setFreqWinIndexes(const std::vector<unsigned int>& freqWinIndexes)
+		void setFreqWinIndexes(const std::vector<unsigned int>& pfreqWinIndexes)
 		{
-		_freqWinIndexes = freqWinIndexes;
+		_freqWinIndexes = pfreqWinIndexes;
 		}
 		double watermarkAmp() const
 		{
 		return _watermarkAmp;
 		}
 
-		void setWatermarkAmp(double watermarkAmp)
+		void setWatermarkAmp(double pwatermarkAmp)
 		{
-		_watermarkAmp = watermarkAmp;
+		_watermarkAmp = pwatermarkAmp;
 		}
 
 
 	private :
 		std::vector<int> _PNSequence = {};
 		std::vector<unsigned int> _freqWinIndexes = {};
-		double _watermarkAmp;
+		double _watermarkAmp = 0;
 
 };
 

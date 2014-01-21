@@ -22,18 +22,19 @@ class SSWDecode : public WatermarkBase<data_type>, public FFTProperty
 		}
 
 		SSWDecode(const Parameters<data_type>& configuration,
-				  std::vector<int> & PNSequence,
-				  std::vector<unsigned int> & freqWinIndexes,
-				  double watermarkAmp, double threshold):
+				  std::vector<int> & pPNSequence,
+				  std::vector<unsigned int> & pfreqWinIndexes,
+				  double pwatermarkAmp,
+				  double pthreshold):
 			WatermarkBase<data_type>(configuration),
-			_PNSequence(PNSequence),
-			_freqWinIndexes(freqWinIndexes),
-			_watermarkAmp(watermarkAmp),
-			_threshold(threshold)
+			_PNSequence(pPNSequence),
+			_freqWinIndexes(pfreqWinIndexes),
+			_watermarkAmp(pwatermarkAmp),
+			_threshold(pthreshold)
 		{
 		}
 
-		virtual void operator()(Audio_p& data, WatermarkData& watermark)  override
+		virtual void operator()(Audio_p& data, WatermarkData& )  override
 		{
 			auto& channelsSpectrum = getSpectrum<data_type>(data);
 
@@ -160,27 +161,27 @@ class SSWDecode : public WatermarkBase<data_type>, public FFTProperty
 			return _PNSequence;
 		}
 
-		void setPNSequence(const std::vector<int>& PNSequence)
+		void setPNSequence(const std::vector<int>& pPNSequence)
 		{
-			_PNSequence = PNSequence;
+			_PNSequence = pPNSequence;
 		}
 		std::vector<unsigned int> freqWinIndexes() const
 		{
 			return _freqWinIndexes;
 		}
 
-		void setFreqWinIndexes(const std::vector<unsigned int>& freqWinIndexes)
+		void setFreqWinIndexes(const std::vector<unsigned int>& pfreqWinIndexes)
 		{
-			_freqWinIndexes = freqWinIndexes;
+			_freqWinIndexes = pfreqWinIndexes;
 		}
 		double watermarkAmp() const
 		{
 			return _watermarkAmp;
 		}
 
-		void setWatermarkAmp(double watermarkAmp)
+		void setWatermarkAmp(double pwatermarkAmp)
 		{
-			_watermarkAmp = watermarkAmp;
+			_watermarkAmp = pwatermarkAmp;
 		}
 
 		double threshold() const
@@ -188,22 +189,22 @@ class SSWDecode : public WatermarkBase<data_type>, public FFTProperty
 		return _threshold;
 		}
 
-		void setThreshold(double threshold)
+		void setThreshold(double pthreshold)
 		{
-		_threshold = threshold;
+		_threshold = pthreshold;
 		}
 
 	private :
 		std::vector<int> _PNSequence = {};
 		std::vector<unsigned int> _freqWinIndexes = {};
-		double _watermarkAmp;
-		double _threshold;
+		double _watermarkAmp = 0;
+		double _threshold = 0;
 		int _cpt = 0;
 		double _mean = 0.0;
 		double _corr_max = 0.0;
 		double _corr_min = 0.0;
 		unsigned int _channels_nb = 0;
-		std::vector< std::vector<double> > _correlations;
+		std::vector< std::vector<double> > _correlations{};
 };
 
 

@@ -53,7 +53,11 @@ public slots:
 
     void loadTextWatermarkFile();
 
-private:
+
+	void loadFileToDecode();
+
+	void setBufferSize(int size);
+	private:
 	void dataToBits();
 	void bitsToData();
 
@@ -79,6 +83,7 @@ private:
 
 	// Pour SSW
 	Parameters<double> sswParams;
+	void plotInput(FileInput<short>* input, unsigned int sr);
 };
 
 #endif // LIBWRAPPER_H

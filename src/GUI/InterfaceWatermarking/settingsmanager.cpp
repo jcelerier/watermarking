@@ -9,7 +9,7 @@ SettingsManager::SettingsManager(QObject *parent):
 void SettingsManager::save()
 {
 	// 1. Demander nom fichier sauvegarde
-	QString fileOut = QFileDialog::getSaveFileName(nullptr, tr("Save configuration file (.ini)"));
+	QString fileOut = QFileDialog::getSaveFileName(nullptr, tr("Save configuration file (*.ini)"));
 
 	LibWrapper* p = dynamic_cast<LibWrapper*>(parent());
 
@@ -29,6 +29,7 @@ void SettingsManager::save()
 			s.setValue("SSW/PNSequence", readSSWLine(0));
 			s.setValue("SSW/FreqRange", readSSWLine(1));
 			s.setValue("SSW/seqSize", p->m_gui->sswSeqSize->value());
+			s.setValue("SSW/bufferSize", p->m_gui->sswBufferSize->value());
 			s.setValue("SSW/amplitude", p->m_gui->sswAmpl->value());
 			s.setValue("SSW/threshold", p->m_gui->sswThres->value());
 			break;
@@ -48,7 +49,7 @@ void SettingsManager::load()
 {
 
 	// 1. Demander nom fichier sauvegarde
-	QString fileOut = QFileDialog::getOpenFileName(nullptr, tr("Open configuration file (.ini)"));
+	QString fileOut = QFileDialog::getOpenFileName(nullptr, tr("Open configuration file (*.ini)"));
 	subLoad(fileOut);
 }
 
@@ -72,6 +73,7 @@ void SettingsManager::subLoad(QString fileOut)
 			writeSSWLine(0, s.value("SSW/PNSequence").toList());
 			writeSSWLine(1, s.value("SSW/FreqRange").toList());
 			p->m_gui->sswSeqSize->setValue(s.value("SSW/seqSize").toInt());
+			p->m_gui->sswBufferSize->setValue(s.value("SSW/bufferSize").toInt());
 			p->m_gui->sswAmpl->setValue(s.value("SSW/amplitude").toDouble());
 			p->m_gui->sswThres->setValue(s.value("SSW/threshold").toDouble());
 			break;

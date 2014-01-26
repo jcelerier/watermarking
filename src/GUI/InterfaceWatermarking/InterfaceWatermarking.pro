@@ -21,13 +21,15 @@ SOURCES += main.cpp\
     libwrapper.cpp \
     qcustomplot.cpp \
     codeeditor.cpp \
-    settingsmanager.cpp
+    settingsmanager.cpp \
+    ../QFFTSpinBox/qfftspinbox.cpp
 
 HEADERS  += mainwindow.h \
     libwrapper.h \
     qcustomplot.h \
     codeeditor.h \
-    settingsmanager.h
+    settingsmanager.h \
+    ../QFFTSpinBox/qfftspinbox.h
 
 FORMS    += mainwindow.ui
 

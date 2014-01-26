@@ -27,42 +27,23 @@ void sswdecode_mclt(std::vector<int> & PNSequence, std::vector<unsigned int> & F
 
 void TestSSW()
 {
+	Parameters<double> conf;
+	conf.bufferSize = 512U;
+
 	int SeqSize = 50;
 	double watermarkAmplitude = 10;
 	double threshold = 0.5;
 
-	std::cout << std::endl;
 	std::vector<int> PNSequence = SSWUtil::generatePNSequence(SeqSize);
-
-	for (auto i = 0U; i < PNSequence.size(); i++) {
-		std::cout << PNSequence[i] << " ";
-	}
-	std::cout << std::endl;
-
-
-	std::vector<double> amplifiedPN;
-	for (auto i = 0U; i < PNSequence.size(); i++) {
-		amplifiedPN.push_back(watermarkAmplitude * (double) PNSequence[i]);
-	}
-
-	// Instanciation des paramètres
-	Parameters<double> conf;
-	conf.bufferSize = 512U;
-
-	//double norm = MathUtil::norm_n<std::vector<double>::iterator, double>(amplifiedPN.begin(), amplifiedPN.size());
-
-	//std::cout << "Norme de PN : " << norm << std::endl;
-
 	auto FreqRange = SSWUtil::generateFrequencyRange(PNSequence.size(), conf);
 
-	for(auto i = 0U; i < FreqRange.size(); i++) std::cerr << FreqRange[i] << " ";
 	sswencode(PNSequence, FreqRange, conf, watermarkAmplitude);
 	sswdecode(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);
-
+/*
 	std::cerr << "Test avec MCLT" << std::endl;
 	sswencode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude);
 	sswdecode_mclt(PNSequence, FreqRange, conf, watermarkAmplitude, threshold);
-}
+*/}
 
 void sswencode(std::vector<int> & PNSequence, std::vector<unsigned int> & FreqRange, Parameters<double> & conf, double watermarkAmplitude)
 {

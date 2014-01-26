@@ -5,6 +5,7 @@
 #include<QTime>
 #include<QFileDialog>
 #include<QMessageBox>
+#include <../QFFTSpinBox/qfftspinbox.h>
 #include <QTime>
 #include <bitset>
 #include "libwrapper.h"
@@ -66,12 +67,12 @@ LibWrapper::~LibWrapper()
  * @brief LibWrapper::LibWrapper
  * Overloaded constructor to get a pointer to the Graphical User Interface
  * containing every of its elements.
- * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
- */
-LibWrapper::LibWrapper(Ui::MainWindow* gui):
-	LibWrapper()
-{
-	m_gui = gui;
+	 * @param gui: pointer to the Graphical User Interface defined with Qt Designer (to link signals etc.)
+	 */
+	LibWrapper::LibWrapper(Ui::MainWindow* gui):
+		LibWrapper()
+	{
+		m_gui = gui;
 
 	m_gui->availableCapacityLabel->setVisible(false);
 	m_gui->availableCapacityLabel2->setVisible(false);
@@ -94,7 +95,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	//Connecting signals between GUI and watermark library
 	connect(m_gui->watermarkSelectionButton,SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 	connect(m_gui->actionLoadHostWatermarkFile,SIGNAL(triggered()),this,SLOT(loadHostWatermarkFile()));
-	connect(m_gui->watermarkedSelectionButton, SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
+	connect(m_gui->actionLoadFileToDecode, SIGNAL(triggered()), this, SLOT(loadFileToDecode()));
 	connect(m_gui->degradationSelect, SIGNAL(clicked()),this,SLOT(loadHostWatermarkFile()));
 
 	connect(m_gui->selectingMethodComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateMethodConfigurationTab(int)));
@@ -105,6 +106,7 @@ LibWrapper::LibWrapper(Ui::MainWindow* gui):
 	connect(m_gui->loadConfiguration,SIGNAL(clicked()), &m_settings, SLOT(load()));
 	connect(m_gui->saveConfiguration,SIGNAL(clicked()), &m_settings, SLOT(save()));
 
+	connect(m_gui->sswBufferSize, SIGNAL(valueChanged(int)), this, SLOT(setBufferSize(int)));
 
 	connect(m_gui->setDefaultValueLsbPushButton,SIGNAL(clicked()),this,SLOT(setLsbDefaultConfigurationValue()));
 
@@ -176,6 +178,63 @@ void LibWrapper::selectCompExpMethodActionSlot()
 	updateMethodConfigurationTab(2);
 }
 
+
+void LibWrapper::plotInput(FileInput<short>* input,unsigned int sr)
+{
+	int inputLengthInSec = input->frames()/sr;
+
+	QTime inputLength(0,0,0);
+	inputLength = inputLength.addSecs(inputLengthInSec);
+
+	//qDebug() << inputLength;
+
+	m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
+	m_gui->watermarkEndingTime->setMaximumTime(inputLength);
+	m_gui->watermarkEndingTime->setTime(inputLength);
+
+	/* Plotting waveform using QCustomPlot module */
+
+	//
+	// TODO: plotting waveform using m_gui->waveformInputWidget
+	//
+
+	QVector<double> x,y;
+
+	short min,max;
+
+	x.push_back(0);
+	y.push_back(input->v()[0][0]);
+
+	min = y[0];
+	max = y[0];
+
+	for(unsigned int i = 1; i < input->frames(); i++)
+	{
+		x.push_back(i);
+		y.push_back(input->v()[0][i]);
+
+		if(y[i] < min) min = y[i];
+		if(y[i] > max) max = y[i];
+	}
+
+	m_gui->waveformInputWidget->addGraph();
+	m_gui->waveformInputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+	connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
+	connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
+
+	m_gui->waveformInputWidget->graph(0)->setData(x,y);
+	m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
+
+	m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
+	m_gui->waveformInputWidget->yAxis->setRange(min,max);
+
+	m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
+
+	m_gui->waveformInputWidget->replot();
+
+}
+
 /**
  * @brief LibWrapper::loadHostWatermarkFile
  * Function triggered by clicking on the Load Host Watermark
@@ -200,60 +259,9 @@ void LibWrapper::loadHostWatermarkFile()
 		Parameters<short> conf;
 		auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 
+		plotInput(input, conf.samplingRate);
 		/* Computing audio input time length for initializing editing
 		watermark position part */
-		int inputLengthInSec = input->frames()/conf.samplingRate;
-
-		QTime inputLength(0,0,0);
-		inputLength = inputLength.addSecs(inputLengthInSec);
-
-		//qDebug() << inputLength;
-
-		m_gui->watermarkBeginningTime->setMaximumTime(inputLength);
-		m_gui->watermarkEndingTime->setMaximumTime(inputLength);
-		m_gui->watermarkEndingTime->setTime(inputLength);
-
-		/* Plotting waveform using QCustomPlot module */
-
-		//
-		// TODO: plotting waveform using m_gui->waveformInputWidget
-		//
-
-		QVector<double> x,y;
-
-		short min,max;
-
-		x.push_back(0);
-		y.push_back(input->v()[0][0]);
-
-		min = y[0];
-		max = y[0];
-
-		for(unsigned int i = 1; i < input->frames(); i++)
-		{
-			x.push_back(i);
-			y.push_back(input->v()[0][i]);
-
-			if(y[i] < min) min = y[i];
-			if(y[i] > max) max = y[i];
-		}
-
-		m_gui->waveformInputWidget->addGraph();
-		m_gui->waveformInputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-
-		connect(m_gui->waveformInputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->xAxis2, SLOT(setRange(QCPRange)));
-		connect(m_gui->waveformInputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformInputWidget->yAxis2, SLOT(setRange(QCPRange)));
-
-		m_gui->waveformInputWidget->graph(0)->setData(x,y);
-		m_gui->waveformInputWidget->graph(0)->setName("Input waveform");
-
-		m_gui->waveformInputWidget->xAxis->setRange(0,input->frames());
-		m_gui->waveformInputWidget->yAxis->setRange(min,max);
-
-		m_gui->waveformInputWidget->xAxis->setLabel("Input waveform");
-
-		m_gui->waveformInputWidget->replot();
-
 
 
 		/* Editing watermark max length progress bar */
@@ -270,6 +278,23 @@ void LibWrapper::loadHostWatermarkFile()
 
 
 		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
+	}
+}
+
+
+void LibWrapper::loadFileToDecode()
+{
+	m_inputName = QFileDialog::getOpenFileName(m_gui->centralwidget, tr("Open Audio File (.wav)"),
+											   "",
+											   tr("Audio File (*.wav)"));
+
+	if(!m_inputName.isEmpty())
+	{
+		m_gui->informationHostWatermark->setText("Opened Host Watermark file:" + m_inputName);
+	}
+	else
+	{
+		m_gui->informationHostWatermark->setText("Error, file could not be opened :" + m_inputName);
 	}
 }
 
@@ -325,7 +350,6 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 {
 	if(!m_inputName.isEmpty())
 	{
-
 		int i = m_gui->textToWatermark->toPlainText().size();
 
 		switch(m_gui->selectingMethodComboBox->currentIndex())
@@ -346,14 +370,14 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 						break;
 				}
 
-				m_gui->availableCapacityLabel2->setText(QString::number(i*8)
+				m_gui->availableCapacityLabel2->setText(QString::number(i*8 + 64)
 														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
 																				) + " bits");
 
 				if(i*8 < m_gui->usedWatermarkCapacityBar->maximum())
 				{
 					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
-					m_gui->usedWatermarkCapacityBar->setValue(i*8);
+					m_gui->usedWatermarkCapacityBar->setValue(i*8 + 64);
 				}
 				else
 				{
@@ -364,23 +388,25 @@ void LibWrapper::updateWatermarkCapacityProgressBar()
 				break;
 
 			case 1: //SSW Method
+				// Formule: 1 bit par buffer. Donc Num Samples / buffer_size
+				// i*8 : nb de bits
 
-			m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFrames*m_nbChannels);
-
-			m_gui->availableCapacityLabel2->setText(QString::number(i*8)
-													+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
-																			) + " bits");
-			if(i*8 < m_gui->usedWatermarkCapacityBar->maximum())
-			{
-				m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
-				m_gui->usedWatermarkCapacityBar->setValue(i*8);
-			}
-			else
-			{
-				m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
-				m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
-			}
-
+				m_gui->usedWatermarkCapacityBar->setMaximum(m_nbFrames * m_nbChannels / sswParams.bufferSize);
+				
+				m_gui->availableCapacityLabel2->setText(QString::number(i*8 + 64)
+														+ '/' + QString::number(m_gui->usedWatermarkCapacityBar->maximum()
+																				) + " bits");
+				if(i*8 < m_gui->usedWatermarkCapacityBar->maximum())
+				{
+					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarSafe);
+					m_gui->usedWatermarkCapacityBar->setValue(i*8  + 64);
+				}
+				else
+				{
+					m_gui->usedWatermarkCapacityBar->setStyleSheet(m_ProgressBarDanger);
+					m_gui->usedWatermarkCapacityBar->setValue(m_gui->usedWatermarkCapacityBar->maximum());
+				}
+				
 				break;
 
 			default:
@@ -432,6 +458,12 @@ void LibWrapper::bitsToData()
 	}
 
 	m_gui->getDecodedDataTextEdit->setText(QString::fromStdString(out));
+}
+
+void LibWrapper::setBufferSize(int size)
+{
+	sswParams.bufferSize = size;
+	updateWatermarkCapacityProgressBar();
 }
 
 /**
@@ -552,11 +584,13 @@ void LibWrapper::encode()
 		}
 		case 1:
 		{
-			Parameters<double> conf;
-			conf.bufferSize = 512;
+			auto input = new FileInput<double>(m_inputName.toStdString(), sswParams);
+			auto output = new FileOutput<double>(sswParams);
 
-			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
-			auto output = new FileOutput<double>(conf);
+			FFT_p<double> fft_m(new FFTWManager<double>(sswParams));
+			fft_m->setChannels((unsigned int) input->channels());
+			auto fft_i = new FFTInputProxy<double>(input, fft_m, sswParams);
+			auto fft_o = new FFTOutputProxy<double>(output, fft_m, sswParams);
 
 			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
 			// Récupération des séquences
@@ -569,14 +603,16 @@ void LibWrapper::encode()
 
 			double ampl = m_gui->sswAmpl->value();
 
-			auto algorithm = new SSWEncode<double>(conf, PNSequence, FreqRange, ampl);
+			std::cerr << ampl << " ";
+
+			auto algorithm = new SSWEncode<double>(sswParams, PNSequence, FreqRange, ampl);
 
 			// Mettre à partir d'un certain temps
 			auto tb = m_gui->watermarkBeginningTime->time();
-			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * sswParams.samplingRate / sswParams.bufferSize;
 			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
-			m_manager.input() = Input_p(input);
-			m_manager.output() = Output_p(output);
+			m_manager.input() = Input_p(fft_i);
+			m_manager.output() = Output_p(fft_o);
 			m_manager.algorithm() = Watermark_p(algorithm);
 
 			m_manager.execute();
@@ -658,11 +694,14 @@ void LibWrapper::decode()
 		}
 		case 1:
 		{
-			Parameters<double> conf;
-			conf.bufferSize = 512;
+			auto input = new FileInput<double>(m_inputName.toStdString(), sswParams);
+			auto output = new DummyOutput<double>(sswParams);
 
-			auto input = new FileInput<double>(m_inputName.toStdString(), conf);
-			auto output = new DummyOutput<double>(conf);
+			FFT_p<double> fft_m(new FFTWManager<double>(sswParams));
+			fft_m->setChannels((unsigned int) input->channels());
+			auto fft_i = new FFTInputProxy<double>(input, fft_m, sswParams);
+			auto fft_o = new FFTOutputProxy<double>(output, fft_m, sswParams);
+
 
 			auto VariantToInt = [] (QVariant x) { return x.toInt(); };
 			// Récupération des séquences
@@ -676,21 +715,20 @@ void LibWrapper::decode()
 			double ampl = m_gui->sswAmpl->value();
 			double thres = m_gui->sswThres->value();
 
-			auto algorithm = new SSWDecode<double>(conf, PNSequence, FreqRange, ampl, thres);
+			auto algorithm = new SSWDecode<double>(sswParams, PNSequence, FreqRange, ampl, thres);
 
 			// Mettre à partir d'un certain temps
 			auto tb = m_gui->watermarkBeginningTime->time();
-			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * conf.samplingRate / conf.bufferSize;
+			long unsigned bufferBegin = (tb.second() + 60 * tb.minute()) * sswParams.samplingRate / sswParams.bufferSize;
 			m_manager.timeAdapter() = TimeAdapter_p(new AtTime(bufferBegin));
-			m_manager.input() = Input_p(input);
-			m_manager.output() = Output_p(output);
+			m_manager.input() = Input_p(fft_i);
+			m_manager.output() = Output_p(fft_o);
 			m_manager.algorithm() = Watermark_p(algorithm);
 
 			m_manager.execute();
 
 			m_gui->informationHostWatermark->setText("SSW Method: File " + m_inputName +" successfully read!");
 			break;
-
 		}
 			//case 2:
 			// Rien pour l'instant

@@ -466,6 +466,8 @@ void LibWrapper::setBufferSize(int size)
 	updateWatermarkCapacityProgressBar();
 }
 
+
+
 /**
  * @brief LibWrapper::encode
  * Function triggered by clicking on the Encode button:
@@ -513,6 +515,7 @@ void LibWrapper::encode()
 			auto input = new FileInput<short>(m_inputName.toStdString(), conf);
 			auto output = new FileOutput<short>(conf);
 
+
 			LSBBase<short>* algorithm = nullptr;
 			switch(m_gui->lsbMethodUsedComboBox->currentIndex())
 			{
@@ -544,41 +547,13 @@ void LibWrapper::encode()
 			m_manager.execute();
 
 			output->writeFile(m_outputName.toStdString().c_str());
+
+			drawOutputWaveform(output, conf);
 			m_gui->informationHostWatermark->setText("LSB Method: File " + m_outputName +" successfully saved!");
 
 			/* Computing and plotting output waveform */
 			// Alban: ça serait bien de mettre ça dans une méthode générique qui prend un IOInterface* en paramètre
 			// Ou alors vu qu'il y a des shorts, le mettre en template sur un OutputManagerBase<T>.
-			m_gui->waveformInputWidget->setVisible(true);
-
-			QVector<double> x(output->frames()), y(output->frames());
-			QVector<short> y0 = QVector<short>::fromStdVector(output->v(0));
-
-			std::transform(y0.begin(), y0.end(), y.begin(),
-						   [&] (short x) { return double(x) / conf.normFactor(); });
-			std::iota(x.begin(), x.end(), 0);
-
-
-			m_gui->waveformOutputWidget->addGraph();
-			m_gui->waveformOutputWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-
-			connect(m_gui->waveformOutputWidget->xAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->xAxis2, SLOT(setRange(QCPRange)));
-			connect(m_gui->waveformOutputWidget->yAxis, SIGNAL(rangeChanged(QCPRange)),m_gui->waveformOutputWidget->yAxis2, SLOT(setRange(QCPRange)));
-
-			//m_gui->waveformOutputWidget->plotLayout()->insertRow(0);
-			//m_gui->waveformOutputWidget->plotLayout()->addElement(0, 0, new QCPPlotTitle(m_gui->waveformOutputWidget, "Output audio file Waveform"));
-
-			m_gui->waveformOutputWidget->graph(0)->setPen(QPen(Qt::red));
-
-			m_gui->waveformOutputWidget->graph(0)->setData(x,y);
-			m_gui->waveformOutputWidget->graph(0)->setName("Output waveform");
-
-			m_gui->waveformOutputWidget->xAxis->setRange(0,input->frames());
-			m_gui->waveformOutputWidget->yAxis->setRange(-1,1);
-
-			m_gui->waveformOutputWidget->xAxis->setLabel("Last output waveform");
-
-			m_gui->waveformOutputWidget->replot();
 
 			break;
 		}
@@ -618,6 +593,8 @@ void LibWrapper::encode()
 			m_manager.execute();
 
 			output->writeFile(m_outputName.toStdString().c_str());
+
+			drawOutputWaveform(output, sswParams);
 			m_gui->informationHostWatermark->setText("SSW Method: File " + m_outputName +" successfully saved!");
 			break;
 		}

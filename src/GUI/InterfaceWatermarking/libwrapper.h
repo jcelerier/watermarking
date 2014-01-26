@@ -27,6 +27,14 @@ class LibWrapper : public QWidget
 		LibWrapper(Ui::MainWindow* gui);
 
 
+		void postLoad()
+		{
+			if(QFile("defaultssw.ini").exists())
+			{
+				m_settings.subLoad("defaultssw.ini");
+			}
+		}
+
 	public slots:
 		// Propre a l'interface avec l'api
 		void encode();

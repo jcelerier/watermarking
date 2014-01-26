@@ -52,6 +52,7 @@ LibWrapper::LibWrapper():
 	m_manager(m_data),
 	m_settings(this)
 {
+
 }
 
 /**

@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 	LibWrapper libWrapper(w.getUi());
 
 	w.show();
+	libWrapper.postLoad();
 
 	return a.exec();
 }

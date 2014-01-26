@@ -9,7 +9,7 @@ SettingsManager::SettingsManager(QObject *parent):
 void SettingsManager::save()
 {
 	// 1. Demander nom fichier sauvegarde
-	QString fileOut = QFileDialog::getSaveFileName(nullptr, tr("Save configuration file (*.ini)"));
+	QString fileOut = QFileDialog::getSaveFileName(nullptr, tr("Save configuration file (*.ini)"), "", "Settings (*.ini)");
 
 	LibWrapper* p = dynamic_cast<LibWrapper*>(parent());
 
@@ -49,7 +49,7 @@ void SettingsManager::load()
 {
 
 	// 1. Demander nom fichier sauvegarde
-	QString fileOut = QFileDialog::getOpenFileName(nullptr, tr("Open configuration file (*.ini)"));
+	QString fileOut = QFileDialog::getOpenFileName(nullptr, tr("Open configuration file (*.ini)"), "", "Settings (*.ini)");
 	subLoad(fileOut);
 }
 
